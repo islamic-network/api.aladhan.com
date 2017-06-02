@@ -1,3 +1,4 @@
 /vendor
 /logs
 !/logs/.gitkeep
+/config/config.yml
