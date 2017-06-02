@@ -14,8 +14,8 @@ use AlAdhanApi\Helper\Cacher;
 class Database
 {
 
-    private $appConfig;
-    private $cacher;
+    private static $appConfig;
+    private static $cacher;
 
     // Constants mapped to methods in DB class.
     const ID_DB_CoOrdinatesAndTimezone = 1;
@@ -48,9 +48,6 @@ class Database
         }
 	    $uri = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SERVER_URI'] : $_SERVER['REDIRECT_URL'];
         $logger->addInfo($message . json_encode([$referer, $agent, $_SERVER['QUERY_STRING'], $uri]));
-        $this->appConfig = new Config();
-        $this->cacher = new Cacher();
-
     }
 
     public static function isGoogleBot()
@@ -66,9 +63,10 @@ class Database
 
     public static function getConnection()
     {
+        self::$appConfig = new Config();
         $config = new \Doctrine\DBAL\Configuration();
 
-        $c = $this->appConfig->connection('database')
+        $c = self::$appConfig->connection('database');
 
         $connectionParams = array(
             'dbname' => $c->dbname,
@@ -83,9 +81,10 @@ class Database
 
     public static function getCoOrdinatesAndTimezone($city, $country, $state = '')
     {
-        $cacheKey = $this->cacher->generateKey(self::ID_DB_CoOrdinatesAndTimezone, [$city, $country, $state]);
-        if ($this->cacher->get($cacheKey) !== false) {
-            return $this->cacher->get($cacheKey);
+        self::$cacher = new Cacher();
+        $cacheKey = self::$cacher->generateKey(self::ID_DB_CoOrdinatesAndTimezone, [$city, $country, $state]);
+        if (self::$cacher->get($cacheKey) !== false) {
+            return self::$cacher->get($cacheKey);
         }
 
         $db = self::getConnection();
@@ -119,7 +118,7 @@ class Database
 
             $result = $stmnt->fetch();
         }
-        $this->cacher->set($cacheKey, $result);
+        self::$cacher->set($cacheKey, $result);
 
         return $result;
 
@@ -135,9 +134,10 @@ class Database
             return false;
         }
 
-        $cacheKey = $this->cacher->generateKey(self::ID_DB_GoogleCoOrdinatesAndZone, [$city, $country, $state]);
-        if ($this->cacher->get($cacheKey) !== false) {
-            return $this->cacher->get($cacheKey);
+        self::$cacher = new Cacher();
+        $cacheKey = self::$cacher->generateKey(self::ID_DB_GoogleCoOrdinatesAndZone, [$city, $country, $state]);
+        if (self::$cacher->get($cacheKey) !== false) {
+            return self::$cacher->get($cacheKey);
         }
 
         $checkQuery = self::checkQuery($cityO, $countryO, $stateO);
@@ -167,7 +167,7 @@ class Database
                          [
                              'query' => [
                                  'address' => $string,
-                                 'key' => $this->appConfig->apiKey('google_geocoding')
+                                 'key' => self::$appConfig->apiKey('google_geocoding')
                              ]
                          ]
                         );
@@ -212,7 +212,7 @@ class Database
                              'query' => [
                                  'location' => $lat . ',' . $lng,
                                  'timestamp' => time(),
-                                 'key' => $this->appConfig->apiKey('google_geocoding')
+                                 'key' => self::$appConfig->apiKey('google_geocoding')
                              ]
                          ]
                         );
@@ -251,7 +251,7 @@ class Database
                         'timezone' => $timezone
                     ];
 
-                    $this->cacher->set($cacheKey, $result);
+                    self::$cacher->set($cacheKey, $result);
 
                     return $result;
                 }
@@ -264,10 +264,11 @@ class Database
 
     public static function checkGeolocateTable($city, $country, $state)
     {
-        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkGeolocateTable, [$city, $country, $state]);
+        self::$cacher = new Cacher();
+        $cacheKey = self::$cacher->generateKey(self::ID_DB_checkGeolocateTable, [$city, $country, $state]);
 
-        if ($this->cacher->get($cacheKey) !== false) {
-            return $this->cacher->get($cacheKey);
+        if (self::$cacher->get($cacheKey) !== false) {
+            return self::$cacher->get($cacheKey);
         }
 
         $db = self::getConnection();
@@ -291,16 +292,17 @@ class Database
             [strtolower($country), strtolower($country), strtolower($city), strtolower($city), strtolower($state), strtolower($state)]);
         }
 
-        $this->cacher->set($cacheKey, $result);
+        self::$cacher->set($cacheKey, $result);
 
         return $result;
     }
 
     private static function checkIfGeoRecordExistsViaCo($city, $country, $state) {
-        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkIfGeoRecordExistsViaCo, [$city, $country, $state]);
+        self::$cacher = new Cacher();
+        $cacheKey = self::$cacher->generateKey(self::ID_DB_checkIfGeoRecordExistsViaCo, [$city, $country, $state]);
 
-        if ($this->cacher->get($cacheKey) !== false) {
-            return $this->cacher->get($cacheKey);
+        if (self::$cacher->get($cacheKey) !== false) {
+            return self::$cacher->get($cacheKey);
         }
         $db = self::getConnection();
         $result = $db->fetchAssoc("SELECT id
@@ -308,7 +310,7 @@ class Database
                                 city = ? AND country = ? AND state = ?",
             [$city, $country, $state]);
 
-        $this->cacher->set($cacheKey, $result);
+        self::$cacher->set($cacheKey, $result);
 
         return $result;
     }
@@ -358,10 +360,11 @@ class Database
 
     public static function checkQuery($city, $country, $state)
     {
-        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkQuery, [$city, $country, $state]);
+        self::$cacher = new Cacher();
+        $cacheKey = self::$cacher->generateKey(self::ID_DB_checkQuery, [$city, $country, $state]);
 
-        if ($this->cacher->get($cacheKey) !== false) {
-            return $this->cacher->get($cacheKey);
+        if (self::$cacher->get($cacheKey) !== false) {
+            return self::$cacher->get($cacheKey);
         }
 
         $db = self::getConnection();
@@ -387,17 +390,18 @@ class Database
                 [$country, $city, $state]);
         }
 
-        $this->cacher->set($cacheKey, $result);
+        self::$cacher->set($cacheKey, $result);
 
         return $result;
     }
 
     public static function checkAddressQuery($address)
     {
-        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkAddressQuery, [$address]);
+        self::$cacher = new Cacher();
+        $cacheKey = self::$cacher->generateKey(self::ID_DB_checkAddressQuery, [$address]);
 
-        if ($this->cacher->get($cacheKey) !== false) {
-            return $this->cacher->get($cacheKey);
+        if (self::$cacher->get($cacheKey) !== false) {
+            return self::$cacher->get($cacheKey);
         }
 
         $db = self::getConnection();
@@ -409,16 +413,17 @@ class Database
                 ",
                 [strtolower($address)]);
 
-        $this->cacher->set($cacheKey, $result);
+        self::$cacher->set($cacheKey, $result);
 
         return $result;
     }
 
     public static function checkInvalidQuery($address) {
-        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkInvalidQuery, [$address]);
+        self::$cacher = new Cacher();
+        $cacheKey = self::$cacher->generateKey(self::ID_DB_checkInvalidQuery, [$address]);
 
-        if ($this->cacher->get($cacheKey) !== false) {
-            return $this->cacher->get($cacheKey);
+        if (self::$cacher->get($cacheKey) !== false) {
+            return self::$cacher->get($cacheKey);
         }
 
         $db = self::getConnection();
@@ -430,7 +435,7 @@ class Database
                 ",
                 [strtolower($address)]);
 
-        $this->cacher->set($cacheKey, $result);
+        self::$cacher->set($cacheKey, $result);
 
         return $result;
     }
@@ -442,10 +447,11 @@ class Database
         }
         $address = (string) $address;
 
-        $cacheKey = $this->cacher->generateKey(self::ID_DB_getAddressCoOrdinatesAndZone, [$address]);
+        self::$cacher = new Cacher();
+        $cacheKey = self::$cacher->generateKey(self::ID_DB_getAddressCoOrdinatesAndZone, [$address]);
 
-        if ($this->cacher->get($cacheKey) !== false) {
-            return $this->cacher->get($cacheKey);
+        if (self::$cacher->get($cacheKey) !== false) {
+            return self::$cacher->get($cacheKey);
         }
 
         $checkAddress = self::checkAddressQuery($address);
@@ -475,7 +481,7 @@ class Database
                          [
                              'query' => [
                                  'address' => $address,
-                                 'key' => $this->appConfig->apiKey('google_geocoding')
+                                 'key' => self::$appConfig->apiKey('google_geocoding')
                              ]
                          ]
                         );
@@ -494,7 +500,7 @@ class Database
                              'query' => [
                                  'location' => $lat . ',' . $lng,
                                  'timestamp' => time(),
-                                 'key' => $this->appConfig->apiKey('google_geocoding')
+                                 'key' => self::$appConfig->apiKey('google_geocoding')
                              ]
                          ]
                         );
@@ -520,7 +526,7 @@ class Database
                         'timezone' => $timezone
                     ];
 
-                    $this->cacher->set($cacheKey, $result);
+                    self::$cacher->set($cacheKey, $result);
 
                     return $result;
             }

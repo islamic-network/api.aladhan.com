@@ -27,7 +27,7 @@ class Cacher
             $port = $config->port;
         }
 
-        $this->mc = new Memcached();
+        $this->mc = new \Memcached();
 
         try {
             $this->mc->addServer($host, $port);
@@ -39,7 +39,7 @@ class Cacher
 
     public function generateKey($id, array $params)
     {
-        return $id . ':' . implode('_', str_replace(' ', '', $params);
+        return $id . ':' . implode('_', str_replace(' ', '', $params));
     }
 
     /**
@@ -52,7 +52,7 @@ class Cacher
         return $this->mc->set($k, $v);
     }
 
-    public function get($k, $v)
+    public function get($k)
     {
         return $this->mc->get($k);
     }
