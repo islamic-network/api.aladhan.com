@@ -39,7 +39,7 @@ $container['logger'] = function($c) {
     // Create the logger
     $logger = new Logger('ApiService');
     // Now add some handlers
-    $logger->pushHandler(new StreamHandler(__DIR__.'/logs/' . $logFile . '.log', Logger::INFO));
+    $logger->pushHandler(new StreamHandler(__DIR__.'/../logs/' . $logFile . '.log', Logger::INFO));
     $logger->addInfo($logTime . 'Incoming request :: ', Log::format($_SERVER, $_REQUEST));
     return $logger;
 };
