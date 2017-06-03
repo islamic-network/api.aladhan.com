@@ -56,4 +56,15 @@ class Cacher
     {
         return $this->mc->get($k);
     }
+
+    public function check($k)
+    {
+        $value = $this->mc->get($k);
+        if ($this->mc->getResultMessage() == 'SUCCESS') {
+            // Key was found irrespective of value
+            return true;
+        }
+
+        return false;
+    }
 }

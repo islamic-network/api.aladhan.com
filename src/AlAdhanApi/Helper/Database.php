@@ -83,7 +83,7 @@ class Database
     {
         self::$cacher = new Cacher();
         $cacheKey = self::$cacher->generateKey(self::ID_DB_CoOrdinatesAndTimezone, [$city, $country, $state]);
-        if (self::$cacher->get($cacheKey) !== false) {
+        if (self::$cacher->check($cacheKey) !== false) {
             return self::$cacher->get($cacheKey);
         }
 
@@ -136,7 +136,7 @@ class Database
 
         self::$cacher = new Cacher();
         $cacheKey = self::$cacher->generateKey(self::ID_DB_GoogleCoOrdinatesAndZone, [$city, $country, $state]);
-        if (self::$cacher->get($cacheKey) !== false) {
+        if (self::$cacher->check($cacheKey) !== false) {
             return self::$cacher->get($cacheKey);
         }
 
@@ -267,7 +267,7 @@ class Database
         self::$cacher = new Cacher();
         $cacheKey = self::$cacher->generateKey(self::ID_DB_checkGeolocateTable, [$city, $country, $state]);
 
-        if (self::$cacher->get($cacheKey) !== false) {
+        if (self::$cacher->check($cacheKey) !== false) {
             return self::$cacher->get($cacheKey);
         }
 
@@ -301,7 +301,7 @@ class Database
         self::$cacher = new Cacher();
         $cacheKey = self::$cacher->generateKey(self::ID_DB_checkIfGeoRecordExistsViaCo, [$city, $country, $state]);
 
-        if (self::$cacher->get($cacheKey) !== false) {
+        if (self::$cacher->check($cacheKey) !== false) {
             return self::$cacher->get($cacheKey);
         }
         $db = self::getConnection();
@@ -363,7 +363,7 @@ class Database
         self::$cacher = new Cacher();
         $cacheKey = self::$cacher->generateKey(self::ID_DB_checkQuery, [$city, $country, $state]);
 
-        if (self::$cacher->get($cacheKey) !== false) {
+        if (self::$cacher->check($cacheKey) !== false) {
             return self::$cacher->get($cacheKey);
         }
 
@@ -400,7 +400,7 @@ class Database
         self::$cacher = new Cacher();
         $cacheKey = self::$cacher->generateKey(self::ID_DB_checkAddressQuery, [$address]);
 
-        if (self::$cacher->get($cacheKey) !== false) {
+        if (self::$cacher->check($cacheKey) !== false) {
             return self::$cacher->get($cacheKey);
         }
 
@@ -422,7 +422,7 @@ class Database
         self::$cacher = new Cacher();
         $cacheKey = self::$cacher->generateKey(self::ID_DB_checkInvalidQuery, [$address]);
 
-        if (self::$cacher->get($cacheKey) !== false) {
+        if (self::$cacher->check($cacheKey) !== false) {
             return self::$cacher->get($cacheKey);
         }
 
@@ -450,7 +450,7 @@ class Database
         self::$cacher = new Cacher();
         $cacheKey = self::$cacher->generateKey(self::ID_DB_getAddressCoOrdinatesAndZone, [$address]);
 
-        if (self::$cacher->get($cacheKey) !== false) {
+        if (self::$cacher->check($cacheKey) !== false) {
             return self::$cacher->get($cacheKey);
         }
 
