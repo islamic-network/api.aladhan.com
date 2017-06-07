@@ -2,8 +2,8 @@
 header('Access-Control-Allow-Origin: *');
 
 /** PHP Error handling **/
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
 
 /** PHP Error handling Ends **/
 
@@ -27,7 +27,7 @@ use AlAdhanApi\Helper\Database;
 use AlAdhanApi\Helper\PrayerTimesHelper;
 
 /** App settings **/
-$config['displayErrorDetails'] = true;
+$config['displayErrorDetails'] = false;
 
 $app = new \Slim\App(["settings" => $config]);
 $container = $app->getContainer();
