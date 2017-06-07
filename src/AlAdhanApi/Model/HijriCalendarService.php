@@ -548,6 +548,6 @@ class HijriCalendarService {
             return $newDate['hijri']['year'];
         }
 
-        return $date['hijri']['year'];;
+        return $date['hijri']['year'];
     }
 }
