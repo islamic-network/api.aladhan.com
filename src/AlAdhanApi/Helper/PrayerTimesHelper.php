@@ -79,7 +79,7 @@ class PrayerTimesHelper
                 $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
             }
             $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod);
-            $timings = self::addTimezoneAbbreviation($timings, $calstart);
+            $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
             $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U')];
             $times[$i] =  ['timings' => $timings, 'date' => $date];
             // Add 24 hours to start date
@@ -112,7 +112,7 @@ class PrayerTimesHelper
                     $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
                 }
                 $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod);
-                $timings = self::addTimezoneAbbreviation($timings, $calstart);
+                $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
                 $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U')];
                 $times[$month][$i] =  ['timings' => $timings, 'date' => $date];
                 // Add 24 hours to start date
