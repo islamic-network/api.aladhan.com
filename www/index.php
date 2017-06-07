@@ -453,7 +453,7 @@ $app->get('/islamicYearFromGregorianForRamadan/{year}', function (Request $reque
     $this->helper->logger->write();
     $y = (int) $request->getAttribute('year');
     $hs = new HijriCalendarService();
-    $result = $hs->getIslamicYearFromGregorianForRamadan();
+    $result = $hs->getIslamicYearFromGregorianForRamadan($y);
     if ($result) {
         return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
     } else {
