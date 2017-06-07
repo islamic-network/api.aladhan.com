@@ -31,7 +31,7 @@ class Database
     /**
      * Constructor
      */
-    public funcion __construct($logger = null)
+    public function __construct($logger = null)
     {
         $this->config = new Config();
         $this->cacher = new Cacher();
@@ -264,7 +264,7 @@ class Database
      * @param  String $state   [description]
      * @return Array          [description]
      */
-    public static function checkGeolocateTable($city, $country, $state)
+    public function checkGeolocateTable($city, $country, $state)
     {
 
         $cacheKey = $this->cacher->generateKey(self::ID_DB_checkGeolocateTable, [$city, $country, $state]);
@@ -349,7 +349,7 @@ class Database
         return true;
     }
 
-        public static function recordQuery($city, $state, $country, $lat, $lng, $timezone)
+        public function recordQuery($city, $state, $country, $lat, $lng, $timezone)
     {
 
         return $this->db->insert('geolocate_queries',
@@ -369,7 +369,7 @@ class Database
      * @param  String $address    [description]
      * @return
      */
-    public static function recordInvalidQuery($address)
+    public function recordInvalidQuery($address)
     {
         return $this->db->insert('address_geolocate_invalid', ['query' => $address]);
     }
@@ -443,7 +443,7 @@ class Database
      * @param  String $address    [description]
      * @return Mixed          [description]
      */
-    public checkInvalidQuery($address) {
+    public function checkInvalidQuery($address) {
 
         $cacheKey = $this->cacher->generateKey(self::ID_DB_checkInvalidQuery, [$address]);
 
@@ -467,7 +467,7 @@ class Database
      * @param  String $address    [description]
      * @return Mixed          [description]
      */
-    public static function getAddressCoOrdinatesAndZone($address)
+    public function getAddressCoOrdinatesAndZone($address)
     {
         if ($address == '' || $address == null) {
             return false;

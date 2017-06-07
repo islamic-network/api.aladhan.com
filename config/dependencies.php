@@ -2,6 +2,7 @@
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use AlAdhanApi\Helper\Log;
+use AlAdhanApi\Helper\Database;
 
 
 $container = $app->getContainer();

@@ -8,7 +8,7 @@
  * License: GNU LGPL v3.0
  */
 
-namespace AlAdhanApi;
+namespace AlAdhanApi\Model;
 
 use DateTime;
 use DateTimezone;
@@ -36,7 +36,7 @@ class PrayerTimes
      */
     const METHOD_MWL = 'MWL'; // 3
     const METHOD_ISNA = 'ISNA'; // 2;
-    const METHOD_EGYPT = 'EGYPT'; // 5;    
+    const METHOD_EGYPT = 'EGYPT'; // 5;
     const METHOD_MAKKAH = 'MAKKAH'; // 4;
     const METHOD_KARACHI = 'KARACHI'; // 1;
     const METHOD_TEHRAN = 'TEHRAN'; // 7;
@@ -79,7 +79,7 @@ class PrayerTimes
      * @Array
      */
     public $methods;
-	
+
 	/**
      * @Array
      */
@@ -239,8 +239,8 @@ class PrayerTimes
 
         // add midnight time
         $times[self::MIDNIGHT] = ($this->midnightMode == 'Jafari') ? $times[self::SUNSET] + $this->timeDiff($times[self::SUNSET],  $times[self::FAJR]) / 2 : $times[self::SUNSET] + $this->timeDiff($times[self::SUNSET], $times[self::SUNRISE]) / 2;
-		
-		
+
+
 
         $times = $this->tuneTimes($times);
 
@@ -750,7 +750,7 @@ class PrayerTimes
             ]
 
         ];
-		
+
 		$this->methodCodes = [
 			self::METHOD_MWL, self::METHOD_ISNA, self::METHOD_EGYPT, self::METHOD_MAKKAH, self::METHOD_KARACHI, self::METHOD_TEHRAN, self::METHOD_JAFARI
 		];

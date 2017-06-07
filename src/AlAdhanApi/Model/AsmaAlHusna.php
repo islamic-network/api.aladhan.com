@@ -1,5 +1,5 @@
 <?php
-namespace AlAdhanApi;
+namespace AlAdhanApi\Model;
 
 /**
  *

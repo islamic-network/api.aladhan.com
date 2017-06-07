@@ -1,6 +1,6 @@
 <?php
 
-namespace AlAdhanApi;
+namespace AlAdhanApi\Model;
 
 use DateTime;
 use DateTimeZone;
