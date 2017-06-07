@@ -6,8 +6,8 @@ namespace AlAdhanApi;
  */
 class AsmaAlHusna {
     /**
-     * [$names description]
-     * @var array
+     * The Asmaa Al Husnaa
+     * @var Array
      */
     private static $names = [
         1 => [
@@ -820,10 +820,10 @@ class AsmaAlHusna {
     const FORMAT_ARRAY = 'array';
 
     /**
-     * [get description]
-     * @param  [type] $number [description]
-     * @param  [type] $format [description]
-     * @return [type]         [description]
+     * Gets one or multiple names
+     * @param  Integer $number
+     * @param  $format Array or JSON as defined in the constants above
+     * @return Array
      */
     public static function get($number = null, $format = self::FORMAT_ARRAY)
     {
@@ -838,9 +838,10 @@ class AsmaAlHusna {
     }
 
     /**
-     * [extract description]
-     * @param  [type] $number [description]
-     * @return [type]         [description]
+     * Gets one or multiple names
+     * @param  Integer $number
+     * @param  $format Array or JSON as defined in the constants above
+     * @return Array
      */
     private static function extract($number)
     {
@@ -865,8 +866,8 @@ class AsmaAlHusna {
     }
 
     /**
-     * [isValidNumber description]
-     * @param  [type]  $number [description]
+     * Checks if the number of the Name is valid
+     * @param  Integer  $number Between 1 and 99 inclusive
      * @return boolean         [description]
      */
    private static function isValidNumber($number)
@@ -878,6 +879,11 @@ class AsmaAlHusna {
         return false;
     }
 
+    /**
+     * Extracts a Name based on the number
+     * @param  Integer $number
+     * @return mixed|Array or Boolean
+     */
     private static function extractFromInt($number) {
 
         if (self::isValidNumber($number)) {
@@ -887,6 +893,11 @@ class AsmaAlHusna {
         return false;
     }
 
+    /**
+     * Converts input to and returns JSON
+     * @param  Mixed $data
+     * @return String JSON String
+     */
     private static function getJSON($data)
     {
         return json_encode($data);

@@ -2,17 +2,21 @@
 namespace AlAdhanApi\Helper;
 use AlAdhanApi\Helper\Config;
 
+/**
+ * Class Cacher
+ * @package Helper\Cacher
+ */
 class Cacher
 {
     /**
-     * [$mc description]
-     * @var [type]
+     * Memcached Object
+     * @var Object
      */
     private $mc;
 
 
     /**
-     * [__construct description]
+     * Creates the Memcached Object
      */
     public function __construct($host = null, $port = null)
     {
@@ -37,26 +41,43 @@ class Cacher
 
     }
 
+    /**
+     * Generates a key for the memcached store
+     * @param  String $id
+     * @param  Array  $params The query parameters that make the request unique
+     * @return String
+     */
     public function generateKey($id, array $params)
     {
         return $id . ':' . implode('_', str_replace(' ', '', $params));
     }
 
     /**
-     * [set description]
-     * @param [type] $k [description]
-     * @param [type] $v [description]
+     * Writes to the cache
+     * @param String $k Key
+     * @param String $v Value
+     * @return Boolean
      */
     public function set($k, $v)
     {
         return $this->mc->set($k, $v);
     }
 
+    /**
+     * [get description]
+     * @param String $k Key
+     * @return Mixed
+     */
     public function get($k)
     {
         return $this->mc->get($k);
     }
 
+    /**
+     * [check description]
+     * @param String $k Key
+     * @return Boolean
+     */
     public function check($k)
     {
         $value = $this->mc->get($k);

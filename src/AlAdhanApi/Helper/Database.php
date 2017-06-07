@@ -1,21 +1,22 @@
 <?php
 namespace AlAdhanApi\Helper;
 
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
 use AlAdhanApi\Helper\Config;
 use AlAdhanApi\Helper\Cacher;
+use AlAdhanApi\Helper\Generic;
+use AlAdhanApi\Helper\Log;
 
 /**
  * Class Database
- * @package Database\Helper
+ * @package Helper\Database
  */
 
 class Database
 {
-
-    private static $appConfig;
-    private static $cacher;
+    private $config;
+    private $db;
+    private $cacher;
+    private $logger;
 
     // Constants mapped to methods in DB class.
     const ID_DB_CoOrdinatesAndTimezone = 1;
@@ -27,46 +28,31 @@ class Database
     const ID_DB_checkInvalidQuery = 7;
     const ID_DB_getAddressCoOrdinatesAndZone = 8;
 
-    public static function writeLog($message) {
-        $logId = uniqid();
-        $logStamp = time();
-        $logFile = 'Google_' . date('Y-m-d', $logStamp);
-        $logTime = $logId . ' :: ' . date('Y-m-d H:i:s :: ');
-        // Create the logger
-        $logger = new Logger('GoogleEndpoint');
-        // Now add some handlers
-        $logger->pushHandler(new StreamHandler(realpath(__DIR__ . '/../../../logs/') . '/' .$logFile . '.log', Logger::INFO));
-        if (isset($_SERVER['HTTP_REFERER'])) {
-            $referer = $_SERVER['HTTP_REFERER'];
+    /**
+     * Constructor
+     */
+    public funcion __construct($logger = null)
+    {
+        $this->config = new Config();
+        $this->cacher = new Cacher();
+        if ($log === null) {
+            $this->logger = new Log();
         } else {
-            $referer = '';
+            $log = $log;
         }
-        if (isset($_SERVER['HTTP_USER_AGENT'])) {
-            $agent = $_SERVER['HTTP_USER_AGENT'];
-        } else {
-            $agent = '';
-        }
-	    $uri = isset($_SERVER['SCRIPT_URI']) ? $_SERVER['SERVER_URI'] : $_SERVER['REDIRECT_URL'];
-        $logger->addInfo($message . json_encode([$referer, $agent, $_SERVER['QUERY_STRING'], $uri]));
+
+        $this->db = $this->getConnection();
     }
 
-    public static function isGoogleBot()
+    /**
+     * Returns a connection to the database
+     * @return DriveManager
+     */
+    public function getConnection()
     {
-        if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'Googlebot') !== false) {
-            return true;
-        }
-
-        return false;
-
-    }
-
-
-    public static function getConnection()
-    {
-        self::$appConfig = new Config();
         $config = new \Doctrine\DBAL\Configuration();
 
-        $c = self::$appConfig->connection('database');
+        $c = $this->config->connection('database');
 
         $connectionParams = array(
             'dbname' => $c->dbname,
@@ -79,15 +65,18 @@ class Database
         return \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
     }
 
-    public static function getCoOrdinatesAndTimezone($city, $country, $state = '')
+    /**
+     * @param  String $city    [description]
+     * @param  String $country [description]
+     * @param  String $state   [description]
+     * @return Array          [description]
+     */
+    public function getCoOrdinatesAndTimezone($city, $country, $state = '')
     {
-        self::$cacher = new Cacher();
-        $cacheKey = self::$cacher->generateKey(self::ID_DB_CoOrdinatesAndTimezone, [$city, $country, $state]);
-        if (self::$cacher->check($cacheKey) !== false) {
-            return self::$cacher->get($cacheKey);
+        $cacheKey = $this->cacher->generateKey(self::ID_DB_CoOrdinatesAndTimezone, [$city, $country, $state]);
+        if ($this->cacher->check($cacheKey) !== false) {
+            return $this->cacher->get($cacheKey);
         }
-
-        $db = self::getConnection();
 
         if ($state == '') {
 
@@ -98,7 +87,7 @@ class Database
                     (LCASE(country.printable_name) = ? OR LCASE(country.iso) = ?)
                     AND LCASE(city.name) = ?';
 
-            $stmnt = $db->executeQuery($sql, [strtolower($country), strtolower($country), strtolower($city)]);
+            $stmnt = $this->db->executeQuery($sql, [strtolower($country), strtolower($country), strtolower($city)]);
 
             $result = $stmnt->fetch();
         } else {
@@ -114,39 +103,45 @@ class Database
                 AND
                 LCASE(city.name) = ?';
 
-            $stmnt = $db->executeQuery($sql, [strtolower($country), strtolower($country), strtolower($state), strtolower($state), strtolower($city)]);
+            $stmnt = $this->db->executeQuery($sql, [strtolower($country), strtolower($country), strtolower($state), strtolower($state), strtolower($city)]);
 
             $result = $stmnt->fetch();
         }
-        self::$cacher->set($cacheKey, $result);
+        $this->cacher->set($cacheKey, $result);
 
         return $result;
 
     }
 
-    public static function getGoogleCoOrdinatesAndZone($city, $country, $state = '')
+    /**
+     * @param  String $city    [description]
+     * @param  String $country [description]
+     * @param  String $state   [description]
+     * @return Array          [description]
+     */
+    public function getGoogleCoOrdinatesAndZone($city, $country, $state = '')
     {
         $cityO = $city;
         $countryO = $country;
         $stateO = $state;
 
-        if (!self::citySanitizer($city, $country)) {
+        if (!$this->citySanitizer($city, $country)) {
             return false;
         }
 
-        self::$cacher = new Cacher();
-        $cacheKey = self::$cacher->generateKey(self::ID_DB_GoogleCoOrdinatesAndZone, [$city, $country, $state]);
-        if (self::$cacher->check($cacheKey) !== false) {
-            return self::$cacher->get($cacheKey);
+
+        $cacheKey = $this->cacher->generateKey(self::ID_DB_GoogleCoOrdinatesAndZone, [$city, $country, $state]);
+        if ($this->cacher->check($cacheKey) !== false) {
+            return $this->cacher->get($cacheKey);
         }
 
-        $checkQuery = self::checkQuery($cityO, $countryO, $stateO);
+        $checkQuery = $this->checkQuery($cityO, $countryO, $stateO);
 
         if ($checkQuery) {
             return $checkQuery;
         }
 
-        $local = self::checkGeolocateTable($city, $country, $state);
+        $local = $this->checkGeolocateTable($city, $country, $state);
 
         if ($local) {
             return $local;
@@ -160,14 +155,14 @@ class Database
 
         $client = new \GuzzleHttp\Client(['base_uri' => 'https://maps.googleapis.com/maps/api/']);
 
-        self::writeLog('Sending Request :: geocode :: ' .  json_encode(['city' => $city, 'country' => $country, 'state' => $state]));
+        $this->logger->writeGoogleQueryLog('Sending Request :: geocode :: ' .  json_encode(['city' => $city, 'country' => $country, 'state' => $state]));
 
         $res = $client->request('GET',
                          'geocode/json',
                          [
                              'query' => [
                                  'address' => $string,
-                                 'key' => self::$appConfig->apiKey('google_geocoding')
+                                 'key' => $this->config->apiKey('google_geocoding')
                              ]
                          ]
                         );
@@ -205,14 +200,14 @@ class Database
                 }
             }
             // Get timezone
-            self::writeLog('Sending Request :: timezone :: ' . json_encode(['lat' => $lat, 'lng' => $lng]));
+            $this->logger->writeGoogleQueryLog('Sending Request :: timezone :: ' . json_encode(['lat' => $lat, 'lng' => $lng]));
                 $res2 = $client->request('GET',
                          'timezone/json',
                          [
                              'query' => [
                                  'location' => $lat . ',' . $lng,
                                  'timestamp' => time(),
-                                 'key' => self::$appConfig->apiKey('google_geocoding')
+                                 'key' => $this->config->apiKey('google_geocoding')
                              ]
                          ]
                         );
@@ -223,11 +218,11 @@ class Database
                     $timezone = $x2->timeZoneId;
                     $timezonename = $x2->timeZoneName;
 
-                    $db = self::getConnection();
+
                     // It may be that the user entered an unconventional format above, but if already have the latitue and longitude, don't re-create the record. We want 1 entry for each combination of co-ordinates.
-                    if (!self::checkIfGeoRecordExistsViaCo($city, $country, $state)) {
+                    if (!$this->checkIfGeoRecordExistsViaCo($city, $country, $state)) {
                         // Write update database
-                        $insert = $db->insert('geolocate',
+                        $insert = $this->db->insert('geolocate',
                                          [
                                              'countryiso' => $countryiso,
                                              'country' => $country,
@@ -243,7 +238,7 @@ class Database
                                          );
                         }
 
-                    self::recordQuery($cityO, $stateO, $countryO, $lat, $lng, $timezone);
+                    $this->recordQuery($cityO, $stateO, $countryO, $lat, $lng, $timezone);
 
                     $result = [
                         'latitude' => $lat,
@@ -251,7 +246,7 @@ class Database
                         'timezone' => $timezone
                     ];
 
-                    self::$cacher->set($cacheKey, $result);
+                    $this->cacher->set($cacheKey, $result);
 
                     return $result;
                 }
@@ -262,18 +257,25 @@ class Database
         return false;
     }
 
+
+    /**
+     * @param  String $city    [description]
+     * @param  String $country [description]
+     * @param  String $state   [description]
+     * @return Array          [description]
+     */
     public static function checkGeolocateTable($city, $country, $state)
     {
-        self::$cacher = new Cacher();
-        $cacheKey = self::$cacher->generateKey(self::ID_DB_checkGeolocateTable, [$city, $country, $state]);
 
-        if (self::$cacher->check($cacheKey) !== false) {
-            return self::$cacher->get($cacheKey);
+        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkGeolocateTable, [$city, $country, $state]);
+
+        if ($this->cacher->check($cacheKey) !== false) {
+            return $this->cacher->get($cacheKey);
         }
 
-        $db = self::getConnection();
+
         if ($state == '') {
-            $result = $db->fetchAssoc("SELECT latitude, longitude, timezone
+            $result = $this->db->fetchAssoc("SELECT latitude, longitude, timezone
                                 FROM geolocate WHERE
                                 (LCASE(country) = ? OR LCASE(countryiso) = ?)
                                 AND
@@ -282,7 +284,7 @@ class Database
                                 )",
             [strtolower($country), strtolower($country),strtolower($city), strtolower($city)]);
         } else {
-            $result = $db->fetchAssoc("SELECT latitude, longitude, timezone
+            $result = $this->db->fetchAssoc("SELECT latitude, longitude, timezone
                                 FROM geolocate WHERE
                                 (LCASE(country) = ? OR LCASE(countryiso) = ?)
                                 AND
@@ -292,30 +294,42 @@ class Database
             [strtolower($country), strtolower($country), strtolower($city), strtolower($city), strtolower($state), strtolower($state)]);
         }
 
-        self::$cacher->set($cacheKey, $result);
+        $this->cacher->set($cacheKey, $result);
 
         return $result;
     }
 
-    private static function checkIfGeoRecordExistsViaCo($city, $country, $state) {
-        self::$cacher = new Cacher();
-        $cacheKey = self::$cacher->generateKey(self::ID_DB_checkIfGeoRecordExistsViaCo, [$city, $country, $state]);
+    /**
+     * @param  String $city    [description]
+     * @param  String $country [description]
+     * @param  String $state   [description]
+     * @return Array          [description]
+     */
+    private function checkIfGeoRecordExistsViaCo($city, $country, $state) {
 
-        if (self::$cacher->check($cacheKey) !== false) {
-            return self::$cacher->get($cacheKey);
+        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkIfGeoRecordExistsViaCo, [$city, $country, $state]);
+
+        if ($this->cacher->check($cacheKey) !== false) {
+            return $this->cacher->get($cacheKey);
         }
-        $db = self::getConnection();
-        $result = $db->fetchAssoc("SELECT id
+
+        $result = $this->db->fetchAssoc("SELECT id
                                 FROM geolocate WHERE
                                 city = ? AND country = ? AND state = ?",
             [$city, $country, $state]);
 
-        self::$cacher->set($cacheKey, $result);
+        $this->cacher->set($cacheKey, $result);
 
         return $result;
     }
 
-    public static function citySanitizer($city, $country, $state = '')
+    /**
+     * @param  String $city    [description]
+     * @param  String $country [description]
+     * @param  String $state   [description]
+     * @return Array          [description]
+     */
+    public function citySanitizer($city, $country, $state = '')
     {
         $city = strtolower($city);
         $country = strtolower($country);
@@ -337,8 +351,8 @@ class Database
 
         public static function recordQuery($city, $state, $country, $lat, $lng, $timezone)
     {
-        $db = self::getConnection();
-        return $db->insert('geolocate_queries',
+
+        return $this->db->insert('geolocate_queries',
                                          [
                                              'city' => $city,
                                              'state' => $state,
@@ -351,25 +365,31 @@ class Database
 
     }
 
+    /**
+     * @param  String $address    [description]
+     * @return
+     */
     public static function recordInvalidQuery($address)
     {
-        $db = self::getConnection();
-
-        return $db->insert('address_geolocate_invalid', ['query' => $address]);
+        return $this->db->insert('address_geolocate_invalid', ['query' => $address]);
     }
 
-    public static function checkQuery($city, $country, $state)
+    /**
+     * @param  String $city    [description]
+     * @param  String $country [description]
+     * @param  String $state   [description]
+     * @return Mixed          [description]
+     */
+    public function checkQuery($city, $country, $state)
     {
-        self::$cacher = new Cacher();
-        $cacheKey = self::$cacher->generateKey(self::ID_DB_checkQuery, [$city, $country, $state]);
+        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkQuery, [$city, $country, $state]);
 
-        if (self::$cacher->check($cacheKey) !== false) {
-            return self::$cacher->get($cacheKey);
+        if ($this->cacher->check($cacheKey) !== false) {
+            return $this->cacher->get($cacheKey);
         }
 
-        $db = self::getConnection();
         if ($state == '') {
-            $result = $db->fetchAssoc(
+            $result = $this->db->fetchAssoc(
                 "SELECT latitude, longitude, timezone
                 FROM geolocate_queries WHERE
                 (LCASE(country) = ?)
@@ -378,7 +398,7 @@ class Database
                 ",
                 [$country, $city]);
         } else {
-            $result = $db->fetchAssoc(
+            $result = $this->db->fetchAssoc(
                 "SELECT latitude, longitude, timezone
                 FROM geolocate_queries WHERE
                 (LCASE(country) = ?)
@@ -390,56 +410,63 @@ class Database
                 [$country, $city, $state]);
         }
 
-        self::$cacher->set($cacheKey, $result);
+        $this->cacher->set($cacheKey, $result);
 
         return $result;
     }
 
-    public static function checkAddressQuery($address)
+    /**
+     * @param  String $address    [description]
+     * @return Mixed          [description]
+     */
+    public function checkAddressQuery($address)
     {
-        self::$cacher = new Cacher();
-        $cacheKey = self::$cacher->generateKey(self::ID_DB_checkAddressQuery, [$address]);
+        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkAddressQuery, [$address]);
 
-        if (self::$cacher->check($cacheKey) !== false) {
-            return self::$cacher->get($cacheKey);
+        if ($this->cacher->check($cacheKey) !== false) {
+            return $this->cacher->get($cacheKey);
         }
 
-        $db = self::getConnection();
-
-        $result = $db->fetchAssoc(
+        $result = $this->db->fetchAssoc(
                 "SELECT latitude, longitude, timezone
                 FROM address_geolocate_queries WHERE
                 (LCASE(address) = ?)
                 ",
                 [strtolower($address)]);
 
-        self::$cacher->set($cacheKey, $result);
+        $this->cacher->set($cacheKey, $result);
 
         return $result;
     }
 
-    public static function checkInvalidQuery($address) {
-        self::$cacher = new Cacher();
-        $cacheKey = self::$cacher->generateKey(self::ID_DB_checkInvalidQuery, [$address]);
+    /**
+     * @param  String $address    [description]
+     * @return Mixed          [description]
+     */
+    public checkInvalidQuery($address) {
 
-        if (self::$cacher->check($cacheKey) !== false) {
-            return self::$cacher->get($cacheKey);
+        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkInvalidQuery, [$address]);
+
+        if ($this->cacher->check($cacheKey) !== false) {
+            return $this->cacher->get($cacheKey);
         }
 
-        $db = self::getConnection();
-
-        $result = $db->fetchAssoc(
+        $result = $this->db->fetchAssoc(
                 "SELECT id
                 FROM address_geolocate_invalid WHERE
                 (LCASE(query) = ?)
                 ",
                 [strtolower($address)]);
 
-        self::$cacher->set($cacheKey, $result);
+        $this->cacher->set($cacheKey, $result);
 
         return $result;
     }
 
+    /**
+     * @param  String $address    [description]
+     * @return Mixed          [description]
+     */
     public static function getAddressCoOrdinatesAndZone($address)
     {
         if ($address == '' || $address == null) {
@@ -447,41 +474,41 @@ class Database
         }
         $address = (string) $address;
 
-        self::$cacher = new Cacher();
-        $cacheKey = self::$cacher->generateKey(self::ID_DB_getAddressCoOrdinatesAndZone, [$address]);
 
-        if (self::$cacher->check($cacheKey) !== false) {
-            return self::$cacher->get($cacheKey);
+        $cacheKey = $this->cacher->generateKey(self::ID_DB_getAddressCoOrdinatesAndZone, [$address]);
+
+        if ($this->cacher->check($cacheKey) !== false) {
+            return $this->cacher->get($cacheKey);
         }
 
-        $checkAddress = self::checkAddressQuery($address);
+        $checkAddress = $this->checkAddressQuery($address);
 
         if ($checkAddress)
         {
             return $checkAddress;
         }
 
-        $checkInvalidQuery = self::checkInvalidQuery($address);
+        $checkInvalidQuery = $this->checkInvalidQuery($address);
 
         if ($checkInvalidQuery) {
             return false;
         }
 
         // If Google Bot is querying, return false or it's a self propelling cycle of Google making money!
-        if (self::isGoogleBot()) {
+        if (Generic::isGoogleBot()) {
             return false;
         }
 
         $client = new \GuzzleHttp\Client(['base_uri' => 'https://maps.googleapis.com/maps/api/']);
 
-        self::writeLog('Sending Request :: geocode :: ' . json_encode(['address' => $address, $_REQUEST]) . ' ::: ');
+        $this->logger->writeGoogleQueryLog('Sending Request :: geocode :: ' . json_encode(['address' => $address, $_REQUEST]) . ' ::: ');
         // Geocoding call.
         $res = $client->request('GET',
                          'geocode/json',
                          [
                              'query' => [
                                  'address' => $address,
-                                 'key' => self::$appConfig->apiKey('google_geocoding')
+                                 'key' => $this->config->apiKey('google_geocoding')
                              ]
                          ]
                         );
@@ -493,14 +520,14 @@ class Database
             $lng = $x->results[0]->geometry->location->lng;
 
             // Timezone call.
-            self::writeLog('Sending Request :: timezone :: ' . json_encode(['lat' => $lat, 'lng' => $lng, $_REQUEST]) . ' ::: ' );
+            $this->logger->writeGoogleQueryLog('Sending Request :: timezone :: ' . json_encode(['lat' => $lat, 'lng' => $lng, $_REQUEST]) . ' ::: ' );
             $res2 = $client->request('GET',
                          'timezone/json',
                          [
                              'query' => [
                                  'location' => $lat . ',' . $lng,
                                  'timestamp' => time(),
-                                 'key' => self::$appConfig->apiKey('google_geocoding')
+                                 'key' => $this->config->apiKey('google_geocoding')
                              ]
                          ]
                         );
@@ -511,8 +538,8 @@ class Database
                     $timezone = $x2->timeZoneId;
 
                     // Update datbase
-                    $db = self::getConnection();
-                    $insert = $db->insert('address_geolocate_queries',
+
+                    $insert = $this->db->insert('address_geolocate_queries',
                                          [
                                              'address' => $address,
                                              'latitude' => $lat,
@@ -526,12 +553,12 @@ class Database
                         'timezone' => $timezone
                     ];
 
-                    self::$cacher->set($cacheKey, $result);
+                    $this->cacher->set($cacheKey, $result);
 
                     return $result;
             }
         } else {
-            self::recordInvalidQuery($address);
+            $this->recordInvalidQuery($address);
 
             return false;
         }

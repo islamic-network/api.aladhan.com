@@ -5,16 +5,21 @@ namespace AlAdhanApi;
 use DateTime;
 use DateTimeZone;
 
-// This class Convert Hijri date to Gregorian Date & vise versa, made by Layth A. Ibraheeim - 24-2-2011
-// to test if the results are ok, please visit (http://www.oriold.uzh.ch/static/hegira.html)..
-
+/**
+ * This class Converts Hijri date to Gregorian Date and vice versa, made by Layth A. Ibraheeim - 24-2-2011
+ * To test if the results are ok, please visit (http://www.oriold.uzh.ch/static/hegira.html)..
+ */
 class HijriCalendarService {
 
 	public $Day;
 	public $Month;
 	public $Year;
 
-
+    /**
+     *
+     * @param  Float $floatNum
+     * @return Integer
+     */
 	public function intPart($floatNum)
 	{
 		if ($floatNum< -0.0000001)
@@ -24,7 +29,12 @@ class HijriCalendarService {
 		return floor($floatNum+0.0000001);
 	}
 
-	public function ConstractDayMonthYear($date, $format) // extract day, month, year out of the date based on the format.
+    /**
+     * Extract day, month, year out of the date based on the format.
+     * @param String $date
+     * @param String $format
+     */
+	public function ConstractDayMonthYear($date, $format)
 	{
 		$this->Day="";
 		$this->Month="";
@@ -53,7 +63,11 @@ class HijriCalendarService {
 
 	}
 
-
+    /**
+     * Returns Gregorian date based on Hijri date
+     * @param String $date
+     * @param String $format
+     */
 	public function HijriToGregorian($date, $format) // $date like 10121400, $format like DDMMYYYY, take date & check if its hijri then convert to gregorian date in format (DD-MM-YYYY), if it gregorian the return empty;
 	{
 
@@ -107,8 +121,11 @@ class HijriCalendarService {
 		//	return false;
 	}
 
-
-
+    /**
+     * Returns Hijri date based on Gregorian date
+     * @param String $date
+     * @param String $format
+     */
 	public function GregorianToHijri($date,$format) // $date like 10122011, $format like DDMMYYYY, take date & check if its gregorian then convert to hijri date in format (DD-MM-YYYY), if it hijri the return empty;
 	 {
 		$this->ConstractDayMonthYear($date,$format);
@@ -147,6 +164,10 @@ class HijriCalendarService {
 
 	}
 
+    /**
+     * Returns a list of Islamic Months
+     * @return Array
+     */
     public function getIslamicMonths()
     {
        return [
@@ -166,6 +187,10 @@ class HijriCalendarService {
 
     }
 
+    /**
+     * Returns a list of Gregorian months
+     * @return Array
+     */
     public function getGregorianMonths()
     {
        return [
@@ -186,7 +211,9 @@ class HijriCalendarService {
     }
 
     /**
-     * $date DD-MM-YYYY
+     * Converts given Gregorian date into AlAdhan Date Array
+     * @param  String $date DD-MM-YYYY
+     * @return Array
      */
     public function gToH($date)
     {
@@ -235,7 +262,9 @@ class HijriCalendarService {
     }
 
     /**
-     * $date DD-MM-YYYY
+     * Converts given Hijri date into AlAdhan Date Array
+     * @param  String $date DD-MM-YYYY
+     * @return Array
      */
     public function hToG($date)
     {
@@ -283,6 +312,12 @@ class HijriCalendarService {
         return false;
     }
 
+    /**
+     * Converts a given Hijri Month into AlAdhan Date Array
+     * @param  Integer $m
+     * @param  Integer $y
+     * @return Array Array of AlAdhan date Arrays
+     */
     public function getHtoGCalendar($m, $y)
     {
         if ($m > 12) {
@@ -311,6 +346,12 @@ class HijriCalendarService {
         return $combineCal;
     }
 
+    /**
+     * Converts a given Gregorian Month into AlAdhan Date Array
+     * @param  Integer $m
+     * @param  Integer $y
+     * @return Array Array of AlAdhan date Arrays
+     */
     public function getGToHCalendar($m, $y)
     {
         if ($m > 12) {
@@ -339,6 +380,11 @@ class HijriCalendarService {
         return $combineCal;
     }
 
+    /**
+     * Checks if the date is in the valid d-m-Y format
+     * @param  String $string
+     * @return mixed|String or Boolean
+     */
     public function validate($string)
     {
         try {
@@ -353,6 +399,10 @@ class HijriCalendarService {
 
     }
 
+    /**
+     * Returns an array of Holy days in the Islamic Calendar
+     * @return Array
+     */
 	public function specialDays()
 	{
 		$days = [];
@@ -360,15 +410,10 @@ class HijriCalendarService {
 		$days[] = ['month' => 3, 'day' => 12, 'name' => 'Mawlid al-Nabi'];
 		$days[] = ['month' => 7, 'day' => 27, 'name' => 'Lailat-ul-Miraj'];
 		$days[] = ['month' => 9, 'day' => 1, 'name' => '1st Day of Ramadan'];
-		#$days[] = ['month' => 9, 'day' => 20, 'name' => 'Lailat-ul-Qadr'];
 		$days[] = ['month' => 9, 'day' => 21, 'name' => 'Lailat-ul-Qadr'];
-		#$days[] = ['month' => 9, 'day' => 22, 'name' => 'Lailat-ul-Qadr'];
 		$days[] = ['month' => 9, 'day' => 23, 'name' => 'Lailat-ul-Qadr'];
-		#$days[] = ['month' => 9, 'day' => 24, 'name' => 'Lailat-ul-Qadr'];
 		$days[] = ['month' => 9, 'day' => 25, 'name' => 'Lailat-ul-Qadr'];
-		#$days[] = ['month' => 9, 'day' => 26, 'name' => 'Lailat-ul-Qadr'];
 		$days[] = ['month' => 9, 'day' => 27, 'name' => 'Lailat-ul-Qadr'];
-		#$days[] = ['month' => 9, 'day' => 28, 'name' => 'Lailat-ul-Qadr'];
 		$days[] = ['month' => 9, 'day' => 29, 'name' => 'Lailat-ul-Qadr'];
 		$days[] = ['month' => 10, 'day' => 1, 'name' => 'Eid-ul-Fitr'];
 		$days[] = ['month' => 12, 'day' => 8, 'name' => 'Hajj'];
@@ -384,6 +429,12 @@ class HijriCalendarService {
 
 	}
 
+    /**
+     * Returns holidays on a given Hijri date
+     * @param  Integer $day
+     * @param  Integer $month
+     * @return Array
+     */
 	public function getHijriHolidays($day, $month)
 	{
 		$holydays = [];
@@ -398,6 +449,10 @@ class HijriCalendarService {
 		return $holydays;
 	}
 
+    /**
+     * Returns the Islamic year for today's date
+     * @return Integer
+     */
 	public function getCurrentIslamicYear()
 	{
 		$date = date('d-m-Y');
@@ -408,6 +463,10 @@ class HijriCalendarService {
 
 	}
 
+    /**
+     * Returns the Islamic month for today's date
+     * @return Integer
+     */
 	public function getCurrentIslamicMonth()
 	{
 		$date = date('d-m-Y');
@@ -418,6 +477,11 @@ class HijriCalendarService {
 
 	}
 
+    /**
+     * Returns the Arabic names for days in a week
+     * @param  Integer $gDay Optional. English names of weekdays.
+     * @return Array
+     */
 	public function hijriWeekdays($gDay = '')
 	{
 		$week = [
@@ -437,6 +501,11 @@ class HijriCalendarService {
 
 	}
 
+    /**
+     * Returns the next holiday in the Islamic Calendar
+     * @param  Integer $days Number of days forward to search in
+     * @return Array
+     */
 	public function nextHijriHoliday($days = 360)
 	{
 		$todayTimestamp = time();
@@ -457,6 +526,11 @@ class HijriCalendarService {
 
 	}
 
+    /**
+     * Gets Hijri Year for the Month of Ramadan based on a Gregorian Year
+     * @param  Integer $gYear Gregorian Year - Example: 2012
+     * @return Integer Corresponding Hijri year for gYear for the Hijri Month 9 (Ramadan)
+     */
     public function getIslamicYearFromGregorianForRamadan($gYear) {
         $y = (int) $gYear;
         $date = $this->gToH("01-01-$y");
