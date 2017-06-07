@@ -130,7 +130,7 @@ class PrayerTimesHelper
      */
     public static function isRamadan(\DateTime $date)
     {
-        $hs = new \AlAdhanApi\HijriCalendarService();
+        $hs = new \AlAdhanApi\Model\HijriCalendarService();
         $hijDate = $hs->gToH($date->format('d') . '-' . $date->format('m') . '-' . $date->format('Y'));
         if ($hijDate['hijri']['month']['number'] == 9) {
             return true;
