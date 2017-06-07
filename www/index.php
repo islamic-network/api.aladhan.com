@@ -427,4 +427,38 @@ $app->get('/nextHijriHoliday', function (Request $request, Response $response) {
     }
 });
 
+$app->get('/currentIslamicYear', function (Request $request, Response $response) {
+    $this->helper->logger->write();
+    $hs = new HijriCalendarService();
+    $result = $hs->getCurrentIslamicYear();
+    if ($result) {
+        return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+    } else {
+        return $response->withJson(ApiResponse::build('Unable to compute year.', 400, 'Bad Request'), 400);
+    }
+});
+
+$app->get('/currentIslamicMonth', function (Request $request, Response $response) {
+    $this->helper->logger->write();
+    $hs = new HijriCalendarService();
+    $result = $hs->getCurrentIslamicMonth();
+    if ($result) {
+        return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+    } else {
+        return $response->withJson(ApiResponse::build('Unable to compute year.', 400, 'Bad Request'), 400);
+    }
+});
+
+$app->get('/islamicYearFromGregorianForRamadan/{year}', function (Request $request, Response $response) {
+    $this->helper->logger->write();
+    $y = (int) $request->getAttribute('year');
+    $hs = new HijriCalendarService();
+    $result = $hs->getIslamicYearFromGregorianForRamadan();
+    if ($result) {
+        return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+    } else {
+        return $response->withJson(ApiResponse::build('Unable to compute year.', 400, 'Bad Request'), 400);
+    }
+});
+
 $app->run();
