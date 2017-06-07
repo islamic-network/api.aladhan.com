@@ -416,29 +416,8 @@ $app->get('/gToHCalendar/{month}/{year}', function (Request $request, Response $
     $y = (int) $request->getAttribute('year');
     $m = (int) $request->getAttribute('month');
 
-    if ($m > 12) {
-        $m = 12;
-    }
-    if ($m < 1) {
-        $m = 1;
-    }
-    if ($y < 1000) {
-        $y = date('Y');
-    }
 
-    $days = cal_days_in_month(CAL_GREGORIAN, $m, $y);
-
-    $calendar = [];
-    $combineCal = [];
-    for($i=1; $i<=$days; $i++) {
-        $curDate = $i . '-' . $m . '-' . $y;
-        $calendar = $cs->gToH($curDate);
-        if ($calendar['hijri']['month']['number'] != $m) {
-            unset($calendar[$i]);
-        }
-        $combineCal[] = $calendar;
-    }
-        return $response->withJson(ApiResponse::build($combineCal, 200, 'OK'), 200);
+    return $response->withJson(ApiResponse::build($cs->getGToHCalendar($m, $y), 200, 'OK'), 200);
 });
 
 $app->get('/hToGCalendar/{month}/{year}', function (Request $request, Response $response) {
@@ -448,29 +427,7 @@ $app->get('/hToGCalendar/{month}/{year}', function (Request $request, Response $
     $y = (int) $request->getAttribute('year');
     $m = (int) $request->getAttribute('month');
 
-    if ($m > 12) {
-        $m = 12;
-    }
-    if ($m < 1) {
-        $m = 1;
-    }
-    if ($y < 1) {
-        $y = 1438;
-    }
-
-    $days = 30; // Islamic months have 30 or less days - always.
-
-    $calendar = [];
-    $combineCal = [];
-    for($i=1; $i<=$days; $i++) {
-        $curDate = $i . '-' . $m . '-' . $y;
-        $calendar = $cs->hToG($curDate);
-        if ($calendar['hijri']['month']['number'] != $m) {
-            unset($calendar[$i]);
-        }
-        $combineCal[] = $calendar;
-    }
-        return $response->withJson(ApiResponse::build($combineCal, 200, 'OK'), 200);
+    return $response->withJson(ApiResponse::build($cs->getHtoGCalendar($m, $y), 200, 'OK'), 200);
 });
 
 

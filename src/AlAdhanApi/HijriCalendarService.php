@@ -9,7 +9,7 @@ use DateTimeZone;
 // to test if the results are ok, please visit (http://www.oriold.uzh.ch/static/hegira.html)..
 
 class HijriCalendarService {
-    
+
 	public $Day;
 	public $Month;
 	public $Year;
@@ -163,7 +163,7 @@ class HijriCalendarService {
            11 => ['number' => 11,'en' => 'Dhū al-Qaʿdah', 'ar' => 'ذوالقعدة'],
            12 => ['number' => 12,'en' => 'Dhū al-Ḥijjah', 'ar' => 'ذوالحجة']
        ];
-        
+
     }
 
     public function getGregorianMonths()
@@ -182,7 +182,7 @@ class HijriCalendarService {
            11 => ['number' => 11,'en' => 'November'],
            12 => ['number' => 12,'en' => 'December']
        ];
-        
+
     }
 
     /**
@@ -202,9 +202,9 @@ class HijriCalendarService {
             $dX = explode('-', $date);
             $month = $months[(int) $dP[1]];
             $monthX =  $monthsX[(int) $dX[1]];
-            
+
             $response = [
-                'hijri' => 
+                'hijri' =>
                 [
                     'date' => $d,
                     'format' => 'DD-MM-YYYY',
@@ -215,7 +215,7 @@ class HijriCalendarService {
                     'designation' => ['abbreviated' => 'AH', 'expanded' => 'Anno Hegirae'],
 					'holidays' => $this->getHijriHolidays($dP[0], $month['number'])
                 ],
-                'gregorian' => 
+                'gregorian' =>
                 [
                     'date' => $date,
                     'format' => 'DD-MM-YYYY',
@@ -225,15 +225,15 @@ class HijriCalendarService {
                     'year' => $dX[2],
                     'designation' => ['abbreviated' => 'AD', 'expanded' => 'Anno Domini']
                 ],
-                
+
             ];
-            
+
             return $response;
         }
-        
+
         return false;
     }
-    
+
     /**
      * $date DD-MM-YYYY
      */
@@ -251,9 +251,9 @@ class HijriCalendarService {
             $dX = explode('-', $date);
             $month = $months[(int) $dP[1]];
             $monthX =  $monthsX[(int) $dX[1]];
-            
+
             $response = [
-                'gregorian' => 
+                'gregorian' =>
                     [
                     'date' => $d,
                     'format' => 'DD-MM-YYYY',
@@ -263,7 +263,7 @@ class HijriCalendarService {
                     'year' => $dP[2],
                     'designation' => ['abbreviated' => 'AD', 'expanded' => 'Anno Domini']
                     ],
-                'hijri' => 
+                'hijri' =>
                 [
                     'date' => $date,
                     'format' => 'DD-MM-YYYY',
@@ -273,18 +273,74 @@ class HijriCalendarService {
                     'year' => $dX[2],
                     'designation' => ['abbreviated' => 'AH', 'expanded' => 'Anno Hegirae'],
 					'holidays' => $this->getHijriHolidays($dX[0], $monthX['number'])
-					
+
                 ]
             ];
-            
+
             return $response;
         }
-        
+
         return false;
     }
-    
+
+    public function getHtoGCalendar($m, $y)
+    {
+        if ($m > 12) {
+            $m = 12;
+        }
+        if ($m < 1) {
+            $m = 1;
+        }
+        if ($y < 1) {
+            $y = 1438;
+        }
+
+        $days = 30; // Islamic months have 30 or less days - always.
+
+        $calendar = [];
+        $combineCal = [];
+        for($i=1; $i<=$days; $i++) {
+            $curDate = $i . '-' . $m . '-' . $y;
+            $calendar = $this->hToG($curDate);
+            if ($calendar['hijri']['month']['number'] != $m) {
+                unset($calendar[$i]);
+            }
+            $combineCal[] = $calendar;
+        }
+
+        return $combineCal;
+    }
+
+    public function getGToHCalendar($m, $y)
+    {
+        if ($m > 12) {
+            $m = 12;
+        }
+        if ($m < 1) {
+            $m = 1;
+        }
+        if ($y < 1000) {
+            $y = date('Y');
+        }
+
+        $days = cal_days_in_month(CAL_GREGORIAN, $m, $y);
+
+        $calendar = [];
+        $combineCal = [];
+        for($i=1; $i<=$days; $i++) {
+            $curDate = $i . '-' . $m . '-' . $y;
+            $calendar = $this->gToH($curDate);
+            if ($calendar['hijri']['month']['number'] != $m) {
+                unset($calendar[$i]);
+            }
+            $combineCal[] = $calendar;
+        }
+
+        return $combineCal;
+    }
+
     public function validate($string)
-    {        
+    {
         try {
             $d = DateTime::createFromFormat('d-m-Y', $string);
             if ($d) {
@@ -294,9 +350,9 @@ class HijriCalendarService {
         } catch (Exception $e) {
             return false;
         }
-        
+
     }
-	
+
 	public function specialDays()
 	{
 		$days = [];
@@ -323,12 +379,12 @@ class HijriCalendarService {
 		$days[] = ['month' => 12, 'day' => 11, 'name' => 'Hajj'];
 		$days[] = ['month' => 12, 'day' => 12, 'name' => 'Hajj'];
 		$days[] = ['month' => 12, 'day' => 13, 'name' => 'Hajj'];
-		
+
 		return $days;
-		
+
 	}
-	
-	public function getHijriHolidays($day, $month) 
+
+	public function getHijriHolidays($day, $month)
 	{
 		$holydays = [];
 		$day = (int) $day;
@@ -338,30 +394,30 @@ class HijriCalendarService {
 				$holydays[] = $hol['name'];
 			}
 		}
-		
+
 		return $holydays;
 	}
-	
+
 	public function getCurrentIslamicYear()
 	{
 		$date = date('d-m-Y');
-		
+
 		$x = $this->gToH($date);
-		
+
 		return $x['hijri']['year'];
-		
+
 	}
-	
+
 	public function getCurrentIslamicMonth()
 	{
 		$date = date('d-m-Y');
-		
+
 		$x = $this->gToH($date);
-		
+
 		return $x['hijri']['month']['number'];
-		
+
 	}
-	
+
 	public function hijriWeekdays($gDay = '')
 	{
 		$week = [
@@ -380,11 +436,11 @@ class HijriCalendarService {
 		}
 
 	}
-	
+
 	public function nextHijriHoliday($days = 360)
 	{
 		$todayTimestamp = time();
-		
+
 		for($i = 0; $i <= $days; $i++) {
 			$today = date('d-m-Y', $todayTimestamp);
 			// Get Hijri Date
@@ -392,15 +448,15 @@ class HijriCalendarService {
 			if (!empty($hijriDate['hijri']['holidays'])) {
 				return $hijriDate;
 			}
-			
+
 			$todayTimestamp = $todayTimestamp + (1*60*60*24);
-			
+
 		}
-		
+
 		return false;
-		
+
 	}
-    
+
     public function getIslamicYearFromGregorianForRamadan($gYear) {
         $y = (int) $gYear;
         $date = $this->gToH("01-01-$y");
