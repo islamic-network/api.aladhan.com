@@ -78,6 +78,6 @@ class Log
         // Now add some handlers
         $logger->pushHandler(new StreamHandler($this->directory . $logFile . '.log', Logger::INFO));
 
-        return $logger->addInfo($this->id . ' :: ' . date('Y-m-d H:i:s') . 'Incoming request :: ', $this->format($_SERVER, $_REQUEST));
+        return $logger->addInfo($this->id . ' :: ' . date('Y-m-d H:i:s') . ' :: Incoming request :: ', $this->format($_SERVER, $_REQUEST));
     }
 }
