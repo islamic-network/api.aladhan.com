@@ -3,6 +3,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use AlAdhanApi\Helper\Log;
 use AlAdhanApi\Helper\Database;
+use AlAdhanApu\Model\Locations;
 
 
 $container = $app->getContainer();
@@ -18,7 +19,9 @@ $container['helper'] = function($c) {
 $container['model'] = function($c) {
     $model = new \stdClass();
     $model->locations = new Locations($c['helper']->logger);
-}
+
+    return $model;
+};
 
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
