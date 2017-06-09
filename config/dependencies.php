@@ -3,7 +3,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use AlAdhanApi\Helper\Log;
 use AlAdhanApi\Helper\Database;
-use AlAdhanApu\Model\Locations;
+use AlAdhanApi\Model\Locations;
 
 
 $container = $app->getContainer();
