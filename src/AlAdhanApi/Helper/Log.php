@@ -6,7 +6,7 @@ use Monolog\Handler\StreamHandler;
 
 /**
  * Class Log
- * @package AlAdhanApi\Helper
+ * @package Helper\Log
  */
 
 class Log
@@ -67,13 +67,17 @@ class Log
         return $logger->addInfo($this->id . $message . json_encode([$referer, $agent, $_SERVER['QUERY_STRING'], $this->format($_SERVER, $_REQUEST)]));
     }
 
+    /**
+     * [write description]
+     * @return [type] [description]
+     */
     public function write()
     {
         $logFile = date('Y-m-d');
         $logger = new Logger('ApiService');
         // Now add some handlers
         $logger->pushHandler(new StreamHandler($this->directory . $logFile . '.log', Logger::INFO));
-        
+
         return $logger->addInfo($this->id . 'Incoming request :: ', $this->format($_SERVER, $_REQUEST));
     }
 }

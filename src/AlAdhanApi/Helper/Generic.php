@@ -2,6 +2,10 @@
 
 namespace AlAdhanApi\Helper;
 
+/**
+ * Class Generic
+ * @package Helper\Generic
+ */
 class Generic
 {
 

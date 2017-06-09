@@ -1,6 +1,10 @@
 <?php
 namespace AlAdhanApi\Helper;
 
+/**
+ * Class PrayerTimesHelper
+ * @package Helper\PrayerTimesHelper
+ */
 class PrayerTimesHelper
 {
     /**

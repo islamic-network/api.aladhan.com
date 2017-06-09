@@ -5,10 +5,10 @@ namespace AlAdhanApi\Model;
 use DateTime;
 use DateTimeZone;
 
-/**
- * This class Converts Hijri date to Gregorian Date and vice versa, made by Layth A. Ibraheeim - 24-2-2011
- * To test if the results are ok, please visit (http://www.oriold.uzh.ch/static/hegira.html)..
- */
+ /**
+  * Class HijriCalendarService
+  * @package Model\HijriCalendarService
+  */
 class HijriCalendarService
 {
 

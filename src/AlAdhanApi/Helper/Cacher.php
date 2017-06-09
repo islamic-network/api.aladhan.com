@@ -64,7 +64,7 @@ class Cacher
     }
 
     /**
-     * [get description]
+     * Gets the value of a key
      * @param String $k Key
      * @return Mixed
      */
@@ -74,7 +74,7 @@ class Cacher
     }
 
     /**
-     * [check description]
+     * Checks if a key exists
      * @param String $k Key
      * @return Boolean
      */

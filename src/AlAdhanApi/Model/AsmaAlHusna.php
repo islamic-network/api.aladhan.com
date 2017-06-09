@@ -2,7 +2,8 @@
 namespace AlAdhanApi\Model;
 
 /**
- *
+ * Class AsmaAlHusna
+ * @package Model\AsmaAlHusna
  */
 class AsmaAlHusna
 {

@@ -114,6 +114,13 @@ class Database
         return $result;
     }
 
+    /**
+     * [createAddressString description]
+     * @param  [type] $city    [description]
+     * @param  [type] $state   [description]
+     * @param  [type] $country [description]
+     * @return [type]          [description]
+     */
     private function createAddressString($city, $state, $country)
     {
         $string = $city;
@@ -182,6 +189,10 @@ class Database
         return false;
     }
 
+    /**
+     * [addGeoLocateRecord description]
+     * @param [type] $ginfo [description]
+     */
     public function addGeoLocateRecord($ginfo)
     {
         return $this->db->insert('geolocate',
@@ -199,9 +210,6 @@ class Database
             ]
         );
     }
-
-
-
 
     /**
      * @param  String $city    [description]
@@ -295,6 +303,16 @@ class Database
         return true;
     }
 
+    /**
+     * [recordQuery description]
+     * @param  [type] $city     [description]
+     * @param  [type] $state    [description]
+     * @param  [type] $country  [description]
+     * @param  [type] $lat      [description]
+     * @param  [type] $lng      [description]
+     * @param  [type] $timezone [description]
+     * @return [type]           [description]
+     */
     public function recordQuery($city, $state, $country, $lat, $lng, $timezone)
     {
 

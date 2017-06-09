@@ -15,6 +15,7 @@ use DateTimezone;
 
 /**
  * Class PrayerTimes
+ * @package Model\PrayerTimes
  */
 class PrayerTimes
 {

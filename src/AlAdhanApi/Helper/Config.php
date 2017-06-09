@@ -3,11 +3,15 @@ namespace AlAdhanApi\Helper;
 
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class Config
+ * @package Helper\Config
+ */
 class Config
 {
     /**
-     * [$config description]
-     * @var [type]
+     * The Parsyed Yaml config file
+     * @var Object
      */
     private $config;
 
@@ -21,9 +25,9 @@ class Config
     }
 
     /**
-     * [connection description]
-     * @param  string $id [description]
-     * @return [type]     [description]
+     * Gets a specific connection type, for example database or memcached
+     * @param  String $id Defined in the config.yml file
+     * @return Object
      */
     public function connection($id = 'database')
     {
@@ -31,9 +35,9 @@ class Config
     }
 
     /**
-     * [apiKey description]
-     * @param  [type] $id [description]
-     * @return [type]     [description]
+     * Returns a particular Api key in the Yaml file
+     * @param  String $id
+     * @return Mixed (most likely string)
      */
     public function apiKey($id)
     {

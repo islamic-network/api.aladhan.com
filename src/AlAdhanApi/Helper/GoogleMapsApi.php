@@ -4,13 +4,41 @@ namespace AlAdhanApi\Helper;
 use AlAdhanApi\Helper\Log;
 use AlAdhanApi\Helper\Config;
 
+/**
+ * Class GoogleMapsApi
+ * @package Helper\GoogleMapsApi
+ */
 class GoogleMapsApi
 {
+    /**
+     * [$client description]
+     * @var [type]
+     */
     private $client;
+
+    /**
+     * [$logger description]
+     * @var [type]
+     */
     private $logger;
+
+    /**
+     * [$response description]
+     * @var [type]
+     */
     private $response;
+
+    /**
+     * [$config description]
+     * @var [type]
+     */
     private $config;
 
+    /**
+     * [__construct description]
+     * @param [type] $config [description]
+     * @param [type] $logger [description]
+     */
     public function __construct($config = null, $logger = null)
     {
         $this->client = new \GuzzleHttp\Client(['base_uri' => 'https://maps.googleapis.com/maps/api/']);
@@ -39,7 +67,11 @@ class GoogleMapsApi
         ];
     }
 
-
+    /**
+     * [updateResponseWithGeoCodingInfo description]
+     * @param  [type] $x [description]
+     * @return [type]    [description]
+     */
     private function updateResponseWithGeoCodingInfo($x)
     {
         $this->response->lat = $x->results[0]->geometry->location->lat;
@@ -63,12 +95,22 @@ class GoogleMapsApi
         }
     }
 
+    /**
+     * [updateResponseWithTimezoneInfo description]
+     * @param  [type] $x2 [description]
+     * @return [type]     [description]
+     */
     private function updateResponseWithTimezoneInfo($x2)
     {
         $this->timezone = $x2->timeZoneId;
         $this-?timezonename = $x2->timeZoneName;
     }
 
+    /**
+     * [getGeoCodeLocationAndTimezone description]
+     * @param  [type] $address [description]
+     * @return [type]          [description]
+     */
     public function getGeoCodeLocationAndTimezone($address)
     {
         $geoInfo = $this->geoCode($address);
@@ -88,6 +130,10 @@ class GoogleMapsApi
         return false;
     }
 
+    /**
+     * [timezone description]
+     * @return [type] [description]
+     */
     private function timezone()
     {
         try {
@@ -114,6 +160,11 @@ class GoogleMapsApi
         }
     }
 
+    /**
+     * [geoCode description]
+     * @param  [type] $address [description]
+     * @return [type]          [description]
+     */
     private function geoCode($address)
     {
         try {
@@ -136,6 +187,13 @@ class GoogleMapsApi
         }
     }
 
+    /**
+     * [queryApi description]
+     * @param  [type] $endpoint    [description]
+     * @param  [type] $queryString [description]
+     * @param  string $method      [description]
+     * @return [type]              [description]
+     */
     private function queryApi($endpoint, $queryString, $method = 'GET')
     {
         $queryString['key'] => $this->config->apiKey('google_geocoding');
