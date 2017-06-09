@@ -4,7 +4,8 @@ namespace AlAdhanApi\Model;
 /**
  *
  */
-class AsmaAlHusna {
+class AsmaAlHusna
+{
     /**
      * The Asmaa Al Husnaa
      * @var Array
@@ -834,7 +835,6 @@ class AsmaAlHusna {
         }
 
         return $selected;
-
     }
 
     /**
@@ -845,17 +845,18 @@ class AsmaAlHusna {
      */
     private static function extract($number)
     {
-        if($number === null) {
+        if ($number === null) {
             return array_values(self::$names);
         }
 
         if (self::isValidNumber($number)) {
-            return self::extractFromInt($number);;
+            return self::extractFromInt($number);
+            ;
         }
 
         if (is_array($number)) {
             $selected = [];
-            foreach($number as $no) {
+            foreach ($number as $no) {
                 if (self::isValidNumber($no)) {
                     $selected[] = self::$names[$no];
                 }
@@ -870,7 +871,7 @@ class AsmaAlHusna {
      * @param  Integer  $number Between 1 and 99 inclusive
      * @return boolean         [description]
      */
-   private static function isValidNumber($number)
+    private static function isValidNumber($number)
     {
         if (is_int($number) && $number > 0 && $number < 100) {
             return true;
@@ -884,7 +885,8 @@ class AsmaAlHusna {
      * @param  Integer $number
      * @return mixed|Array or Boolean
      */
-    private static function extractFromInt($number) {
+    private static function extractFromInt($number)
+    {
 
         if (self::isValidNumber($number)) {
             return self::$names[$number];
@@ -902,5 +904,4 @@ class AsmaAlHusna {
     {
         return json_encode($data);
     }
-
 }

@@ -76,7 +76,4 @@ class Log
         
         return $logger->addInfo($this->id . 'Incoming request :: ', $this->format($_SERVER, $_REQUEST));
     }
-
-
-
 }

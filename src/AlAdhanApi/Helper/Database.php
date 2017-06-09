@@ -82,7 +82,6 @@ class Database
         }
 
         if ($state == '') {
-
             $sql = 'SELECT city.latitude, city.longitude, city.timezone FROM city
                     LEFT JOIN country
                     ON country.iso = city.countryiso
@@ -113,7 +112,6 @@ class Database
         $this->cacher->set($cacheKey, $result);
 
         return $result;
-
     }
 
     private function createAddressString($city, $state, $country)
@@ -252,7 +250,8 @@ class Database
      * @param  String $state   [description]
      * @return Array          [description]
      */
-    private function checkIfGeoRecordExistsViaCo($city, $country, $state) {
+    private function checkIfGeoRecordExistsViaCo($city, $country, $state)
+    {
 
         $cacheKey = $this->cacher->generateKey(self::ID_DB_checkIfGeoRecordExistsViaCo, [$city, $country, $state]);
 
@@ -296,20 +295,19 @@ class Database
         return true;
     }
 
-        public function recordQuery($city, $state, $country, $lat, $lng, $timezone)
+    public function recordQuery($city, $state, $country, $lat, $lng, $timezone)
     {
 
         return $this->db->insert('geolocate_queries',
-                                         [
-                                             'city' => $city,
-                                             'state' => $state,
-                                             'country' => $country,
-                                             'latitude' => $lat,
-                                             'longitude' => $lng,
-                                             'timezone' => $timezone,
-                                         ]
-                                         );
-
+                                 [
+                                     'city' => $city,
+                                     'state' => $state,
+                                     'country' => $country,
+                                     'latitude' => $lat,
+                                     'longitude' => $lng,
+                                     'timezone' => $timezone,
+                                 ]
+                                 );
     }
 
     /**
@@ -390,7 +388,8 @@ class Database
      * @param  String $address    [description]
      * @return Mixed          [description]
      */
-    public function checkInvalidQuery($address) {
+    public function checkInvalidQuery($address)
+    {
 
         $cacheKey = $this->cacher->generateKey(self::ID_DB_checkInvalidQuery, [$address]);
 
@@ -430,8 +429,7 @@ class Database
 
         $checkAddress = $this->checkAddressQuery($address);
 
-        if ($checkAddress)
-        {
+        if ($checkAddress) {
             return $checkAddress;
         }
 

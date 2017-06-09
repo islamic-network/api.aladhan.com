@@ -1,5 +1,6 @@
 <?php
 namespace AlAdhanApi\Helper;
+
 use AlAdhanApi\Helper\Config;
 
 /**
@@ -38,7 +39,6 @@ class Cacher
         } catch (Exception $e) {
             return false;
         }
-
     }
 
     /**

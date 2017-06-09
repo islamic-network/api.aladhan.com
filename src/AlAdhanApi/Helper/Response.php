@@ -7,7 +7,7 @@ class Response
     
     public static function build($data, $code, $status)
     {
-        return 
+        return
             [
                 'code' => $code,
                 'status' => $status,

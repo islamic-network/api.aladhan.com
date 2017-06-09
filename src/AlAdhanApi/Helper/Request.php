@@ -47,7 +47,7 @@ class Request
     {
         if ($data == '' || $data == null || !is_numeric($data) || $data > 12 || $data < 1) {
             $d = new \DateTime('now');
-            return $d->format('m');    
+            return $d->format('m');
         }
         
         return $data;
@@ -57,7 +57,7 @@ class Request
     {
         if ($data == '' || $data == null || !is_numeric($data)) {
             $d = new \DateTime('now');
-            return $d->format('Y');    
+            return $d->format('Y');
         }
         
         return $data;
@@ -66,7 +66,7 @@ class Request
     public static function annual($data)
     {
         if ($data == 'true') {
-            return true;   
+            return true;
         }
         
         return false;
@@ -78,7 +78,7 @@ class Request
             return false;
         }
         
-        return true;  
+        return true;
     }
     
     public static function isLongitudeValid($data)
@@ -105,5 +105,4 @@ class Request
     {
         return self::isLatitudeValid($lat) && self::isLongitudeValid($lng) && self::isTimeZoneValid($timezone);
     }
-    
 }

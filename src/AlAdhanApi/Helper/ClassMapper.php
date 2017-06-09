@@ -17,8 +17,7 @@ class ClassMapper
             7 => 'TEHRAN'
         ];
         
-        return $arr[$methodId];    
-            
+        return $arr[$methodId];
     }
     
     public static function school($id)
@@ -50,6 +49,4 @@ class ClassMapper
         
         return 'NONE';
     }
-    
-    
 }

@@ -46,7 +46,7 @@ class GoogleMapsApi
         $this->response->lng = $x->results[0]->geometry->location->lng;
         // Extract what we need.
         foreach ($x->results as $prop) {
-            foreach ($prop->address_components as $p){
+            foreach ($prop->address_components as $p) {
                 if (is_array($p->types) && $p->types[0] !== null && $p->types[0] == 'administrative_area_level_1') {
                     $this->response->stateabbr = $p->short_name;
                     $this->response->state = $p->long_name;
@@ -61,7 +61,6 @@ class GoogleMapsApi
                 }
             }
         }
-
     }
 
     private function updateResponseWithTimezoneInfo($x2)
@@ -84,7 +83,6 @@ class GoogleMapsApi
             }
 
             return false;
-
         }
 
         return false;
@@ -104,7 +102,7 @@ class GoogleMapsApi
             $x2 = json_decode($r2);
 
             if ($x2->status == 'OK') {
-            $this->logger->writeGoogleQueryLog('Request Successful :: timezone :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this-.response->lng]));
+                $this->logger->writeGoogleQueryLog('Request Successful :: timezone :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this-.response->lng]));
                 return $x2;
             }
 
@@ -114,8 +112,6 @@ class GoogleMapsApi
 
             return false;
         }
-
-
     }
 
     private function geoCode($address)
@@ -133,7 +129,6 @@ class GoogleMapsApi
             }
 
             return false;
-
         } catch (Exception $e) {
             $this->logger->writeGoogleQueryLog('Request Failed :: geocode :: '  . $e->getMessage(). ' :: ' .  json_encode(['city' => $city, 'country' => $country, 'state' => $state]));
 
@@ -154,7 +149,4 @@ class GoogleMapsApi
             ]
         );
     }
-
-
-
 }

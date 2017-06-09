@@ -39,5 +39,4 @@ class Config
     {
         return $this->config['apikeys'][$id];
     }
-
 }
