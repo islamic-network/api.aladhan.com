@@ -64,7 +64,7 @@ class Log
         $logger->pushHandler(new StreamHandler($this->directory . $logFile . '.log', Logger::INFO));
         $l = $this->format($_SERVER, $_REQUEST);
 
-        return $logger->addInfo($this->id . '::' . $message . ' :: ' . json_encode([$l['server']['referer'], $l['server']['useragent'], $l['server']['querystring'], $l]));
+        return $logger->addInfo($this->id . ' :: ' . $message . ' :: ' . json_encode([$l['server']['referer'], $l['server']['useragent'], $l['server']['querystring'], $l]));
     }
 
     /**
