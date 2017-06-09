@@ -103,7 +103,7 @@ class GoogleMapsApi
     private function updateResponseWithTimezoneInfo($x2)
     {
         $this->timezone = $x2->timeZoneId;
-        $this-?timezonename = $x2->timeZoneName;
+        $this->timezonename = $x2->timeZoneName;
     }
 
     /**
