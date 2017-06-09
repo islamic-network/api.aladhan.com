@@ -47,7 +47,7 @@ $app->get('/nextPrayerByAddress', function (Request $request, Response $response
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
     $address = $request->getQueryParam('address');
-    $locInfo = $this->helper->database->getAddressCoOrdinatesAndZone($address);
+    $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school, null);
         $d = new DateTime('@' . time());
@@ -71,7 +71,7 @@ $app->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Respon
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
     $address = $request->getQueryParam('address');
-    $locInfo = $this->helper->database->getAddressCoOrdinatesAndZone($address);
+    $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school, null);
         $d = new DateTime(date('@' . $timestamp));
@@ -175,7 +175,7 @@ $app->get('/timingsByAddress', function (Request $request, Response $response) {
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
     $address = $request->getQueryParam('address');
-    $locInfo = $this->helper->database->getAddressCoOrdinatesAndZone($address);
+    $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school, null);
         $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
@@ -198,7 +198,7 @@ $app->get('/timingsByAddress/{timestamp}', function (Request $request, Response 
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
     $address = $request->getQueryParam('address');
-    $locInfo = $this->helper->database->getAddressCoOrdinatesAndZone($address);
+    $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school, null);
         $d = new DateTime(date('@' . $timestamp));
@@ -222,7 +222,7 @@ $app->get('/timingsByCity', function (Request $request, Response $response) {
     $city = $request->getQueryParam('city');
     $country = $request->getQueryParam('country');
     $state = $request->getQueryParam('state');
-    $locInfo = $this->helper->database->getGoogleCoOrdinatesAndZone($city, $country, $state);
+    $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school, null);
         $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
@@ -246,7 +246,7 @@ $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $re
     $city = $request->getQueryParam('city');
     $country = $request->getQueryParam('country');
     $state = $request->getQueryParam('state');
-    $locInfo = $this->helper->database->getGoogleCoOrdinatesAndZone($city, $country, $state);
+    $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school, null);
         $d = new DateTime(date('@' . $timestamp));
@@ -295,7 +295,7 @@ $app->get('/calendarByAddress', function (Request $request, Response $response) 
     $month = ApiRequest::month($request->getQueryParam('month'));
     $year = ApiRequest::year($request->getQueryParam('year'));
     $address = $request->getQueryParam('address');
-    $locInfo = $this->helper->database->getAddressCoOrdinatesAndZone($address);
+    $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
     $annual = ApiRequest::annual($request->getQueryParam('annual'));
 
     if ($locInfo) {
@@ -321,7 +321,7 @@ $app->get('/calendarByCity', function (Request $request, Response $response) {
     $city = $request->getQueryParam('city');
     $country = $request->getQueryParam('country');
     $state = $request->getQueryParam('state');
-    $locInfo = $this->helper->database->getGoogleCoOrdinatesAndZone($city, $country, $state);
+    $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
     $annual = ApiRequest::annual($request->getQueryParam('annual'));
 
     if ($locInfo) {
@@ -342,7 +342,7 @@ $app->get('/cityInfo', function (Request $request, Response $response) {
     $city = $request->getQueryParam('city');
     $country = $request->getQueryParam('country');
     $state = $request->getQueryParam('state');
-    $result = $this->helper->database->getGoogleCoOrdinatesAndZone($city, $country, $state);
+    $result = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
     if ($result) {
         return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
     } else {
@@ -353,7 +353,7 @@ $app->get('/cityInfo', function (Request $request, Response $response) {
 $app->get('/addressInfo', function (Request $request, Response $response) {
     $this->helper->logger->write();
     $address = $request->getQueryParam('address');
-    $result = $this->helper->database->getAddressCoOrdinatesAndZone($address);
+    $result = $this->model->locations->getAddressCoOrdinatesAndZone($address);
     if ($result) {
         return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
     } else {

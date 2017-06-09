@@ -10,10 +10,15 @@ $container = $app->getContainer();
 $container['helper'] = function($c) {
     $helper = new \stdClass();
     $helper->logger = new Log();
-    $helper->database = new Database($helper->logger);
+    //$helper->database = new Database();
 
     return $helper;
 };
+
+$container['model'] = function($c) {
+    $model = new \stdClass();
+    $model->locations = new Locations($c['helper']->logger);
+}
 
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {

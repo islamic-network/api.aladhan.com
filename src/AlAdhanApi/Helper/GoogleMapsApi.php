@@ -42,7 +42,7 @@ class GoogleMapsApi
     public function __construct($config = null, $logger = null)
     {
         $this->client = new \GuzzleHttp\Client(['base_uri' => 'https://maps.googleapis.com/maps/api/']);
-        if ($log === null) {
+        if ($logger === null) {
             $this->logger = new Log();
         } else {
             $this->logger = $logger;
@@ -53,17 +53,17 @@ class GoogleMapsApi
             $this->config = $config;
         }
 
-        $this->reponse = (object) [
-            'state' = '',
-            'city' = '',
-            'country' = '',
-            'stateabbr' = '',
-            'cityabbr' = '',
-            'countryiso' = '',
-            'timezone' = '',
-            'timezonename' = '',
-            'lat' = '',
-            'lng' = '',
+        $this->response = (object) [
+            'state' => '',
+            'city' => '',
+            'country' => '',
+            'stateabbr' => '',
+            'cityabbr' => '',
+            'countryiso' => '',
+            'timezone' => '',
+            'timezonename' => '',
+            'lat' => '',
+            'lng' => '',
         ];
     }
 
@@ -102,8 +102,8 @@ class GoogleMapsApi
      */
     private function updateResponseWithTimezoneInfo($x2)
     {
-        $this->timezone = $x2->timeZoneId;
-        $this->timezonename = $x2->timeZoneName;
+        $this->response->timezone = $x2->timeZoneId;
+        $this->response->timezonename = $x2->timeZoneName;
     }
 
     /**
@@ -114,7 +114,7 @@ class GoogleMapsApi
     public function getGeoCodeLocationAndTimezone($address)
     {
         $geoInfo = $this->geoCode($address);
-        if ($geoCode) {
+        if ($geoInfo) {
             $this->updateResponseWithGeoCodingInfo($geoInfo);
             $timezone = $this->timezone();
 
@@ -137,7 +137,7 @@ class GoogleMapsApi
     private function timezone()
     {
         try {
-            $this->logger->writeGoogleQueryLog('Sending Request :: timezone :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this-.response->lng]));
+            $this->logger->writeGoogleQueryLog('Sending Request :: timezone :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this->response->lng]));
             $res2 = $this->queryApi('timezone/json',
                 [
                     'location' => $this->response->lat . ',' . $this->response->lng,
@@ -148,13 +148,13 @@ class GoogleMapsApi
             $x2 = json_decode($r2);
 
             if ($x2->status == 'OK') {
-                $this->logger->writeGoogleQueryLog('Request Successful :: timezone :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this-.response->lng]));
+                $this->logger->writeGoogleQueryLog('Request Successful :: timezone :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this->response->lng]));
                 return $x2;
             }
 
             return false;
         } catch (Exception $e) {
-            $this->logger->writeGoogleQueryLog('Request Failed :: timezone :: ' . $e->getMessage() . ' :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this-.response->lng]));
+            $this->logger->writeGoogleQueryLog('Request Failed :: timezone :: ' . $e->getMessage() . ' :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this->response->lng]));
 
             return false;
         }
@@ -168,20 +168,20 @@ class GoogleMapsApi
     private function geoCode($address)
     {
         try {
-            $this->logger->writeGoogleQueryLog('Sending Request :: geocode :: ' .  json_encode(['city' => $city, 'country' => $country, 'state' => $state]));
+            $this->logger->writeGoogleQueryLog('Sending Request :: geocode :: ' .  json_encode(['city_state_country' => $address]));
 
             $res = $this->queryApi('geocode/json', ['address' => $address]);
             $r = (string) $res->getBody()->getContents();
             $x = json_decode($r);
 
             if ($x->status == 'OK') {
-                $this->logger->writeGoogleQueryLog('Request Successful :: geocode :: ' .  json_encode(['city' => $city, 'country' => $country, 'state' => $state]));
+                $this->logger->writeGoogleQueryLog('Request Successful :: geocode :: ' .  json_encode(['city_state_country' => $address]));
                 return $x;
             }
 
             return false;
         } catch (Exception $e) {
-            $this->logger->writeGoogleQueryLog('Request Failed :: geocode :: '  . $e->getMessage(). ' :: ' .  json_encode(['city' => $city, 'country' => $country, 'state' => $state]));
+            $this->logger->writeGoogleQueryLog('Request Failed :: geocode :: '  . $e->getMessage(). ' :: ' .  json_encode(['city_state_country' => $address]));
 
             return false;
         }
@@ -196,15 +196,11 @@ class GoogleMapsApi
      */
     private function queryApi($endpoint, $queryString, $method = 'GET')
     {
-        $queryString['key'] => $this->config->apiKey('google_geocoding');
+        $queryString['key'] = $this->config->apiKey('google_geocoding');
 
         return $this->client->request('GET',
             $endpoint,
-            [
-                'query' => [
-                    $queryString
-                ]
-            ]
+            ['query' => $queryString]
         );
     }
 }

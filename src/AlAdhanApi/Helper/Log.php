@@ -35,19 +35,18 @@ class Log
         // Request Params
         $l['request'] = $request;
         $l['server'] = [
-            'ip' => $server['REMOTE_ADDR'],
-            'url' => isset($server['SCRIPT_URL']) ? $server['SCRIPT_URL'] : $server['REDIRECT_URL'],
-            'method' => $server['REQUEST_METHOD']
+            'ip' => isset($server['REMOTE_ADDR']) ? $server['REMOTE_ADDR'] : 'Unknown',
+            'url' => isset($server['SCRIPT_URL']) ? $server['SCRIPT_URL'] : (isset($server['REDIRECT_URL']) ? $server['REDIRECT_URL'] : 'Unknown' )  ,
+            'method' => isset($server['REQUEST_METHOD']) ? $server['REQUEST_METHOD'] : 'Unknown',
         ];
-        if (isset($server['HTTP_USER_AGENT'])) {
-            $l['server']['useragent'] = $server['HTTP_USER_AGENT'];
-        }
-        if (isset($server['HTTP_ORIGIN'])) {
-            $l['server']['origin'] = $server['HTTP_ORIGIN'];
-        }
-        if (isset($server['HTTP_REFERER'])) {
-            $l['server']['referer'] = $server['HTTP_REFERER'];
-        }
+
+        $l['server']['useragent'] = isset($server['HTTP_USER_AGENT']) ? $server['HTTP_USER_AGENT'] : 'Unknown';
+
+        $l['server']['origin'] = isset($server['HTTP_ORIGIN']) ? $server['HTTP_ORIGIN'] : '';
+
+        $l['server']['referer'] = isset($server['HTTP_REFERER']) ? $server['HTTP_REFERER'] : 'Unknown';
+
+        $l['server']['querystring'] = isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : 'Unknown';
 
         return $l;
     }
@@ -63,8 +62,9 @@ class Log
         $logger = new Logger('GoogleEndpoint');
         // Now add some handlers
         $logger->pushHandler(new StreamHandler($this->directory . $logFile . '.log', Logger::INFO));
+        $l = $this->format($_SERVER, $_REQUEST);
 
-        return $logger->addInfo($this->id . $message . json_encode([$referer, $agent, $_SERVER['QUERY_STRING'], $this->format($_SERVER, $_REQUEST)]));
+        return $logger->addInfo($this->id . $message . json_encode([$l['server']['referer'], $l['server']['useragent'], $l['server']['querystring'], $l]));
     }
 
     /**
