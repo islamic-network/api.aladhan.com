@@ -5,6 +5,7 @@ use AlAdhanApi\Helper\Config;
 use AlAdhanApi\Helper\Cacher;
 use AlAdhanApi\Helper\Generic;
 use AlAdhanApi\Helper\Log;
+use AlAdhanApi\Helper\GoogleMapsApi;
 
 /**
  * Class Database
@@ -17,6 +18,7 @@ class Database
     private $db;
     private $cacher;
     private $logger;
+    private $google;
 
     // Constants mapped to methods in DB class.
     const ID_DB_CoOrdinatesAndTimezone = 1;
@@ -38,9 +40,10 @@ class Database
         if ($log === null) {
             $this->logger = new Log();
         } else {
-            $log = $log;
+            $this->logger = $logger;
         }
 
+        $this->google = new GoogleMapisApi($this->config, $this->logger);
         $this->db = $this->getConnection();
     }
 
@@ -113,6 +116,17 @@ class Database
 
     }
 
+    private function createAddressString($city, $state, $country)
+    {
+        $string = $city;
+        if ($state != '') {
+            $string .= ', ' . $state;
+        }
+        $string .= ', ' . $country;
+
+        return $string;
+    }
+
     /**
      * @param  String $city    [description]
      * @param  String $country [description]
@@ -128,7 +142,6 @@ class Database
         if (!$this->citySanitizer($city, $country)) {
             return false;
         }
-
 
         $cacheKey = $this->cacher->generateKey(self::ID_DB_GoogleCoOrdinatesAndZone, [$city, $country, $state]);
         if ($this->cacher->check($cacheKey) !== false) {
@@ -147,115 +160,49 @@ class Database
             return $local;
         }
 
-        $string = $city;
-        if ($state != '') {
-            $string .= ', ' . $state;
-        }
-        $string .= ', ' . $country;
-
-        $client = new \GuzzleHttp\Client(['base_uri' => 'https://maps.googleapis.com/maps/api/']);
-
-        $this->logger->writeGoogleQueryLog('Sending Request :: geocode :: ' .  json_encode(['city' => $city, 'country' => $country, 'state' => $state]));
-
-        $res = $client->request('GET',
-                         'geocode/json',
-                         [
-                             'query' => [
-                                 'address' => $string,
-                                 'key' => $this->config->apiKey('google_geocoding')
-                             ]
-                         ]
-                        );
-        $r = (string) $res->getBody()->getContents();
-        $x = json_decode($r);
-
-        $state = '';
-        $city = '';
-        $country = '';
-        $stateabbr = '';
-        $cityabbr = '';
-        $countryiso = '';
-        $timezone = '';
-        $timezonename = '';
-
-        if ($x->status == 'OK') {
-            $lat = $x->results[0]->geometry->location->lat;
-            $lng = $x->results[0]->geometry->location->lng;
-            // Extract what we need.
-            foreach ($x->results as $prop) {
-                //var_dump($prop);
-                foreach ($prop->address_components as $p){
-                    if (is_array($p->types) && $p->types[0] !== null && $p->types[0] == 'administrative_area_level_1') {
-                        $stateabbr = $p->short_name;
-                        $state = $p->long_name;
-                    }
-                    if (is_array($p->types) && $p->types[0] !== null && $p->types[0] == 'country') {
-                        $countryiso = $p->short_name;
-                        $country = $p->long_name;
-                    }
-                    if (is_array($p->types) && $p->types[0] !== null && $p->types[0] == 'locality') {
-                        $cityabbr = $p->short_name;
-                        $city = $p->long_name;
-                    }
-                }
+        $ginfo = $this->google->getGeoCodeLocationAndTimeZone($this->createAddressString());
+        // It may be that the user entered an unconventional format above, but if already have the latitue and longitude, don't re-create the record. We want 1 entry for each combination of co-ordinates.
+        if ($ginfo && is_object($ginfo)) {
+            if (!$this->checkIfGeoRecordExistsViaCo($city, $country, $state)) {
+                // Update database
+                $this->addGeoLocateRecord($ginfo);
             }
-            // Get timezone
-            $this->logger->writeGoogleQueryLog('Sending Request :: timezone :: ' . json_encode(['lat' => $lat, 'lng' => $lng]));
-                $res2 = $client->request('GET',
-                         'timezone/json',
-                         [
-                             'query' => [
-                                 'location' => $lat . ',' . $lng,
-                                 'timestamp' => time(),
-                                 'key' => $this->config->apiKey('google_geocoding')
-                             ]
-                         ]
-                        );
-                $r2 = (string) $res2->getBody()->getContents();
-                $x2 = json_decode($r2);
 
-                if ($x2->status == 'OK') {
-                    $timezone = $x2->timeZoneId;
-                    $timezonename = $x2->timeZoneName;
+            $this->recordQuery($cityO, $stateO, $countryO, $ginfo->lat, $ginfo->lng, $ginfo->timezone);
 
+            $result = [
+                'latitude' => $ginfo->lat,
+                'longitude' => $ginfo->lng,
+                'timezone' => $ginfo->timezone
+            ];
 
-                    // It may be that the user entered an unconventional format above, but if already have the latitue and longitude, don't re-create the record. We want 1 entry for each combination of co-ordinates.
-                    if (!$this->checkIfGeoRecordExistsViaCo($city, $country, $state)) {
-                        // Write update database
-                        $insert = $this->db->insert('geolocate',
-                                         [
-                                             'countryiso' => $countryiso,
-                                             'country' => $country,
-                                             'state' => $state,
-                                             'stateabbr' => $stateabbr,
-                                             'city' => $city,
-                                             'cityabbr' => $cityabbr,
-                                             'latitude' => $lat,
-                                             'longitude' => $lng,
-                                             'timezone' => $timezone,
-                                             'timezonename' => $timezonename
-                                         ]
-                                         );
-                        }
+            $this->cacher->set($cacheKey, $result);
 
-                    $this->recordQuery($cityO, $stateO, $countryO, $lat, $lng, $timezone);
-
-                    $result = [
-                        'latitude' => $lat,
-                        'longitude' => $lng,
-                        'timezone' => $timezone
-                    ];
-
-                    $this->cacher->set($cacheKey, $result);
-
-                    return $result;
-                }
-
-            return false;
+            return $result;
         }
 
         return false;
     }
+
+    public function addGeoLocateRecord($ginfo)
+    {
+        return $this->db->insert('geolocate',
+            [
+                'countryiso' => $ginfo->countryiso,
+                'country' => $ginfo->country,
+                'state' => $ginfo->state,
+                'stateabbr' => $ginfo->stateabbr,
+                'city' => $ginfo->city,
+                'cityabbr' => $ginfo->cityabbr,
+                'latitude' => $ginfo->lat,
+                'longitude' => $ginfo->lng,
+                'timezone' => $ginfo->timezone,
+                'timezonename' => $ginfo->timezonename
+            ]
+        );
+    }
+
+
 
 
     /**
@@ -499,64 +446,26 @@ class Database
             return false;
         }
 
-        $client = new \GuzzleHttp\Client(['base_uri' => 'https://maps.googleapis.com/maps/api/']);
+        $ginfo = $this->google->getGeoCodeLocationAndTimeZone($address);
+        if ($ginfo && is_object($ginfo)) {
+            // Update datbase
+            $insert = $this->db->insert('address_geolocate_queries',
+                 [
+                     'address' => $address,
+                     'latitude' => $ginfo->lat,
+                     'longitude' => $ginfo->lng,
+                     'timezone' => $ginfo->timezone
+                 ]
+             );
+            $result = [
+                'latitude' => $ginfo->lat,
+                'longitude' => $ginfo->lng,
+                'timezone' => $ginfo->timezone
+            ];
 
-        $this->logger->writeGoogleQueryLog('Sending Request :: geocode :: ' . json_encode(['address' => $address, $_REQUEST]) . ' ::: ');
-        // Geocoding call.
-        $res = $client->request('GET',
-                         'geocode/json',
-                         [
-                             'query' => [
-                                 'address' => $address,
-                                 'key' => $this->config->apiKey('google_geocoding')
-                             ]
-                         ]
-                        );
-        $r = (string) $res->getBody()->getContents();
-        $x = json_decode($r);
+            $this->cacher->set($cacheKey, $result);
 
-        if ($x->status == 'OK') {
-            $lat = $x->results[0]->geometry->location->lat;
-            $lng = $x->results[0]->geometry->location->lng;
-
-            // Timezone call.
-            $this->logger->writeGoogleQueryLog('Sending Request :: timezone :: ' . json_encode(['lat' => $lat, 'lng' => $lng, $_REQUEST]) . ' ::: ' );
-            $res2 = $client->request('GET',
-                         'timezone/json',
-                         [
-                             'query' => [
-                                 'location' => $lat . ',' . $lng,
-                                 'timestamp' => time(),
-                                 'key' => $this->config->apiKey('google_geocoding')
-                             ]
-                         ]
-                        );
-                $r2 = (string) $res2->getBody()->getContents();
-                $x2 = json_decode($r2);
-
-                if ($x2->status == 'OK') {
-                    $timezone = $x2->timeZoneId;
-
-                    // Update datbase
-
-                    $insert = $this->db->insert('address_geolocate_queries',
-                                         [
-                                             'address' => $address,
-                                             'latitude' => $lat,
-                                             'longitude' => $lng,
-                                             'timezone' => $timezone
-                                         ]
-                                         );
-                    $result = [
-                        'latitude' => $lat,
-                        'longitude' => $lng,
-                        'timezone' => $timezone
-                    ];
-
-                    $this->cacher->set($cacheKey, $result);
-
-                    return $result;
-            }
+            return $result;
         } else {
             $this->recordInvalidQuery($address);
 
