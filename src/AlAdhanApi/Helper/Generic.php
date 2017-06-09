@@ -2,6 +2,10 @@
 
 namespace AlAdhanApi\Helper;
 
+/**
+ * Class Generic
+ * @package Helper\Generic
+ */
 class Generic
 {
 
@@ -11,18 +15,19 @@ class Generic
        * @return array
        * @link http://stackoverflow.com/a/9328760
      */
-    public static function tz_list() {
-    $zones_array = array();
-    $timestamp = time();
+    public static function tz_list()
+    {
+        $zones_array = array();
+        $timestamp = time();
 
-    foreach(timezone_identifiers_list() as $key => $zone) {
-      date_default_timezone_set($zone);
-      $zones_array[$key]['zone'] = $zone;
-      $zones_array[$key]['offset'] = (int) ((int) date('O', $timestamp))/100;
-      $zones_array[$key]['diff_from_GMT'] = 'UTC/GMT ' . date('P', $timestamp);
-    }
+        foreach (timezone_identifiers_list() as $key => $zone) {
+              date_default_timezone_set($zone);
+              $zones_array[$key]['zone'] = $zone;
+              $zones_array[$key]['offset'] = (int) ((int) date('O', $timestamp))/100;
+              $zones_array[$key]['diff_from_GMT'] = 'UTC/GMT ' . date('P', $timestamp);
+        }
 
-    return $zones_array;
+        return $zones_array;
     }
 
     /**
@@ -54,7 +59,8 @@ class Generic
      * @param String  $timezoneString
      * @param DateTime $date
      */
-    public static function getTimeZoneOffsetString($timezoneString, \DateTime $date) {
+    public static function getTimeZoneOffsetString($timezoneString, \DateTime $date)
+    {
         $tz = new \DateTimeZone($timezoneString);
         return $tz->getOffset($date)/3600;
     }
@@ -70,7 +76,5 @@ class Generic
         }
 
         return false;
-
     }
-
 }

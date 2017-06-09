@@ -1,6 +1,10 @@
 <?php
 namespace AlAdhanApi\Helper;
 
+/**
+ * Class PrayerTimesHelper
+ * @package Helper\PrayerTimesHelper
+ */
 class PrayerTimesHelper
 {
     /**
@@ -34,7 +38,7 @@ class PrayerTimesHelper
         if ($nextPrayer == null) {
             $interval = new \DateInterval('P1D');
             $d->add($interval);
-            $d->setTime('00','01','01');
+            $d->setTime('00', '01', '01');
             $timings2 = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
             foreach ($timings2 as $p => $t) {
                 if (in_array($p, ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'])) {
@@ -74,7 +78,7 @@ class PrayerTimesHelper
 
         for ($i = 0; $i <= ($days_in_month -1); $i++) {
             // Create date time object for this date.
-            $calstart = new \DateTime( date('Y-m-d H:i:s', $cal_start) , new \DateTimeZone($timezone));
+            $calstart = new \DateTime( date('Y-m-d H:i:s', $cal_start), new \DateTimeZone($timezone));
             if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart)) {
                 $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
             }
@@ -99,7 +103,8 @@ class PrayerTimesHelper
      * @param  PrayerTimes Object $pt
      * @return Array
      */
-    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt) {
+    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt)
+    {
         $times = [];
         for ($month=0; $month<=12; $month++) {
             $cal_start = strtotime($year . '-' . $month . '-01 09:01:01');
@@ -107,7 +112,7 @@ class PrayerTimesHelper
 
             for ($i = 0; $i <= ($days_in_month -1); $i++) {
                 // Create date time object for this date.
-                $calstart = new \DateTime( date('Y-m-d H:i:s', $cal_start) , new \DateTimeZone($timezone));
+                $calstart = new \DateTime( date('Y-m-d H:i:s', $cal_start), new \DateTimeZone($timezone));
                 if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart)) {
                     $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
                 }
