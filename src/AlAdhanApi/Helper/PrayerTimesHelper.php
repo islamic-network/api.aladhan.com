@@ -26,8 +26,7 @@ class PrayerTimesHelper
         foreach ($timings as $p => $t) {
             if (in_array($p, ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'])) {
                 $time = explode(':', $t);
-                $prayerTime = new \DateTime(date("Y-m-d $time[0]:$time[1]:00"));
-                $prayerTime->setTimezone(new \DateTimeZone($locInfo['timezone']));
+                $prayerTime = new \DateTime(date("Y-m-d $time[0]:$time[1]:00"), new \DateTimeZone($locInfo['timezone']));
                 $ts = $timestamps[$p] = $prayerTime->getTimestamp();
                 if ($ts > $d->getTimestamp()) {
                     $nextPrayer = [$p => $t];
@@ -44,8 +43,7 @@ class PrayerTimesHelper
                 if (in_array($p, ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'])) {
                     $time = explode(':', $t);
                     $date = $d->format('Y-m-d');
-                    $prayerTime = new \DateTime(date("$date $time[0]:$time[1]:00"));
-                    $prayerTime->setTimezone(new \DateTimeZone($locInfo['timezone']));
+                    $prayerTime = new \DateTime(date("$date $time[0]:$time[1]:00"), new \DateTimeZone($locInfo['timezone']));
                     $ts = $timestamps[$p] = $prayerTime->getTimestamp();
                     if ($ts > $d->getTimestamp()) {
                         $nextPrayer = [$p => $t];
