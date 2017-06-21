@@ -7,6 +7,7 @@ use AlAdhanApi\Helper\Generic;
 
 
 $app->get('/currentTime', function (Request $request, Response $response) {
+    $this->helper->logger->write();
     $zone = $request->getQueryParam('zone');
     if ($zone == '' || $zone == null || !Generic::isTimeZoneValid($zone)) {
         return $response->withJson(ApiResponse::build('Please specify a valid timezone. Example: Europe/London', 400, 'Bad Request'), 400);
@@ -18,6 +19,7 @@ $app->get('/currentTime', function (Request $request, Response $response) {
 });
 
 $app->get('/currentDate', function (Request $request, Response $response) {
+    $this->helper->logger->write();
     $zone = $request->getQueryParam('zone');
     if ($zone == '' || $zone == null || !Generic::isTimeZoneValid($zone)) {
         return $response->withJson(ApiResponse::build('Please specify a valid timezone. Example: Europe/London', 400, 'Bad Request'), 400);

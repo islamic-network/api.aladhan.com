@@ -12,8 +12,8 @@ $container['helper'] = function($c) {
     $helper = new \stdClass();
     $helper->logger = new Log();
     // Write default Log
-    $helper->logger->write();
-    //$helper->database = new Database();
+    // $helper->logger->write();
+    // $helper->database = new Database();
 
     return $helper;
 };
