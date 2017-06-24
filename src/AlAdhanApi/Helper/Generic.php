@@ -71,7 +71,13 @@ class Generic
      */
     public static function isGoogleBot()
     {
-        if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'Googlebot') !== false) {
+        if (
+            isset($_SERVER['HTTP_USER_AGENT']) &&
+            (
+            strpos($_SERVER['HTTP_USER_AGENT'], 'Googlebot') !== false ||
+            strpos($_SERVER['HTTP_USER_AGENT'], 'YandexBot') !== false
+            )
+        ) {
             return true;
         }
 
