@@ -32,7 +32,7 @@ class Log
     public function getIp($server)
     {
         // If we have a forwarding address, return that.
-        if ($isset($server['HTTP_X_FORWARDED_FOR'])) {
+        if (isset($server['HTTP_X_FORWARDED_FOR'])) {
             return $server['HTTP_X_FORWARDED_FOR'];
         }
         // Otherwise, remote address
