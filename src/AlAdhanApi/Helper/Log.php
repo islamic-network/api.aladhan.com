@@ -23,6 +23,26 @@ class Log
             $this->directory = $directory;
         }
     }
+
+    /**
+     * Extracts client IP
+     * @param  array $server $_SERVER
+     * @return String
+     */
+    public function getIp($server)
+    {
+        // If we have a forwarding address, return that.
+        if ($isset($server['HTTP_X_FORWARDED_FOR'])) {
+            return $server['HTTP_X_FORWARDED_FOR'];
+        }
+        // Otherwise, remote address
+        if (isset($server['REMOTE_ADDR'])) {
+            return $server['REMOTE_ADDR'];
+        }
+        // Otherwise, Unknown
+        return 'Unknown';
+    }
+
     /**
      * Returns a formatted log array§
      * @param  Array $server  $_SERVER
@@ -34,15 +54,17 @@ class Log
         $l = [];
         // Request Params
         $l['request'] = $request;
+        // Compute IP
+        $this->getIp();
         $l['server'] = [
-            'ip' => isset($server['REMOTE_ADDR']) ? $server['REMOTE_ADDR'] : 'Unknown',
+            'ip' => $this->getIp($server),
             'url' => isset($server['SCRIPT_URL']) ? $server['SCRIPT_URL'] : (isset($server['REDIRECT_URL']) ? $server['REDIRECT_URL'] : 'Unknown' )  ,
             'method' => isset($server['REQUEST_METHOD']) ? $server['REQUEST_METHOD'] : 'Unknown',
         ];
 
         $l['server']['useragent'] = isset($server['HTTP_USER_AGENT']) ? $server['HTTP_USER_AGENT'] : 'Unknown';
 
-        $l['server']['origin'] = isset($server['HTTP_ORIGIN']) ? $server['HTTP_ORIGIN'] : '';
+        $l['server']['origin'] = isset($server['HTTP_ORIGIN']) ? $server['HTTP_ORIGIN'] : 'Unknown';
 
         $l['server']['referer'] = isset($server['HTTP_REFERER']) ? $server['HTTP_REFERER'] : 'Unknown';
 
