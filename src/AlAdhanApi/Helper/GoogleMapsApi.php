@@ -134,8 +134,8 @@ class GoogleMapsApi
     {
         $r = $this->timezone($lat, $lng);
 
-        if (isset($r->timezone)) {
-            return $r->timeZoneName;
+        if (isset($r->timeZoneId)) {
+            return $r->timeZoneId;
         }
 
         return false;
