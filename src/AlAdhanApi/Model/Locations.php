@@ -480,6 +480,11 @@ class Locations
             return $x['timezone'];
         }
         $cacheKey = $this->cacher->generateKey(self::ID_DB_getTimezoneByCoOrdinates, [$lat, $lng]);
+
+        if ($this->cacher->check($cacheKey) !== false) {
+            return $this->cacher->get($cacheKey);
+        }
+
         // If we're here, go to Google.
         $timezone = $this->google->getTimezoneByCoOrdinates($lat, $lng);
 
