@@ -208,10 +208,14 @@ $app->get('/calendar', function (Request $request, Response $response) {
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
     $month = ApiRequest::month($request->getQueryParam('month'));
     $year = ApiRequest::year($request->getQueryParam('year'));
-    $timezone = $request->getQueryParam('timezonestring');
     $latitude = $request->getQueryParam('latitude');
     $longitude = $request->getQueryParam('longitude');
     $annual = ApiRequest::annual($request->getQueryParam('annual'));
+    $timezone = $request->getQueryParam('timezonestring');
+    if ($timezone == '' || $timezone  === null) {
+        // Compute it.
+        $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
+    }
 
     if (ApiRequest::isCalendarRequestValid($latitude, $longitude, $timezone)) {
         $pt = new PrayerTimes($method, $school);
