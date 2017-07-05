@@ -483,6 +483,8 @@ class Locations
         // If we're here, go to Google.
         $timezone = $this->google->getTimezoneByCoOrdinates($lat, $lng);
 
+        $this->addTimezone($lat, $lng, $timezone);
+
         $this->cacher->set($cacheKey, $timezone);
 
         return $timezone;
@@ -507,7 +509,7 @@ class Locations
 
         $result = $this->db->fetchAssoc(
                 "SELECT timezone
-                FROM address_geolocate_queries WHERE
+                FROM timezone WHERE
                 (latitude = ? AND longitude = ?)
                 ",
                 [$lat, $lng]);
@@ -517,6 +519,19 @@ class Locations
         }
 
         return $result;
+    }
+
+    public function addTimezone($lat, $lng, $timezone)
+    {
+        $insert = $this->db->insert('timezone',
+             [
+                 'latitude' => $lat,
+                 'longitude' => $lng,
+                 'timezone' => $timezone
+             ]
+         );
+
+         return $insert;
     }
 
 }
