@@ -130,12 +130,28 @@ class GoogleMapsApi
         return false;
     }
 
+    public function getTimezoneByCoOrdinates($lat, $lng)
+    {
+        $r = $this->timezone($lat, $lng);
+
+        if (isset($r->timezone)) {
+            return $r->timeZoneName;
+        }
+
+        return false;
+
+    }
+
     /**
      * [timezone description]
      * @return [type] [description]
      */
-    private function timezone()
+    private function timezone($lat = null, $lng = null)
     {
+        if ($lat !== null && $lng !== null) {
+            $this->response->lat = $lat;
+            $this->response->lng = $lng;
+        }
         try {
             $this->logger->writeGoogleQueryLog('Sending Request :: timezone :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this->response->lng]));
             $res2 = $this->queryApi('timezone/json',

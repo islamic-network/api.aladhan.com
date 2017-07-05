@@ -23,6 +23,8 @@ class Locations
     const ID_DB_checkAddressQuery = 6;
     const ID_DB_checkInvalidQuery = 7;
     const ID_DB_getAddressCoOrdinatesAndZone = 8;
+    const ID_DB_getTimezoneByCoOrdinates = 9;
+    const ID_DB_checkTimezoneQuery = 10;
 
     /**
      * Constructor
@@ -371,7 +373,9 @@ class Locations
                 ",
                 [strtolower($address)]);
 
-        $this->cacher->set($cacheKey, $result);
+        if ($result) {
+            $this->cacher->set($cacheKey, $result);
+        }
 
         return $result;
     }
@@ -461,6 +465,58 @@ class Locations
 
             return false;
         }
+    }
+
+    /**
+     * [getTimezoneByCoOrdinates description]
+     * @param  [type] $lat [description]
+     * @param  [type] $lng [description]
+     * @return [type]      [description]
+     */
+    public function getTimezoneByCoOrdinates($lat, $lng)
+    {
+        $x = $this->checkTimezoneQuery($lat, $lng);
+        if ($x) {
+            return $x['timezone'];
+        }
+        $cacheKey = $this->cacher->generateKey(self::ID_DB_getTimezoneByCoOrdinates, [$lat, $lng]);
+        // If we're here, go to Google.
+        $timezone = $this->google->getTimezoneByCoOrdinates($lat, $lng);
+
+        $this->cacher->set($cacheKey, $timezone);
+
+        return $timezone;
+    }
+
+    /**
+     * [checkTimezoneQuery description]
+     * @param  [type] $lat [description]
+     * @param  [type] $lng [description]
+     * @return [type]      [description]
+     */
+    public function checkTimezoneQuery($lat, $lng)
+    {
+        $lat = (string) $lat;
+        $lng = (string) $lng;
+
+        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkTimezoneQuery, [$lat, $lng]);
+
+        if ($this->cacher->check($cacheKey) !== false) {
+            return $this->cacher->get($cacheKey);
+        }
+
+        $result = $this->db->fetchAssoc(
+                "SELECT timezone
+                FROM address_geolocate_queries WHERE
+                (latitude = ? AND longitude = ?)
+                ",
+                [$lat, $lng]);
+
+        if ($result) {
+            $this->cacher->set($cacheKey, $result);
+        }
+
+        return $result;
     }
 
 }

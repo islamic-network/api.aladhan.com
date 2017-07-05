@@ -60,9 +60,13 @@ $app->get('/timings', function (Request $request, Response $response) {
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
-    $timezone = $request->getQueryParam('timezonestring');
     $latitude = $request->getQueryParam('latitude');
     $longitude = $request->getQueryParam('longitude');
+    $timezone = $request->getQueryParam('timezonestring');
+    if ($timezone == '' || $timezone  === null) {
+        // Compute it.
+        $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
+    }
     if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
         $pt = new PrayerTimes($method, $school, null);
         $d = new DateTime('now', new DateTimeZone($timezone));
@@ -83,9 +87,13 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
-    $timezone = $request->getQueryParam('timezonestring');
     $latitude = $request->getQueryParam('latitude');
     $longitude = $request->getQueryParam('longitude');
+    $timezone = $request->getQueryParam('timezonestring');
+    if ($timezone == '' || $timezone  === null) {
+        // Compute it.
+        $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
+    }
     if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
         $pt = new PrayerTimes($method, $school);
         $d = new DateTime(date('@' . $timestamp));
