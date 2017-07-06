@@ -63,9 +63,11 @@ $app->get('/timings', function (Request $request, Response $response) {
     $latitude = $request->getQueryParam('latitude');
     $longitude = $request->getQueryParam('longitude');
     $timezone = $request->getQueryParam('timezonestring');
-    if ($timezone == '' || $timezone  === null) {
+    if ($timezone == '' || $timezone === null ) {
         // Compute it.
-        $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
+        if (ApiRequest::isLatitudeValid($latitude) && ApiRequest::isLongitudeValid($longitude)) {
+            $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
+        }
     }
     if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
         $pt = new PrayerTimes($method, $school, null);
@@ -92,7 +94,9 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
     $timezone = $request->getQueryParam('timezonestring');
     if ($timezone == '' || $timezone  === null) {
         // Compute it.
-        $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
+        if (ApiRequest::isLatitudeValid($latitude) && ApiRequest::isLongitudeValid($longitude)) {
+            $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
+        }
     }
     if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
         $pt = new PrayerTimes($method, $school);
