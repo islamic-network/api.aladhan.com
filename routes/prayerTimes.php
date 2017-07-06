@@ -6,6 +6,7 @@ use AlAdhanApi\Helper\Response as ApiResponse;
 use AlAdhanApi\Helper\Request as ApiRequest;
 use AlAdhanApi\Helper\ClassMapper;
 use AlAdhanApi\Helper\PrayerTimesHelper;
+use AlAdhanApi\Helper\Generic;
 
 $app->get('/nextPrayerByAddress', function (Request $request, Response $response) {
     $this->helper->logger->write();
