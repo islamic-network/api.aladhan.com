@@ -74,7 +74,7 @@ $app->get('/timings', function (Request $request, Response $response) {
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
         return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date], 200, 'OK'), 200);
     } else {
-        return $response->withJson(ApiResponse::build('Please specify a valid latitude, longitude and timezone.', 400, 'Bad Request'), 400);
+        return $response->withJson(ApiResponse::build('Please specify a valid latitude and longitude.', 400, 'Bad Request'), 400);
     }
 });
 
@@ -98,7 +98,7 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
         $timings = $pt->getTimes($d, $latitude, $longitude, null, $latitudeAdjustmentMethod);
         return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date], 200, 'OK'), 200);
     } else {
-        return $response->withJson(ApiResponse::build('Please specify a valid latitude, longitude and timezone.', 400, 'Bad Request'), 400);
+        return $response->withJson(ApiResponse::build('Please specify a valid latitude and longitude.', 400, 'Bad Request'), 400);
     }
 });
 
