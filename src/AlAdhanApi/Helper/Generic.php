@@ -2,6 +2,8 @@
 
 namespace AlAdhanApi\Helper;
 
+use AlAdhanApi\Helper\Request as ApiRequest;
+
 /**
  * Class Generic
  * @package Helper\Generic
@@ -63,6 +65,29 @@ class Generic
     {
         $tz = new \DateTimeZone($timezoneString);
         return $tz->getOffset($date)/3600;
+    }
+
+    /**
+     * Computes timezone only if the passed timezone is empty or null
+     * @param  [type] $latitude  [description]
+     * @param  [type] $longitude [description]
+     * @param  [type] $timezone  [description]
+     * @param  [type] $locations Locations Model Objext
+     * @return String           [description]
+     */
+    public static function computeTimezone($latitude, $longitude, $timezone, $locations)
+    {
+        //Compute only if timezone is empty or null
+        if ($timezone == '' || $timezone  === null) {
+            // Compute it.
+            if ( ApiRequest::isLatitudeValid($latitude) && ApiRequest::isLongitudeValid($longitude)) {
+                $timezone = $locations->getTimezoneByCoOrdinates($latitude, $longitude);
+
+                return $timezone;
+            }
+        }
+
+        return $timezone;
     }
 
     /**

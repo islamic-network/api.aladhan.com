@@ -62,13 +62,7 @@ $app->get('/timings', function (Request $request, Response $response) {
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
     $latitude = $request->getQueryParam('latitude');
     $longitude = $request->getQueryParam('longitude');
-    $timezone = $request->getQueryParam('timezonestring');
-    if ($timezone == '' || $timezone === null ) {
-        // Compute it.
-        if (ApiRequest::isLatitudeValid($latitude) && ApiRequest::isLongitudeValid($longitude)) {
-            $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
-        }
-    }
+    $timezone = Generic::computeTimezone($latitude, $longitude, $request->getQueryParam('timezonestring'), $this->model->locations);
     if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
         $pt = new PrayerTimes($method, $school, null);
         $d = new DateTime('now', new DateTimeZone($timezone));
@@ -91,13 +85,7 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
     $latitude = $request->getQueryParam('latitude');
     $longitude = $request->getQueryParam('longitude');
-    $timezone = $request->getQueryParam('timezonestring');
-    if ($timezone == '' || $timezone  === null) {
-        // Compute it.
-        if (ApiRequest::isLatitudeValid($latitude) && ApiRequest::isLongitudeValid($longitude)) {
-            $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
-        }
-    }
+    $timezone = Generic::computeTimezone($latitude, $longitude, $request->getQueryParam('timezonestring'), $this->model->locations);
     if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
         $pt = new PrayerTimes($method, $school);
         $d = new DateTime(date('@' . $timestamp));
