@@ -40,3 +40,20 @@ $container['notFoundHandler'] = function ($c) {
             ->write($resp);
     };
 };
+
+$container['errorHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        $r = [
+        'code' => 500,
+        'status' => 'Internal Server Error',
+        'data' => 'Something went wrong when the server tried to process this request. Sorry!'
+        ];
+
+        $resp = json_encode($r);
+
+        return $c['response']
+            ->withStatus(500)
+            ->withHeader('Content-Type', 'application/json')
+            ->write($resp);
+    };
+};
