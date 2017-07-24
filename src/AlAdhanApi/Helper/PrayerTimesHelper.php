@@ -83,13 +83,11 @@ class PrayerTimesHelper
             $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod);
             $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
             $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U')];
-            $times[$i] =  ['timings' => $timings, 'date' => $date];
+            $times[$i] =  ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
             // Add 24 hours to start date
             $cal_start =  $cal_start + (1*60*60*24);
         }
 
-        $times['meta'] = self::getMetaArray($pt);
-        
         return $times;
     }
 
@@ -119,13 +117,11 @@ class PrayerTimesHelper
                 $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod);
                 $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
                 $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U')];
-                $times[$month][$i] =  ['timings' => $timings, 'date' => $date];
+                $times[$month][$i] =  ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
                 // Add 24 hours to start date
                 $cal_start =  $cal_start + (1*60*60*24);
             }
         }
-
-        $times['meta'] = self::getMetaArray($pt);
 
         return $times;
     }
