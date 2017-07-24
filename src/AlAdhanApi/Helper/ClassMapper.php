@@ -10,7 +10,7 @@ class ClassMapper
 {
     /**
      * Returns the method name
-     * @param  Integer $methodId 0 to 7
+     * @param  Integer $methodId 0 to 12
      * @return String
      */
     public static function method($methodId)
