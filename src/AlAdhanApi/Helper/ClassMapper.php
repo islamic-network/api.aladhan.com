@@ -22,7 +22,13 @@ class ClassMapper
             3 => 'MWL',
             4 => 'MAKKAH',
             5 => 'EGYPT',
-            7 => 'TEHRAN'
+            7 => 'TEHRAN',
+            8 => 'GULF',
+            9 => 'KUWAIT',
+            10 => 'QATAR',
+            11 => 'SINGAPORE',
+            12 => 'FRANCE'
+
         ];
 
         return $arr[$methodId];
