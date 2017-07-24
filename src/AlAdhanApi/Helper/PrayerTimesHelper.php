@@ -88,6 +88,8 @@ class PrayerTimesHelper
             $cal_start =  $cal_start + (1*60*60*24);
         }
 
+        $times['meta'] = self::getMetaArray($pt);
+        
         return $times;
     }
 
@@ -123,6 +125,8 @@ class PrayerTimesHelper
             }
         }
 
+        $times['meta'] = self::getMetaArray($pt);
+
         return $times;
     }
 
@@ -144,6 +148,6 @@ class PrayerTimesHelper
 
     public static function getMetaArray($prayerTimesModel)
     {
-        return $prayerTimesModel->getMeta();        
+        return $prayerTimesModel->getMeta();
     }
 }

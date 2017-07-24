@@ -25,7 +25,7 @@ $app->get('/nextPrayerByAddress', function (Request $request, Response $response
         $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
         $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod);
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
-        return $response->withJson(ApiResponse::build(['timings' => $nextPrayer, 'date' => $date], 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build(['timings' => $nextPrayer, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
     } else {
         return $response->withJson(ApiResponse::build('Unable to locate address (even via google geocoding). It is probably invalid!', 400, 'Bad Request'), 400);
     }
@@ -49,7 +49,7 @@ $app->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Respon
         $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
         $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod);
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
-        return $response->withJson(ApiResponse::build(['timings' => $nextPrayer, 'date' => $date], 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build(['timings' => $nextPrayer, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
     } else {
         return $response->withJson(ApiResponse::build('Unable to locate address (even via google geocoding). It is probably invalid!', 400, 'Bad Request'), 400);
     }
@@ -72,7 +72,7 @@ $app->get('/timings', function (Request $request, Response $response) {
         }
         $timings = $pt->getTimesForToday($latitude, $longitude, $timezone, null, $latitudeAdjustmentMethod);
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
-        return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date], 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
     } else {
         return $response->withJson(ApiResponse::build('Please specify a valid latitude and longitude.', 400, 'Bad Request'), 400);
     }
@@ -96,7 +96,7 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
         }
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
         $timings = $pt->getTimes($d, $latitude, $longitude, null, $latitudeAdjustmentMethod);
-        return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date], 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
     } else {
         return $response->withJson(ApiResponse::build('Please specify a valid latitude and longitude.', 400, 'Bad Request'), 400);
     }
@@ -140,7 +140,7 @@ $app->get('/timingsByAddress/{timestamp}', function (Request $request, Response 
         }
         $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
-        return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date], 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
     } else {
         return $response->withJson(ApiResponse::build('Unable to locate address (even via google geocoding). It is probably invalid!.', 400, 'Bad Request'), 400);
     }
@@ -163,7 +163,7 @@ $app->get('/timingsByCity', function (Request $request, Response $response) {
         }
         $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod);
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
-        return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date], 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
     } else {
         return $response->withJson(ApiResponse::build('Unable to locate address (even via google geocoding). It is probably invalid!.', 400, 'Bad Request'), 400);
     }
@@ -188,7 +188,7 @@ $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $re
         }
         $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
-        return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date], 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
     } else {
         return $response->withJson(ApiResponse::build('Unable to locate address (even via google geocoding). It is probably invalid!.', 400, 'Bad Request'), 400);
     }
