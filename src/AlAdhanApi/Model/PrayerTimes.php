@@ -42,6 +42,11 @@ class PrayerTimes
     const METHOD_KARACHI = 'KARACHI'; // 1;
     const METHOD_TEHRAN = 'TEHRAN'; // 7;
     const METHOD_JAFARI = 'JAFARI'; // 0;
+    const METHOD_GULF = 'GULF'; // 8
+    const METHOD_KUWAIT = 'KUWAIT'; // 9
+    const METHOD_QATAR = 'QATAR'; // 10
+    const METHOD_SINGAPORE = 'SINGAPORE'; // 11
+    const METHOD_FRANCE = 'FRANCE'; // 12
 
     /**
      * Schools that determine the Asr shadow for the purpose of this class
@@ -747,12 +752,54 @@ class PrayerTimes
                     self::MAGHRIB => 4,
                     self::MIDNIGHT => self::METHOD_JAFARI
                 ]
-            ]
+            ],
+            self::METHOD_GULF => [
+                'name' => 'Gulf Region',
+                'params' => [
+                    self::FAJR => 19.5,
+                    self::ISHA => '90 min'
+                ]
+            ],self::METHOD_KUWAIT => [
+                'name' => 'Kuwait',
+                'params' => [
+                    self::FAJR => 18,
+                    self::ISHA => 17.5
+                ]
+            ],self::METHOD_QATAR => [
+                'name' => 'Qatar',
+                'params' => [
+                    self::FAJR => 18,
+                    self::ISHA => '90 min'
+                ]
+            ],self::METHOD_SINGAPORE => [
+                'name' => 'Majlis Ugama Islam Singapura, Singapore',
+                'params' => [
+                    self::FAJR => 20,
+                    self::ISHA => 18
+                ]
+            ],self::METHOD_FRANCE => [
+                'name' => 'Union Organization islamic de France calculation method',
+                'params' => [
+                    self::FAJR => 12,
+                    self::ISHA => 12
+                ]
+            ],
 
         ];
 
         $this->methodCodes = [
-            self::METHOD_MWL, self::METHOD_ISNA, self::METHOD_EGYPT, self::METHOD_MAKKAH, self::METHOD_KARACHI, self::METHOD_TEHRAN, self::METHOD_JAFARI
+            self::METHOD_MWL,
+            self::METHOD_ISNA,
+            self::METHOD_EGYPT,
+            self::METHOD_MAKKAH,
+            self::METHOD_KARACHI,
+            self::METHOD_TEHRAN,
+            self::METHOD_JAFARI,
+            self::METHOD_GULF,
+            self::METHOD_KUWAIT,
+            self::METHOD_QATAR,
+            self::METHOD_SINGAPORE,
+            self::METHOD_FRANCE
         ];
     }
 
