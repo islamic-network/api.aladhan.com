@@ -141,4 +141,9 @@ class PrayerTimesHelper
 
         return false;
     }
+
+    public static function getMetaArray($prayerTimesModel)
+    {
+        return $prayerTimesModel->getMeta();        
+    }
 }

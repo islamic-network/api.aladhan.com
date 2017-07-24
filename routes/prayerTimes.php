@@ -117,7 +117,7 @@ $app->get('/timingsByAddress', function (Request $request, Response $response) {
         }
         $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod);
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
-        return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date], 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
     } else {
         return $response->withJson(ApiResponse::build('Unable to locate address (even via google geocoding). It is probably invalid!.', 400, 'Bad Request'), 400);
     }
