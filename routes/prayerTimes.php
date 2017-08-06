@@ -8,6 +8,14 @@ use AlAdhanApi\Helper\ClassMapper;
 use AlAdhanApi\Helper\PrayerTimesHelper;
 use AlAdhanApi\Helper\Generic;
 
+
+$app->get('/methods', function (Request $request, Response $response) {
+    $this->helper->logger->write();
+    $pt = new PrayerTimes();
+    return $response->withJson(ApiResponse::build($pt->getMethods(), 200, 'OK'), 200);
+
+});
+
 $app->get('/nextPrayerByAddress', function (Request $request, Response $response) {
     $this->helper->logger->write();
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
