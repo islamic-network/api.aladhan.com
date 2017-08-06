@@ -55,7 +55,7 @@ class Log
         // Request Params
         $l['request'] = $request;
         // Compute IP
-        $this->getIp();
+        $this->getIp($server);
         $l['server'] = [
             'ip' => $this->getIp($server),
             'url' => isset($server['SCRIPT_URL']) ? $server['SCRIPT_URL'] : (isset($server['REDIRECT_URL']) ? $server['REDIRECT_URL'] : 'Unknown' )  ,

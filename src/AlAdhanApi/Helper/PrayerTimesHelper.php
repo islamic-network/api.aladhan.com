@@ -1,5 +1,6 @@
 <?php
 namespace AlAdhanApi\Helper;
+use Meezaan\PrayerTimes\Method;
 
 /**
  * Class PrayerTimesHelper
@@ -145,5 +146,50 @@ class PrayerTimesHelper
     public static function getMetaArray($prayerTimesModel)
     {
         return $prayerTimesModel->getMeta();
+    }
+
+    public static function createCustomMethod($fA = null, $mA = null, $iA = null, $tF = null, $tZ = null, $tA = null, $tM = null, $tI = null, $tSR = null, $tSS = null, $tImask = null, $tMidnight = null)
+    {
+        $method = new Method('Custom');
+        if ($fA !== null) {
+            $method->setFajrAngle($fA);
+        }
+        if ($mA !== null) {
+            $method->setMaghribAngleOrMins($mA);
+        }
+        if ($iA !== null) {
+            $method->setIshaAngleOrMins($iA);
+        }
+        if ($tF !== null) {
+            $method->tuneFajr($tF);
+        }
+        if ($tZ !== null) {
+            $method->tuneZhuhr($tZ);
+        }
+        if ($tA !== null) {
+            $method->tuneAsr($tA);
+        }
+        if ($tM !== null) {
+            $method->tuneMaghrib($tM);
+        }
+        if ($tI !== null) {
+            $method->tuneIsha($tI);
+        }
+        if ($tSS !== null) {
+            $method->tuneSunset($tSS);
+        }
+        if ($tSR !== null) {
+            $method->tuneSunrise($tSR);
+        }
+        if ($tImask !== null) {
+            $method->tuneImsak($tImask);
+        }
+        if ($tMidnight !== null) {
+            $method->tuneMidnight($tMidnight);
+        }
+
+        return $method;
+
+
     }
 }

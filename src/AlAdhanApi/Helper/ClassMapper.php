@@ -27,8 +27,8 @@ class ClassMapper
             9 => 'KUWAIT',
             10 => 'QATAR',
             11 => 'SINGAPORE',
-            12 => 'FRANCE'
-
+            12 => 'FRANCE',
+            99 => 'CUSTOM',
         ];
 
         return $arr[$methodId];
