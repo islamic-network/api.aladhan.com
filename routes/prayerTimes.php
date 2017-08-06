@@ -15,8 +15,10 @@ $app->get('/nextPrayerByAddress', function (Request $request, Response $response
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
     $address = $request->getQueryParam('address');
     $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
+    $tune = ApiRequest::tune($request->getQueryParam('tune'));
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school, null);
+        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
@@ -25,7 +27,7 @@ $app->get('/nextPrayerByAddress', function (Request $request, Response $response
         $d = new DateTime('@' . time());
         $d->setTimezone(new DateTimeZone($locInfo['timezone']));
         if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
-            $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
         }
         $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
         $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod);
@@ -44,8 +46,10 @@ $app->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Respon
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
     $address = $request->getQueryParam('address');
     $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
+    $tune = ApiRequest::tune($request->getQueryParam('tune'));
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school, null);
+        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
@@ -54,7 +58,7 @@ $app->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Respon
         $d = new DateTime(date('@' . $timestamp));
         $d->setTimezone(new DateTimeZone($locInfo['timezone']));
         if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
-            $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
         }
         $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
         $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod);
@@ -74,8 +78,10 @@ $app->get('/timings', function (Request $request, Response $response) {
     $latitude = $request->getQueryParam('latitude');
     $longitude = $request->getQueryParam('longitude');
     $timezone = Generic::computeTimezone($latitude, $longitude, $request->getQueryParam('timezonestring'), $this->model->locations);
+    $tune = ApiRequest::tune($request->getQueryParam('tune'));
     if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
         $pt = new PrayerTimes($method, $school, null);
+        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
@@ -83,7 +89,7 @@ $app->get('/timings', function (Request $request, Response $response) {
         }
         $d = new DateTime('now', new DateTimeZone($timezone));
         if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
-            $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
         }
         $timings = $pt->getTimesForToday($latitude, $longitude, $timezone, null, $latitudeAdjustmentMethod);
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
@@ -102,8 +108,10 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
     $latitude = $request->getQueryParam('latitude');
     $longitude = $request->getQueryParam('longitude');
     $timezone = Generic::computeTimezone($latitude, $longitude, $request->getQueryParam('timezonestring'), $this->model->locations);
+    $tune = ApiRequest::tune($request->getQueryParam('tune'));
     if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
         $pt = new PrayerTimes($method, $school);
+        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
@@ -112,7 +120,7 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
         $d = new DateTime(date('@' . $timestamp));
         $d->setTimezone(new DateTimeZone($timezone));
         if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
-            $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
         }
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
         $timings = $pt->getTimes($d, $latitude, $longitude, null, $latitudeAdjustmentMethod);
@@ -129,8 +137,10 @@ $app->get('/timingsByAddress', function (Request $request, Response $response) {
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
     $address = $request->getQueryParam('address');
     $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
+    $tune = ApiRequest::tune($request->getQueryParam('tune'));
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school, null);
+        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
@@ -138,8 +148,9 @@ $app->get('/timingsByAddress', function (Request $request, Response $response) {
         }
         $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
         if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
-            $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
         }
+
         $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod);
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
         return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
@@ -156,8 +167,10 @@ $app->get('/timingsByAddress/{timestamp}', function (Request $request, Response 
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
     $address = $request->getQueryParam('address');
     $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
+    $tune = ApiRequest::tune($request->getQueryParam('tune'));
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school, null);
+        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
@@ -166,7 +179,7 @@ $app->get('/timingsByAddress/{timestamp}', function (Request $request, Response 
         $d = new DateTime(date('@' . $timestamp));
         $d->setTimezone(new DateTimeZone($locInfo['timezone']));
         if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
-            $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
         }
         $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
@@ -185,8 +198,10 @@ $app->get('/timingsByCity', function (Request $request, Response $response) {
     $country = $request->getQueryParam('country');
     $state = $request->getQueryParam('state');
     $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
+    $tune = ApiRequest::tune($request->getQueryParam('tune'));
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school, null);
+        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
@@ -194,7 +209,7 @@ $app->get('/timingsByCity', function (Request $request, Response $response) {
         }
         $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
         if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
-            $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
         }
         $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod);
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
@@ -214,8 +229,10 @@ $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $re
     $country = $request->getQueryParam('country');
     $state = $request->getQueryParam('state');
     $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
+    $tune = ApiRequest::tune($request->getQueryParam('tune'));
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school, null);
+        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
@@ -224,7 +241,7 @@ $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $re
         $d = new DateTime(date('@' . $timestamp));
         $d->setTimezone(new DateTimeZone($locInfo['timezone']));
         if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
-            $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
         }
         $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
         $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
@@ -245,6 +262,7 @@ $app->get('/calendar', function (Request $request, Response $response) {
     $longitude = $request->getQueryParam('longitude');
     $annual = ApiRequest::annual($request->getQueryParam('annual'));
     $timezone = $request->getQueryParam('timezonestring');
+    $tune = ApiRequest::tune($request->getQueryParam('tune'));
     if ($timezone == '' || $timezone  === null) {
         // Compute it.
         $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
@@ -252,6 +270,7 @@ $app->get('/calendar', function (Request $request, Response $response) {
 
     if (ApiRequest::isCalendarRequestValid($latitude, $longitude, $timezone)) {
         $pt = new PrayerTimes($method, $school);
+        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
@@ -278,9 +297,11 @@ $app->get('/calendarByAddress', function (Request $request, Response $response) 
     $address = $request->getQueryParam('address');
     $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
     $annual = ApiRequest::annual($request->getQueryParam('annual'));
+    $tune = ApiRequest::tune($request->getQueryParam('tune'));
 
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school);
+        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
@@ -309,9 +330,11 @@ $app->get('/calendarByCity', function (Request $request, Response $response) {
     $state = $request->getQueryParam('state');
     $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
     $annual = ApiRequest::annual($request->getQueryParam('annual'));
+    $tune = ApiRequest::tune($request->getQueryParam('tune'));
 
     if ($locInfo) {
         $pt = new PrayerTimes($method, $school);
+        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);

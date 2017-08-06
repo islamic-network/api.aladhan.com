@@ -59,9 +59,25 @@ class Request
         // PrayerTimesHelper::createCustomMethod() takes a total of 12 params
         for ($i=0; $i<=11; $i++) {
             if (isset($method[$i]) && $method[$i] != 0 && $method[$i] != null) {
-                $result[] = $method[$i];
+                $result[] = (string) $method[$i];
             } else {
                 $result[] = null;
+            }
+        }
+
+        return $result;
+    }
+
+    public static function tune($data)
+    {
+        $method = explode(',', $data);
+        $result = [];
+        // PrayerTimes::tune() takes a total of 9 params
+        for ($i=0; $i<=8; $i++) {
+            if (isset($method[$i]) && $method[$i] != 0 && $method[$i] != null) {
+                $result[] = (string) $method[$i];
+            } else {
+                $result[] = 0;
             }
         }
 
@@ -75,8 +91,15 @@ class Request
      */
     public static function time($data)
     {
+        // Check if the data is a date format. dd-mm-yyyy
+        $date = explode('-', $data);
+        if (count($date) == 3 && strlen($date[2]) == 4) {
+            // Cool, we have a date
+            return strtotime($data);
+        }
+
         if ($data < 1 || !is_numeric($data)) {
-            return time();
+            return time(); //now
         } else {
             return $data;
         }

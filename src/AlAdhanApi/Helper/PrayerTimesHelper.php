@@ -148,7 +148,7 @@ class PrayerTimesHelper
         return $prayerTimesModel->getMeta();
     }
 
-    public static function createCustomMethod($fA = null, $mA = null, $iA = null, $tF = null, $tZ = null, $tA = null, $tM = null, $tI = null, $tSR = null, $tSS = null, $tImask = null, $tMidnight = null)
+    public static function createCustomMethod($fA = null, $mA = null, $iA = null, $tImask = null, $tF = null, $tSR = null, $tZ = null, $tA = null, $tM = null, $tSS = null, $tI = null, $tMidnight = null)
     {
         $method = new Method('Custom');
         if ($fA !== null) {
