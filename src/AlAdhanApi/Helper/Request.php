@@ -45,7 +45,7 @@ class Request
      */
     public static function method($data)
     {
-        if (!in_array($data, [1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 99])) {
+        if (!in_array($data, [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 99])) {
             return 2; // ISNA
         } else {
             return $data;
