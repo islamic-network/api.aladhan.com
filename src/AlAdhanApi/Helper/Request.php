@@ -17,7 +17,7 @@ class Request
      */
     public static function school($data)
     {
-        if (in_array($data, [0, 1])) {
+        if (in_array($data, [0, 1], true)) {
             return $data;
         } else {
             return 0;
@@ -31,7 +31,7 @@ class Request
      */
     public static function latitudeAdjustmentMethod($data)
     {
-        if (!in_array($data, [1, 2, 3])) {
+        if (!in_array($data, [1, 2, 3], true)) {
             return 3;
         } else {
             return $data;
@@ -45,7 +45,7 @@ class Request
      */
     public static function method($data)
     {
-        if (!in_array($data, [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 99])) {
+        if (!in_array($data, [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 99], true)) {
             return 2; // ISNA
         } else {
             return $data;
