@@ -148,7 +148,7 @@ class PrayerTimesHelper
         return $prayerTimesModel->getMeta();
     }
 
-    public static function createCustomMethod($fA = null, $mA = null, $iA = null, $tImask = null, $tF = null, $tSR = null, $tZ = null, $tA = null, $tM = null, $tSS = null, $tI = null, $tMidnight = null)
+    public static function createCustomMethod($fA = null, $mA = null, $iA = null)
     {
         $method = new Method('Custom');
         if ($fA !== null) {
@@ -159,33 +159,6 @@ class PrayerTimesHelper
         }
         if ($iA !== null) {
             $method->setIshaAngleOrMins($iA);
-        }
-        if ($tF !== null) {
-            $method->tuneFajr($tF);
-        }
-        if ($tZ !== null) {
-            $method->tuneZhuhr($tZ);
-        }
-        if ($tA !== null) {
-            $method->tuneAsr($tA);
-        }
-        if ($tM !== null) {
-            $method->tuneMaghrib($tM);
-        }
-        if ($tI !== null) {
-            $method->tuneIsha($tI);
-        }
-        if ($tSS !== null) {
-            $method->tuneSunset($tSS);
-        }
-        if ($tSR !== null) {
-            $method->tuneSunrise($tSR);
-        }
-        if ($tImask !== null) {
-            $method->tuneImsak($tImask);
-        }
-        if ($tMidnight !== null) {
-            $method->tuneMidnight($tMidnight);
         }
 
         return $method;

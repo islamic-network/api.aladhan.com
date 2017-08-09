@@ -29,7 +29,7 @@ $app->get('/nextPrayerByAddress', function (Request $request, Response $response
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
+            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
         $d = new DateTime('@' . time());
@@ -60,7 +60,7 @@ $app->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Respon
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
+            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
         $d = new DateTime(date('@' . $timestamp));
@@ -92,7 +92,7 @@ $app->get('/timings', function (Request $request, Response $response) {
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
+            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
         $d = new DateTime('now', new DateTimeZone($timezone));
@@ -122,7 +122,7 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
+            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
         $d = new DateTime(date('@' . $timestamp));
@@ -151,7 +151,7 @@ $app->get('/timingsByAddress', function (Request $request, Response $response) {
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
+            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
         $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
@@ -181,7 +181,7 @@ $app->get('/timingsByAddress/{timestamp}', function (Request $request, Response 
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
+            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
         $d = new DateTime(date('@' . $timestamp));
@@ -212,7 +212,7 @@ $app->get('/timingsByCity', function (Request $request, Response $response) {
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
+            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
         $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
@@ -243,7 +243,7 @@ $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $re
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
+            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
         $d = new DateTime(date('@' . $timestamp));
@@ -281,7 +281,7 @@ $app->get('/calendar', function (Request $request, Response $response) {
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
+            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
         if ($annual) {
@@ -312,7 +312,7 @@ $app->get('/calendarByAddress', function (Request $request, Response $response) 
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
+            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
         if ($annual) {
@@ -345,7 +345,7 @@ $app->get('/calendarByCity', function (Request $request, Response $response) {
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2], $methodSettings[3], $methodSettings[4], $methodSettings[5], $methodSettings[6], $methodSettings[7], $methodSettings[8], $methodSettings[9], $methodSettings[10], $methodSettings[11]);
+            $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
         if ($annual) {
