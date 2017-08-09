@@ -33,9 +33,9 @@ $app->get('/gToH', function (Request $request, Response $response) {
     $hs = new HijriCalendarService();
     $result = $hs->gToH($date);
     if ($result) {
-        $json = $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
     } else {
-        $json = $response->withJson(ApiResponse::build('Invalid date or unable to convert it', 400, 'Bad Request'), 400);
+        return $response->withJson(ApiResponse::build('Invalid date or unable to convert it', 400, 'Bad Request'), 400);
     }
 });
 
