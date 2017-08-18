@@ -6,9 +6,9 @@ require_once realpath(__DIR__) . '/../config/init.php';
 require_once realpath(__DIR__) . '/../config/dependencies.php';
 
 // Load routes.
-require_once realpath(__DIR__) . '/../routes/asmaAlHusna.php';
-require_once realpath(__DIR__) . '/../routes/dateAndTime.php';
-require_once realpath(__DIR__) . '/../routes/hijriCalendar.php';
-require_once realpath(__DIR__) . '/../routes/prayerTimes.php';
+require_once realpath(__DIR__) . '/../routes/asmaAlHusna/asmaAlHusna.php';
+require_once realpath(__DIR__) . '/../routes/timings/dateAndTime.php';
+require_once realpath(__DIR__) . '/../routes/hijri/hijriCalendar.php';
+require_once realpath(__DIR__) . '/../routes/timings/prayerTimes.php';
 
 $app->run();
