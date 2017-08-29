@@ -276,6 +276,10 @@ class Locations
             return false;
         }
 
+        if (strpos($city, '$') !== false && strpos($city, '£') !== false && strpos($city, '#') !== false) {
+            return false;
+        }
+
         return true;
     }
 
