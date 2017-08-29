@@ -9,7 +9,7 @@ use AlAdhanApi\Model\HijriCalendarService;
 /**
  * @api {get} http://api.aladhan.com/gToHCalendar/:month/:year Request a Hijri Calendar for a Gregorian month
  * @apiName GetGToHCalendar
- * @apiGroup Islamic Calendar
+ * @apiGroup IslamicCalendar
  * @apiVersion 1.0.1
  *
  * @apiParam {number{1-12}} month A gregorian month. 1 = January and 12 = December.
@@ -84,7 +84,7 @@ $app->get('/gToHCalendar/{month}/{year}', function (Request $request, Response $
 /**
  * @api {get} http://api.aladhan.com/hToGCalendar/:month/:year Request a Gregoran Calendar for a Hijri month
  * @apiName GetHToGCalendar
- * @apiGroup Islamic Calendar
+ * @apiGroup IslamicCalendar
  * @apiVersion 1.0.1
  *
  * @apiParam {number{1-12}} month A Hijri month. 1 = Muharram and 12 = Dhu al Hijjah.
@@ -157,7 +157,7 @@ $app->get('/hToGCalendar/{month}/{year}', function (Request $request, Response $
 /**
  * @api {get} http://api.aladhan.com/gToH Convert a Gregorian date to a Hijri date
  * @apiName GetGToH
- * @apiGroup Islamic Calendar
+ * @apiGroup IslamicCalendar
  * @apiVersion 1.0.1
  *
  * @apiParam {string} date A gregorian date formatted as DD-MM-YYYY
@@ -220,7 +220,7 @@ $app->get('/gToH', function (Request $request, Response $response) {
 /**
  * @api {get} http://api.aladhan.com/hToG Convert a Hijri date to a Gregorian date
  * @apiName GetHToG
- * @apiGroup Islamic Calendar
+ * @apiGroup IslamicCalendar
  * @apiVersion 1.0.1
  *
  * @apiParam {string} date A hijri date formatted as DD-MM-YYYY

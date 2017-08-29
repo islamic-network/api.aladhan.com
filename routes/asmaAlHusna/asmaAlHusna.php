@@ -6,14 +6,16 @@ use AlAdhanApi\Helper\Request as ApiRequest;
 use AlAdhanApi\Model\AsmaAlHusna;
 
 
+
 /**
- * @api {get} http://api.aladhan.com/asmaAlHusna/:numbers Request All or Multiple Names
+ *
+ * @api {get} http://api.aladhan.com/asmaAlHusna/:numbers All or Multiple Names
  * @apiName GetMultiAsmaAlHusna
- * @apiGroup Asma Al Husna
+ * @apiDescription Includes the Arabic text with transliteration and meaning of each name.
+ * @apiGroup AsmaAlHusna
  * @apiVersion 1.0.1
  *
- * @apiParam {string{number{1-99},number{1-99},number{1-99}}} [commaSeparatedNumbers] Returns the Arabic text with transliteration and meaning
- * of multiple names. Names are numbered from 1 to 99, in the order usually recited
+ * @apiParam {string{number{1-99},number{1-99},number{1-99}}} [numbers] Names are numbered from 1 to 99, in the order usually recited
  * in the Islamic tradition. They start with 1 (Ar Rahmaan) and end with 99 (As
  * Saboor). If not specified, all names will be returned.
  *
@@ -65,15 +67,15 @@ $app->get('/asmaAlHusna', function (Request $request, Response $response) {
 });
 
 /**
- * @api {get} http://api.aladhan.com/asmaAlHusna/:number Request a Single Name
+ * @api {get} http://api.aladhan.com/asmaAlHusna/:number Single Name.
+ * @apiDescription Includes the Arabic text with transliteration and meaning.
  * @apiName GetAsmaAlHusna
- * @apiGroup Asma Al Husna
+ * @apiGroup AsmaAlHusna
  * @apiVersion 1.0.1
  *
- * @apiParam {number{1-99}} number the Arabic text with transliteration and meaning
- * of one name. Names are numbered from 1 to 99, in the order usually recited
+ * @apiParam {number{1-99}} number  Names are numbered from 1 to 99, in the order usually recited
  * in the Islamic tradition. They start with 1 (Ar Rahmaan) and end with 99 (As
- * Saboor)
+ * Saboor).
  *
  * @apiExample {http} Example usage:
  *   http://api.aladhan.com/asmaAlHusna/77

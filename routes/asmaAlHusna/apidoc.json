@@ -1,6 +1,6 @@
 {
     "name": "Asma al Husna API by AlAdhan",
     "version": "1.0.1",
-    "description": "A REST API providing programmatic access to the 99 Islamic names of God"
+    "description": "A REST API (over HTTP and HTTPS) providing programmatic access to the 99 Islamic names of God"
 
 }
