@@ -140,6 +140,10 @@ class Locations
         if ($local) {
             return $local;
         }
+        
+        if (Generic::isGoogleBot()) {
+            return false;
+        }
 
         $ginfo = $this->google->getGeoCodeLocationAndTimeZone($this->createAddressString($city, $state, $country));
         // It may be that the user entered an unconventional format above, but if already have the latitue and longitude, don't re-create the record. We want 1 entry for each combination of co-ordinates.
@@ -487,6 +491,10 @@ class Locations
 
         if ($this->cacher->check($cacheKey) !== false) {
             return $this->cacher->get($cacheKey);
+        }
+
+        if (Generic::isGoogleBot()) {
+            return false;
         }
 
         // If we're here, go to Google.
