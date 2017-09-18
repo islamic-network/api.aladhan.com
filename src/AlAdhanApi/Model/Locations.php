@@ -280,7 +280,7 @@ class Locations
             return false;
         }
 
-        if (strpos($city, '$') !== false || strpos($city, '£') !== false || strpos($city, '#') !== false) {
+        if (strpos($city, '$') !== false || strpos($city, '£') !== false || strpos($city, '#') !== false || strpos($city, 'quote') !== false || strpos($city, '/') !== false) {
             return false;
         }
 
