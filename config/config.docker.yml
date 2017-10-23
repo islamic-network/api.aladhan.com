@@ -1,0 +1,13 @@
+connections:
+    database:
+        host: mysql
+        username: dev
+        password: dev
+        dbname: database
+        port: 3306
+    memcache:
+        host: memcached
+        port: 11211
+
+apikeys:
+    google_geocoding: xxxxxxxx
