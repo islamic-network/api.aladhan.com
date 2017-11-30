@@ -1,0 +1,7 @@
+{
+    "name": "Prayer Times API by AlAdhan",
+    "version": "1.0.1",
+    "description": "A REST API (over HTTP and HTTPS) providing Islamic Prayer Times Calculations.",
+    "title": "Prayer Times API by AlAdhan",
+    "url": "https://api.aladhan.com"
+}
