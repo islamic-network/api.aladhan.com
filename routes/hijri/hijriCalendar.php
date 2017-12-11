@@ -9,6 +9,7 @@ use AlAdhanApi\Model\HijriCalendarService;
 /**
  * @api {get} http://api.aladhan.com/gToHCalendar/:month/:year Request a Hijri Calendar for a Gregorian month
  * @apiName GetGToHCalendar
+ * @apiDescription Request a Hijri Calendar for a Gregorian month
  * @apiGroup IslamicCalendar
  * @apiVersion 1.0.1
  *
@@ -84,6 +85,7 @@ $app->get('/gToHCalendar/{month}/{year}', function (Request $request, Response $
 /**
  * @api {get} http://api.aladhan.com/hToGCalendar/:month/:year Request a Gregoran Calendar for a Hijri month
  * @apiName GetHToGCalendar
+ * @apiDescription Request a Gregoran Calendar for a Hijri month
  * @apiGroup IslamicCalendar
  * @apiVersion 1.0.1
  *
@@ -157,6 +159,7 @@ $app->get('/hToGCalendar/{month}/{year}', function (Request $request, Response $
 /**
  * @api {get} http://api.aladhan.com/gToH Convert a Gregorian date to a Hijri date
  * @apiName GetGToH
+ * @apiDescription Convert a Gregorian date to a Hijri date
  * @apiGroup IslamicCalendar
  * @apiVersion 1.0.1
  *
@@ -220,6 +223,7 @@ $app->get('/gToH', function (Request $request, Response $response) {
 /**
  * @api {get} http://api.aladhan.com/hToG Convert a Hijri date to a Gregorian date
  * @apiName GetHToG
+ * @apiDescription Convert a Hijri date to a Gregorian date
  * @apiGroup IslamicCalendar
  * @apiVersion 1.0.1
  *

@@ -10,7 +10,7 @@ use AlAdhanApi\Helper\Generic;
 
 
 /**
- * @api {get} /methods Prayer Times Methods
+ * @api {get} http://api.aladhan.com/methods Prayer Times Methods
  * @apiDescription  Returns all the prayer times calculation methods supported by this API. For more information on how to use custom methods, see <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>.
  * @apiName GetMethods
  * @apiGroup Miscellaneous 
@@ -119,16 +119,16 @@ $app->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Respon
 
 
 /**
- * @api {get} /timings/:date_or_timestamp Timings
+ * @api {get} http://api.aladhan.com/timings/:date_or_timestamp Timings
  * @apiDescription Returns all prayer times for a specific date.
  * @apiName GetTimings
  * @apiGroup Timings
  * @apiVersion 1.0.1
  *
+ * @apiParam {string} [date_or_timestamp = 'now'] A date in the DD-MM-YYYY format or UNIX timestamp. Default's to the current date.
  * @apiParam {decimal} latitude The decimal value for the latitude co-ordinate of the location you want the time computed for. Example: 51.75865125
  * @apiParam {decimal} longitude The decimal value for the longitude co-ordinate of the location you want the time computed for. Example: -1.25387785
- * @apiParam {string} [date_or_timestamp = 'now'] A date in the DD-MM-YYYY format or UNIX timestamp. Default's to the current date.
- * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,99} [method=2] A prayer times calculatiomn method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+ * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculatiomn method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
  *                               0 - Shia Ithna-Ansari<br />
  *                               1 - Muslim World League<br />
  *                               2 - Islamic Society of North America<br />
@@ -141,6 +141,7 @@ $app->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Respon
  *                               10 - Qatar<br />
  *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
  *                               12 - Union Organization islamic de France<br />
+ *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
  * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
  * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify these, we'll calcuate it using the co-ordinates you provide.
  * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -263,14 +264,15 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
 });
 
 /**
- * @api {get} /timingsByAddress/:date_or_timestamp Timings By Address
+ * @api {get} http://api.aladhan.com//timingsByAddress/:date_or_timestamp Timings By Address
  * @apiDescription Returns all prayer times for a specific date at a particular address.
  * @apiName GetTimingsByAddresss
  * @apiGroup Timings
  * @apiVersion 1.0.1
  *
+ * @apiParam {string} [date_or_timestamp = 'now'] A date in the DD-MM-YYYY format or UNIX timestamp. Default's to the current date.
  * @apiParam {string} address An address string. Example: 1420 Austin Bluffs Parkway, Colorado Springs, CO OR 25 Hampstead High Street, London, NW3 1RL, United Kingdom OR Sultanahmet Mosque, Istanbul, Turkey
- * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,99} [method=2] A prayer times calculatiomn method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+ * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculatiomn method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
  *                               0 - Shia Ithna-Ansari<br />
  *                               1 - Muslim World League<br />
  *                               2 - Islamic Society of North America<br />
@@ -283,6 +285,7 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
  *                               10 - Qatar<br />
  *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
  *                               12 - Union Organization islamic de France<br />
+ *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
  * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
  * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify these, we'll calcuate it using the co-ordinates you provide.
  * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -404,16 +407,17 @@ $app->get('/timingsByAddress/{timestamp}', function (Request $request, Response 
 });
 
 /**
- * @api {get} /timingsByCity/:date_or_timestamp Timings By City
+ * @api {get} http://api.aladhan.com/timingsByCity/:date_or_timestamp Timings By City
  * @apiDescription Returns all prayer times for a specific date in a particular city.
  * @apiName GetTimingsByCity
  * @apiGroup Timings
  * @apiVersion 1.0.1
  *
+ * @apiParam {string} [date_or_timestamp = 'now'] A date in the DD-MM-YYYY format or UNIX timestamp. Default's to the current date.
  * @apiParam {string} city A city name. Example: London
  * @apiParam {string} country A country name or 2 character alpha ISO 3166 code. Examples: GB or United Kindom
  * @apiParam {string} [state] State or province. A state name or abbreviation. Examples: Colorado / CO / Punjab / Bengal
- * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,99} [method=2] A prayer times calculatiomn method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+ * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculatiomn method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
  *                               0 - Shia Ithna-Ansari<br />
  *                               1 - Muslim World League<br />
  *                               2 - Islamic Society of North America<br />
@@ -426,6 +430,7 @@ $app->get('/timingsByAddress/{timestamp}', function (Request $request, Response 
  *                               10 - Qatar<br />
  *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
  *                               12 - Union Organization islamic de France<br />
+ *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
  * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
  * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify these, we'll calcuate it using the co-ordinates you provide.
  * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -550,7 +555,7 @@ $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $re
 });
 
 /**
- * @api {get} /calendar/ Calendar
+ * @api {get} http://api.aladhan.com/calendar Calendar
  * @apiDescription Returns all prayer times for a specific calendar month.
  * @apiName GetCalendar
  * @apiGroup Calendar
@@ -561,7 +566,7 @@ $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $re
  * @apiParam {number=1-12} month A gregorian calendar month. Example: 8 or 08 for August.
  * @apiParam {number} year A gregorian calendar year. Example: 2014.
  * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
- * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,99} [method=2] A prayer times calculatiomn method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+ * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculatiomn method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
  *                               0 - Shia Ithna-Ansari<br />
  *                               1 - Muslim World League<br />
  *                               2 - Islamic Society of North America<br />
@@ -574,6 +579,7 @@ $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $re
  *                               10 - Qatar<br />
  *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
  *                               12 - Union Organization islamic de France<br />
+ *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
  * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
  * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify these, we'll calcuate it using the co-ordinates you provide.
  * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -718,7 +724,7 @@ $app->get('/calendar', function (Request $request, Response $response) {
 });
 
 /**
- * @api {get} /calendarByAddress/ Calendar by address
+ * @api {get} http://api.aladhan.com/calendarByAddress Calendar by address
  * @apiDescription Returns all prayer times for a specific calendar month at a particular address.
  * @apiName GetCalendarByAddress
  * @apiGroup Calendar
@@ -728,7 +734,7 @@ $app->get('/calendar', function (Request $request, Response $response) {
  * @apiParam {number=1-12} month A gregorian calendar month. Example: 8 or 08 for August.
  * @apiParam {number} year A gregorian calendar year. Example: 2014.
  * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
- * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,99} [method=2] A prayer times calculatiomn method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+ * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculatiomn method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
  *                               0 - Shia Ithna-Ansari<br />
  *                               1 - Muslim World League<br />
  *                               2 - Islamic Society of North America<br />
@@ -741,6 +747,7 @@ $app->get('/calendar', function (Request $request, Response $response) {
  *                               10 - Qatar<br />
  *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
  *                               12 - Union Organization islamic de France<br />
+ *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
  * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
  * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify these, we'll calcuate it using the co-ordinates you provide.
  * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -880,7 +887,7 @@ $app->get('/calendarByAddress', function (Request $request, Response $response) 
 });
 
 /**
- * @api {get} /calendarByCity/ Calendar by City
+ * @api {get} http://api.aladhan.com/calendarByCity Calendar by City
  * @apiDescription Returns all prayer times for a specific calendar month by City.
  * @apiName GetCalendarByCitys
  * @apiGroup Calendar
@@ -892,7 +899,7 @@ $app->get('/calendarByAddress', function (Request $request, Response $response) 
  * @apiParam {number=1-12} month A gregorian calendar month. Example: 8 or 08 for August.
  * @apiParam {number} year A gregorian calendar year. Example: 2014.
  * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
- * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,99} [method=2] A prayer times calculatiomn method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+ * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculatiomn method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
  *                               0 - Shia Ithna-Ansari<br />
  *                               1 - Muslim World League<br />
  *                               2 - Islamic Society of North America<br />
@@ -905,6 +912,7 @@ $app->get('/calendarByAddress', function (Request $request, Response $response) 
  *                               10 - Qatar<br />
  *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
  *                               12 - Union Organization islamic de France<br />
+ *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
  * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
  * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify these, we'll calcuate it using the co-ordinates you provide.
  * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -1046,7 +1054,7 @@ $app->get('/calendarByCity', function (Request $request, Response $response) {
 });
 
 /**
- * @api {get} /cityInfo City Geolocation info
+ * @api {get} http://api.aladhan.com/cityInfo City Geolocation info
  * @apiDescription Returns the latitude, longitude and timezone for a given city
  * @apiName GetCityInfo
  * @apiGroup Geolocation
@@ -1086,7 +1094,7 @@ $app->get('/cityInfo', function (Request $request, Response $response) {
 });
 
 /**
- * @api {get} /addressInfo Address Geolocation info
+ * @api {get} http://api.aladhan.com/addressInfo Address Geolocation info
  * @apiDescription  Returns the latitude, longitude and timezone for a given address
  * @apiName GetAddressInfo
  * @apiGroup Geolocation

@@ -6,7 +6,7 @@ use AlAdhanApi\Helper\Request as ApiRequest;
 use AlAdhanApi\Helper\Generic;
 
 /**
- * @api {get} /currentTime Current Time
+ * @api {get} http://api.aladhan.com/currentTime Current Time
  * @apiDescription Returns the current time (in the HH:MM format) for the specified time zone
  * @apiName GetCurrentTime
  * @apiGroup DateAndTime
@@ -38,7 +38,7 @@ $app->get('/currentTime', function (Request $request, Response $response) {
 });
 
 /**
- * @api {get} /currentDate Current Date
+ * @api {get} http://api.aladhan.com/currentDate Current Date
  * @apiDescription Returns the current date (in the DD-MM-YYYY format) for the specified time zone
  * @apiName GetCurrentDate
  * @apiGroup DateAndTime
@@ -70,7 +70,7 @@ $app->get('/currentDate', function (Request $request, Response $response) {
 });
 
 /**
- * @api {get} /currentTimestamp Current Timestamp
+ * @api {get} http://api.aladhan.com/currentTimestamp Current Timestamp
  * @apiDescription Returns the current UNIX timestamp for the specified time zone
  * @apiName GetCurrentTimestamp
  * @apiGroup DateAndTime
