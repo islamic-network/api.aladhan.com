@@ -17,7 +17,7 @@ use AlAdhanApi\Helper\Generic;
  * @apiVersion 1.0.1
  *
  * @apiExample {http} Example usage:
- *   http://api.aladhan.com/addressInfo?address=1420 Austin Bluffs Parkway, Colorado Springs, CO 80918
+ *   http://api.aladhan.com/methods
  *
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
