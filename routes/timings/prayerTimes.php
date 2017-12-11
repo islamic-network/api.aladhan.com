@@ -143,7 +143,7 @@ $app->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Respon
  *                               12 - Union Organization islamic de France<br />
  *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
  * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
- * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify these, we'll calcuate it using the co-ordinates you provide.
+ * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
  * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
  *                                                 1 - Middle of the Night<br />
  *                                                 2 - One Seventh<br />
@@ -287,7 +287,7 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
  *                               12 - Union Organization islamic de France<br />
  *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
  * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
- * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify these, we'll calcuate it using the co-ordinates you provide.
+ * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
  * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
  *                                                 1 - Middle of the Night<br />
  *                                                 2 - One Seventh<br />
@@ -432,7 +432,7 @@ $app->get('/timingsByAddress/{timestamp}', function (Request $request, Response 
  *                               12 - Union Organization islamic de France<br />
  *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
  * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
- * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify these, we'll calcuate it using the co-ordinates you provide.
+ * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
  * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
  *                                                 1 - Middle of the Night<br />
  *                                                 2 - One Seventh<br />
@@ -581,7 +581,7 @@ $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $re
  *                               12 - Union Organization islamic de France<br />
  *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
  * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
- * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify these, we'll calcuate it using the co-ordinates you provide.
+ * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
  * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
  *                                                 1 - Middle of the Night<br />
  *                                                 2 - One Seventh<br />
@@ -749,7 +749,7 @@ $app->get('/calendar', function (Request $request, Response $response) {
  *                               12 - Union Organization islamic de France<br />
  *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
  * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
- * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify these, we'll calcuate it using the co-ordinates you provide.
+ * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
  * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
  *                                                 1 - Middle of the Night<br />
  *                                                 2 - One Seventh<br />
@@ -914,7 +914,7 @@ $app->get('/calendarByAddress', function (Request $request, Response $response) 
  *                               12 - Union Organization islamic de France<br />
  *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
  * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
- * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify these, we'll calcuate it using the co-ordinates you provide.
+ * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
  * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
  *                                                 1 - Middle of the Night<br />
  *                                                 2 - One Seventh<br />
