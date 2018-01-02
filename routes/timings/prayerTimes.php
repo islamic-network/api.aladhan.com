@@ -588,7 +588,7 @@ $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $re
  *                                                 3 - Angle Based<br />
  *
  * @apiExample {http} Example usage:
- *   http://api.aladhan.com/calendar?latitude=51.508515&longitude=-0.1254872&method=2&m=4&y=2017
+ *   http://api.aladhan.com/calendar?latitude=51.508515&longitude=-0.1254872&method=2&month=4&year=2017
  *
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
@@ -756,7 +756,7 @@ $app->get('/calendar', function (Request $request, Response $response) {
  *                                                 3 - Angle Based<br />
  *
  * @apiExample {http} Example usage:
- *   http://api.aladhan.com/calendarByAddress?address=Sultanahmet Mosque, Istanbul, Turkey&method=2&m=04&y=2017
+ *   http://api.aladhan.com/calendarByAddress?address=Sultanahmet Mosque, Istanbul, Turkey&method=2&month=04&year=2017
  *
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
@@ -921,7 +921,7 @@ $app->get('/calendarByAddress', function (Request $request, Response $response) 
  *                                                 3 - Angle Based<br />
  *
  * @apiExample {http} Example usage:
- *   http://api.aladhan.com/calendarByCity?city=London&country=United Kingdom&method=2
+ *   http://api.aladhan.com/calendarByCity?city=London&country=United Kingdom&method=2&month=04&year=2017
  *
  * @apiSuccessExample Success-Response:
  * HTTP/1.1 200 OK
