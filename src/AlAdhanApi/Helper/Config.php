@@ -43,4 +43,15 @@ class Config
     {
         return $this->config['apikeys'][$id];
     }
+    
+    /**
+     * Returns the entire config array
+     * @return Array The entire config array
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+
 }

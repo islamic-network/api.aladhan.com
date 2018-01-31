@@ -11,3 +11,8 @@ connections:
 
 apikeys:
     google_geocoding: xxxxxxxx
+    askgeo:
+        accountid: 1234
+        key: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        format: obj # (obj, json or xml)
+        secure: true # (true=https, false=http)

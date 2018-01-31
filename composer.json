@@ -8,13 +8,20 @@
       "email": "website@meezaan.net"
     }
   ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/meezaan/askgeo-api"
+    }
+  ],
   "require": {
     "monolog/monolog": "~1.17",
     "doctrine/dbal": "v2.5.4",
     "guzzlehttp/guzzle": "^6.1",
     "slim/slim": "^3.0",
     "symfony/yaml": "^3.3",
-    "meezaan/prayer-times": "^1.0"
+    "meezaan/prayer-times": "^1.0",
+    "meezaan/askgeo-api": "dev-master"
   },
   "autoload": {
     "psr-0": {

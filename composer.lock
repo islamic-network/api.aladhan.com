@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b19e60ce0e498305589df8ef6016395b",
+    "content-hash": "4e2d0ed0e739bfd8a1cd7969d9e3d3ad",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -691,6 +691,51 @@
                 "url"
             ],
             "time": "2017-03-20T17:10:46+00:00"
+        },
+        {
+            "name": "meezaan/askgeo-api",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/meezaan/askgeo-api.git",
+                "reference": "71ab15206259332f3f226b7e268e9f51bd23f7b1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/meezaan/askgeo-api/zipball/71ab15206259332f3f226b7e268e9f51bd23f7b1",
+                "reference": "71ab15206259332f3f226b7e268e9f51bd23f7b1",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Meezaan\\AskGeo\\": "src"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pierre-Emmanuel Lévesque",
+                    "email": "pierre.e.levesque@gmail.com"
+                },
+                {
+                    "name": "M A Wal-Ikram",
+                    "email": "website@meezaan.net"
+                }
+            ],
+            "description": "A class to consume askgeo's API.",
+            "keywords": [
+                "askgeo"
+            ],
+            "support": {
+                "source": "https://github.com/meezaan/askgeo-api/tree/master"
+            },
+            "time": "2018-01-31T11:42:08+00:00"
         },
         {
             "name": "meezaan/prayer-times",
@@ -2684,7 +2729,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "meezaan/askgeo-api": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

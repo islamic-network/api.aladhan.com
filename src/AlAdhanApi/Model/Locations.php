@@ -6,6 +6,7 @@ use AlAdhanApi\Helper\Cacher;
 use AlAdhanApi\Helper\Generic;
 use AlAdhanApi\Helper\Log;
 use AlAdhanApi\Helper\GoogleMapsApi;
+use AlAdhanApi\Helper\AskGeo;
 use AlAdhanApi\Helper\Database;
 
 /**
@@ -40,6 +41,7 @@ class Locations
         }
 
         $this->google = new GoogleMapsApi($this->config, $this->logger);
+        $this->askGeo = new AskGeo($this->config, $this->logger);
         $db = new Database();
         $this->db = $db->getConnection();
     }
@@ -498,7 +500,9 @@ class Locations
         }
 
         // If we're here, go to Google.
-        $timezone = $this->google->getTimezoneByCoOrdinates($lat, $lng);
+        //$timezone = $this->google->getTimezoneByCoOrdinates($lat, $lng);
+        // Switching to AskGeo
+        $timezone = $this->askGeo->getTimezoneByCoOrdinates($lat, $lng);
 
         $this->addTimezone($lat, $lng, $timezone);
 
