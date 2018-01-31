@@ -50,7 +50,7 @@ class AskGeo
 
         $this->config = $this->config->apiKey('askgeo');
 
-        $this->client = new AskGeoAPI($this->config['accountid'], $this->config['key'], $this->config['format'], $this->config['secure']);
+        $this->client = new AskGeoAPI($this->config['accountid'], $this->config['key'], 'obj', true);
         if ($logger === null) {
             $this->logger = new Log();
         } else {
