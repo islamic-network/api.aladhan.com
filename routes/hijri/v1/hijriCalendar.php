@@ -70,7 +70,7 @@ $app->group('/v1', function() {
      *     ]
      * }
      */
-    $app->get('/gToHCalendar/{month}/{year}', function (Request $request, Response $response) {
+    $this->get('/gToHCalendar/{month}/{year}', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $cs = new HijriCalendarService();
 
@@ -146,7 +146,7 @@ $app->group('/v1', function() {
      *     ]
      * }
      */
-    $app->get('/hToGCalendar/{month}/{year}', function (Request $request, Response $response) {
+    $this->get('/hToGCalendar/{month}/{year}', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $cs = new HijriCalendarService();
 
@@ -208,7 +208,7 @@ $app->group('/v1', function() {
      *     }
      * }
      */
-    $app->get('/gToH', function (Request $request, Response $response) {
+    $this->get('/gToH', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $date = $request->getQueryParam('date') == '' || null ? date('d-m-Y', time()) : $request->getQueryParam('date');
         $hs = new HijriCalendarService();
@@ -272,7 +272,7 @@ $app->group('/v1', function() {
      *     }
      * }
      */
-    $app->get('/hToG', function (Request $request, Response $response) {
+    $this->get('/hToG', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $hs = new HijriCalendarService();
         if ($request->getQueryParam('date') == '' || null) {
@@ -290,7 +290,7 @@ $app->group('/v1', function() {
         }
     });
 
-    $app->get('/nextHijriHoliday', function (Request $request, Response $response) {
+    $this->get('/nextHijriHoliday', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $hs = new HijriCalendarService();
         $result = $hs->nextHijriHoliday();;
@@ -301,7 +301,7 @@ $app->group('/v1', function() {
         }
     });
 
-    $app->get('/currentIslamicYear', function (Request $request, Response $response) {
+    $this->get('/currentIslamicYear', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $hs = new HijriCalendarService();
         $result = $hs->getCurrentIslamicYear();
@@ -312,7 +312,7 @@ $app->group('/v1', function() {
         }
     });
 
-    $app->get('/currentIslamicMonth', function (Request $request, Response $response) {
+    $this->get('/currentIslamicMonth', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $hs = new HijriCalendarService();
         $result = $hs->getCurrentIslamicMonth();
@@ -323,7 +323,7 @@ $app->group('/v1', function() {
         }
     });
 
-    $app->get('/islamicYearFromGregorianForRamadan/{year}', function (Request $request, Response $response) {
+    $this->get('/islamicYearFromGregorianForRamadan/{year}', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $y = (int) $request->getAttribute('year');
         $hs = new HijriCalendarService();
@@ -335,7 +335,7 @@ $app->group('/v1', function() {
         }
     });
 
-    $app->get('/hijriHolidays/{day}/{month}', function (Request $request, Response $response) {
+    $this->get('/hijriHolidays/{day}/{month}', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $d = (int) $request->getAttribute('day');
         $m = (int) $request->getAttribute('month');
@@ -348,7 +348,7 @@ $app->group('/v1', function() {
         }
     });
 
-    $app->get('/specialDays', function (Request $request, Response $response) {
+    $this->get('/specialDays', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $hs = new HijriCalendarService();
         $result = $hs->specialDays();
@@ -359,7 +359,7 @@ $app->group('/v1', function() {
         }
     });
 
-    $app->get('/islamicMonths', function (Request $request, Response $response) {
+    $this->get('/islamicMonths', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $hs = new HijriCalendarService();
         $result = $hs->getIslamicMonths();

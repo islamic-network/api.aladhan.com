@@ -26,7 +26,7 @@ $app->group('/v1', function() {
      *   "data": "13:56"
      * }
      */
-    $app->get('/currentTime', function (Request $request, Response $response) {
+    $this->get('/currentTime', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $zone = $request->getQueryParam('zone');
         if ($zone == '' || $zone == null || !Generic::isTimeZoneValid($zone)) {
@@ -58,7 +58,7 @@ $app->group('/v1', function() {
      *   "data": "23-08-2017"
      * }
      */
-    $app->get('/currentDate', function (Request $request, Response $response) {
+    $this->get('/currentDate', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $zone = $request->getQueryParam('zone');
         if ($zone == '' || $zone == null || !Generic::isTimeZoneValid($zone)) {
@@ -90,7 +90,7 @@ $app->group('/v1', function() {
      *   "data": "1503495668"
      * }
      */
-    $app->get('/currentTimestamp', function (Request $request, Response $response) {
+    $this->get('/currentTimestamp', function (Request $request, Response $response) {
         $zone = $request->getQueryParam('zone');
         if ($zone == '' || $zone == null || !Generic::isTimeZoneValid($zone)) {
             return $response->withJson(ApiResponse::build('Please specify a valid timezone. Example: Europe/London', 400, 'Bad Request'), 400);

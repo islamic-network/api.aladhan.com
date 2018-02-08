@@ -58,7 +58,7 @@ $app->group('/v1', function() {
      * "data": "Please specify a valid number between 1 and 99."
      * }
      */
-    $app->get('/asmaAlHusna', function (Request $request, Response $response) {
+    $this->get('/asmaAlHusna', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $names = AsmaAlHusna::get();
 
@@ -107,7 +107,7 @@ $app->group('/v1', function() {
      * "data": "Please specify a valid number between 1 and 99."
      * }
      */
-    $app->get('/asmaAlHusna/{no}', function (Request $request, Response $response) {
+    $this->get('/asmaAlHusna/{no}', function (Request $request, Response $response) {
         $this->helper->logger->write();
         $number = $request->getAttribute('no');
         $number = explode(',', $number);
