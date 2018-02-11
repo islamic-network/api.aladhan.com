@@ -932,7 +932,7 @@ $app->group('/v1', function() {
     });
 
     /**
-     * @api {get} http://api.aladhan.com/v1/hijriCalendar Hijri Calendar with Prayer Times
+     * @api {get} http://api.aladhan.com/v1/hijriCalendar Prayer Times Hijri Calendar
      * @apiDescription Returns all prayer times for a specific Hijri calendar month.
      * @apiName GetHijriCalendar
      * @apiGroup Calendar
@@ -1420,7 +1420,7 @@ $app->group('/v1', function() {
     });
 
     /**
-     * @api {get} http://api.aladhan.com/v1/hijriCalendarByAddress Prayer Times with Hijri Calendar by address
+     * @api {get} http://api.aladhan.com/v1/hijriCalendarByAddress Prayer Times Hijri Calendar by address
      * @apiDescription Returns all prayer times for a specific Hijri calendar month at a particular address.
      * @apiName GetHijriCalendarByAddress
      * @apiGroup Calendar
@@ -1661,7 +1661,7 @@ $app->group('/v1', function() {
     });
 
     /**
-     * @api {get} http://api.aladhan.com/v1/calendarByCity Calendar by City
+     * @api {get} http://api.aladhan.com/v1/calendarByCity Prayer Times Calendar by city
      * @apiDescription Returns all prayer times for a specific calendar month by City.
      * @apiName GetCalendarByCitys
      * @apiGroup Calendar
@@ -1907,7 +1907,7 @@ $app->group('/v1', function() {
 
 
     /**
-     * @api {get} http://api.aladhan.com/v1/hijriCalendarByCity Prayer Times with Hijri Calendar by City
+     * @api {get} http://api.aladhan.com/v1/hijriCalendarByCity Prayer Times Hijri Calendar by city
      * @apiDescription Returns all prayer times for a specific Hijri calendar month by City.
      * @apiName GetHijriCalendarByCity
      * @apiGroup Calendar
