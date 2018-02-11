@@ -123,7 +123,7 @@ class PrayerTimesHelper
             }
             $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod);
             $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
-            $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregroian' => $i['gregorian'], 'hijri' => $i['hijri']];
+            $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregorian' => $i['gregorian'], 'hijri' => $i['hijri']];
             $times[$key] =  ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
         }
 
@@ -158,7 +158,7 @@ class PrayerTimesHelper
                 }
                 $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod);
                 $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
-                $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregroian' => $i['gregorian'], 'hijri' => $i['hijri']];
+                $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregorian' => $i['gregorian'], 'hijri' => $i['hijri']];
                 $times[$month][$key] =  ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
             }
         }
@@ -196,7 +196,7 @@ class PrayerTimesHelper
                 }
                 $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod);
                 $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
-                $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregroian' => $hm[$i]['gregorian'], 'hijri' => $hm[$i]['hijri']];
+                $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregorian' => $hm[$i]['gregorian'], 'hijri' => $hm[$i]['hijri']];
                 $times[$month][$i] =  ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
                 // Add 24 hours to start date
                 $cal_start =  $cal_start + (1*60*60*24);

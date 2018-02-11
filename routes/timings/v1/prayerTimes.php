@@ -173,7 +173,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -360,7 +360,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -548,7 +548,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -740,7 +740,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -823,7 +823,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -987,7 +987,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -1070,7 +1070,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -1233,7 +1233,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -1316,7 +1316,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -1474,7 +1474,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -1557,7 +1557,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -1717,7 +1717,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -1800,7 +1800,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -1963,7 +1963,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
@@ -2046,7 +2046,7 @@ $app->group('/v1', function() {
      *        "date": {
      *            "readable": "24 Apr 2014",
      *            "timestamp": "1398332113",
-     *            "gregroian": {
+     *            "gregorian": {
      *                "date": "15-05-2018",
      *                "format": "DD-MM-YYYY",
      *                "day": "15",
