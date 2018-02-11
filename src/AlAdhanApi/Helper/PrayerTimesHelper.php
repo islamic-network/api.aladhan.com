@@ -1,6 +1,7 @@
 <?php
 namespace AlAdhanApi\Helper;
 use Meezaan\PrayerTimes\Method;
+use AlAdhanApi\Model\HijriCalendarService;;
 
 /**
  * Class PrayerTimesHelper
@@ -71,6 +72,9 @@ class PrayerTimesHelper
     public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt)
     {
 
+        $cs = new HijriCalendarService();
+
+        $hm = $cs->getGtoHCalendar($month, $year);
         $cal_start = strtotime($year . '-' . $month . '-01 09:01:01');
         $days_in_month = cal_days_in_month(\CAL_GREGORIAN, $month, $year);
         $times = [];
@@ -83,10 +87,80 @@ class PrayerTimesHelper
             }
             $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod);
             $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
-            $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U')];
+            $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregorian' => $hm[$i]['gregorian'], 'hijri' => $hm[$i]['hijri']];
             $times[$i] =  ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
             // Add 24 hours to start date
             $cal_start =  $cal_start + (1*60*60*24);
+        }
+
+        return $times;
+    }
+
+    /**
+     * Calculate Prayer Times for a complete Hijri month
+     * @param  String $latitude
+     * @param  String $longitude
+     * @param  Integer $month
+     * @param  Integer $year
+     * @param  String $timezone
+     * @param  Integer $latitudeAdjustmentMethod
+     * @param  PrayerTimes Object $pt
+     * @return Array
+     */
+    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt)
+    {
+        $cs = new HijriCalendarService();
+
+        $hm = $cs->getHtoGCalendar($month, $year);
+
+        $times = [];
+
+        foreach ($hm as $key => $i) {
+            // Create date time object for this date.
+            $calstart = new \DateTime( date('Y-m-d H:i:s', strtotime($i['gregorian']['year']. '-' . $i['gregorian']['month']['number'] . '-' . $i['gregorian']['day']. ' 09:01:01')), new \DateTimeZone($timezone));
+            if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart)) {
+                $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+            }
+            $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod);
+            $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
+            $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregroian' => $i['gregorian'], 'hijri' => $i['hijri']];
+            $times[$key] =  ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
+        }
+
+        return $times;
+    }
+
+    /**
+     * Calculate Prayer Times for a complete Hijri year
+     * @param  String $latitude
+     * @param  String $longitude
+     * @param  Integer $year
+     * @param  String $timezone
+     * @param  Integer $latitudeAdjustmentMethod
+     * @param  PrayerTimes Object $pt
+     * @return Array
+     */
+    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt)
+    {
+        $cs = new HijriCalendarService();
+        $times = [];
+        for ($month=0; $month<=12; $month++) {
+            if ($month < 1) {
+                $month = 1;
+            }
+            $hm = $cs->getHtoGCalendar($month, $year);
+
+            foreach ($hm as $key => $i) {
+                // Create date time object for this date.
+            $calstart = new \DateTime( date('Y-m-d H:i:s', strtotime($i['gregorian']['year']. '-' . $i['gregorian']['month']['number'] . '-' . $i['gregorian']['day']. ' 09:01:01')), new \DateTimeZone($timezone));
+                if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart)) {
+                    $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+                }
+                $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod);
+                $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
+                $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregroian' => $i['gregorian'], 'hijri' => $i['hijri']];
+                $times[$month][$key] =  ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
+            }
         }
 
         return $times;
@@ -104,8 +178,13 @@ class PrayerTimesHelper
      */
     public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt)
     {
+        $cs = new HijriCalendarService();
         $times = [];
         for ($month=0; $month<=12; $month++) {
+            if ($month < 1) {
+                $month = 1;
+            }
+            $hm = $cs->getGtoHCalendar($month, $year);
             $cal_start = strtotime($year . '-' . $month . '-01 09:01:01');
             $days_in_month = cal_days_in_month(\CAL_GREGORIAN, $month, $year);
 
@@ -117,7 +196,7 @@ class PrayerTimesHelper
                 }
                 $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod);
                 $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
-                $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U')];
+                $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregroian' => $hm[$i]['gregorian'], 'hijri' => $hm[$i]['hijri']];
                 $times[$month][$i] =  ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
                 // Add 24 hours to start date
                 $cal_start =  $cal_start + (1*60*60*24);
@@ -126,7 +205,6 @@ class PrayerTimesHelper
 
         return $times;
     }
-
     /**
      * Checks if the given date falls in Ramadan
      * @param  DateTime $date

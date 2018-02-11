@@ -3,6 +3,7 @@
 namespace AlAdhanApi\Helper;
 
 use AlAdhanApi\Helper\Generic;
+use AlAdhanApi\Model\HijriCalendarService;;
 
 /**
  * Class Request
@@ -124,6 +125,21 @@ class Request
     }
 
     /**
+     * [hijriMonth description]
+     * @param  [type] $data [description]
+     * @return [type]       [description]
+     */
+    public static function hijriMonth($data)
+    {
+        if ($data == '' || $data == null || !is_numeric($data) || $data > 12 || $data < 1) {
+            $cs = new HijriCalendarService();
+            return $cs->getCurrentIslamicMonth();
+        }
+
+        return $data;
+    }
+
+    /**
      * [year description]
      * @param  [type] $data [description]
      * @return [type]       [description]
@@ -133,6 +149,21 @@ class Request
         if ($data == '' || $data == null || !is_numeric($data)) {
             $d = new \DateTime('now');
             return $d->format('Y');
+        }
+
+        return $data;
+    }
+
+    /**
+     * [hijriYear description]
+     * @param  [type] $data [description]
+     * @return [type]       [description]
+     */
+    public static function hijriYear($data)
+    {
+        if ($data == '' || $data == null || !is_numeric($data)) {
+            $cs = new HijriCalendarService();
+            return $cs->getCurrentIslamicYear();
         }
 
         return $data;
