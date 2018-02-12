@@ -593,7 +593,7 @@ class AsmaAlHusna
         'transliteration' => 'Al Awwal',
         'number' => 73,
         'en' => [
-            'meaning' => 'The Firdt',
+            'meaning' => 'The First',
             ]
         ],
         74 => [
