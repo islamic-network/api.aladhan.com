@@ -68,8 +68,7 @@ class HijriCalendarService
     {
 
         $this->ConstractDayMonthYear($date, $format);
-        $d=intval($this->Day); // Adjust for 2016
-        $d=intval($this->Day) - 1; // Adjust for 2016
+        $d=intval($this->Day);
         $m=intval($this->Month);
         $y=intval($this->Year);
 
@@ -125,7 +124,6 @@ class HijriCalendarService
     {
         $this->ConstractDayMonthYear($date, $format);
         $d=intval($this->Day);
-        $d=intval($this->Day) + 1; // Adjust for Ramadan 2016
         $m=intval($this->Month);
         $y=intval($this->Year);
 
