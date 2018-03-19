@@ -131,11 +131,11 @@ $app->group('/v1', function() {
      * @apiParam {decimal} longitude The decimal value for the longitude co-ordinate of the location you want the time computed for. Example: -1.25387785
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
-     *                               1 - Muslim World League<br />
+     *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
-     *                               3 - Egyptian General Authority of Survey<br />
+     *                               3 - Muslim World League<br />
      *                               4 - Umm Al-Qura University, Makkah <br />
-     *                               5 - University of Islamic Sciences, Karachi<br />
+     *                               5 - Egyptian General Authority of Survey<br />
      *                               7 - Institute of Geophysics, University of Tehran<br />
      *                               8 - Gulf Region<br />
      *                               9 - Kuwait<br />
@@ -143,6 +143,8 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
      * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -318,11 +320,11 @@ $app->group('/v1', function() {
      * @apiParam {string} address An address string. Example: 1420 Austin Bluffs Parkway, Colorado Springs, CO OR 25 Hampstead High Street, London, NW3 1RL, United Kingdom OR Sultanahmet Mosque, Istanbul, Turkey
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
-     *                               1 - Muslim World League<br />
+     *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
-     *                               3 - Egyptian General Authority of Survey<br />
+     *                               3 - Muslim World League<br />
      *                               4 - Umm Al-Qura University, Makkah <br />
-     *                               5 - University of Islamic Sciences, Karachi<br />
+     *                               5 - Egyptian General Authority of Survey<br />
      *                               7 - Institute of Geophysics, University of Tehran<br />
      *                               8 - Gulf Region<br />
      *                               9 - Kuwait<br />
@@ -330,6 +332,8 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
      * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -506,11 +510,11 @@ $app->group('/v1', function() {
      * @apiParam {string} [state] State or province. A state name or abbreviation. Examples: Colorado / CO / Punjab / Bengal
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
-     *                               1 - Muslim World League<br />
+     *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
-     *                               3 - Egyptian General Authority of Survey<br />
+     *                               3 - Muslim World League<br />
      *                               4 - Umm Al-Qura University, Makkah <br />
-     *                               5 - University of Islamic Sciences, Karachi<br />
+     *                               5 - Egyptian General Authority of Survey<br />
      *                               7 - Institute of Geophysics, University of Tehran<br />
      *                               8 - Gulf Region<br />
      *                               9 - Kuwait<br />
@@ -518,6 +522,8 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
      * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -698,11 +704,11 @@ $app->group('/v1', function() {
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
-     *                               1 - Muslim World League<br />
+     *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
-     *                               3 - Egyptian General Authority of Survey<br />
+     *                               3 - Muslim World League<br />
      *                               4 - Umm Al-Qura University, Makkah <br />
-     *                               5 - University of Islamic Sciences, Karachi<br />
+     *                               5 - Egyptian General Authority of Survey<br />
      *                               7 - Institute of Geophysics, University of Tehran<br />
      *                               8 - Gulf Region<br />
      *                               9 - Kuwait<br />
@@ -710,6 +716,8 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
      * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -945,11 +953,11 @@ $app->group('/v1', function() {
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
-     *                               1 - Muslim World League<br />
+     *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
-     *                               3 - Egyptian General Authority of Survey<br />
+     *                               3 - Muslim World League<br />
      *                               4 - Umm Al-Qura University, Makkah <br />
-     *                               5 - University of Islamic Sciences, Karachi<br />
+     *                               5 - Egyptian General Authority of Survey<br />
      *                               7 - Institute of Geophysics, University of Tehran<br />
      *                               8 - Gulf Region<br />
      *                               9 - Kuwait<br />
@@ -957,6 +965,8 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
      * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -1191,11 +1201,11 @@ $app->group('/v1', function() {
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
-     *                               1 - Muslim World League<br />
+     *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
-     *                               3 - Egyptian General Authority of Survey<br />
+     *                               3 - Muslim World League<br />
      *                               4 - Umm Al-Qura University, Makkah <br />
-     *                               5 - University of Islamic Sciences, Karachi<br />
+     *                               5 - Egyptian General Authority of Survey<br />
      *                               7 - Institute of Geophysics, University of Tehran<br />
      *                               8 - Gulf Region<br />
      *                               9 - Kuwait<br />
@@ -1203,6 +1213,8 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
      * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -1432,11 +1444,11 @@ $app->group('/v1', function() {
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
-     *                               1 - Muslim World League<br />
+     *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
-     *                               3 - Egyptian General Authority of Survey<br />
+     *                               3 - Muslim World League<br />
      *                               4 - Umm Al-Qura University, Makkah <br />
-     *                               5 - University of Islamic Sciences, Karachi<br />
+     *                               5 - Egyptian General Authority of Survey<br />
      *                               7 - Institute of Geophysics, University of Tehran<br />
      *                               8 - Gulf Region<br />
      *                               9 - Kuwait<br />
@@ -1444,6 +1456,8 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
      * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -1675,11 +1689,11 @@ $app->group('/v1', function() {
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
-     *                               1 - Muslim World League<br />
+     *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
-     *                               3 - Egyptian General Authority of Survey<br />
+     *                               3 - Muslim World League<br />
      *                               4 - Umm Al-Qura University, Makkah <br />
-     *                               5 - University of Islamic Sciences, Karachi<br />
+     *                               5 - Egyptian General Authority of Survey<br />
      *                               7 - Institute of Geophysics, University of Tehran<br />
      *                               8 - Gulf Region<br />
      *                               9 - Kuwait<br />
@@ -1687,6 +1701,8 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
      * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
@@ -1921,11 +1937,11 @@ $app->group('/v1', function() {
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
-     *                               1 - Muslim World League<br />
+     *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
-     *                               3 - Egyptian General Authority of Survey<br />
+     *                               3 - Muslim World League<br />
      *                               4 - Umm Al-Qura University, Makkah <br />
-     *                               5 - University of Islamic Sciences, Karachi<br />
+     *                               5 - Egyptian General Authority of Survey<br />
      *                               7 - Institute of Geophysics, University of Tehran<br />
      *                               8 - Gulf Region<br />
      *                               9 - Kuwait<br />
@@ -1933,6 +1949,8 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {string} [timezonestring] A valid timezone name as specified on <a href="http://php.net/manual/en/timezones.php" target="_blank">http://php.net/manual/en/timezones.php</a>  . Example: Europe/London. If you do not specify this, we'll calcuate it using the co-ordinates you provide.
      * @apiParam {number} [latitudeAdjustmentMethod=3] Method for adjusting times higher latitudes - for instance, if you are checking timings in the UK or Sweden.<br />
