@@ -399,6 +399,7 @@ class HijriCalendarService
         $days[] = ['month' => 1, 'day' => 10, 'name' => 'Ashura'];
         $days[] = ['month' => 3, 'day' => 12, 'name' => 'Mawlid al-Nabi'];
         $days[] = ['month' => 7, 'day' => 27, 'name' => 'Lailat-ul-Miraj'];
+        $days[] = ['month' => 8, 'day' => 15, 'name' => 'Lailat-ul-Bara\'at'];
         $days[] = ['month' => 9, 'day' => 1, 'name' => '1st Day of Ramadan'];
         $days[] = ['month' => 9, 'day' => 21, 'name' => 'Lailat-ul-Qadr'];
         $days[] = ['month' => 9, 'day' => 23, 'name' => 'Lailat-ul-Qadr'];
