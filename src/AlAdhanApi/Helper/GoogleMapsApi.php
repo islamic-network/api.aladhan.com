@@ -3,6 +3,7 @@ namespace AlAdhanApi\Helper;
 
 use AlAdhanApi\Helper\Log;
 use AlAdhanApi\Helper\Config;
+use AlAdhanApi\Helper\AskGeo;
 
 /**
  * Class GoogleMapsApi
@@ -52,6 +53,8 @@ class GoogleMapsApi
         } else {
             $this->config = $config;
         }
+
+        $this->askGeo = new AskGeo($this->config, $this->logger);
 
         $this->response = (object) [
             'state' => '',
@@ -116,7 +119,11 @@ class GoogleMapsApi
         $geoInfo = $this->geoCode($address);
         if ($geoInfo) {
             $this->updateResponseWithGeoCodingInfo($geoInfo);
-            $timezone = $this->timezone();
+            $tz = $this->timezone();
+
+            // Artifically adding timeZoneName below. It is part of the response and stored in one table but is not used for anything, so we 
+            // don't really need it to be pretty descriptive name, per se.
+            $timezone = (object) ['timeZoneId' => $tz, 'timeZoneName' => $tz];
 
             if ($timezone) {
                 $this->updateResponseWithTimezoneInfo($timezone);
@@ -152,28 +159,9 @@ class GoogleMapsApi
             $this->response->lat = $lat;
             $this->response->lng = $lng;
         }
-        try {
-            $this->logger->writeGoogleQueryLog('Sending Request :: timezone :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this->response->lng]));
-            $res2 = $this->queryApi('timezone/json',
-                [
-                    'location' => $this->response->lat . ',' . $this->response->lng,
-                    'timestamp' => time(),
-                ]
-            );
-            $r2 = (string) $res2->getBody()->getContents();
-            $x2 = json_decode($r2);
 
-            if ($x2->status == 'OK') {
-                $this->logger->writeGoogleQueryLog('Request Successful :: timezone :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this->response->lng]));
-                return $x2;
-            }
-
-            return false;
-        } catch (Exception $e) {
-            $this->logger->writeGoogleQueryLog('Request Failed :: timezone :: ' . $e->getMessage() . ' :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this->response->lng]));
-
-            return false;
-        }
+        // Move all this to ask geo as google is expensive
+        return $this->askGeo->getTimezoneByCoOrdinates($this->response->lat, $this->response->lng);
     }
 
     /**
