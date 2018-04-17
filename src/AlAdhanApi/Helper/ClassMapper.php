@@ -53,6 +53,24 @@ class ClassMapper
         return 'STANDARD';
     }
 
+        /**
+     * Returns Midnight mode
+     * @param  Integer $id
+     * @return String
+     */
+    public static function midnightMode($id)
+    {
+        if ($id == 0) {
+            return 'STANDARD';
+        }
+
+        if ($id == 1) {
+            return 'JAFARI';
+        };
+
+        return 'STANDARD';
+    }
+
     /**
      * Returns name of Latitude Adjustment Method
      * @param  Integer $id

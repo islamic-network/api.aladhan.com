@@ -26,6 +26,20 @@ class Request
     }
 
     /**
+     * [midnightMode description]
+     * @param  [type] $data [description]
+     * @return [type]       [description]
+     */
+    public static function midnightMode($data)
+    {
+        if (in_array($data, [0, 1])) {
+            return $data;
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * [latitudeAdjustmentMethod description]
      * @param  [type] $data [description]
      * @return [type]       [description]

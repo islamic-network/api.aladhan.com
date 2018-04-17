@@ -628,6 +628,7 @@ $app->group('/v1', function() {
         $this->helper->logger->write();
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $city = $request->getQueryParam('city');
         $country = $request->getQueryParam('country');
@@ -646,7 +647,7 @@ $app->group('/v1', function() {
             if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
-            $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod);
+            $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'));
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
