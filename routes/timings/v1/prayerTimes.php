@@ -61,6 +61,7 @@ $app->group('/v1', function() {
         $this->helper->logger->write();
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $address = $request->getQueryParam('address');
         $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
@@ -78,7 +79,7 @@ $app->group('/v1', function() {
             if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
-            $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
+            $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
             return $response->withJson(ApiResponse::build(['timings' => $nextPrayer, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
@@ -92,6 +93,7 @@ $app->group('/v1', function() {
         $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $address = $request->getQueryParam('address');
         $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
@@ -109,7 +111,7 @@ $app->group('/v1', function() {
             if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
-            $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
+            $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
             return $response->withJson(ApiResponse::build(['timings' => $nextPrayer, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
@@ -249,6 +251,7 @@ $app->group('/v1', function() {
         $this->helper->logger->write();
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $latitude = $request->getQueryParam('latitude');
         $longitude = $request->getQueryParam('longitude');
@@ -266,7 +269,7 @@ $app->group('/v1', function() {
             if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
-            $timings = $pt->getTimesForToday($latitude, $longitude, $timezone, null, $latitudeAdjustmentMethod);
+            $timings = $pt->getTimesForToday($latitude, $longitude, $timezone, null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'));
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
@@ -281,6 +284,7 @@ $app->group('/v1', function() {
         $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $latitude = $request->getQueryParam('latitude');
         $longitude = $request->getQueryParam('longitude');
@@ -302,7 +306,7 @@ $app->group('/v1', function() {
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'));
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
-            $timings = $pt->getTimes($d, $latitude, $longitude, null, $latitudeAdjustmentMethod);
+            $timings = $pt->getTimes($d, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
             return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
         } else {
             return $response->withJson(ApiResponse::build('Please specify a valid latitude and longitude.', 400, 'Bad Request'), 400);
@@ -438,6 +442,7 @@ $app->group('/v1', function() {
         $this->helper->logger->write();
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $address = $request->getQueryParam('address');
         $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
@@ -455,7 +460,7 @@ $app->group('/v1', function() {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
 
-            $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod);
+            $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'));
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
@@ -470,6 +475,7 @@ $app->group('/v1', function() {
         $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $address = $request->getQueryParam('address');
         $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
@@ -487,7 +493,7 @@ $app->group('/v1', function() {
             if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
-            $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
+            $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'));
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
@@ -662,6 +668,7 @@ $app->group('/v1', function() {
         $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $city = $request->getQueryParam('city');
         $country = $request->getQueryParam('country');
@@ -681,7 +688,7 @@ $app->group('/v1', function() {
             if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
-            $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
+            $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'));
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
@@ -908,6 +915,7 @@ $app->group('/v1', function() {
         $this->helper->logger->write();
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $month = ApiRequest::month($request->getQueryParam('month'));
         $year = ApiRequest::year($request->getQueryParam('year'));
@@ -930,9 +938,9 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt);
+                $times = PrayerTimesHelper::calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode);
             } else {
-                $times = PrayerTimesHelper::calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt);
+                $times = PrayerTimesHelper::calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -1157,6 +1165,7 @@ $app->group('/v1', function() {
         $this->helper->logger->write();
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $month = ApiRequest::hijriMonth($request->getQueryParam('month'));
         $year = ApiRequest::hijriYear($request->getQueryParam('year'));
@@ -1179,9 +1188,9 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt);
+                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode);
             } else {
-                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt);
+                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -1405,6 +1414,7 @@ $app->group('/v1', function() {
         $this->helper->logger->write();
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $month = ApiRequest::month($request->getQueryParam('month'));
         $year = ApiRequest::year($request->getQueryParam('year'));
@@ -1422,9 +1432,9 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt);
+                $times = PrayerTimesHelper::calculateYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
             } else {
-                $times = PrayerTimesHelper::calculateMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt);
+                $times = PrayerTimesHelper::calculateMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -1648,6 +1658,7 @@ $app->group('/v1', function() {
         $this->helper->logger->write();
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $month = ApiRequest::hijriMonth($request->getQueryParam('month'));
         $year = ApiRequest::hijriYear($request->getQueryParam('year'));
@@ -1665,9 +1676,9 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt);
+                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
             } else {
-                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt);
+                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -1893,6 +1904,7 @@ $app->group('/v1', function() {
         $this->helper->logger->write();
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $month = ApiRequest::month($request->getQueryParam('month'));
         $year = ApiRequest::year($request->getQueryParam('year'));
@@ -1912,9 +1924,9 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt);
+                $times = PrayerTimesHelper::calculateYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
             } else {
-                $times = PrayerTimesHelper::calculateMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt);
+                $times = PrayerTimesHelper::calculateMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -2141,6 +2153,7 @@ $app->group('/v1', function() {
         $this->helper->logger->write();
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
         $month = ApiRequest::hijriMonth($request->getQueryParam('month'));
         $year = ApiRequest::hijriYear($request->getQueryParam('year'));
@@ -2160,9 +2173,9 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt);
+                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
             } else {
-                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt);
+                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
