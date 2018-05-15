@@ -123,7 +123,7 @@ class HijriCalendarService
     public function GregorianToHijri($date, $format) // $date like 10122011, $format like DDMMYYYY, take date & check if its gregorian then convert to hijri date in format (DD-MM-YYYY), if it hijri the return empty;
     {
         $this->ConstractDayMonthYear($date, $format);
-        $d=intval($this->Day)-2;
+        $d=intval($this->Day)-1;
         $m=intval($this->Month);
         $y=intval($this->Year);
 
@@ -362,7 +362,7 @@ class HijriCalendarService
         for ($i=1; $i<=$days; $i++) {
             $curDate = $i . '-' . $m . '-' . $y;
             $calendar = $this->gToH($curDate);
-            if ($calendar['hijri']['month']['number'] != $m) {
+            if ($calendar['gregorian']['month']['number'] != $m) {
                 unset($calendar[$i]);
             }
             $combineCal[] = $calendar;
