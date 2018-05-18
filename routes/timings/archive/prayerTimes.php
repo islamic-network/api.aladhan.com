@@ -13,7 +13,7 @@ use AlAdhanApi\Helper\Generic;
  * @api {get} http://api.aladhan.com/methods Prayer Times Methods
  * @apiDescription  Returns all the prayer times calculation methods supported by this API. For more information on how to use custom methods, see <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>.
  * @apiName GetMethods
- * @apiGroup Miscellaneous 
+ * @apiGroup Miscellaneous
  * @apiVersion 1.0.1
  *
  * @apiExample {http} Example usage:
@@ -50,14 +50,14 @@ use AlAdhanApi\Helper\Generic;
  *
  **/
 $app->get('/methods', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $pt = new PrayerTimes();
 
     return $response->withJson(ApiResponse::build($pt->getMethods(), 200, 'OK'), 200);
 });
 
 $app->get('/nextPrayerByAddress', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -87,7 +87,7 @@ $app->get('/nextPrayerByAddress', function (Request $request, Response $response
 });
 
 $app->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
@@ -204,7 +204,7 @@ $app->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Respon
  * }
  */
 $app->get('/timings', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -233,7 +233,7 @@ $app->get('/timings', function (Request $request, Response $response) {
 });
 
 $app->get('/timings/{timestamp}', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
@@ -348,7 +348,7 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
  * }
  */
 $app->get('/timingsByAddress', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -377,7 +377,7 @@ $app->get('/timingsByAddress', function (Request $request, Response $response) {
 });
 
 $app->get('/timingsByAddress/{timestamp}', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
@@ -493,7 +493,7 @@ $app->get('/timingsByAddress/{timestamp}', function (Request $request, Response 
  * }
  */
 $app->get('/timingsByCity', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -523,7 +523,7 @@ $app->get('/timingsByCity', function (Request $request, Response $response) {
 });
 
 $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
@@ -688,7 +688,7 @@ $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $re
  * }
  */
 $app->get('/calendar', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -856,7 +856,7 @@ $app->get('/calendar', function (Request $request, Response $response) {
  * }
  */
 $app->get('/calendarByAddress', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -1021,7 +1021,7 @@ $app->get('/calendarByAddress', function (Request $request, Response $response) 
  * }
  */
 $app->get('/calendarByCity', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -1081,7 +1081,7 @@ $app->get('/calendarByCity', function (Request $request, Response $response) {
  *
  **/
 $app->get('/cityInfo', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $city = $request->getQueryParam('city');
     $country = $request->getQueryParam('country');
     $state = $request->getQueryParam('state');
@@ -1119,7 +1119,7 @@ $app->get('/cityInfo', function (Request $request, Response $response) {
  *
  **/
 $app->get('/addressInfo', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $address = $request->getQueryParam('address');
     $result = $this->model->locations->getAddressCoOrdinatesAndZone($address);
     if ($result) {

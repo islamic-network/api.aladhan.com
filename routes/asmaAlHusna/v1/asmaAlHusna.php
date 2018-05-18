@@ -59,7 +59,7 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/asmaAlHusna', function (Request $request, Response $response) {
-        $this->helper->logger->write();
+        //$this->helper->logger->write();
         $names = AsmaAlHusna::get();
 
         return $response->withJson(ApiResponse::build($names, 200, 'OK'), 200);
@@ -108,7 +108,7 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/asmaAlHusna/{no}', function (Request $request, Response $response) {
-        $this->helper->logger->write();
+        //$this->helper->logger->write();
         $number = $request->getAttribute('no');
         $number = explode(',', $number);
         $nos = [];

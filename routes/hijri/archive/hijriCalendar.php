@@ -71,7 +71,7 @@ use AlAdhanApi\Model\HijriCalendarService;
  * }
  */
 $app->get('/gToHCalendar/{month}/{year}', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $cs = new HijriCalendarService();
 
     $y = (int) $request->getAttribute('year');
@@ -147,7 +147,7 @@ $app->get('/gToHCalendar/{month}/{year}', function (Request $request, Response $
  * }
  */
 $app->get('/hToGCalendar/{month}/{year}', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $cs = new HijriCalendarService();
 
     $y = (int) $request->getAttribute('year');
@@ -209,7 +209,7 @@ $app->get('/hToGCalendar/{month}/{year}', function (Request $request, Response $
  * }
  */
 $app->get('/gToH', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $date = $request->getQueryParam('date') == '' || null ? date('d-m-Y', time()) : $request->getQueryParam('date');
     $hs = new HijriCalendarService();
     $result = $hs->gToH($date);
@@ -273,7 +273,7 @@ $app->get('/gToH', function (Request $request, Response $response) {
  * }
  */
 $app->get('/hToG', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $hs = new HijriCalendarService();
     if ($request->getQueryParam('date') == '' || null) {
         $date = date('d-m-Y', time());
@@ -291,7 +291,7 @@ $app->get('/hToG', function (Request $request, Response $response) {
 });
 
 $app->get('/nextHijriHoliday', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $hs = new HijriCalendarService();
     $result = $hs->nextHijriHoliday();;
     if ($result) {
@@ -302,7 +302,7 @@ $app->get('/nextHijriHoliday', function (Request $request, Response $response) {
 });
 
 $app->get('/currentIslamicYear', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $hs = new HijriCalendarService();
     $result = $hs->getCurrentIslamicYear();
     if ($result) {
@@ -313,7 +313,7 @@ $app->get('/currentIslamicYear', function (Request $request, Response $response)
 });
 
 $app->get('/currentIslamicMonth', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $hs = new HijriCalendarService();
     $result = $hs->getCurrentIslamicMonth();
     if ($result) {
@@ -324,7 +324,7 @@ $app->get('/currentIslamicMonth', function (Request $request, Response $response
 });
 
 $app->get('/islamicYearFromGregorianForRamadan/{year}', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $y = (int) $request->getAttribute('year');
     $hs = new HijriCalendarService();
     $result = $hs->getIslamicYearFromGregorianForRamadan($y);
@@ -336,7 +336,7 @@ $app->get('/islamicYearFromGregorianForRamadan/{year}', function (Request $reque
 });
 
 $app->get('/hijriHolidays/{day}/{month}', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $d = (int) $request->getAttribute('day');
     $m = (int) $request->getAttribute('month');
     $hs = new HijriCalendarService();
@@ -349,7 +349,7 @@ $app->get('/hijriHolidays/{day}/{month}', function (Request $request, Response $
 });
 
 $app->get('/specialDays', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $hs = new HijriCalendarService();
     $result = $hs->specialDays();
     if ($result) {
@@ -358,9 +358,9 @@ $app->get('/specialDays', function (Request $request, Response $response) {
         return $response->withJson(ApiResponse::build('Something went wrong. Please try again later. Sorry.', 400, 'Bad Request'), 400);
     }
 });
-    
+
 $app->get('/islamicMonths', function (Request $request, Response $response) {
-    $this->helper->logger->write();
+    //$this->helper->logger->write();
     $hs = new HijriCalendarService();
     $result = $hs->getIslamicMonths();
     if ($result) {
