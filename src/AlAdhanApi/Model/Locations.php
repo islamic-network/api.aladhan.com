@@ -142,7 +142,7 @@ class Locations
         if ($local) {
             return $local;
         }
-        
+
         if (Generic::isGoogleBot()) {
             return false;
         }
@@ -270,7 +270,7 @@ class Locations
         $city = strtolower($city);
         $country = strtolower($country);
 
-        if ($city == '' || $country == '' || $city == null || $city == 'null' || $country == 'strcountrycode') {
+        if ($city == '' || $country == '' || $city == null || $city == 'null' || $country == 'strcountrycode' || $city == 'DEFAULT_COUNTRY' || $country = 'DEFAULT_CITY') {
             return false;
         }
 
