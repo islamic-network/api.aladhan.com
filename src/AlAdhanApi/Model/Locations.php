@@ -64,10 +64,10 @@ class Locations
                     LEFT JOIN country
                     ON country.iso = city.countryiso
                     WHERE
-                    (LCASE(country.printable_name) = ? OR LCASE(country.iso) = ?)
-                    AND LCASE(city.name) = ?';
+                    (country.printable_name = ? OR country.iso = ?)
+                    AND city.name = ?';
 
-            $stmnt = $this->db->executeQuery($sql, [strtolower($country), strtolower($country), strtolower($city)]);
+            $stmnt = $this->db->executeQuery($sql, [$country, $country, $city]);
 
             $result = $stmnt->fetch();
         } else {
@@ -77,11 +77,11 @@ class Locations
                 LEFT JOIN state
                 ON country.iso = state.countryiso
                 WHERE
-                (LCASE(country.printable_name) = ? OR LCASE(country.iso) = ?)
+                (country.printable_name)= ? OR country.iso = ?)
                 AND
-                (LCASE(state.name) = ? OR LCASE(state.abbreviation) = ?)
+                (state.name = ? OR state.abbreviation = ?)
                 AND
-                LCASE(city.name) = ?';
+                city.name = ?';
 
             $stmnt = $this->db->executeQuery($sql, [strtolower($country), strtolower($country), strtolower($state), strtolower($state), strtolower($city)]);
 
@@ -212,21 +212,21 @@ class Locations
         if ($state == '') {
             $result = $this->db->fetchAssoc("SELECT latitude, longitude, timezone
                                 FROM geolocate WHERE
-                                (LCASE(country) = ? OR LCASE(countryiso) = ?)
+                                (country = ? OR countryiso = ?)
                                 AND
                                 (
-                                (LCASE(city) = ? OR LCASE(cityabbr) = ?)
+                                (city = ? OR cityabbr = ?)
                                 )",
-            [strtolower($country), strtolower($country),strtolower($city), strtolower($city)]);
+            [$country, $country,$city, $city]);
         } else {
             $result = $this->db->fetchAssoc("SELECT latitude, longitude, timezone
                                 FROM geolocate WHERE
-                                (LCASE(country) = ? OR LCASE(countryiso) = ?)
+                                (country = ? OR countryiso = ?)
                                 AND
-                                (LCASE(city) = ? OR LCASE(cityabbr) = ?)
+                                (city = ? OR cityabbr = ?)
                                 AND
-                                (LCASE(state) = ? OR LCASE(stateabbr) = ?)",
-            [strtolower($country), strtolower($country), strtolower($city), strtolower($city), strtolower($state), strtolower($state)]);
+                                (state = ? OR stateabbr = ?)",
+            [$country, $country, $city, $city, $state, $state]);
         }
 
         $this->cacher->set($cacheKey, $result);
@@ -379,9 +379,9 @@ class Locations
         $result = $this->db->fetchAssoc(
                 "SELECT latitude, longitude, timezone
                 FROM address_geolocate_queries WHERE
-                (LCASE(address) = ?)
+                address = ?)
                 ",
-                [strtolower($address)]);
+                [$address]);
 
         if ($result) {
             $this->cacher->set($cacheKey, $result);
@@ -406,9 +406,9 @@ class Locations
         $result = $this->db->fetchAssoc(
                 "SELECT id
                 FROM address_geolocate_invalid WHERE
-                (LCASE(query) = ?)
+                query = ?
                 ",
-                [strtolower($address)]);
+                [$address]);
 
         $this->cacher->set($cacheKey, $result);
 
