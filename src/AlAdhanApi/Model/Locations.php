@@ -341,22 +341,22 @@ class Locations
             $result = $this->db->fetchAssoc(
                 "SELECT latitude, longitude, timezone
                 FROM geolocate_queries WHERE
-                (LCASE(country) = ?)
+                country = ?
                 AND
-                (LCASE(city) = ?)
+                city = ?
                 ",
-                [strtolower($country), strtolower($city)]);
+                [$country, $city]);
         } else {
             $result = $this->db->fetchAssoc(
                 "SELECT latitude, longitude, timezone
                 FROM geolocate_queries WHERE
-                (LCASE(country) = ?)
+                country = ?
                 AND
-                (LCASE(city) = ?)
+                city = ?
                 AND
-                (LCASE(state) = ?)
+                state = ?
                 ",
-                [strtolower($country), strtolower($city), strtolower($state)]);
+                [$country, $city, $state]);
         }
 
         $this->cacher->set($cacheKey, $result);
