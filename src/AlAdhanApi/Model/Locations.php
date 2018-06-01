@@ -345,7 +345,7 @@ class Locations
                 AND
                 (LCASE(city) = ?)
                 ",
-                [$country, $city]);
+                [strtolower($country), strtolower($city)]);
         } else {
             $result = $this->db->fetchAssoc(
                 "SELECT latitude, longitude, timezone
@@ -356,7 +356,7 @@ class Locations
                 AND
                 (LCASE(state) = ?)
                 ",
-                [$country, $city, $state]);
+                [strtolower($country), strtolower($city), strtolower($state)]);
         }
 
         $this->cacher->set($cacheKey, $result);
