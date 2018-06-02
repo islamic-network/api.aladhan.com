@@ -379,9 +379,9 @@ class Locations
         $result = $this->db->fetchAssoc(
                 "SELECT latitude, longitude, timezone
                 FROM address_geolocate_queries WHERE
-                address = ?)
+                address = ?
                 ",
-                [$address]);
+                [$address]) ;
 
         if ($result) {
             $this->cacher->set($cacheKey, $result);
