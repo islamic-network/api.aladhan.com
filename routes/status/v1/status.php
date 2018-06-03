@@ -10,14 +10,14 @@ $app->group('/v1', function() {
     $this->get('/status', function (Request $request, Response $response) {
         $mc = new Cacher();
         $dbx = new Database();
-        $db = $dbx ->getConnection();
-        $dbResult = $this->db->fetchAssoc("SELECT id
+        $db = $dbx->getConnection();
+        $dbResult = $db->fetchAssoc("SELECT id
                                 FROM geolocate WHERE
                                 city = ? AND country = ?",
             ['Dubai', 'UAE']);
 
         $status = [
-            'memcached' => $mc === flase ? 'NOT OK' : 'OK',
+            'memcached' => $mc === false ? 'NOT OK' : 'OK',
             'perconaDB' => $dbResult === false ? 'NOT OK' : 'OK'
                 ];
 
