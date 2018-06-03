@@ -13,12 +13,12 @@ $app->group('/v1', function() {
         $db = $dbx->getConnection();
         $dbResult = $db->fetchAssoc("SELECT id
                                 FROM geolocate WHERE
-                                city = ? AND country = ?",
-            ['Dubai', 'UAE']);
+                                city = ? AND countryiso = ?",
+                    ['Dubai', 'AE']);
 
         $status = [
             'memcached' => $mc === false ? 'NOT OK' : 'OK',
-            'perconaDB' => $dbResult === false ? 'NOT OK' : 'OK'
+            'perconaXtraDB' => $dbResult === false ? 'NOT OK' : 'OK'
                 ];
 
         if ($mc === false || $dbResult == false) {
