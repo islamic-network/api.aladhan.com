@@ -1,12 +1,5 @@
 SetEnvIF X-Forwarded-For "(,| |^)217\.138\.37\.107(,| |$)" DenyIP
 SetEnvIF X-Forwarded-For "(,| |^)31\.167\.60\.182(,| |$)" DenyIP
-<FilesMatch ".*">
-    Require ip 192.88.134.0/23
-    Require ip 185.93.228.0/22
-    Require ip 2a02:fe80::/29
-    Require ip 66.248.200.0/22
-    Require ip 172.104.247.85
-</FilesMatch>
 Order allow,deny
 Deny from env=DenyIP
 Allow from all
