@@ -270,7 +270,7 @@ class Locations
         $city = strtolower($city);
         $country = strtolower($country);
 
-        if ($city == '' || $country == '' || $city == null || $city == 'null' || $country == 'strcountrycode' || $city == 'default_country' || $country == 'default_city' || city == 'LondonÎ¿') {
+        if ($city == '' || $country == '' || $city == null || $city == 'null' || $country == 'strcountrycode' || $city == 'default_country' || $country == 'default_city' || $city == 'London\u03bf') {
             return false;
         }
 
