@@ -68,7 +68,8 @@ class HijriCalendarService
     {
 
         $this->ConstractDayMonthYear($date, $format);
-        $d=intval($this->Day)+1;
+        // $d=intval($this->Day)+1;
+        $d=intval($this->Day);
         $m=intval($this->Month);
         $y=intval($this->Year);
 
@@ -123,7 +124,8 @@ class HijriCalendarService
     public function GregorianToHijri($date, $format) // $date like 10122011, $format like DDMMYYYY, take date & check if its gregorian then convert to hijri date in format (DD-MM-YYYY), if it hijri the return empty;
     {
         $this->ConstractDayMonthYear($date, $format);
-        $d=intval($this->Day)-1;
+        //$d=intval($this->Day)-1;
+        $d=intval($this->Day);
         $m=intval($this->Month);
         $y=intval($this->Year);
 
