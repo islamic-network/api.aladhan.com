@@ -93,7 +93,7 @@ $app->group('/v1', function() {
      * @apiParam {number} year A hijri year. Example: 1437
      *
      * @apiExample {http} Example usage:
-     *   http://api.aladhan.com/v1/gToHCalendar/3/1438
+     *   http://api.aladhan.com/v1/hToGCalendar/3/1438
      *
      * @apiSuccessExample Success-Response:
      * HTTP/1.1 200 OK
@@ -230,7 +230,7 @@ $app->group('/v1', function() {
      * @apiParam {string} date A hijri date formatted as DD-MM-YYYY
      *
      * @apiExample {http} Example usage:
-     *   http://api.aladhan.com/v1/gToH?date=14-02-1436
+     *   http://api.aladhan.com/v1/hToG?date=14-02-1436
      *
      * @apiSuccessExample Success-Response:
      * HTTP/1.1 200 OK
