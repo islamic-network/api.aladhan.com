@@ -261,10 +261,10 @@ class HijriCalendarService
      */
     public function hToG($date)
     {
-        $date = $this->validate($date);
+        /*$date = $this->validate($date);
         if (!$date) {
             return false;
-        }
+        }*/
         $d = $this->HijriToGregorian($date, 'DD-MM-YYYY');
         $months = $this->getGregorianMonths();
         $monthsX = $this->getIslamicMonths();
@@ -371,6 +371,73 @@ class HijriCalendarService
         }
 
         return $combineCal;
+    }
+
+    /**
+     * /**
+     * Adjusts gregorian date by a given number of days
+     * @param  String $date
+     * @param  Int $days
+     * @return mixed|String or Boolean
+     */
+    public function adjustGregorianDate($date, int $days)
+    {
+        try {
+            $d = DateTime::createFromFormat('d-m-Y', $date);
+            if ($d) {
+                $d->modify("$days day");
+
+                return $d->format('d-m-Y');
+            }
+            return false;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * /**
+     * Adjusts hijri date by a given number of days
+     * @param  String $date
+     * @param  Int $days
+     * @return mixed|String or Boolean
+     */
+    public function adjustHijriDate($date, int $days)
+    {
+        $this->ConstractDayMonthYear($date, 'DD-MM-YYYY');
+        $daysInMonth = 30;
+        $monthsInYear = 12;
+
+        $day = intval($this->Day);
+        $month = intval($this->Month);
+        $year = intval($this->Year);
+        
+        $day = $day + $days;
+
+        if ($day > $daysInMonth) {
+            // Adjust it and increase the month
+            $day = $day - $daysInMonth;
+            $month = $month + 1;
+        }
+
+        if ($day < 1) {
+            $day = $day + $daysInMonth;
+            $month = $month - 1;
+        }
+
+        if ($month > 12) {
+            // Adjust it and increase the year
+            $month = $month - $monthsInYear;
+            $year = $year + 1;
+        }
+
+        if ($month < 1) {
+            // Adjust it and increase the year
+            $month = $month + $monthsInYear;
+            $year = $year - 1;
+        }
+
+        return $day . '-' . $month . '-' . $year;
     }
 
     /**
