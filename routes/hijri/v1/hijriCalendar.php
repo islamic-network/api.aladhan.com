@@ -275,7 +275,7 @@ $app->group('/v1', function() {
     $this->get('/hToG', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
-        $adjustment = $request->getQueryParam('adjustment');
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($request->getQueryParam('date') == '' || $request->getQueryParam('date') == null) {
             $date = date('d-m-Y', time());
             $fs = $hs->gToH($date);

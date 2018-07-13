@@ -208,13 +208,14 @@ class HijriCalendarService
      * @param  String $date DD-MM-YYYY
      * @return Array
      */
-    public function gToH($date)
+    public function gToH($date, $adjustment = 0)
     {
         $date = $this->validate($date);
         if (!$date) {
             return false;
         }
         $d = $this->GregorianToHijri($date, 'DD-MM-YYYY');
+        $d = $this->adjustHijriDate($d, $adjustment);
         $months = $this->getIslamicMonths();
         $monthsX = $this->getGregorianMonths();
         if ($d) {
@@ -259,13 +260,15 @@ class HijriCalendarService
      * @param  String $date DD-MM-YYYY
      * @return Array
      */
-    public function hToG($date)
+    public function hToG($date, $adjustment = 0)
     {
-        /*$date = $this->validate($date);
+        // Not ideal for Hijri date validation because this validates a gregorian date!
+        $date = $this->validate($date);
         if (!$date) {
             return false;
-        }*/
+        }
         $d = $this->HijriToGregorian($date, 'DD-MM-YYYY');
+        $date = $this->adjustHijriDate($date, $adjustment);
         $months = $this->getGregorianMonths();
         $monthsX = $this->getIslamicMonths();
         if ($d) {
