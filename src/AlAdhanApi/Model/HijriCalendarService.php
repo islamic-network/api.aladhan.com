@@ -206,15 +206,17 @@ class HijriCalendarService
     /**
      * Converts given Gregorian date into AlAdhan Date Array
      * @param  String $date DD-MM-YYYY
+     * @param  Int $adjustment number of days
      * @return Array
      */
-    public function gToH($date)
+    public function gToH($date, $adjustment = 0)
     {
         $date = $this->validate($date);
         if (!$date) {
             return false;
         }
         $d = $this->GregorianToHijri($date, 'DD-MM-YYYY');
+        $d = $this->adjustHijriDate($d, $adjustment);
         $months = $this->getIslamicMonths();
         $monthsX = $this->getGregorianMonths();
         if ($d) {
@@ -257,15 +259,18 @@ class HijriCalendarService
     /**
      * Converts given Hijri date into AlAdhan Date Array
      * @param  String $date DD-MM-YYYY
+     * @param  Int $adjustment number of days
      * @return Array
      */
-    public function hToG($date)
+    public function hToG($date, $adjustment = 0)
     {
+        // Not ideal for Hijri date validation because this validates a gregorian date!
         $date = $this->validate($date);
         if (!$date) {
             return false;
         }
         $d = $this->HijriToGregorian($date, 'DD-MM-YYYY');
+        $date = $this->adjustHijriDate($date, $adjustment);
         $months = $this->getGregorianMonths();
         $monthsX = $this->getIslamicMonths();
         if ($d) {
@@ -309,9 +314,10 @@ class HijriCalendarService
      * Converts a given Hijri Month into AlAdhan Date Array
      * @param  Integer $m
      * @param  Integer $y
+     * @param  Integer $adjustment number of days
      * @return Array Array of AlAdhan date Arrays
      */
-    public function getHtoGCalendar($m, $y)
+    public function getHtoGCalendar($m, $y, $adjustment = 0)
     {
         if ($m > 12) {
             $m = 12;
@@ -329,7 +335,7 @@ class HijriCalendarService
         $combineCal = [];
         for ($i=1; $i<=$days; $i++) {
             $curDate = $i . '-' . $m . '-' . $y;
-            $calendar = $this->hToG($curDate);
+            $calendar = $this->hToG($curDate, $adjustment);
             if ($calendar['hijri']['month']['number'] != $m) {
                 unset($calendar[$i]);
             }
@@ -343,9 +349,10 @@ class HijriCalendarService
      * Converts a given Gregorian Month into AlAdhan Date Array
      * @param  Integer $m
      * @param  Integer $y
+     * @param  Integer $adjustment number of days
      * @return Array Array of AlAdhan date Arrays
      */
-    public function getGToHCalendar($m, $y)
+    public function getGToHCalendar($m, $y, $adjustment = 0)
     {
         if ($m > 12) {
             $m = 12;
@@ -363,7 +370,7 @@ class HijriCalendarService
         $combineCal = [];
         for ($i=1; $i<=$days; $i++) {
             $curDate = $i . '-' . $m . '-' . $y;
-            $calendar = $this->gToH($curDate);
+            $calendar = $this->gToH($curDate, $adjustment);
             if ($calendar['gregorian']['month']['number'] != $m) {
                 unset($calendar[$i]);
             }
@@ -371,6 +378,73 @@ class HijriCalendarService
         }
 
         return $combineCal;
+    }
+
+    /**
+     * /**
+     * Adjusts gregorian date by a given number of days
+     * @param  String $date
+     * @param  Int $days
+     * @return mixed|String or Boolean
+     */
+    public function adjustGregorianDate($date, int $days)
+    {
+        try {
+            $d = DateTime::createFromFormat('d-m-Y', $date);
+            if ($d) {
+                $d->modify("$days day");
+
+                return $d->format('d-m-Y');
+            }
+            return false;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    /**
+     * /**
+     * Adjusts hijri date by a given number of days
+     * @param  String $date
+     * @param  Int $days
+     * @return mixed|String or Boolean
+     */
+    public function adjustHijriDate($date, int $days)
+    {
+        $this->ConstractDayMonthYear($date, 'DD-MM-YYYY');
+        $daysInMonth = 30;
+        $monthsInYear = 12;
+
+        $day = intval($this->Day);
+        $month = intval($this->Month);
+        $year = intval($this->Year);
+        
+        $day = $day + $days;
+
+        if ($day > $daysInMonth) {
+            // Adjust it and increase the month
+            $day = $day - $daysInMonth;
+            $month = $month + 1;
+        }
+
+        if ($day < 1) {
+            $day = $day + $daysInMonth;
+            $month = $month - 1;
+        }
+
+        if ($month > 12) {
+            // Adjust it and increase the year
+            $month = $month - $monthsInYear;
+            $year = $year + 1;
+        }
+
+        if ($month < 1) {
+            // Adjust it and increase the year
+            $month = $month + $monthsInYear;
+            $year = $year - 1;
+        }
+
+        return $this->validate($day . '-' . $month . '-' . $year);
     }
 
     /**
@@ -456,13 +530,14 @@ class HijriCalendarService
 
     /**
      * Returns the Islamic month for today's date
+     * @param Integer $adjustment
      * @return Integer
      */
-    public function getCurrentIslamicMonth()
+    public function getCurrentIslamicMonth($adjustment = 0)
     {
         $date = date('d-m-Y');
 
-        $x = $this->gToH($date);
+        $x = $this->gToH($date, $adjustment);
 
         return $x['hijri']['month']['number'];
     }
@@ -493,16 +568,17 @@ class HijriCalendarService
     /**
      * Returns the next holiday in the Islamic Calendar
      * @param  Integer $days Number of days forward to search in
+     * @param Integer $adjustment
      * @return Array
      */
-    public function nextHijriHoliday($days = 360)
+    public function nextHijriHoliday($days = 360, $adjustment = 0)
     {
         $todayTimestamp = time();
 
         for ($i = 0; $i <= $days; $i++) {
             $today = date('d-m-Y', $todayTimestamp);
             // Get Hijri Date
-            $hijriDate = $this->gToH($today);
+            $hijriDate = $this->gToH($today, $adjustment);
             if (!empty($hijriDate['hijri']['holidays'])) {
                 return $hijriDate;
             }

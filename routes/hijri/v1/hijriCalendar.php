@@ -15,6 +15,7 @@ $app->group('/v1', function() {
      *
      * @apiParam {number{1-12}} month A gregorian month. 1 = January and 12 = December.
      * @apiParam {number} year A gregorian year. Example: 2015
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/gToHCalendar/8/2016
@@ -76,9 +77,9 @@ $app->group('/v1', function() {
 
         $y = (int) $request->getAttribute('year');
         $m = (int) $request->getAttribute('month');
+        $adjustment = (int) $request->getQueryParam('adjustment');
 
-
-        return $response->withJson(ApiResponse::build($cs->getGToHCalendar($m, $y), 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build($cs->getGToHCalendar($m, $y, $adjustment), 200, 'OK'), 200);
     });
 
 
@@ -91,6 +92,7 @@ $app->group('/v1', function() {
      *
      * @apiParam {number{1-12}} month A Hijri month. 1 = Muharram and 12 = Dhu al Hijjah.
      * @apiParam {number} year A hijri year. Example: 1437
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/hToGCalendar/3/1438
@@ -152,8 +154,9 @@ $app->group('/v1', function() {
 
         $y = (int) $request->getAttribute('year');
         $m = (int) $request->getAttribute('month');
+        $adjustment = (int) $request->getQueryParam('adjustment');
 
-        return $response->withJson(ApiResponse::build($cs->getHtoGCalendar($m, $y), 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build($cs->getHtoGCalendar($m, $y, $adjustment), 200, 'OK'), 200);
     });
 
     /**
@@ -164,6 +167,7 @@ $app->group('/v1', function() {
      * @apiVersion 1.0.1
      *
      * @apiParam {string} date A gregorian date formatted as DD-MM-YYYY
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/gToH?date=07-12-2014
@@ -211,8 +215,9 @@ $app->group('/v1', function() {
     $this->get('/gToH', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $date = $request->getQueryParam('date') == '' || null ? date('d-m-Y', time()) : $request->getQueryParam('date');
+        $adjustment = (int) $request->getQueryParam('adjustment');
         $hs = new HijriCalendarService();
-        $result = $hs->gToH($date);
+        $result = $hs->gToH($date, $adjustment);
         if ($result) {
             return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
         } else {
@@ -228,6 +233,7 @@ $app->group('/v1', function() {
      * @apiVersion 1.0.1
      *
      * @apiParam {string} date A hijri date formatted as DD-MM-YYYY
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/hToG?date=14-02-1436
@@ -275,14 +281,15 @@ $app->group('/v1', function() {
     $this->get('/hToG', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
-        if ($request->getQueryParam('date') == '' || null) {
+        $adjustment = (int) $request->getQueryParam('adjustment');
+        if ($request->getQueryParam('date') == '' || $request->getQueryParam('date') == null) {
             $date = date('d-m-Y', time());
             $fs = $hs->gToH($date);
             $date = $fs['hijri']['date'];
         } else {
             $date = $request->getQueryParam('date');
         }
-        $result = $hs->hToG($date);
+        $result = $hs->hToG($date, $adjustment);
         if ($result) {
             return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
         } else {
