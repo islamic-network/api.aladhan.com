@@ -206,6 +206,7 @@ class HijriCalendarService
     /**
      * Converts given Gregorian date into AlAdhan Date Array
      * @param  String $date DD-MM-YYYY
+     * @param  Int $adjustment number of days
      * @return Array
      */
     public function gToH($date, $adjustment = 0)
@@ -258,6 +259,7 @@ class HijriCalendarService
     /**
      * Converts given Hijri date into AlAdhan Date Array
      * @param  String $date DD-MM-YYYY
+     * @param  Int $adjustment number of days
      * @return Array
      */
     public function hToG($date, $adjustment = 0)
@@ -312,6 +314,7 @@ class HijriCalendarService
      * Converts a given Hijri Month into AlAdhan Date Array
      * @param  Integer $m
      * @param  Integer $y
+     * @param  Integer $adjustment number of days
      * @return Array Array of AlAdhan date Arrays
      */
     public function getHtoGCalendar($m, $y, $adjustment = 0)
@@ -346,6 +349,7 @@ class HijriCalendarService
      * Converts a given Gregorian Month into AlAdhan Date Array
      * @param  Integer $m
      * @param  Integer $y
+     * @param  Integer $adjustment number of days
      * @return Array Array of AlAdhan date Arrays
      */
     public function getGToHCalendar($m, $y, $adjustment = 0)
@@ -526,13 +530,14 @@ class HijriCalendarService
 
     /**
      * Returns the Islamic month for today's date
+     * @param Integer $adjustment
      * @return Integer
      */
-    public function getCurrentIslamicMonth()
+    public function getCurrentIslamicMonth($adjustment = 0)
     {
         $date = date('d-m-Y');
 
-        $x = $this->gToH($date);
+        $x = $this->gToH($date, $adjustment);
 
         return $x['hijri']['month']['number'];
     }
@@ -563,16 +568,17 @@ class HijriCalendarService
     /**
      * Returns the next holiday in the Islamic Calendar
      * @param  Integer $days Number of days forward to search in
+     * @param Integer $adjustment
      * @return Array
      */
-    public function nextHijriHoliday($days = 360)
+    public function nextHijriHoliday($days = 360, $adjustment = 0)
     {
         $todayTimestamp = time();
 
         for ($i = 0; $i <= $days; $i++) {
             $today = date('d-m-Y', $todayTimestamp);
             // Get Hijri Date
-            $hijriDate = $this->gToH($today);
+            $hijriDate = $this->gToH($today, $adjustment);
             if (!empty($hijriDate['hijri']['holidays'])) {
                 return $hijriDate;
             }
