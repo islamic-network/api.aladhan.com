@@ -76,9 +76,9 @@ $app->group('/v1', function() {
 
         $y = (int) $request->getAttribute('year');
         $m = (int) $request->getAttribute('month');
+        $adjustment = (int) $request->getQueryParam('adjustment');
 
-
-        return $response->withJson(ApiResponse::build($cs->getGToHCalendar($m, $y), 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build($cs->getGToHCalendar($m, $y, $adjustment), 200, 'OK'), 200);
     });
 
 
@@ -152,8 +152,9 @@ $app->group('/v1', function() {
 
         $y = (int) $request->getAttribute('year');
         $m = (int) $request->getAttribute('month');
+        $adjustment = (int) $request->getQueryParam('adjustment');
 
-        return $response->withJson(ApiResponse::build($cs->getHtoGCalendar($m, $y), 200, 'OK'), 200);
+        return $response->withJson(ApiResponse::build($cs->getHtoGCalendar($m, $y, $adjustment), 200, 'OK'), 200);
     });
 
     /**
@@ -211,8 +212,9 @@ $app->group('/v1', function() {
     $this->get('/gToH', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $date = $request->getQueryParam('date') == '' || null ? date('d-m-Y', time()) : $request->getQueryParam('date');
+        $adjustment = (int) $request->getQueryParam('adjustment');
         $hs = new HijriCalendarService();
-        $result = $hs->gToH($date);
+        $result = $hs->gToH($date, $adjustment);
         if ($result) {
             return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
         } else {
@@ -283,7 +285,7 @@ $app->group('/v1', function() {
         } else {
             $date = $request->getQueryParam('date');
         }
-        $result = $hs->hToG($date);
+        $result = $hs->hToG($date, $adjustment);
         if ($result) {
             return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
         } else {

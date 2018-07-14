@@ -314,7 +314,7 @@ class HijriCalendarService
      * @param  Integer $y
      * @return Array Array of AlAdhan date Arrays
      */
-    public function getHtoGCalendar($m, $y)
+    public function getHtoGCalendar($m, $y, $adjustment = 0)
     {
         if ($m > 12) {
             $m = 12;
@@ -332,7 +332,7 @@ class HijriCalendarService
         $combineCal = [];
         for ($i=1; $i<=$days; $i++) {
             $curDate = $i . '-' . $m . '-' . $y;
-            $calendar = $this->hToG($curDate);
+            $calendar = $this->hToG($curDate, $adjustment);
             if ($calendar['hijri']['month']['number'] != $m) {
                 unset($calendar[$i]);
             }
@@ -348,7 +348,7 @@ class HijriCalendarService
      * @param  Integer $y
      * @return Array Array of AlAdhan date Arrays
      */
-    public function getGToHCalendar($m, $y)
+    public function getGToHCalendar($m, $y, $adjustment = 0)
     {
         if ($m > 12) {
             $m = 12;
@@ -366,7 +366,7 @@ class HijriCalendarService
         $combineCal = [];
         for ($i=1; $i<=$days; $i++) {
             $curDate = $i . '-' . $m . '-' . $y;
-            $calendar = $this->gToH($curDate);
+            $calendar = $this->gToH($curDate, $adjustment);
             if ($calendar['gregorian']['month']['number'] != $m) {
                 unset($calendar[$i]);
             }
