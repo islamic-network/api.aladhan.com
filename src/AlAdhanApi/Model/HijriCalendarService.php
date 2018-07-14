@@ -440,7 +440,7 @@ class HijriCalendarService
             $year = $year - 1;
         }
 
-        return $day . '-' . $month . '-' . $year;
+        return $this->validate($day . '-' . $month . '-' . $year);
     }
 
     /**
