@@ -15,6 +15,7 @@ $app->group('/v1', function() {
      *
      * @apiParam {number{1-12}} month A gregorian month. 1 = January and 12 = December.
      * @apiParam {number} year A gregorian year. Example: 2015
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/gToHCalendar/8/2016
@@ -91,6 +92,7 @@ $app->group('/v1', function() {
      *
      * @apiParam {number{1-12}} month A Hijri month. 1 = Muharram and 12 = Dhu al Hijjah.
      * @apiParam {number} year A hijri year. Example: 1437
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/hToGCalendar/3/1438
@@ -165,6 +167,7 @@ $app->group('/v1', function() {
      * @apiVersion 1.0.1
      *
      * @apiParam {string} date A gregorian date formatted as DD-MM-YYYY
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/gToH?date=07-12-2014
@@ -230,6 +233,7 @@ $app->group('/v1', function() {
      * @apiVersion 1.0.1
      *
      * @apiParam {string} date A hijri date formatted as DD-MM-YYYY
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/hToG?date=14-02-1436
