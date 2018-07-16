@@ -67,14 +67,15 @@ class PrayerTimesHelper
      * @param  String $timezone
      * @param  Integer $latitudeAdjustmentMethod
      * @param  PrayerTimes Object $pt
+     * @param  Integer $adjustment in days
      * @return Array
      */
-    public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode)
+    public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode, int $adjustment = 0)
     {
 
         $cs = new HijriCalendarService();
 
-        $hm = $cs->getGtoHCalendar($month, $year);
+        $hm = $cs->getGtoHCalendar($month, $year, $adjustment);
         $cal_start = strtotime($year . '-' . $month . '-01 09:01:01');
         $days_in_month = cal_days_in_month(\CAL_GREGORIAN, $month, $year);
         $times = [];
@@ -82,7 +83,7 @@ class PrayerTimesHelper
         for ($i = 0; $i <= ($days_in_month -1); $i++) {
             // Create date time object for this date.
             $calstart = new \DateTime( date('Y-m-d H:i:s', $cal_start), new \DateTimeZone($timezone));
-            if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart)) {
+            if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart, $adjustment)) {
                 $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
             }
             $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
@@ -105,20 +106,21 @@ class PrayerTimesHelper
      * @param  String $timezone
      * @param  Integer $latitudeAdjustmentMethod
      * @param  PrayerTimes Object $pt
+     * @param  Integer $adjustment in days
      * @return Array
      */
-    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode)
+    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode, int $adjustment = 0)
     {
         $cs = new HijriCalendarService();
 
-        $hm = $cs->getHtoGCalendar($month, $year);
+        $hm = $cs->getHtoGCalendar($month, $year, $adjustment);
 
         $times = [];
 
         foreach ($hm as $key => $i) {
             // Create date time object for this date.
             $calstart = new \DateTime( date('Y-m-d H:i:s', strtotime($i['gregorian']['year']. '-' . $i['gregorian']['month']['number'] . '-' . $i['gregorian']['day']. ' 09:01:01')), new \DateTimeZone($timezone));
-            if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart)) {
+            if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart, $adjustment)) {
                 $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
             }
             $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
@@ -138,9 +140,10 @@ class PrayerTimesHelper
      * @param  String $timezone
      * @param  Integer $latitudeAdjustmentMethod
      * @param  PrayerTimes Object $pt
+     * @param  Integer $adjustment in days
      * @return Array
      */
-    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode)
+    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode, int $adjustment = 0)
     {
         $cs = new HijriCalendarService();
         $times = [];
@@ -148,12 +151,12 @@ class PrayerTimesHelper
             if ($month < 1) {
                 $month = 1;
             }
-            $hm = $cs->getHtoGCalendar($month, $year);
+            $hm = $cs->getHtoGCalendar($month, $year, $adjustment);
 
             foreach ($hm as $key => $i) {
                 // Create date time object for this date.
             $calstart = new \DateTime( date('Y-m-d H:i:s', strtotime($i['gregorian']['year']. '-' . $i['gregorian']['month']['number'] . '-' . $i['gregorian']['day']. ' 09:01:01')), new \DateTimeZone($timezone));
-                if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart)) {
+                if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart, $adjustment)) {
                     $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
                 }
                 $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
@@ -174,9 +177,10 @@ class PrayerTimesHelper
      * @param  String $timezone
      * @param  Integer $latitudeAdjustmentMethod
      * @param  PrayerTimes Object $pt
+     * @param  Integer $adjustment in days
      * @return Array
      */
-    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode)
+    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode, int $adjustment = 0)
     {
         $cs = new HijriCalendarService();
         $times = [];
@@ -184,14 +188,14 @@ class PrayerTimesHelper
             if ($month < 1) {
                 $month = 1;
             }
-            $hm = $cs->getGtoHCalendar($month, $year);
+            $hm = $cs->getGtoHCalendar($month, $year, $adjustment);
             $cal_start = strtotime($year . '-' . $month . '-01 09:01:01');
             $days_in_month = cal_days_in_month(\CAL_GREGORIAN, $month, $year);
 
             for ($i = 0; $i <= ($days_in_month -1); $i++) {
                 // Create date time object for this date.
                 $calstart = new \DateTime( date('Y-m-d H:i:s', $cal_start), new \DateTimeZone($timezone));
-                if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart)) {
+                if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart, $adjustment)) {
                     $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
                 }
                 $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
@@ -208,12 +212,13 @@ class PrayerTimesHelper
     /**
      * Checks if the given date falls in Ramadan
      * @param  DateTime $date
+     * @param  Integer $adjustment in days
      * @return boolean
      */
-    public static function isRamadan(\DateTime $date)
+    public static function isRamadan(\DateTime $date, int $adjustment = 0)
     {
         $hs = new \AlAdhanApi\Model\HijriCalendarService();
-        $hijDate = $hs->gToH($date->format('d') . '-' . $date->format('m') . '-' . $date->format('Y'));
+        $hijDate = $hs->gToH($date->format('d') . '-' . $date->format('m') . '-' . $date->format('Y'), $adjustment);
         if ($hijDate['hijri']['month']['number'] == 9) {
             return true;
         }

@@ -66,6 +66,7 @@ $app->group('/v1', function() {
         $address = $request->getQueryParam('address');
         $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school, null);
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -76,7 +77,7 @@ $app->group('/v1', function() {
             }
             $d = new DateTime('@' . time());
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
+            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
@@ -98,6 +99,7 @@ $app->group('/v1', function() {
         $address = $request->getQueryParam('address');
         $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school, null);
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -108,7 +110,7 @@ $app->group('/v1', function() {
             }
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
+            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
@@ -154,6 +156,7 @@ $app->group('/v1', function() {
      *                                                 1 - Middle of the Night<br />
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/timings/1398332113?latitude=51.508515&longitude=-0.1254872&method=2
@@ -258,6 +261,7 @@ $app->group('/v1', function() {
         $longitude = $request->getQueryParam('longitude');
         $timezone = Generic::computeTimezone($latitude, $longitude, $request->getQueryParam('timezonestring'), $this->model->locations);
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
             $pt = new PrayerTimes($method, $school, null);
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -267,12 +271,12 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             $d = new DateTime('now', new DateTimeZone($timezone));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
+            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
             $timings = $pt->getTimesForToday($latitude, $longitude, $timezone, null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
-            $hd = $cs->gToH($d->format('d-m-Y'));
+            $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
             return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
         } else {
@@ -291,6 +295,7 @@ $app->group('/v1', function() {
         $longitude = $request->getQueryParam('longitude');
         $timezone = Generic::computeTimezone($latitude, $longitude, $request->getQueryParam('timezonestring'), $this->model->locations);
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
             $pt = new PrayerTimes($method, $school);
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -301,11 +306,11 @@ $app->group('/v1', function() {
             }
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($timezone));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
+            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
             $cs = new HijriCalendarService();
-            $hd = $cs->gToH($d->format('d-m-Y'));
+            $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
             $timings = $pt->getTimes($d, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
             return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
@@ -346,6 +351,7 @@ $app->group('/v1', function() {
      *                                                 1 - Middle of the Night<br />
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/timingsByAddress?address=Regents Park Mosque, London, UK
@@ -449,6 +455,7 @@ $app->group('/v1', function() {
         $address = $request->getQueryParam('address');
         $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school, null);
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -458,13 +465,13 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
+            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
 
             $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
-            $hd = $cs->gToH($d->format('d-m-Y'));
+            $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
             return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
         } else {
@@ -482,6 +489,7 @@ $app->group('/v1', function() {
         $address = $request->getQueryParam('address');
         $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school, null);
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -492,12 +500,12 @@ $app->group('/v1', function() {
             }
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
+            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
-            $hd = $cs->gToH($d->format('d-m-Y'));
+            $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
             return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
         } else {
@@ -539,6 +547,7 @@ $app->group('/v1', function() {
      *                                                 1 - Middle of the Night<br />
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/timingsByCity?city=Dubai&country=United Arab Emirates&method=8
@@ -644,6 +653,7 @@ $app->group('/v1', function() {
         $state = $request->getQueryParam('state');
         $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school, null);
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -653,12 +663,12 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
+            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
             $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
-            $hd = $cs->gToH($d->format('d-m-Y'));
+            $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
             return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
         } else {
@@ -678,6 +688,7 @@ $app->group('/v1', function() {
         $state = $request->getQueryParam('state');
         $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school, null);
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -688,12 +699,12 @@ $app->group('/v1', function() {
             }
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d)) {
+            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
             }
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
-            $hd = $cs->gToH($d->format('d-m-Y'));
+            $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
             return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
         } else {
@@ -736,6 +747,7 @@ $app->group('/v1', function() {
      *                                                 1 - Middle of the Night<br />
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/calendar?latitude=51.508515&longitude=-0.1254872&method=2&month=4&year=2017
@@ -928,6 +940,7 @@ $app->group('/v1', function() {
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $timezone = $request->getQueryParam('timezonestring');
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($timezone == '' || $timezone  === null) {
             // Compute it.
             $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
@@ -942,9 +955,9 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode);
+                $times = PrayerTimesHelper::calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
             } else {
-                $times = PrayerTimesHelper::calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode);
+                $times = PrayerTimesHelper::calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -987,6 +1000,7 @@ $app->group('/v1', function() {
      *                                                 1 - Middle of the Night<br />
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/hijriCalendar?latitude=51.508515&longitude=-0.1254872&method=2&month=4&year=1437
@@ -1179,6 +1193,7 @@ $app->group('/v1', function() {
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $timezone = $request->getQueryParam('timezonestring');
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($timezone == '' || $timezone  === null) {
             // Compute it.
             $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
@@ -1193,9 +1208,9 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode);
+                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
             } else {
-                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode);
+                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -1237,6 +1252,7 @@ $app->group('/v1', function() {
      *                                                 1 - Middle of the Night<br />
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/calendarByAddress?address=Sultanahmet Mosque, Istanbul, Turkey&method=2&month=04&year=2017
@@ -1428,7 +1444,7 @@ $app->group('/v1', function() {
         $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
-
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -1438,9 +1454,9 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
+                $times = PrayerTimesHelper::calculateYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
             } else {
-                $times = PrayerTimesHelper::calculateMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
+                $times = PrayerTimesHelper::calculateMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -1482,6 +1498,7 @@ $app->group('/v1', function() {
      *                                                 1 - Middle of the Night<br />
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/hijriCalendarByAddress?address=Sultanahmet Mosque, Istanbul, Turkey&method=2&month=04&year=1437
@@ -1673,7 +1690,7 @@ $app->group('/v1', function() {
         $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
-
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -1683,9 +1700,9 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
+                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
             } else {
-                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
+                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -1729,6 +1746,7 @@ $app->group('/v1', function() {
      *                                                 1 - Middle of the Night<br />
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/calendarByCity?city=London&country=United Kingdom&method=2&month=04&year=2017
@@ -1922,7 +1940,7 @@ $app->group('/v1', function() {
         $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
-
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -1932,9 +1950,9 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
+                $times = PrayerTimesHelper::calculateYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
             } else {
-                $times = PrayerTimesHelper::calculateMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
+                $times = PrayerTimesHelper::calculateMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -1979,6 +1997,7 @@ $app->group('/v1', function() {
      *                                                 1 - Middle of the Night<br />
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
+     * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/hijriCalendarByCity?city=London&country=United Kingdom&method=2&month=04&year=1437
@@ -2172,7 +2191,7 @@ $app->group('/v1', function() {
         $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
-
+        $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -2182,9 +2201,9 @@ $app->group('/v1', function() {
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
+                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
             } else {
-                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode);
+                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
