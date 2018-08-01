@@ -6,7 +6,7 @@ class CalendarByAddressTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://test.api.aladhan.com/v1/']);
+        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://api.aladhan.com/v1/']);
     }
 
     public function tearDown() {
@@ -38,7 +38,7 @@ class CalendarByAddressTest extends \PHPUnit\Framework\TestCase
     public function testJafariMidnightMode()
     {
         $response = $this->http->request('GET', 'calendarByCity', [
-            
+
             'query' => [
                 'city' => 'Dubai',
                 'country' => 'United Arab Emirates'

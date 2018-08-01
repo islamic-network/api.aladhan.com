@@ -6,7 +6,7 @@ class calendarTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://test.api.aladhan.com/v1/']);
+        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://api.aladhan.com/v1/']);
     }
 
     public function tearDown() {

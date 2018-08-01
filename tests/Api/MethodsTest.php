@@ -6,7 +6,7 @@ class MethodsTest extends \PHPUnit\Framework\TestCase
 
     public function setUp()
     {
-        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://test.api.aladhan.com/']);
+        $this->http = new GuzzleHttp\Client(['base_uri' => 'https://api.aladhan.com/v1/']);
     }
 
     public function tearDown() {
@@ -17,6 +17,7 @@ class MethodsTest extends \PHPUnit\Framework\TestCase
     {
         $response = $this->http->request('GET', 'methods');
         $this->assertEquals(200, $response->getStatusCode());
+
 
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json;charset=utf-8", $contentType);
