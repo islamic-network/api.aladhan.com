@@ -1,7 +1,9 @@
 <?php
 namespace AlAdhanApi\Helper;
 use Meezaan\PrayerTimes\Method;
-use AlAdhanApi\Model\HijriCalendarService;;
+use Meezaan\PrayerTimes\PrayerTimes;
+use AlAdhanApi\Model\HijriCalendarService;
+use AlAdhanApi\Helper\Request as ApiRequest;
 
 /**
  * Class PrayerTimesHelper
@@ -246,6 +248,32 @@ class PrayerTimesHelper
 
         return $method;
 
+    }
+
+    /**
+     * A Simple helper to reduce the repeated code in the routes file
+     * @param  Request $request http request object
+     * @param  DateTime $d       DateTime object
+     * @param  int $method
+     * @param  int $school
+     * @param  array $tune
+     * @return PrayerTimes 
+     */
+    public static function getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune)
+    {
+        $pt = new PrayerTimes($method, $school, null);
+        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
+        if ($method == PrayerTimes::METHOD_CUSTOM) {
+            $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
+            $customMethod = self::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
+            $pt->setCustomMethod($customMethod);
+        }
+
+        if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($d, $adjustment)) {
+            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
+        }
+
+        return $pt;
 
     }
 }

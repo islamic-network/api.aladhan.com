@@ -68,18 +68,9 @@ $app->group('/v1', function() {
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
-            $pt = new PrayerTimes($method, $school, null);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
-                $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-                $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
-                $pt->setCustomMethod($customMethod);
-            }
             $d = new DateTime('@' . time());
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
-                $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
-            }
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
@@ -101,18 +92,9 @@ $app->group('/v1', function() {
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
-            $pt = new PrayerTimes($method, $school, null);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
-                $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-                $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
-                $pt->setCustomMethod($customMethod);
-            }
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
-                $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
-            }
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
@@ -263,17 +245,8 @@ $app->group('/v1', function() {
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
-            $pt = new PrayerTimes($method, $school, null);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
-                $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-                $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
-                $pt->setCustomMethod($customMethod);
-            }
             $d = new DateTime('now', new DateTimeZone($timezone));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
-                $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
-            }
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
             $timings = $pt->getTimesForToday($latitude, $longitude, $timezone, null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
@@ -297,18 +270,9 @@ $app->group('/v1', function() {
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
-            $pt = new PrayerTimes($method, $school);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
-                $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-                $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
-                $pt->setCustomMethod($customMethod);
-            }
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($timezone));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
-                $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
-            }
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
@@ -457,18 +421,8 @@ $app->group('/v1', function() {
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
-            $pt = new PrayerTimes($method, $school, null);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
-                $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-                $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
-                $pt->setCustomMethod($customMethod);
-            }
             $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
-                $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
-            }
-
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
             $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
@@ -491,18 +445,9 @@ $app->group('/v1', function() {
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
-            $pt = new PrayerTimes($method, $school, null);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
-                $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-                $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
-                $pt->setCustomMethod($customMethod);
-            }
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
-                $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
-            }
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
@@ -655,17 +600,8 @@ $app->group('/v1', function() {
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
-            $pt = new PrayerTimes($method, $school, null);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
-                $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-                $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
-                $pt->setCustomMethod($customMethod);
-            }
             $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
-                $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
-            }
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
             $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
@@ -690,18 +626,9 @@ $app->group('/v1', function() {
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
-            $pt = new PrayerTimes($method, $school, null);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
-                $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
-                $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
-                $pt->setCustomMethod($customMethod);
-            }
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
-            if ($pt->getMethod() == 'MAKKAH' && PrayerTimesHelper::isRamadan($d, $adjustment)) {
-                $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
-            }
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
