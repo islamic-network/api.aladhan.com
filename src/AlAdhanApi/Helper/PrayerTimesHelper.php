@@ -257,9 +257,10 @@ class PrayerTimesHelper
      * @param  int $method
      * @param  int $school
      * @param  array $tune
+     * @param int $adjustment
      * @return PrayerTimes 
      */
-    public static function getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune)
+    public static function getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment = 0)
     {
         $pt = new PrayerTimes($method, $school, null);
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);

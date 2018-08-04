@@ -70,7 +70,7 @@ $app->group('/v1', function() {
         if ($locInfo) {
             $d = new DateTime('@' . time());
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
-            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment);
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
@@ -94,7 +94,7 @@ $app->group('/v1', function() {
         if ($locInfo) {
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
-            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment);
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
@@ -246,7 +246,7 @@ $app->group('/v1', function() {
         $adjustment = (int) $request->getQueryParam('adjustment');
         if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
             $d = new DateTime('now', new DateTimeZone($timezone));
-            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment);
             $timings = $pt->getTimesForToday($latitude, $longitude, $timezone, null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
@@ -272,7 +272,7 @@ $app->group('/v1', function() {
         if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($timezone));
-            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
@@ -422,7 +422,7 @@ $app->group('/v1', function() {
         $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
-            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment);
             $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
@@ -447,7 +447,7 @@ $app->group('/v1', function() {
         if ($locInfo) {
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
-            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment);
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
@@ -601,7 +601,7 @@ $app->group('/v1', function() {
         $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
-            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment);
             $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
@@ -628,7 +628,7 @@ $app->group('/v1', function() {
         if ($locInfo) {
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
-            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune);
+            $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment);
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
