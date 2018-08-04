@@ -18,7 +18,7 @@ class CalendarByAddressTest extends \PHPUnit\Framework\TestCase
         $response = $this->http->request('GET', 'calendarByCity', [
             'query' => [
                 'city' => 'Dubai',
-                'country' => 'United Arab Emirates'
+                'country' => 'United Arab Emirates',
                 'month' => '12',
                 'year' => '1973'
             ]
@@ -41,7 +41,7 @@ class CalendarByAddressTest extends \PHPUnit\Framework\TestCase
 
             'query' => [
                 'city' => 'Dubai',
-                'country' => 'United Arab Emirates'
+                'country' => 'United Arab Emirates',
                 'month' => '12',
                 'year' => '1973',
                 'midnightMode' => 1,
