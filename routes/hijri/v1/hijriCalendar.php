@@ -300,7 +300,8 @@ $app->group('/v1', function() {
     $this->get('/nextHijriHoliday', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
-        $result = $hs->nextHijriHoliday();;
+        $adjustment = (int) $request->getQueryParam('adjustment');
+        $result = $hs->nextHijriHoliday(360, $adjustment);
         if ($result) {
             return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
         } else {
@@ -311,7 +312,8 @@ $app->group('/v1', function() {
     $this->get('/currentIslamicYear', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
-        $result = $hs->getCurrentIslamicYear();
+        $adjustment = (int) $request->getQueryParam('adjustment');
+        $result = $hs->getCurrentIslamicYear($adjustment);
         if ($result) {
             return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
         } else {
@@ -322,7 +324,8 @@ $app->group('/v1', function() {
     $this->get('/currentIslamicMonth', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
-        $result = $hs->getCurrentIslamicMonth();
+        $adjustment = (int) $request->getQueryParam('adjustment');
+        $result = $hs->getCurrentIslamicMonth($adjustment);
         if ($result) {
             return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
         } else {
