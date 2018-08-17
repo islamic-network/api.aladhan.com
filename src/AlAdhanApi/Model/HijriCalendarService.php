@@ -270,7 +270,13 @@ class HijriCalendarService
             return false;
         }
         $d = $this->HijriToGregorian($date, 'DD-MM-YYYY');
-        $date = $this->adjustHijriDate($date, $adjustment);
+        // Don't adjust Hijri Date, it has been passed. Adjust Gregorian. $date = $this->adjustHijriDate($date, $adjustment);
+        $adjustment = (int) $adjustment;
+        if ($adjustment !== 0) {
+             $nD = new DateTime($d);
+             $nD->modify($adjustment . ' day');
+             $d = $nD->format('d-m-Y');
+        }
         $months = $this->getGregorianMonths();
         $monthsX = $this->getIslamicMonths();
         if ($d) {
