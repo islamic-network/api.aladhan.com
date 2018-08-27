@@ -35,8 +35,8 @@ $container['errorHandler'] = function ($c) {
 
 /** Invoke Middleware for WAF Checks */
 $app->add(function ($request, $response, $next) {
-    $wafYaml = Yaml::parse(file_get_contents(realpath(__DIR__) . '/waf.yml'));
-    $wafRules = new RuleSet($wafYaml);
+
+    $wafRules = new RuleSet(realpath(__DIR__ . '/waf.yml'));
     $waf = new RuleSetMatcher($wafRules, $request->getHeaders(), []);
     if ($waf->isBlacklisted()) {
         throw new BlackListException();

@@ -1,4 +1,3 @@
----
 # Note that values separated with a comma are always OR and each of the global keys are always AND
 ##### BLACKLIST #####
 blacklist:
