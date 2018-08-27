@@ -1,0 +1,34 @@
+---
+# Note that values separated with a comma are always OR and each of the global keys are always AND
+##### BLACKLIST #####
+blacklist:
+- name: my blacklist # required
+  headers: # required
+    request: # required HTTP_ appended
+      X_FORWARDED_FOR: []
+      CLIENT_IP: []
+    server: # required
+
+
+##### RATE LIMITING #####
+ratelimit:
+- name: limiter # required
+  headers: # required
+    request: # required HTTP_ appended
+      X_FORWARDED_FOR: []
+      CLIENT_IP: []
+    server: # required
+  limit:
+    rate: 1000
+    time: 3600 #60 = 1 minute, 3600 = 1 hour, 86400 = 1 day
+
+
+
+##### WHITELIST #####
+whitelist:
+- name: my whitelist # required
+  headers: # required
+    request: # required HTTP_ appended
+      X_FORWARDED_FOR: []
+      CLIENT_IP: []
+    server: # required

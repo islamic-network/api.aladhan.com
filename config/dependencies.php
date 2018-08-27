@@ -1,10 +1,13 @@
 <?php
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
 use AlAdhanApi\Helper\Log;
-use AlAdhanApi\Helper\Database;
 use AlAdhanApi\Model\Locations;
-
+use AlAdhanApi\Handler\AlAdhanHandler;
+use AlAdhanApi\Handler\AlAdhanNotFoundHandler;
+use Symfony\Component\Yaml\Yaml;
+use IslamicNetwork\Waf\Exceptions\BlackListException;
+use IslamicNetwork\Waf\Exceptions\RateLimitException;
+use IslamicNetwork\Waf\Model\RuleSet;
+use IslamicNetwork\Waf\Model\RuleSetMatcher;
 
 $container = $app->getContainer();
 
@@ -23,34 +26,23 @@ $container['model'] = function($c) {
 };
 
 $container['notFoundHandler'] = function ($c) {
-    return function ($request, $response) use ($c) {
-        $r = [
-        'code' => 404,
-        'status' => 'Not Found',
-        'data' => 'Invalid endpoint or resource.'
-        ];
-        $resp = json_encode($r);
-
-        return $c['response']
-            ->withStatus(404)
-            ->withHeader('Content-Type', 'application/json')
-            ->write($resp);
-    };
+    return new AlAdhanNotFoundHandler();
 };
 
 $container['errorHandler'] = function ($c) {
-    return function ($request, $response) use ($c) {
-        $r = [
-        'code' => 500,
-        'status' => 'Internal Server Error',
-        'data' => 'Something went wrong when the server tried to process this request. Sorry!'
-        ];
-
-        $resp = json_encode($r);
-
-        return $c['response']
-            ->withStatus(500)
-            ->withHeader('Content-Type', 'application/json')
-            ->write($resp);
-    };
+    return new AlAdhanHandler();
 };
+
+/** Invoke Middleware for WAF Checks */
+$app->add(function ($request, $response, $next) {
+    $wafYaml = Yaml::parse(file_get_contents(realpath(__DIR__) . '/waf.yml'));
+    $wafRules = new RuleSet($wafYaml);
+    $waf = new RuleSetMatcher($wafRules, $request->getHeaders(), []);
+    if ($waf->isBlacklisted()) {
+        throw new BlackListException();
+    } elseif ($waf->isRatelimited()) {
+        throw new RateLimitException();
+    } else {
+        // Do Nothing. We're not checking for whitelists yet.
+    }
+});

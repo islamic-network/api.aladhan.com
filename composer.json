@@ -12,16 +12,21 @@
     {
       "type": "vcs",
       "url": "https://github.com/meezaan/askgeo-api"
-    }
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/islamic-network/waf"
+     }
   ],
   "require": {
     "monolog/monolog": "~1.17",
     "doctrine/dbal": "v2.5.4",
     "guzzlehttp/guzzle": "^6.1",
     "slim/slim": "^3.0",
-    "symfony/yaml": "^3.3",
+    "symfony/yaml": "^4.1",
     "meezaan/prayer-times": "^1.0",
-    "meezaan/askgeo-api": "dev-master"
+    "meezaan/askgeo-api": "dev-master",
+    "islamic-network/waf": "dev-master"
   },
   "autoload": {
     "psr-0": {
