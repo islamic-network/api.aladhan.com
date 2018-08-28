@@ -41,10 +41,17 @@ $app->add(function ($request, $response, $next) {
     if ($waf->isBlacklisted()) {
         throw new BlackListException();
     } elseif ($waf->isRatelimited()) {
-        throw new RateLimitException();
+        $mc = new \AlAdhanApi\Helper\Cacher();
+        $matched = $waf->getMatched();
+        $rl = new \IslamicNetwork\Waf\Model\RateLimit($mc, $matched['name'], $matched['limit'], $matched['time']);
+        if ($rl->isLimited()) {
+            throw new RateLimitException();
+        } else {
+            $response = $next($request, $response);
+        }
     } else {
         $response = $next($request, $response);
-
-        return $response;
     }
+
+    return $response;
 });
