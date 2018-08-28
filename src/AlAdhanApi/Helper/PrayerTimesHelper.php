@@ -72,7 +72,7 @@ class PrayerTimesHelper
      * @param  Integer $adjustment in days
      * @return Array
      */
-    public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode, int $adjustment = 0)
+    public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', int $adjustment = 0)
     {
 
         $cs = new HijriCalendarService();
@@ -111,7 +111,7 @@ class PrayerTimesHelper
      * @param  Integer $adjustment in days
      * @return Array
      */
-    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode, int $adjustment = 0)
+    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', int $adjustment = 0)
     {
         $cs = new HijriCalendarService();
 
@@ -145,7 +145,7 @@ class PrayerTimesHelper
      * @param  Integer $adjustment in days
      * @return Array
      */
-    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode, int $adjustment = 0)
+    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', int $adjustment = 0)
     {
         $cs = new HijriCalendarService();
         $times = [];
@@ -182,7 +182,7 @@ class PrayerTimesHelper
      * @param  Integer $adjustment in days
      * @return Array
      */
-    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode, int $adjustment = 0)
+    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', int $adjustment = 0)
     {
         $cs = new HijriCalendarService();
         $times = [];
