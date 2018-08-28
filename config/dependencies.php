@@ -38,7 +38,9 @@ $app->add(function ($request, $response, $next) {
 
     $wafRules = new RuleSet(realpath(__DIR__ . '/waf.yml'));
     $waf = new RuleSetMatcher($wafRules, $request->getHeaders(), []);
-    if ($waf->isBlacklisted()) {
+    if ($waf->isWhitelisted()) {
+        $response = $next($request, $response);
+    } elseif ($waf->isBlacklisted()) {
         throw new BlackListException();
     } elseif ($waf->isRatelimited()) {
         $mc = new \AlAdhanApi\Helper\Cacher();
@@ -46,8 +48,6 @@ $app->add(function ($request, $response, $next) {
         $rl = new \IslamicNetwork\Waf\Model\RateLimit($mc, $matched['name'], $matched['limit'], $matched['time']);
         if ($rl->isLimited()) {
             throw new RateLimitException();
-        } else {
-            $response = $next($request, $response);
         }
     } else {
         $response = $next($request, $response);

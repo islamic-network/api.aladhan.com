@@ -30,10 +30,9 @@ ratelimit:
 
 
 ##### WHITELIST #####
-#whitelist:
-#- name: my whitelist # required
-#  headers: # required
-#    request: # required HTTP_ appended
-#      X_FORWARDED_FOR: []
-#      CLIENT_IP: []
-#    server: # required
+whitelist:
+- name: app-1-london # required
+  headers: # required
+    request: # required HTTP_ appended
+      X_FORWARDED_FOR: ["192.168.255.53", "178.79.155.249"]
+    server: # required
