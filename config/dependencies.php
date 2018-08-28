@@ -43,6 +43,8 @@ $app->add(function ($request, $response, $next) {
     } elseif ($waf->isRatelimited()) {
         throw new RateLimitException();
     } else {
-        // Do Nothing. We're not checking for whitelists yet.
+        $response = $next($request, $response);
+
+        return $response;
     }
 });
