@@ -357,12 +357,21 @@ class Locations
             return $this->cacher->get($cacheKey);
         }
 
-        $result = $this->db->fetchAssoc(
-            "SELECT id
+        if ($state == '') {
+            $result = $this->db->fetchAssoc(
+                "SELECT id
+                FROM geolocate_queries_invalid WHERE
+                city = ? AND country = ?
+                ",
+                [$city, $country]);
+        } else {
+            $result = $this->db->fetchAssoc(
+                "SELECT id
                 FROM geolocate_queries_invalid WHERE
                 city = ? AND state = ? AND country = ?
                 ",
-            [$city, $state, $country]);
+                [$city, $state, $country]);
+        }
 
         if ($result) {
             $this->cacher->set($cacheKey, $result);
