@@ -26,6 +26,7 @@ class Locations
     const ID_DB_getAddressCoOrdinatesAndZone = 8;
     const ID_DB_getTimezoneByCoOrdinates = 9;
     const ID_DB_checkTimezoneQuery = 10;
+    const ID_DB_checkInvalidCityCountryQuery = 11;
 
     /**
      * Constructor
@@ -143,7 +144,7 @@ class Locations
             return $local;
         }
 
-        if (Generic::isGoogleBot()) {
+        if (Generic::isGoogleBot() || $this->checkInvalidCityCountryQuery($cityO, $stateO, $countryO)) {
             return false;
         }
 
@@ -166,6 +167,9 @@ class Locations
             $this->cacher->set($cacheKey, $result);
 
             return $result;
+        } else {
+            // It does not exist, record an invalid query.
+            $this->recordInvalidCityCountryQuery($cityO, $stateO, $countryO);
         }
 
         return false;
@@ -217,7 +221,7 @@ class Locations
                                 (
                                 (city = ? OR cityabbr = ?)
                                 )",
-            [$country, $country,$city, $city]);
+            [$country, $country, $city, $city]);
         } else {
             $result = $this->db->fetchAssoc("SELECT latitude, longitude, timezone
                                 FROM geolocate WHERE
@@ -321,6 +325,48 @@ class Locations
     public function recordInvalidQuery($address)
     {
         return $this->db->insert('address_geolocate_invalid', ['query' => $address]);
+    }
+
+    /**
+     * @param $city
+     * @param $state
+     * @param $country
+     * @return mixed
+     */
+    public function recordInvalidCityCountryQuery($city, $state, $country)
+    {
+        return $this->db->insert('geolocate_queries_invalid',
+            [
+                'city' => $city,
+                'state' => $state,
+                'country' => $country
+            ]
+        );
+    }
+
+    /**
+     * @param  String $address    [description]
+     * @return Mixed          [description]
+     */
+    public function checkInvalidCityCountryQuery($city, $state, $country)
+    {
+
+        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkInvalidCityCountryQuery, [$city, $state, $country]);
+
+        if ($this->cacher->check($cacheKey) !== false) {
+            return $this->cacher->get($cacheKey);
+        }
+
+        $result = $this->db->fetchAssoc(
+            "SELECT id
+                FROM geolocate_queries_invalid WHERE
+                city = ? AND state = ? AND country = ?
+                ",
+            [$city, $state, $country]);
+
+        $this->cacher->set($cacheKey, $result);
+
+        return $result;
     }
 
     /**
