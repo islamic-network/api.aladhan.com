@@ -364,7 +364,9 @@ class Locations
                 ",
             [$city, $state, $country]);
 
-        $this->cacher->set($cacheKey, $result);
+        if ($result) {
+            $this->cacher->set($cacheKey, $result);
+        }
 
         return $result;
     }
@@ -405,7 +407,9 @@ class Locations
                 [$country, $city, $state]);
         }
 
-        $this->cacher->set($cacheKey, $result);
+        if ($result) {
+            $this->cacher->set($cacheKey, $result);
+        }
 
         return $result;
     }
@@ -456,7 +460,9 @@ class Locations
                 ",
                 [$address]);
 
-        $this->cacher->set($cacheKey, $result);
+        if ($result) {
+            $this->cacher->set($cacheKey, $result);
+        }
 
         return $result;
     }
