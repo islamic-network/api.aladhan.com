@@ -183,6 +183,8 @@ class GoogleMapsApi
                 return $x;
             }
 
+            $this->logger->writeGoogleQueryLog('Request Unsuccessful :: geocode :: ' .  json_encode(['city_state_country' => $address]));
+
             return false;
         } catch (Exception $e) {
             $this->logger->writeGoogleQueryLog('Request Failed :: geocode :: '  . $e->getMessage(). ' :: ' .  json_encode(['city_state_country' => $address]));
