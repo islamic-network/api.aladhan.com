@@ -168,11 +168,8 @@ class Locations
 
             return $result;
         } else {
-            // Make sure there is no result before writing to db and cache as invalid.
-            if (isset($ginfo->timezone) && $ginfo->timezone !== '') {
-                // It does not exist, record an invalid query.
-                $this->recordInvalidCityCountryQuery($cityO, $stateO, $countryO);
-            }
+            // It does not exist, record an invalid query.
+            $this->recordInvalidCityCountryQuery($cityO, $stateO, $countryO);
         }
 
         return false;
@@ -354,11 +351,11 @@ class Locations
     public function checkInvalidCityCountryQuery($city, $state, $country)
     {
 
-        $cacheKey = $this->cacher->generateKey(self::ID_DB_checkInvalidCityCountryQuery, [$city, $state, $country]);
+        //$cacheKey = $this->cacher->generateKey(self::ID_DB_checkInvalidCityCountryQuery, [$city, $state, $country]);
 
-        if ($this->cacher->check($cacheKey) !== false) {
-            return $this->cacher->get($cacheKey);
-        }
+        //if ($this->cacher->check($cacheKey) !== false) {
+        //    return $this->cacher->get($cacheKey);
+        //}
 
         if ($state == '') {
             $result = $this->db->fetchAssoc(
@@ -376,9 +373,9 @@ class Locations
                 [$city, $state, $country]);
         }
 
-        if ($result) {
-            $this->cacher->set($cacheKey, $result);
-        }
+        //if ($result) {
+        //    $this->cacher->set($cacheKey, $result);
+        //}
 
         return $result;
     }
