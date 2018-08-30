@@ -78,14 +78,9 @@ class Cacher
      * @param String $k Key
      * @return Boolean
      */
-    public function check($k, $print = false)
+    public function check($k)
     {
         $value = $this->mc->get($k);
-        if ($print) {
-            var_dump($this->mc->getResultMessage());
-
-            return $this->mc->getResultMessage();
-        }
 
         if ($this->mc->getResultMessage() == 'SUCCESS') {
                 // Key was found irrespective of value
