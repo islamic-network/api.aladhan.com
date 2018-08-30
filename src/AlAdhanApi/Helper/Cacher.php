@@ -49,7 +49,7 @@ class Cacher
      */
     public function generateKey($id, array $params)
     {
-        return $id . ':' . implode('_', str_replace(' ', '', $params));
+        return $id . '__' . implode('_', str_replace(' ', '', $params));
     }
 
     /**
