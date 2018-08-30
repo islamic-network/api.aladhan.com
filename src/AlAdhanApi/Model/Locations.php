@@ -149,7 +149,7 @@ class Locations
         }
 
         $ginfo = $this->google->getGeoCodeLocationAndTimeZone($this->createAddressString($city, $state, $country));
-        // It may be that the user entered an unconventional format above, but if already have the latitue and longitude, don't re-create the record. We want 1 entry for each combination of co-ordinates.
+        // It may be that the user entered an unconventional format above, but if already have the latitude and longitude, don't re-create the record. We want 1 entry for each combination of co-ordinates.
         if ($ginfo && is_object($ginfo)) {
             if (!$this->checkIfGeoRecordExistsViaCo($city, $country, $state)) {
                 // Update database
@@ -168,8 +168,11 @@ class Locations
 
             return $result;
         } else {
-            // It does not exist, record an invalid query.
-            $this->recordInvalidCityCountryQuery($cityO, $stateO, $countryO);
+            // Make sure there is no result before writing to db and cache as invalid.
+            if (isset($ginfo->timezone) && $ginfo->timezone !== '') {
+                // It does not exist, record an invalid query.
+                $this->recordInvalidCityCountryQuery($cityO, $stateO, $countryO);
+            }
         }
 
         return false;
