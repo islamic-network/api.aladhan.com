@@ -103,6 +103,8 @@ class AskGeo
                 return $x2->TimeZone;
             }
 
+            $this->logger->writeAskGeoQueryLog('Request Unsuccessful :: timezone :: ' . json_encode($res2));
+
             return false;
         } catch (Exception $e) {
             $this->logger->writeAskGeoQueryLog('Request Failed :: timezone :: ' . $e->getMessage() . ' :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this->response->lng]));
