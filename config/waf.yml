@@ -5,13 +5,11 @@ blacklist:
     headers: # required
       request: # required HTTP_ appended
         X_FORWARDED_FOR: ["46.229.168.0/24", "197.234.242.0/24", "192.243.53.0/24", "192.145.239.34", "192.243.55.0/24"]
-        CLIENT_IP: ["46.229.168.0/24", "197.234.242.0/24", "192.243.53.0/24", "192.145.239.34", "192.243.55.0/24"]
       server: # required
   - name: Knowmn abusers # required
     headers: # required
       request: # required HTTP_ appended
-        X_FORWARDED_FOR: ["217.138.37.107", "31.167.60.182"]
-        CLIENT_IP: ["217.138.37.107", "31.167.60.182"]
+        X_FORWARDED_FOR: ["217.138.37.107", "31.167.60.182", "41.111.28.140", "35.185.190.11", "115.51.10.242", "192.168.255.53"]
       server: # required
 
 
@@ -34,5 +32,5 @@ whitelist:
 - name: app-1-london # required
   headers: # required
     request: # required HTTP_ appended
-      X_FORWARDED_FOR: ["192.168.255.53", "178.79.155.249"]
+      X_FORWARDED_FOR: ["178.79.155.249"]
     server: # required
