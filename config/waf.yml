@@ -9,7 +9,7 @@ blacklist:
   - name: Knowmn abusers # required
     headers: # required
       request: # required HTTP_ appended
-        X_FORWARDED_FOR: ["217.138.37.107", "31.167.60.182", "41.111.28.140", "35.185.190.11", "115.51.10.242", "192.168.255.53"]
+        X_FORWARDED_FOR: ["217.138.37.107", "31.167.60.182", "41.111.28.140", "115.51.10.242", "192.168.255.53"]
       server: # required
 
 
@@ -24,6 +24,14 @@ ratelimit:
     limit:
       rate: 600
       time: 3600 #60 = 1 minute, 3600 = 1 hour, 86400 = 1 day
+  - name: Excessive empty requests IP # required
+      headers: # required
+        request: # required HTTP_ appended
+          X_FORWARDED_FOR: ["35.185.190.11"]
+        server: # required
+      limit:
+        rate: 300
+        time: 600 #60 = 1 minute, 3600 = 1 hour, 86400 = 1 day
 
 
 
