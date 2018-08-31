@@ -35,9 +35,14 @@ $container['errorHandler'] = function ($c) {
 
 /** Invoke Middleware for WAF Checks */
 $app->add(function ($request, $response, $next) {
+    $server = [];
+
+    if (isset($_SERVER)) {
+        $server = $_SERVER;
+    }
 
     $wafRules = new RuleSet(realpath(__DIR__ . '/waf.yml'));
-    $waf = new RuleSetMatcher($wafRules, $request->getHeaders(), []);
+    $waf = new RuleSetMatcher($wafRules, $request->getHeaders(), $server);
     if ($waf->isWhitelisted()) {
         $response = $next($request, $response);
     } elseif ($waf->isBlacklisted()) {

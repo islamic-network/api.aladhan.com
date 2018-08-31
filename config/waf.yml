@@ -9,7 +9,7 @@ blacklist:
   - name: Knowmn abusers # required
     headers: # required
       request: # required HTTP_ appended
-        X_FORWARDED_FOR: ["217.138.37.107", "31.167.60.182", "41.111.28.140", "115.51.10.242", "192.168.255.53"]
+        X_FORWARDED_FOR: ["217.138.37.107", "31.167.60.182", "41.111.28.140", "115.51.10.242"]
       server: # required
 
 
@@ -19,7 +19,7 @@ ratelimit:
     headers: # required
       request: # required HTTP_ appended
         X_FORWARDED_FOR: ["210.195.111.90"]
-        CLIENT_IP: ["210.195.111.90"]
+        REMOTE_ADDR: ["210.195.111.90"]
       server: # required
     limit:
       rate: 600
@@ -29,6 +29,7 @@ ratelimit:
         request: # required HTTP_ appended
           X_FORWARDED_FOR: ["35.185.190.11"]
         server: # required
+          REMOTE_ADDR: ["35.185.190.11"]
       limit:
         rate: 300
         time: 600 #60 = 1 minute, 3600 = 1 hour, 86400 = 1 day
@@ -40,5 +41,6 @@ whitelist:
 - name: app-1-london # required
   headers: # required
     request: # required HTTP_ appended
-      X_FORWARDED_FOR: ["178.79.155.249"]
+      X_FORWARDED_FOR: ["178.79.155.249", "192.168.255.53"]
     server: # required
+      REMOTE_ADDR: ["178.79.155.249", "192.168.255.53"]

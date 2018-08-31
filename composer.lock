@@ -699,12 +699,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/islamic-network/waf.git",
-                "reference": "0d66532896ecf841da19d8a63ff13864ea689fcb"
+                "reference": "805560cdc316c8d3ca9884bc1588d67b984b306b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/islamic-network/waf/zipball/0d66532896ecf841da19d8a63ff13864ea689fcb",
-                "reference": "0d66532896ecf841da19d8a63ff13864ea689fcb",
+                "url": "https://api.github.com/repos/islamic-network/waf/zipball/805560cdc316c8d3ca9884bc1588d67b984b306b",
+                "reference": "805560cdc316c8d3ca9884bc1588d67b984b306b",
                 "shasum": ""
             },
             "require": {
@@ -733,7 +733,7 @@
                 "source": "https://github.com/islamic-network/waf/tree/master",
                 "issues": "https://github.com/islamic-network/waf/issues"
             },
-            "time": "2018-08-28T14:59:13+00:00"
+            "time": "2018-08-31T06:59:15+00:00"
         },
         {
             "name": "meezaan/askgeo-api",
