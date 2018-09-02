@@ -35,6 +35,7 @@ $container['errorHandler'] = function ($c) {
 
 /** Invoke Middleware for WAF Checks */
 $app->add(function ($request, $response, $next) {
+    $log = new Log();
     $server = [];
 
     if (isset($_SERVER)) {
@@ -44,14 +45,18 @@ $app->add(function ($request, $response, $next) {
     $wafRules = new RuleSet(realpath(__DIR__ . '/waf.yml'));
     $waf = new RuleSetMatcher($wafRules, $request->getHeaders(), $server);
     if ($waf->isWhitelisted()) {
+        $log->writeWAFLog('WHITELISTED');
         $response = $next($request, $response);
     } elseif ($waf->isBlacklisted()) {
+        $log->writeWAFLog('BLACKLISTED');
         throw new BlackListException();
     } elseif ($waf->isRatelimited()) {
+        $log->writeWAFLog('RATELIMIT MATCHED');
         $mc = new \AlAdhanApi\Helper\Cacher();
         $matched = $waf->getMatched();
         $rl = new RateLimit($mc, $matched['name'], $matched['rate'], $matched['time']);
         if ($rl->isLimited()) {
+            $log->writeWAFLog('RATELIMITED');
             throw new RateLimitException();
         }
     } else {

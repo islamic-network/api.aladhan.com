@@ -118,4 +118,14 @@ class Log
 
         return $logger->addInfo($this->id . ' :: ' . date('Y-m-d H:i:s') . ' :: Incoming request :: ', $this->format($_SERVER, $_REQUEST));
     }
+
+    public function writeWAFLog($message)
+    {
+        $logFile = 'waf';
+        $logger = new Logger('waf');
+        // Now add some handlers
+        $logger->pushHandler(new StreamHandler($this->directory . $logFile . '.log', Logger::INFO));
+
+        return $logger->addInfo($this->id . ' :: ' . date('Y-m-d H:i:s') . ' :: ' . $message . ' :: ', $this->format($_SERVER, $_REQUEST));
+    }
 }
