@@ -103,6 +103,19 @@ class Request
     }
 
     /**
+     * @param string $timestamp
+     * @return bool
+     */
+    public static function isUnixTimeStamp(string $timestamp): bool
+    {
+
+        return ((string) (int) $timestamp === $timestamp)
+            && ($timestamp <= PHP_INT_MAX)
+            && ($timestamp >= ~PHP_INT_MAX);
+     }
+
+    /**
+     * Returns unix timestamp from given date string
      * [time description]
      * @param  [type] $data [description]
      * @return [type]       [description]
@@ -116,11 +129,21 @@ class Request
             return strtotime($data);
         }
 
-        if ($data < 1 || !is_numeric($data)) {
+        if ($data < 1 || !self::isUnixTimeStamp($data)) {
             return time(); //now
         } else {
             return $data;
         }
+    }
+
+    public function getDateObjectFromUnixTimestamp(string $timestamp, string $timezone)
+    {
+        $d = new \DateTime(date('@' . $timestamp));
+        if (self::isTimeZoneValid($timezone)) {
+            $d->setTimezone(new DateTimeZone($timezone));
+        }
+
+        return $d;
     }
 
     /**
