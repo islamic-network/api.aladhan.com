@@ -10,7 +10,7 @@ class ClassMapper
 {
     /**
      * Returns the method name
-     * @param  Integer $methodId 0 to 12
+     * @param  Integer $methodId 0 to 13
      * @return String
      */
     public static function method($methodId)
@@ -32,7 +32,13 @@ class ClassMapper
             99 => 'CUSTOM',
         ];
 
-        return $arr[$methodId];
+        if (in_array($methodId, $arr)) {
+            return $arr[$methodId];
+        }
+
+        return $arr[2]; // ISNA
+
+
     }
 
     /**
