@@ -23,7 +23,7 @@ ratelimit:
       server:
         X_DUMMY: []
     limit:
-      rate: 300 # limited to 300 requests every 10 minutes
+      rate: 200 # limited to 300 requests every 10 minutes
       time: 600 #60 = 1 minute, 3600 = 1 hour, 86400 = 1 day
   - name: Sujod.com
     headers:
@@ -32,7 +32,7 @@ ratelimit:
       server:
         REQUEST_URI: ["cityInfo", "addressInfo"]
     limit:
-      rate: 1000
+      rate: 500
       time: 86400 #60 = 1 minute, 3600 = 1 hour, 86400 = 1 day
 
 
