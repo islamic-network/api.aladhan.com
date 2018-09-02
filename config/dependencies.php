@@ -45,18 +45,18 @@ $app->add(function ($request, $response, $next) {
     $wafRules = new RuleSet(realpath(__DIR__ . '/waf.yml'));
     $waf = new RuleSetMatcher($wafRules, $request->getHeaders(), $server);
     if ($waf->isWhitelisted()) {
-        $log->writeWAFLog('WHITELISTED');
+        // $log->writeWAFLog('WHITELISTED');
         $response = $next($request, $response);
     } elseif ($waf->isBlacklisted()) {
         $log->writeWAFLog('BLACKLISTED');
         throw new BlackListException();
     } elseif ($waf->isRatelimited()) {
-        $log->writeWAFLog('RATELIMIT MATCHED');
         $mc = new \AlAdhanApi\Helper\Cacher();
         $matched = $waf->getMatched();
+        $log->writeWAFLog('RATELIMIT MATCHED :: ' . $matched['name']);
         $rl = new RateLimit($mc, $matched['name'], $matched['rate'], $matched['time']);
         if ($rl->isLimited()) {
-            $log->writeWAFLog('RATELIMITED');
+            $log->writeWAFLog('RATELIMITED :: ' . $matched['name']);
             throw new RateLimitException();
         }
     } else {
