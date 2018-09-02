@@ -11,6 +11,7 @@ blacklist:
       request: # required HTTP_ appended
         X_FORWARDED_FOR: ["217.138.37.107", "31.167.60.182", "41.111.28.140", "115.51.10.242"]
       server: # required
+        X_DUMMY: []
 
 
 ##### RATE LIMITING #####
@@ -20,6 +21,7 @@ ratelimit:
       request:
         X_FORWARDED_FOR: ["35.185.190.11", "77.235.46.41"]
       server:
+        X_DUMMY: []
     limit:
       rate: 300 # limited to 300 requests every 10 minutes
       time: 600 #60 = 1 minute, 3600 = 1 hour, 86400 = 1 day
@@ -42,8 +44,10 @@ whitelist:
       request:
         X_FORWARDED_FOR: ["178.79.155.249", "192.168.255.53"]
       server:
+        X_DUMMY: []
   - name: app-1-london
     headers:
       request:
+        X_DUMMY: []
       server:
         REMOTE_ADDR: ["178.79.155.249", "192.168.255.53"]

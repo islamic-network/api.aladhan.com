@@ -3,11 +3,11 @@ use AlAdhanApi\Helper\Log;
 use AlAdhanApi\Model\Locations;
 use AlAdhanApi\Handler\AlAdhanHandler;
 use AlAdhanApi\Handler\AlAdhanNotFoundHandler;
-use Symfony\Component\Yaml\Yaml;
 use IslamicNetwork\Waf\Exceptions\BlackListException;
 use IslamicNetwork\Waf\Exceptions\RateLimitException;
 use IslamicNetwork\Waf\Model\RuleSet;
 use IslamicNetwork\Waf\Model\RuleSetMatcher;
+use IslamicNetwork\Waf\Model\RateLimit;
 
 $container = $app->getContainer();
 
@@ -50,7 +50,7 @@ $app->add(function ($request, $response, $next) {
     } elseif ($waf->isRatelimited()) {
         $mc = new \AlAdhanApi\Helper\Cacher();
         $matched = $waf->getMatched();
-        $rl = new \IslamicNetwork\Waf\Model\RateLimit($mc, $matched['name'], $matched['limit'], $matched['time']);
+        $rl = new RateLimit($mc, $matched['name'], $matched['rate'], $matched['time']);
         if ($rl->isLimited()) {
             throw new RateLimitException();
         }
