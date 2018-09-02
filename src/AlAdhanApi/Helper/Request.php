@@ -136,6 +136,11 @@ class Request
         }
     }
 
+    /**
+     * @param string $timestamp
+     * @param string $timezone
+     * @return \DateTime
+     */
     public function getDateObjectFromUnixTimestamp(string $timestamp, string $timezone)
     {
         $d = new \DateTime(date('@' . $timestamp));
