@@ -1,46 +1,72 @@
-# Note that values separated with a comma are always OR and each of the global keys are always AND
-##### BLACKLIST #####
+# Blacklist
 blacklist:
-  - name: SEMRush and Bad Bots # required
-    headers: # required
-      request: # required HTTP_ appended
-        X_FORWARDED_FOR: ["46.229.168.0/24", "197.234.242.0/24", "192.243.53.0/24", "192.145.239.34", "192.243.55.0/24"]
-      server: # required
-  - name: Knowmn abusers # required
-    headers: # required
-      request: # required HTTP_ appended
-        X_FORWARDED_FOR: ["217.138.37.107", "31.167.60.182", "41.111.28.140", "115.51.10.242"]
-      server: # required
+-
+  name: 'SEMRush and Bad Bots'
+  headers:
+    request:
+      X_FORWARDED_FOR:
+      - 46.229.168.0/24
+      - 197.234.242.0/24
+      - 192.243.53.0/24
+      - 192.145.239.34
+      - 192.243.55.0/24
+    server: null
+-
+  name: 'Known abusers'
+  headers:
+    request:
+      X_FORWARDED_FOR:
+      - 217.138.37.107
+      - 31.167.60.182
+      - 41.111.28.140
+      - 115.51.10.242
+    server: null
 
 
-##### RATE LIMITING #####
+# Rate Limiting
 ratelimit:
-  - name: Malaysian IP # required
-    headers: # required
-      request: # required HTTP_ appended
-        X_FORWARDED_FOR: ["210.195.111.90"]
-        REMOTE_ADDR: ["210.195.111.90"]
-      server: # required
-    limit:
-      rate: 600
-      time: 3600 #60 = 1 minute, 3600 = 1 hour, 86400 = 1 day
-  - name: Excessive empty or bad requests # required
-    headers: # required
-      request: # required HTTP_ appended
-        X_FORWARDED_FOR: ["35.185.190.11", "77.235.46.41"]
-      server: # required
-        REMOTE_ADDR: ["35.185.190.11", "77.235.46.41"]
-    limit:
-      rate: 300 # limited to 300 requests every 10 minutes
-      time: 600 #60 = 1 minute, 3600 = 1 hour, 86400 = 1 day
+-
+  name: 'Excessive empty or bad requests'
+  headers:
+    request:
+      X_FORWARDED_FOR:
+      - 35.185.190.11
+      - 77.235.46.41
+    server: null
+  limit:
+    rate: 300
+    time: 600
+-
+  name: 'Limit requests to potentially deprecated endpoints for Sujod.com'
+  headers:
+    request:
+      X_FORWARDED_FOR:
+      - 77.235.46.41
+    server:
+      REQUEST_URI:
+      - cityInfo
+      - addressInfo
+  limit:
+    rate: 1000
+    time: 86400
 
 
 
-##### WHITELIST #####
+# Whitelist
 whitelist:
-  - name: app-1-london # required
-    headers: # required
-      request: # required HTTP_ appended
-        X_FORWARDED_FOR: ["178.79.155.249", "192.168.255.53"]
-      server: # required
-        REMOTE_ADDR: ["178.79.155.249", "192.168.255.53"]
+-
+  name: app-1-london
+  headers:
+    request:
+      X_FORWARDED_FOR:
+      - 178.79.155.249
+      - 192.168.255.53
+    server: null
+-
+  name: app-1-london
+  headers:
+    request: null
+    server:
+      REMOTE_ADDR:
+      - 178.79.155.249
+      - 192.168.255.53
