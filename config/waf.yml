@@ -19,7 +19,7 @@ ratelimit:
   - name: Bad requests
     headers:
       request:
-        X_FORWARDED_FOR: ["35.185.190.11"]
+        X_FORWARDED_FOR: []
       server:
         X_DUMMY: []
     limit:
