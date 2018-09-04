@@ -28,9 +28,9 @@ ratelimit:
   - name: Sujod.com
     headers:
       request:
-        X_FORWARDED_FOR: ["77.235.46.41"]
+        X_FORWARDED_FOR: []
       server:
-        REQUEST_URI: ["cityInfo", "addressInfo"]
+        REQUEST_URI: []
     limit:
       rate: 500
       time: 86400 #60 = 1 minute, 3600 = 1 hour, 86400 = 1 day
