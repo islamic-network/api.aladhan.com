@@ -32,7 +32,7 @@ class ClassMapper
             99 => 'CUSTOM',
         ];
 
-        if (in_array($methodId, $arr)) {
+        if (array_key_exists($methodId, $arr)) {
             return $arr[$methodId];
         }
 
