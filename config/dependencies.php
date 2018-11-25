@@ -25,13 +25,13 @@ $container['model'] = function($c) {
     return $model;
 };
 
-$container['notFoundHandler'] = function ($c) {
+/*$container['notFoundHandler'] = function ($c) {
     return new AlAdhanNotFoundHandler();
 };
 
 $container['errorHandler'] = function ($c) {
     return new AlAdhanHandler();
-};
+};*/
 
 /** Invoke Middleware for WAF Checks */
 $app->add(function ($request, $response, $next) {

@@ -1,0 +1,170 @@
+version: '2'
+services:
+  #######################################
+  # PHP application Docker container
+  #######################################
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    links:
+     # - aa-proxysql
+      - aa-memcached
+    depends_on:
+     # - aa-proxysql
+      - aa-memcached
+    environment:
+      MYSQL_USER: vesicaUser
+      MYSQL_PASSWORD: vesicaPassword
+      MYSQL_DATABASE: vesicaDb
+      MYSQL_HOST: aa-proxysql
+      MEMCACHED_HOST: aa-memcached
+      MEMCACHED_PORT: 11211
+      GOOGLE_API_KEY: XYZ
+      ASKGEO_ACCOUNT_ID: 123
+      ASKGEO_API_KEY: ABC
+    ports:
+      - "7070:8080"
+    volumes:
+      - .:/var/www
+    privileged: true
+    container_name: aa-app
+
+
+  #######################################
+  # MySQL Cluster Server 1
+  #######################################
+  aa-db-1:
+    image: percona/percona-xtradb-cluster:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      XTRABACKUP_PASSWORD: "xtra"
+      CLUSTER_NAME: "aa_cluster"
+    links:
+      - aa-db-2
+      - aa-db-3
+    #ports:
+    #  - "3306:3306"
+    container_name: aa-db-1
+
+  #######################################
+  # MySQL Cluster Server 2
+  #######################################
+  aa-db-2:
+    image: percona/percona-xtradb-cluster:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      XTRABACKUP_PASSWORD: "xtra"
+      CLUSTER_NAME: "aa_cluster"
+      CLUSTER_JOIN: "aa-db-1"
+    #depends_on:
+    #  - aa-db-1
+    #links:
+    #  - aa-db-1
+    #  - aa-db-3
+    #ports:
+    #  - "3306:3306"
+    container_name: aa-db-2
+
+  #######################################
+  # MySQL Cluster Server 3
+  #######################################
+  aa-db-3:
+    image: percona/percona-xtradb-cluster:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      XTRABACKUP_PASSWORD: "xtra"
+      CLUSTER_NAME: "aa_cluster"
+      CLUSTER_JOIN: "aa-db-1"
+    #depends_on:
+    #  - aa-db-1
+    #links:
+    #  - aa-db-1
+    #  - aa-db-2
+    #ports:
+    #  - "3306:3306"
+    container_name: aa-db-3
+
+  #######################################
+  # ProxySQL
+#  #######################################
+#  aa-proxysql:
+#    image: percona/proxysql:1.4
+#    environment:
+#      MYSQL_ROOT_PASSWORD: "root"
+#      XTRABACKUP_PASSWORD: "xtra"
+#      CLUSTER_NAME: "aa_cluster"
+#      MYSQL_PROXY_USER: "proxy"
+#      MYSQL_PROXY_PASSWORD: "proxypass"
+#    #ports:
+#      #- "3306:3306"
+#      #- "6032:6032"
+#    container_name: aa-proxysql
+
+  #######################################
+  # PHPMyAdmin 1
+  #######################################
+  aa-pma-1:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: aa-db-1
+    ports:
+      - "7071:80"
+    links:
+      - aa-db-1
+    depends_on:
+      - aa-db-1
+    container_name: aa-pma-1
+
+  #######################################
+  # PHPMyAdmin 2
+  #######################################
+  aa-pma-2:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: aa-db-2
+    ports:
+      - "7072:80"
+    links:
+      - aa-db-2
+    depends_on:
+      - aa-db-2
+    container_name: aa-pma-2
+
+  #######################################
+  # PHPMyAdmin 3
+  #######################################
+  aa-pma-3:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: aa-db-3
+    ports:
+      - "7073:80"
+    links:
+      - aa-db-3
+    depends_on:
+      - aa-db-3
+    container_name: aa-pma-3
+
+  #######################################
+  # Memcached
+  #######################################
+  aa-memcached:
+    image: memcached:1.5
+    #ports:
+    #  - "11211:11211"
+    container_name: aa-memcached
+
+  #######################################
+  # Memcached Admin
+  #######################################
+  aa-memadmin:
+    image: vesica/memadmin:latest
+    ports:
+      - "7074:8080"
+    environment:
+      MEMADMIN_USERNAME: aa
+      MEMADMIN_PASSWORD: aa
+      MEMCACHED_HOST: aa-memcached
+      MEMCACHED_PORT: 11211
+    container_name: aa--memadmin

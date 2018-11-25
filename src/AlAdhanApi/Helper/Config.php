@@ -20,8 +20,32 @@ class Config
      */
     public function __construct()
     {
-        $configFilePath = realpath(__DIR__ . '/../../../config/') . '/config.yml';
-        $this->config = Yaml::parse(file_get_contents($configFilePath));
+        //$configFilePath = realpath(__DIR__ . '/../../../config/') . '/config.yml';
+
+        $this->config = [
+            'connections' => [
+                'database' => [
+                    'host' => getenv('MYSQL_HOST'),
+                    'username' => getenv('MYSQL_USER'),
+                    'password' => getenv('MYSQL_PASSWORD'),
+                    'db' => getenv('MYSQL_DATABASE'),
+                    'port' => 3306
+                ],
+                'memcache' => [
+                    'host' => getenv('MEMCACHED_HOST'),
+                    'port' => getenv('MEMCACHED_PORT')
+                ]
+            ],
+            'apikeys' => [
+                'google_geocoding' => getenv('GOOGLE_API_KEY'),
+                'askgeo' => [
+                    'accountid' => getenv('ASKGEO_ACCOUNT_ID'),
+                    'key' => getenv('ASKGEO_API_KEY')
+                ]
+            ]
+        ];
+
+        //$this->config = Yaml::parse(file_get_contents($configFilePath));
     }
 
     /**
