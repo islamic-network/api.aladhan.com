@@ -8,15 +8,15 @@ services:
       context: .
       dockerfile: Dockerfile
     links:
-     # - aa-proxysql
+      - aa-proxysql
       - aa-memcached
     depends_on:
-     # - aa-proxysql
+      - aa-proxysql
       - aa-memcached
     environment:
-      MYSQL_USER: vesicaUser
-      MYSQL_PASSWORD: vesicaPassword
-      MYSQL_DATABASE: vesicaDb
+      MYSQL_USER: aladhan
+      MYSQL_PASSWORD: aladhan
+      MYSQL_DATABASE: aladhan_locations
       MYSQL_HOST: aa-proxysql
       MEMCACHED_HOST: aa-memcached
       MEMCACHED_PORT: 11211
@@ -43,8 +43,6 @@ services:
     links:
       - aa-db-2
       - aa-db-3
-    #ports:
-    #  - "3306:3306"
     container_name: aa-db-1
 
   #######################################
@@ -57,13 +55,6 @@ services:
       XTRABACKUP_PASSWORD: "xtra"
       CLUSTER_NAME: "aa_cluster"
       CLUSTER_JOIN: "aa-db-1"
-    #depends_on:
-    #  - aa-db-1
-    #links:
-    #  - aa-db-1
-    #  - aa-db-3
-    #ports:
-    #  - "3306:3306"
     container_name: aa-db-2
 
   #######################################
@@ -76,30 +67,22 @@ services:
       XTRABACKUP_PASSWORD: "xtra"
       CLUSTER_NAME: "aa_cluster"
       CLUSTER_JOIN: "aa-db-1"
-    #depends_on:
-    #  - aa-db-1
-    #links:
-    #  - aa-db-1
-    #  - aa-db-2
-    #ports:
-    #  - "3306:3306"
     container_name: aa-db-3
 
   #######################################
   # ProxySQL
 #  #######################################
-#  aa-proxysql:
-#    image: percona/proxysql:1.4
-#    environment:
-#      MYSQL_ROOT_PASSWORD: "root"
-#      XTRABACKUP_PASSWORD: "xtra"
-#      CLUSTER_NAME: "aa_cluster"
-#      MYSQL_PROXY_USER: "proxy"
-#      MYSQL_PROXY_PASSWORD: "proxypass"
-#    #ports:
-#      #- "3306:3306"
-#      #- "6032:6032"
-#    container_name: aa-proxysql
+  aa-proxysql:
+    image: jelastic/proxysql:1.4.9
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      XTRABACKUP_PASSWORD: "xtra"
+      CLUSTER_NAME: "aa_cluster"
+      MYSQL_PROXY_USER: "proxy"
+      MYSQL_PROXY_PASSWORD: "proxypass"
+    ports:
+      - "6080:6080"
+    container_name: aa-proxysql
 
   #######################################
   # PHPMyAdmin 1
