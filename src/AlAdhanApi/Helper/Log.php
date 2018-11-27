@@ -83,10 +83,10 @@ class Log
         // Create the logger
         $logger = new Logger('AskGeo');
         // Now add some handlers
-        $logger->pushHandler(new \Monolog\Handler\ProcessHandler());
+        $logger->pushHandler( new \Monolog\Handler\StreamHandler('php://stdout', Logger::INFO));
         $l = $this->format($_SERVER, $_REQUEST);
 
-        return $logger->addInfo($this->id . ' :: ' . $message . ' :: ' . json_encode([$l['server']['referer'], $l['server']['useragent'], $l['server']['querystring'], $l]));
+        return $logger->info($this->id . ' :: ' . $message . ' :: ' . json_encode([$l['server']['referer'], $l['server']['useragent'], $l['server']['querystring'], $l]));
     }
 
     /**
@@ -99,10 +99,10 @@ class Log
         // Create the logger
         $logger = new Logger('Google');
         // Now add some handlers
-        $logger->pushHandler(new \Monolog\Handler\ProcessHandler());
+        $logger->pushHandler( new \Monolog\Handler\StreamHandler('php://stdout', Logger::INFO));
         $l = $this->format($_SERVER, $_REQUEST);
 
-        return $logger->addInfo($this->id . ' :: ' . $message . ' :: ' . json_encode([$l['server']['referer'], $l['server']['useragent'], $l['server']['querystring'], $l]));
+        return $logger->info($this->id . ' :: ' . $message . ' :: ' . json_encode([$l['server']['referer'], $l['server']['useragent'], $l['server']['querystring'], $l]));
     }
 
     /**
@@ -115,9 +115,9 @@ class Log
         $logger = new Logger('ApiService');
         // Now add some handlers
         //$logger->pushHandler(new StreamHandler($this->directory . $logFile . '.log', Logger::INFO));
-        $logger->pushHandler(new \Monolog\Handler\ProcessHandler());
+        $logger->pushHandler( new \Monolog\Handler\StreamHandler('php://stdout', Logger::INFO));
 
-        return $logger->addInfo($this->id . ' :: ' . date('Y-m-d H:i:s') . ' :: Incoming request :: ', $this->format($_SERVER, $_REQUEST));
+        return $logger->info($this->id . ' :: ' . date('Y-m-d H:i:s') . ' :: Incoming request :: ', $this->format($_SERVER, $_REQUEST));
     }
 
     public function writeWAFLog($message)
@@ -125,8 +125,8 @@ class Log
         $logFile = 'waf';
         $logger = new Logger('waf');
         // Now add some handlers
-        $logger->pushHandler(new \Monolog\Handler\ProcessHandler());
+        $logger->pushHandler( new \Monolog\Handler\StreamHandler('php://stdout', Logger::INFO));
 
-        return $logger->addInfo($this->id . ' :: ' . date('Y-m-d H:i:s') . ' :: ' . $message . ' :: ', $this->format($_SERVER, $_REQUEST));
+        return $logger->info($this->id . ' :: ' . date('Y-m-d H:i:s') . ' :: ' . $message . ' :: ', $this->format($_SERVER, $_REQUEST));
     }
 }

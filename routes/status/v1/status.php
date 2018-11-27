@@ -21,13 +21,22 @@ $app->group('/v1', function() {
                                 city = ? AND countryiso = ?",
             ['Dubai', 'AE']);
 
+        if ($mc !== false) {
+            if ($dbResult !== false) {
+                $mc->set('DB_CONNECTION', 'database');
+            } else {
+                $mc->set('DB_CONNECTION', 'database_slave');
+            }
+        }
+
         $status = [
             'memcached' => $mc === false ? 'NOT OK' : 'OK',
             'perconaMaster' => $dbResult === false ? 'NOT OK' : 'OK',
-            'perconaSlave' => $db2Result === false ? 'NOT OK' : 'OK'
+            'perconaSlave' => $db2Result === false ? 'NOT OK' : 'OK',
+            'activeDb' => $mc === false ? 'NOT OK' : $mc->get('DB_CONNECTION')
                 ];
 
-        if ($mc === false || $dbResult == false) {
+        if ($mc === false || $dbResult === false || $db2Result === false) {
             return $response->withJson(ApiResponse::build($status, 500, 'Status Check Failed'), 500);
         }
 

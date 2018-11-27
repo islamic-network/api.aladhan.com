@@ -28,14 +28,14 @@ class Config
                     'host' => getenv('MYSQL_HOST'),
                     'username' => getenv('MYSQL_USER'),
                     'password' => getenv('MYSQL_PASSWORD'),
-                    'db' => getenv('MYSQL_DATABASE'),
+                    'dbname' => getenv('MYSQL_DATABASE'),
                     'port' => 3306
                 ],
                 'database_slave' => [
                     'host' => getenv('MYSQL_SLAVE_HOST'),
                     'username' => getenv('MYSQL_SLAVE_USER'),
                     'password' => getenv('MYSQL_SLAVE_PASSWORD'),
-                    'db' => getenv('MYSQL_SLAVE_DATABASE'),
+                    'dbname' => getenv('MYSQL_SLAVE_DATABASE'),
                     'port' => 3306
                 ],
                 'memcache' => [

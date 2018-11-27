@@ -19,7 +19,7 @@
      }
   ],
   "require": {
-    "monolog/monolog": "dev-master",
+    "monolog/monolog": "~1.24",
     "doctrine/dbal": "v2.5.4",
     "guzzlehttp/guzzle": "^6.1",
     "slim/slim": "^3.0",
