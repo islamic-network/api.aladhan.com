@@ -33,11 +33,11 @@ class Database
      * Returns a connection to the database
      * @return DriveManager
      */
-    public function getConnection()
+    public function getConnection($connection = 'database')
     {
         $config = new \Doctrine\DBAL\Configuration();
 
-        $c = $this->config->connection('database');
+        $c = $this->config->connection($connection);
 
         $connectionParams = array(
             'dbname' => $c->dbname,

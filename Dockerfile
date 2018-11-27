@@ -8,11 +8,18 @@ COPY /etc/apache2/mods-enabled/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_pr
 # Run Composer
 RUN cd /var/www && composer install --no-dev
 
+# Delete stuff we do not need
+RUN rm -rf /var/www/db
+
 RUN chown -R www-data:www-data /var/www/
-ENV MYSQL_USER "someUser"
-ENV MYSQL_PASSWORD "somePassword"
-ENV MYSQL_DATABASE "someDb"
-ENV MYSQL_HOST "localhost"
+ENV MYSQL_USER "aladhan"
+ENV MYSQL_PASSWORD "aladhan"
+ENV MYSQL_DATABASE "aladhan_locations"
+ENV MYSQL_HOST "db1"
+MYSQL_SLAVE_USER "aladhan"
+MYSQL_SLAVE_PASSWORD "aladhan"
+MYSQL_SLAVE_DATABASE "aladhan_locations"
+MYSQL_SLAVE_HOST "db2"
 ENV MEMCACHED_HOST "host"
 ENV MEMCACHED_PORT "port"
 ENV GOOGLE_API_KEY "key"

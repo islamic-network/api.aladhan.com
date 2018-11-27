@@ -8,16 +8,22 @@ services:
       context: .
       dockerfile: Dockerfile
     links:
-      - aa-proxysql
       - aa-memcached
+      - aa-db
+      - aa-db2
     depends_on:
-      - aa-proxysql
       - aa-memcached
+      - aa-db
+      - aa-db2
     environment:
       MYSQL_USER: aladhan
       MYSQL_PASSWORD: aladhan
       MYSQL_DATABASE: aladhan_locations
-      MYSQL_HOST: aa-proxysql
+      MYSQL_HOST: aa-db
+      MYSQL_SLAVE_USER: aladhan
+      MYSQL_SLAVE_PASSWORD: aladhan
+      MYSQL_SLAVE_DATABASE: aladhan_locations
+      MYSQL_SLAVE_HOST: aa-db2
       MEMCACHED_HOST: aa-memcached
       MEMCACHED_PORT: 11211
       GOOGLE_API_KEY: XYZ
@@ -32,102 +38,42 @@ services:
 
 
   #######################################
-  # MySQL Cluster Server 1
+  # MySQL
   #######################################
-  aa-db-1:
-    image: percona/percona-xtradb-cluster:5.7
+  aa-db:
+    image: vesica/api.aladhan.com-db:master
     environment:
       MYSQL_ROOT_PASSWORD: "root"
-      XTRABACKUP_PASSWORD: "xtra"
-      CLUSTER_NAME: "aa_cluster"
-    links:
-      - aa-db-2
-      - aa-db-3
-    container_name: aa-db-1
+      MYSQL_USER: aladhan
+      MYSQL_PASSWORD: aladhan
+      MYSQL_DATABASE: aladhan_locations
+    container_name: aa-db
 
   #######################################
-  # MySQL Cluster Server 2
+  # MySQL2
   #######################################
-  aa-db-2:
-    image: percona/percona-xtradb-cluster:5.7
+  aa-db2:
+    image: vesica/api.aladhan.com-db:master
     environment:
       MYSQL_ROOT_PASSWORD: "root"
-      XTRABACKUP_PASSWORD: "xtra"
-      CLUSTER_NAME: "aa_cluster"
-      CLUSTER_JOIN: "aa-db-1"
-    container_name: aa-db-2
-
-  #######################################
-  # MySQL Cluster Server 3
-  #######################################
-  aa-db-3:
-    image: percona/percona-xtradb-cluster:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: "root"
-      XTRABACKUP_PASSWORD: "xtra"
-      CLUSTER_NAME: "aa_cluster"
-      CLUSTER_JOIN: "aa-db-1"
-    container_name: aa-db-3
-
-  #######################################
-  # ProxySQL
-#  #######################################
-  aa-proxysql:
-    image: jelastic/proxysql:1.4.9
-    environment:
-      MYSQL_ROOT_PASSWORD: "root"
-      XTRABACKUP_PASSWORD: "xtra"
-      CLUSTER_NAME: "aa_cluster"
-      MYSQL_PROXY_USER: "proxy"
-      MYSQL_PROXY_PASSWORD: "proxypass"
-    ports:
-      - "6080:6080"
-    container_name: aa-proxysql
-
+      MYSQL_USER: aladhan
+      MYSQL_PASSWORD: aladhan
+      MYSQL_DATABASE: aladhan_locations
+    container_name: aa-db2
   #######################################
   # PHPMyAdmin 1
   #######################################
-  aa-pma-1:
+  aa-pma:
     image: phpmyadmin/phpmyadmin
     environment:
-      PMA_HOST: aa-db-1
+      PMA_HOST: aa-db
     ports:
       - "7071:80"
     links:
       - aa-db-1
     depends_on:
       - aa-db-1
-    container_name: aa-pma-1
-
-  #######################################
-  # PHPMyAdmin 2
-  #######################################
-  aa-pma-2:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_HOST: aa-db-2
-    ports:
-      - "7072:80"
-    links:
-      - aa-db-2
-    depends_on:
-      - aa-db-2
-    container_name: aa-pma-2
-
-  #######################################
-  # PHPMyAdmin 3
-  #######################################
-  aa-pma-3:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_HOST: aa-db-3
-    ports:
-      - "7073:80"
-    links:
-      - aa-db-3
-    depends_on:
-      - aa-db-3
-    container_name: aa-pma-3
+    container_name: aa-pma
 
   #######################################
   # Memcached
