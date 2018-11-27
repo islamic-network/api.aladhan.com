@@ -7,7 +7,7 @@ ENV MYSQL_ROOT_PASSWORD "root"
 
 EXPOSE 3306
 
-COPY aladhan.cnf /etc/my.cnf.d/aladhan.cnf
+COPY aladhan.cnf /etc/mysql/conf.d/aladhan.cnf
 
 ADD 2018-11-26.sql.tar.gz /docker-entrypoint-initdb.d/
 
