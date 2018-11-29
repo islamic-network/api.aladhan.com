@@ -379,4 +379,17 @@ $app->group('/v1', function() {
             return $response->withJson(ApiResponse::build('Something went wrong. Please try again later. Sorry.', 400, 'Bad Request'), 400);
         }
     });
+
+    $this->get('/islamicHolidaysByHijriYear/{year}', function (Request $request, Response $response) {
+        //$this->helper->logger->write();
+        $y = (int) $request->getAttribute('year');
+        $adjustment = (int) $request->getQueryParam('adjustment');
+        $hs = new HijriCalendarService();
+        $result = $hs->getIslamicHolidaysByHijriYear($y, $adjustment);
+        if ($result) {
+            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+        } else {
+            return $response->withJson(ApiResponse::build('Something went wrong. Please try again later. Sorry.', 400, 'Bad Request'), 400);
+        }
+    });
 });

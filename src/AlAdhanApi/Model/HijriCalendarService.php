@@ -501,6 +501,18 @@ class HijriCalendarService
         return $days;
     }
 
+    public function getIslamicHolidaysByHijriYear(int $year = null, int $adjustment = null): array
+    {
+        $holidays = [];
+        $year = $year === null ? $this->getCurrentIslamicYear() : $year;
+        $adjustment = $adjustment === null ? 0 : $adjustment;
+        foreach ($this->specialDays() as $day) {
+            $holidays[] = $this->hToG($day['day'] . '-' . $day['month'] . '-' . $year, $adjustment);
+        }
+
+        return $holidays;
+    }
+
     /**
      * Returns holidays on a given Hijri date
      * @param  Integer $day

@@ -69,4 +69,14 @@ class HijriTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('10', $this->hcs->Month);
         $this->assertEquals('2018', $this->hcs->Year);
     }
+
+    public function testIslamicHolidaysByHijriYear()
+    {
+        $holydays = $this->hcs->getIslamicHolidaysByHijriYear(1440, -1);
+        $this->assertCount(19, $holydays);
+        //print_r($holydays);
+        $this->assertEquals('Ashura', $holydays[0]['hijri']['holidays'][0]);
+    }
 }
+
+
