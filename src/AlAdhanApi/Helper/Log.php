@@ -12,16 +12,10 @@ use Monolog\Handler\StreamHandler;
 class Log
 {
     public $id;
-    public $directory;
 
-    public function __construct($directory = null)
+    public function __construct()
     {
         $this->id = uniqid();
-        if ($directory === null) {
-            $this->directory = realpath(__DIR__ . '/../../../logs/') . '/';
-        } else {
-            $this->directory = $directory;
-        }
     }
 
     /**
@@ -114,7 +108,6 @@ class Log
         $logFile = date('Y-m-d');
         $logger = new Logger('ApiService');
         // Now add some handlers
-        //$logger->pushHandler(new StreamHandler($this->directory . $logFile . '.log', Logger::INFO));
         $logger->pushHandler( new \Monolog\Handler\StreamHandler('php://stdout', Logger::INFO));
 
         return $logger->info($this->id . ' :: ' . date('Y-m-d H:i:s') . ' :: Incoming request :: ', $this->format($_SERVER, $_REQUEST));
