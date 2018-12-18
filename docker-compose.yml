@@ -10,11 +10,9 @@ services:
     links:
       - aa-memcached
       - aa-db
-      - aa-db2
     depends_on:
       - aa-memcached
       - aa-db
-      - aa-db2
     environment:
       MYSQL_USER: "aladhan"
       MYSQL_PASSWORD: "aladhan"
@@ -23,12 +21,12 @@ services:
       MYSQL_SLAVE_USER: "aladhan"
       MYSQL_SLAVE_PASSWORD: "aladhan"
       MYSQL_SLAVE_DATABASE: "aladhan_locations"
-      MYSQL_SLAVE_HOST: "aa-db2"
+      MYSQL_SLAVE_HOST: "aa-db"
       MEMCACHED_HOST: "aa-memcached"
       MEMCACHED_PORT: 11211
-      GOOGLE_API_KEY: "XYZ"
-      ASKGEO_ACCOUNT_ID: "123"
-      ASKGEO_API_KEY: "ABC"
+      GOOGLE_API_KEY: "xyz"
+      ASKGEO_ACCOUNT_ID: "1234"
+      ASKGEO_API_KEY: "xyz"
     ports:
       - "7070:8080"
     volumes:
@@ -41,7 +39,9 @@ services:
   # MySQL
   #######################################
   aa-db:
-    image: vesica/api.aladhan.com-db:master
+    build:
+      context: db/master
+      dockerfile: Dockerfile
     environment:
       MYSQL_ROOT_PASSWORD: "root"
       MYSQL_USER: "aladhan"
@@ -50,21 +50,10 @@ services:
     container_name: aa-db
 
   #######################################
-  # MySQL2
-  #######################################
-  aa-db2:
-    image: vesica/api.aladhan.com-db:master
-    environment:
-      MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_USER: aladhan
-      MYSQL_PASSWORD: aladhan
-      MYSQL_DATABASE: aladhan_locations
-    container_name: aa-db2
-  #######################################
   # PHPMyAdmin 1
   #######################################
   aa-pma:
-    image: phpmyadmin/phpmyadmin
+    image: phpmyadmin/phpmyadmin:4.8.3
     environment:
       PMA_HOST: aa-db
     ports:

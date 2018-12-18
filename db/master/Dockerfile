@@ -10,5 +10,5 @@ EXPOSE 3306
 COPY aladhan.cnf /etc/mysql/conf.d/aladhan.cnf
 
 # Copy and Insert DB Backup
-#ADD 2018-11-26.sql.tar.gz /docker-entrypoint-initdb.d/
+ADD 2018-11-26.sql.tar.gz /docker-entrypoint-initdb.d/
 
