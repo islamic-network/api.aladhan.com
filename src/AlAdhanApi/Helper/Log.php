@@ -113,6 +113,20 @@ class Log
         return $logger->info($this->id . ' :: ' . date('Y-m-d H:i:s') . ' :: Incoming request :: ', $this->format($_SERVER, $_REQUEST));
     }
 
+    /**
+     * [write description]
+     * @return [type] [description]
+     */
+    public function error($message = '')
+    {
+        $logFile = date('Y-m-d');
+        $logger = new Logger('ApiError');
+        // Now add some handlers
+        $logger->pushHandler( new \Monolog\Handler\StreamHandler('php://stderr', Logger::INFO));
+
+        return $logger->error($this->id . ' :: ' . date('Y-m-d H:i:s') . ' :: ' . $message);
+    }
+
     public function writeWAFLog($message)
     {
         $logFile = 'waf';

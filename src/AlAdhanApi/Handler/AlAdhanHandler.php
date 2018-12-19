@@ -2,6 +2,7 @@
 namespace AlAdhanApi\Handler;
 
 
+use AlAdhanApi\Helper\Log;
 use IslamicNetwork\Waf\Exceptions\BlackListException;
 use IslamicNetwork\Waf\Exceptions\RateLimitException;
 use Psr\Http\Message\RequestInterface;
@@ -10,6 +11,9 @@ use Psr\Http\Message\ResponseInterface;
 class AlAdhanHandler
 {
     public function __invoke($request, $response, $exception = null) {
+
+        $logger = new Log();
+        $logger->error($exception->getMessage());
 
         if ($exception instanceof BlackListException) {
             return $response->withJson(self::blacklist(), 403);
