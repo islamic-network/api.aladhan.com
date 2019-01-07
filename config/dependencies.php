@@ -3,6 +3,8 @@ use AlAdhanApi\Helper\Log;
 use AlAdhanApi\Model\Locations;
 use AlAdhanApi\Handler\AlAdhanHandler;
 use AlAdhanApi\Handler\AlAdhanNotFoundHandler;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 $container = $app->getContainer();
 
@@ -41,7 +43,7 @@ $app->add(function (Request $request, Response $response, $next) {
             return $response;
         }
 
-        throw new \Quran\Exception\WafKeyMismatchException();
+        throw new \AlAdhanApi\Exception\WafKeyMismatchException();
     }
 
     $response = $next($request, $response);

@@ -1,14 +1,16 @@
 <?php
 namespace AlAdhanApi\Handler;
 
+use AlAdhanApi\Exception\WafKeyMismatchException;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
+
 
 class AlAdhanHandler
 {
     public function __invoke($request, $response, $exception = null) {
 
-        if ($exception instanceof \Quran\Exception\WafKeyMismatchException) {
+        if ($exception instanceof WafKeyMismatchException) {
             $r = [
                 'code' => 403,
                 'status' => 'Forbidden',

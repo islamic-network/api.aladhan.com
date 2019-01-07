@@ -1,6 +1,6 @@
 <?php
 
-namespace Quran\Exception;
+namespace AlAdhanApi\Exception;
 
 class WafKeyMismatchException extends \Exception
 {

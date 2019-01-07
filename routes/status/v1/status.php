@@ -10,23 +10,31 @@ $app->group('/v1', function() {
     $this->get('/status', function (Request $request, Response $response) {
         $mc = new Cacher();
         $dbx = new Database();
-        $db = $dbx->getConnection('database');
-        $dbResult = $db->fetchAssoc("SELECT id
+        try {
+            $db = $dbx->getConnection('database');
+            $dbResult = $db->fetchAssoc("SELECT id
                                 FROM geolocate WHERE
                                 city = ? AND countryiso = ?",
-                    ['Dubai', 'AE']);
-        $db2 = $dbx->getConnection('database_slave');
-        $db2Result = $db2->fetchAssoc("SELECT id
+                ['Dubai', 'AE']);
+        } catch (Exception $e) {
+            $dbResult = false;
+        }
+        try {
+            $db2 = $dbx->getConnection('database_slave');
+            $db2Result = $db2->fetchAssoc("SELECT id
                                 FROM geolocate WHERE
                                 city = ? AND countryiso = ?",
-            ['Dubai', 'AE']);
+                ['Dubai', 'AE']);
 
-        if ($mc !== false) {
-            if ($dbResult !== false) {
-                $mc->set('DB_CONNECTION', 'database');
-            } else {
-                $mc->set('DB_CONNECTION', 'database_slave');
+            if ($mc !== false) {
+                if ($dbResult !== false) {
+                    $mc->set('DB_CONNECTION', 'database');
+                } else {
+                    $mc->set('DB_CONNECTION', 'database_slave');
+                }
             }
+        } catch (Exception $e) {
+            $db2Result = false;
         }
 
         $status = [
