@@ -31,3 +31,6 @@ ENV ASKGEO_ACCOUNT_ID "account"
 ENV ASKGEO_API_KEY "key"
 ENV ASKGEO_FORMAT "obj"
 ENV ASKGEO_SECURE "true"
+# 0 = disabled. 1 = enabled
+ENV WAF_PROXY_MODE "0"
+ENV WAF_KEY "someKey"
