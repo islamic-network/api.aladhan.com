@@ -7,10 +7,14 @@ This repository powers the AlAdhan.com API on http://api.aladhan.com.
 * PerconaDB 5.7
 * Memcached 1.5
 * Slim Framework v3
+* Google Maps API Key for the GeoCoding API (https://developers.google.com/maps/documentation/geocoding/intro)
+* AskGeo API Key and Account ID for the Timezone API (https://askgeo.com/database/TimeZone)
 
 ### Running the App
 
 The api and all its dependencies are fully Dockerised. You **just need docker and docker-compose** to spin everything up.
+
+You should enter your Google Maps API Key and Ask Geo Account ID and keys in the docker-compose file on lines 27, 28 and 29.
 
 A production ready Docker image of the app is published as vesica/api.aladhan.com on Docker Hub (https://hub.docker.com/r/vesica/api.aladhan.com/).
 
