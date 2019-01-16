@@ -1,3 +1,5 @@
+## بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
+
 # AlAdhan API - api.aladhan.com
 
 This repository powers the AlAdhan.com API on http://api.aladhan.com.
