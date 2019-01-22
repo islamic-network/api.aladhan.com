@@ -10,8 +10,10 @@ class GoogleMapsApiTest extends \PHPUnit\Framework\TestCase
         $this->client = new GoogleMapsApi();
     }
 
+
     public function testGeoLocationAndTimezone()
     {
+        $this->markTestSkipped('Tests google, not our code so much.');
         $res = $this->client->getGeoCodeLocationAndTimezone('Sultanahmet Masjid, Istanbul, Turkey');
         $this->assertEquals('İstanbul', $res->state);
         $this->assertEquals('Turkey', $res->country);

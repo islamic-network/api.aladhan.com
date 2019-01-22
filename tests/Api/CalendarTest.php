@@ -29,16 +29,16 @@ class calendarTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("application/json;charset=utf-8", $contentType);
 
         $responseBody = json_decode($response->getBody());
-        $this->assertEquals("05:41 (GST)", $responseBody->data[1]->timings->Fajr);
-        $this->assertEquals("18:36 (GST)", $responseBody->data[1]->timings->Isha);
-        $this->assertEquals("00:08 (GST)", $responseBody->data[1]->timings->Midnight);
+        $this->assertEquals("05:41 (+04)", $responseBody->data[1]->timings->Fajr);
+        $this->assertEquals("18:36 (+04)", $responseBody->data[1]->timings->Isha);
+        $this->assertEquals("00:08 (+04)", $responseBody->data[1]->timings->Midnight);
         $this->assertEquals("STANDARD", $responseBody->data[1]->meta->midnightMode);
     }
 
     public function testJafariMidnightMode()
     {
         $response = $this->http->request('GET', 'calendar', [
-            
+
             'query' => [
                 'latitude' => '25.2048493',
                 'longitude' => '55.2707828',
@@ -53,9 +53,9 @@ class calendarTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("application/json;charset=utf-8", $contentType);
 
         $responseBody = json_decode($response->getBody());
-        $this->assertEquals("05:41 (GST)", $responseBody->data[1]->timings->Fajr);
-        $this->assertEquals("18:36 (GST)", $responseBody->data[1]->timings->Isha);
-        $this->assertEquals("23:35 (GST)", $responseBody->data[1]->timings->Midnight);
+        $this->assertEquals("05:41 (+04)", $responseBody->data[1]->timings->Fajr);
+        $this->assertEquals("18:36 (+04)", $responseBody->data[1]->timings->Isha);
+        $this->assertEquals("23:35 (+04)", $responseBody->data[1]->timings->Midnight);
         $this->assertEquals("JAFARI", $responseBody->data[1]->meta->midnightMode);
     }
 

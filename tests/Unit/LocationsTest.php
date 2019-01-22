@@ -12,6 +12,7 @@ class LocationsTest extends \PHPUnit\Framework\TestCase
 
     public function testGoogleCity()
     {
+        $this->markTestSkipped('Tests google, not our code so much.');
         $r = $this->locations->getGoogleCoOrdinatesAndZone('Inverness', 'UK', 'Scotland');
         $this->assertEquals('57.477773', $r['latitude']);
         $this->assertEquals('-4.224721', $r['longitude']);
@@ -20,6 +21,7 @@ class LocationsTest extends \PHPUnit\Framework\TestCase
 
     public function testGoogleAddress()
     {
+        $this->markTestSkipped('Tests google, not our code so much.');
         $r = $this->locations->getAddressCoOrdinatesAndZone('Inverness, Scotland, UK');
         $this->assertEquals('57.477773', $r['latitude']);
         $this->assertEquals('-4.224721', $r['longitude']);

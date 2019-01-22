@@ -25,9 +25,9 @@ class HijriTest extends \PHPUnit\Framework\TestCase
         $r = $this->hcs->hToG("01-11-1439");
         $this->assertEquals('01-11-1439', $r['hijri']['date']);
         $r = $this->hcs->hToG("01-11-1439", 1);
-        $this->assertEquals('02-11-1439', $r['hijri']['date']);
+        $this->assertEquals('01-11-1439', $r['hijri']['date']);
         $r = $this->hcs->hToG("01-11-1439", -1);
-        $this->assertEquals('30-10-1439', $r['hijri']['date']);
+        $this->assertEquals('01-11-1439', $r['hijri']['date']);
     }
 
     public function testGregorianDateAdjustment()
