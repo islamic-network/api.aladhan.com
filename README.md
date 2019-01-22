@@ -1,5 +1,10 @@
 ## بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ
 
+[![CircleCI](https://circleci.com/gh/islamic-network/api.aladhan.com.svg?style=shield)](https://circleci.com/gh/islamic-network/api.aladhan.com)
+![](https://img.shields.io/docker/pulls/vesica/api.aladhan.com.svg)
+![](https://img.shields.io/github/release/islamic-network/api.aladhan.com.svg)
+![](https://img.shields.io/github/license/islamic-network/api.aladhan.com.svg)
+
 # AlAdhan API - api.aladhan.com
 
 This repository powers the AlAdhan.com API on http://api.aladhan.com.
