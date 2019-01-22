@@ -14,10 +14,4 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
         $c = new Config();
         $this->assertEquals(2, count((array)$c->connection('memcache')));
     }
-
-    public function testGoogleKey()
-    {
-        $c = new Config();
-        $this->assertTrue(is_string($c->apiKey('google_geocoding')), 'Actual Value: ' . $c->apiKey('google_geocoding'));
-    }
 }
