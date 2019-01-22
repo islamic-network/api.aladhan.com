@@ -2,8 +2,8 @@
 
 [![CircleCI](https://circleci.com/gh/islamic-network/api.aladhan.com.svg?style=shield)](https://circleci.com/gh/islamic-network/api.aladhan.com)
 [![](https://img.shields.io/docker/pulls/vesica/api.aladhan.com.svg)](https://cloud.docker.com/u/vesica/repository/docker/vesica/api.aladhan.com)
-![](https://img.shields.io/github/release/islamic-network/api.aladhan.com.svg)
-![](https://img.shields.io/github/license/islamic-network/api.aladhan.com.svg)
+[![](https://img.shields.io/github/release/islamic-network/api.aladhan.com.svg)](https://github.com/islamic-network/api.aladhan.com/releases)
+[![](https://img.shields.io/github/license/islamic-network/api.aladhan.com.svg)](https://github.com/islamic-network/api.aladhan.com/blob/master/LICENSE)
 
 # AlAdhan API - api.aladhan.com
 
