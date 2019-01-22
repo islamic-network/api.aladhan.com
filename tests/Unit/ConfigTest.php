@@ -18,6 +18,6 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     public function testGoogleKey()
     {
         $c = new Config();
-        $this->assertTrue(is_string($c->apiKey('google_geocoding')));
+        $this->assertTrue(is_string($c->apiKey('google_geocoding')), 'Actual Value: ' . $c->apiKey());
     }
 }
