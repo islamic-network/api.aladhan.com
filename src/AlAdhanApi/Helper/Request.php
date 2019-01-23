@@ -158,7 +158,7 @@ class Request
      */
     public static function month($data)
     {
-        if ($data == '' || $data == null || !is_numeric($data) || $data > 12 || $data < 1) {
+        if ($data == '' || $data == null || !is_numeric($data) || ((int) $data) > 12 || ((int) $data) < 1 || strlen($data) > 2 || strlen($data) < 1) {
             $d = new \DateTime('now');
             return $d->format('m');
         }
@@ -188,7 +188,7 @@ class Request
      */
     public static function year($data)
     {
-        if ($data == '' || $data == null || !is_numeric($data)) {
+        if ($data == '' || $data == null || !is_numeric($data) || strlen($data) < 1 || ((int) $data) < 1 ) {
             $d = new \DateTime('now');
             return $d->format('Y');
         }
