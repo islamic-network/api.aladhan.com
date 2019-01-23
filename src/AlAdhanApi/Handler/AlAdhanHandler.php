@@ -2,12 +2,13 @@
 namespace AlAdhanApi\Handler;
 
 use AlAdhanApi\Exception\WafKeyMismatchException;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use AlAdhanApi\Helper\Log;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 class AlAdhanHandler
 {
-    public function __invoke($request, $response, $exception = null) {
+    public function __invoke(Request $request, Response $response, $exception = null) {
 
         if ($exception instanceof WafKeyMismatchException) {
             $r = [
@@ -25,9 +26,8 @@ class AlAdhanHandler
             'data' => 'Something went wrong when the server tried to process this request. Sorry!'
         ];
 
-        $logger = new \Monolog\Logger('AlAdhanApi/PHPErrors');
-        $logger->pushHandler( new \Monolog\Handler\StreamHandler('php://stdout', LogLevel::ERROR));
-        $logger->error( $exception->getCode() . ' : ' . $exception->getMessage() . ' | ' . $exception->getTraceAsString());
+        $log = new Log();
+        $log->error( $exception->getCode() . ' : ' . $exception->getMessage() . ' | ' . $exception->getTraceAsString());
 
         return $response->withJson($r, 500);
     }

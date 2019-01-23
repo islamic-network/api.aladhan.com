@@ -124,9 +124,15 @@ class Request
     {
         // Check if the data is a date format. dd-mm-yyyy
         $date = explode('-', $data);
-        if (count($date) == 3 && strlen($date[2]) == 4) {
+        if (count($date) == 3) {
             // Cool, we have a date
-            return strtotime($data);
+            $month = self::month($date[1]);
+            $year =  self::year($date[2]);
+            return strtotime(
+                self::monthDay($date[0], $month, $year) .
+                '-' . $month .
+                '-' . $year
+            );
         }
 
         if ($data < 1 || !self::isUnixTimeStamp($data)) {
@@ -134,6 +140,18 @@ class Request
         } else {
             return $data;
         }
+    }
+
+    public static function monthDay($day, $month, $year)
+    {
+        $maxDaysAllowed = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        if ($day > $maxDaysAllowed || $day < 0) {
+            return date('m');
+        }
+
+        return (int) $date;
+
+
     }
 
     /**
