@@ -23,4 +23,16 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(date('m'), Request::month('abc'));
     }
 
+    public function testMonthDay()
+    {
+        $this->assertEquals(3, Request::monthDay(3, 12, 2017));
+        $this->assertEquals(date('j'), Request::monthDay(-1, 12, 2017));
+        $this->assertEquals(date('j'), Request::monthDay(55, 12, 2017));
+    }
+
+    public function testTime()
+    {
+        $this->assertEquals(strtotime('11-11-2017'), Request::time('11-11-2017'));
+    }
+
 }

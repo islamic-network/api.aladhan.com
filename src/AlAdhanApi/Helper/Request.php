@@ -146,10 +146,11 @@ class Request
     {
         $maxDaysAllowed = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         if ($day > $maxDaysAllowed || $day < 0) {
-            return date('m');
+            // return doday
+            return date('j');
         }
 
-        return (int) $date;
+        return (int) $day;
 
 
     }
