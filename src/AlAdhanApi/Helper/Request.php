@@ -115,31 +115,36 @@ class Request
      }
 
     /**
-     * Returns unix timestamp from given date string
-     * [time description]
-     * @param  [type] $data [description]
-     * @return [type]       [description]
+     * Accepts a date or unix timestamp and returns a unix timestamp
+     * @param string $data
+     * @return int
      */
-    public static function time($data)
+    public static function time(string $data): int
     {
-        // Check if the data is a date format. dd-mm-yyyy
+        // If it is a timestamp, just return it.
+        if (self::isUnixTimeStamp($data)) {
+            return $data;
+        }
+
+        // Clearly not a timestamp, check if the data is a date format. dd-mm-yyyy
         $date = explode('-', $data);
         if (count($date) == 3) {
             // Cool, we have a date
             $month = self::month($date[1]);
             $year =  self::year($date[2]);
-            return strtotime(
+            $timestamp = strtotime(
                 self::monthDay($date[0], $month, $year) .
                 '-' . $month .
                 '-' . $year
             );
+            // If we can get a timestamp from the date, return that.
+            if ($timestamp !== false) {
+                return $timestamp;
+            }
         }
 
-        if ($data < 1 || !self::isUnixTimeStamp($data)) {
-            return time(); //now
-        } else {
-            return $data;
-        }
+        // If it is not a unix timestamp not a date we can generate timestamp from, just get the current time!
+        return time(); //now
     }
 
     public static function monthDay($day, $month, $year)
