@@ -31,6 +31,7 @@ $container['errorHandler'] = function ($c) {
 };
 
 /** Invoke Middleware for WAF Checks */
+/**
 $app->add(function (Request $request, Response $response, $next) {
 
     $proxyMode = (bool)getenv('WAF_PROXY_MODE');
@@ -51,3 +52,4 @@ $app->add(function (Request $request, Response $response, $next) {
     return $response;
 
 });
+**/
