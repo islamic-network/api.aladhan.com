@@ -31,10 +31,10 @@ $container['errorHandler'] = function ($c) {
 };
 
 /** Invoke Middleware for WAF Checks */
-/**
+
 $app->add(function (Request $request, Response $response, $next) {
 
-    $proxyMode = (bool)getenv('WAF_PROXY_MODE');
+    $proxyMode = (bool) getenv('WAF_PROXY_MODE');
 
     if ($proxyMode) {
         // Validate Key
@@ -52,4 +52,4 @@ $app->add(function (Request $request, Response $response, $next) {
     return $response;
 
 });
-**/
+
