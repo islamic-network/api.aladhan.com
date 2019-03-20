@@ -12,13 +12,13 @@ use AlAdhanApi\Helper\Request as ApiRequest;
 class PrayerTimesHelper
 {
     /**
-     * Returns the next prayer time
-     * @param  Array $timings
-     * @param  PrayerTimes $pt
-     * @param  DateTime $d
-     * @param  Array $locInfo
-     * @param  Integer $latitudeAdjustmentMethod
-     * @return Array
+     * @param $timings
+     * @param $pt
+     * @param $d
+     * @param $locInfo
+     * @param $latitudeAdjustmentMethod
+     * @return array|null
+     * @throws \Exception
      */
     public static function nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod)
     {
@@ -61,18 +61,19 @@ class PrayerTimesHelper
     }
 
     /**
-     * Calculate Prayer Times for a complete month
-     * @param  String $latitude
-     * @param  String $longitude
-     * @param  Integer $month
-     * @param  Integer $year
-     * @param  String $timezone
-     * @param  Integer $latitudeAdjustmentMethod
-     * @param  PrayerTimes Object $pt
-     * @param  Integer $adjustment in days
-     * @return Array
+     * @param $latitude
+     * @param $longitude
+     * @param $month
+     * @param $year
+     * @param $timezone
+     * @param $latitudeAdjustmentMethod
+     * @param $pt
+     * @param string $midnightMode
+     * @param $adjustment
+     * @return array
+     * @throws \Exception
      */
-    public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', int $adjustment = 0)
+    public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', $adjustment = 0)
     {
 
         $cs = new HijriCalendarService();
@@ -100,18 +101,19 @@ class PrayerTimesHelper
     }
 
     /**
-     * Calculate Prayer Times for a complete Hijri month
-     * @param  String $latitude
-     * @param  String $longitude
-     * @param  Integer $month
-     * @param  Integer $year
-     * @param  String $timezone
-     * @param  Integer $latitudeAdjustmentMethod
-     * @param  PrayerTimes Object $pt
-     * @param  Integer $adjustment in days
-     * @return Array
+     * @param $latitude
+     * @param $longitude
+     * @param $month
+     * @param $year
+     * @param $timezone
+     * @param $latitudeAdjustmentMethod
+     * @param $pt
+     * @param string $midnightMode
+     * @param $adjustment
+     * @return array
+     * @throws \Exception
      */
-    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', int $adjustment = 0)
+    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', $adjustment = 0)
     {
         $cs = new HijriCalendarService();
 
@@ -135,17 +137,18 @@ class PrayerTimesHelper
     }
 
     /**
-     * Calculate Prayer Times for a complete Hijri year
-     * @param  String $latitude
-     * @param  String $longitude
-     * @param  Integer $year
-     * @param  String $timezone
-     * @param  Integer $latitudeAdjustmentMethod
-     * @param  PrayerTimes Object $pt
-     * @param  Integer $adjustment in days
-     * @return Array
+     * @param $latitude
+     * @param $longitude
+     * @param $year
+     * @param $timezone
+     * @param $latitudeAdjustmentMethod
+     * @param $pt
+     * @param string $midnightMode
+     * @para $adjustment
+     * @return array
+     * @throws \Exception
      */
-    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', int $adjustment = 0)
+    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', $adjustment = 0)
     {
         $cs = new HijriCalendarService();
         $times = [];
@@ -172,17 +175,18 @@ class PrayerTimesHelper
     }
 
     /**
-     * Calculate Prayer Times for a complete year
-     * @param  String $latitude
-     * @param  String $longitude
-     * @param  Integer $year
-     * @param  String $timezone
-     * @param  Integer $latitudeAdjustmentMethod
-     * @param  PrayerTimes Object $pt
-     * @param  Integer $adjustment in days
-     * @return Array
+     * @param $latitude
+     * @param $longitude
+     * @param $year
+     * @param $timezone
+     * @param $latitudeAdjustmentMethod
+     * @param $pt
+     * @param string $midnightMode
+     * @param $adjustment
+     * @return array
+     * @throws \Exception
      */
-    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', int $adjustment = 0)
+    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', $adjustment = 0)
     {
         $cs = new HijriCalendarService();
         $times = [];
@@ -211,13 +215,13 @@ class PrayerTimesHelper
 
         return $times;
     }
+
     /**
-     * Checks if the given date falls in Ramadan
-     * @param  DateTime $date
-     * @param  Integer $adjustment in days
-     * @return boolean
+     * @param \DateTime $date
+     * @param int $adjustment
+     * @return bool
      */
-    public static function isRamadan(\DateTime $date, int $adjustment = 0)
+    public static function isRamadan(\DateTime $date, $adjustment = 0)
     {
         $hs = new \AlAdhanApi\Model\HijriCalendarService();
         $hijDate = $hs->gToH($date->format('d') . '-' . $date->format('m') . '-' . $date->format('Y'), $adjustment);
@@ -258,7 +262,7 @@ class PrayerTimesHelper
      * @param  int $school
      * @param  array $tune
      * @param int $adjustment
-     * @return PrayerTimes 
+     * @return PrayerTimes
      */
     public static function getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment = 0)
     {

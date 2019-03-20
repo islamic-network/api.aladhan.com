@@ -63,7 +63,7 @@ class Request
         if ($data == 'null' || $data == '') {
             return 2; //ISNA;
         }
-        if (!in_array($data, [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 99])) {
+        if (!in_array($data, [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 99])) {
             return 2; // ISNA
         } else {
             return $data;

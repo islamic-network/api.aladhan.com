@@ -29,6 +29,7 @@ class ClassMapper
             11 => 'SINGAPORE',
             12 => 'FRANCE',
             13 => 'TURKEY',
+            14 => 'RUSSIA',
             99 => 'CUSTOM',
         ];
 

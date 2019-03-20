@@ -742,16 +742,16 @@
         },
         {
             "name": "meezaan/prayer-times",
-            "version": "1.0.4",
+            "version": "1.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/meezaan/prayer-times.git",
-                "reference": "39dd1ab86df0ab23b4d543661093c55e6e52d3fc"
+                "reference": "bb065d01ad4e8fc63ddcfed41c1de8edff92855d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/meezaan/prayer-times/zipball/39dd1ab86df0ab23b4d543661093c55e6e52d3fc",
-                "reference": "39dd1ab86df0ab23b4d543661093c55e6e52d3fc",
+                "url": "https://api.github.com/repos/meezaan/prayer-times/zipball/bb065d01ad4e8fc63ddcfed41c1de8edff92855d",
+                "reference": "bb065d01ad4e8fc63ddcfed41c1de8edff92855d",
                 "shasum": ""
             },
             "require-dev": {
@@ -771,7 +771,7 @@
                 }
             ],
             "description": "Precision and Powerful PHP Prayer Times Library",
-            "time": "2018-11-05T17:29:58+00:00"
+            "time": "2019-03-20T15:10:09+00:00"
         },
         {
             "name": "monolog/monolog",

@@ -129,6 +129,7 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
@@ -306,6 +307,7 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
@@ -483,6 +485,7 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
@@ -665,6 +668,7 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
@@ -918,6 +922,7 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
@@ -1170,6 +1175,7 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
@@ -1416,6 +1422,7 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
@@ -1664,6 +1671,7 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
@@ -1915,6 +1923,7 @@ $app->group('/v1', function() {
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
