@@ -19,30 +19,11 @@ $app->group('/v1', function() {
         } catch (Exception $e) {
             $dbResult = false;
         }
-        try {
-            $db2 = $dbx->getConnection('database_slave');
-            $db2Result = $db2->fetchAssoc("SELECT id
-                                FROM geolocate WHERE
-                                city = ? AND countryiso = ?",
-                ['Dubai', 'AE']);
-
-            if ($mc !== false) {
-                if ($dbResult !== false) {
-                    $mc->set('DB_CONNECTION', 'database');
-                } else {
-                    $mc->set('DB_CONNECTION', 'database_slave');
-                }
-            }
-        } catch (Exception $e) {
-            $db2Result = false;
-        }
 
         $status = [
             'memcached' => $mc === false ? 'NOT OK' : 'OK',
-            'perconaMaster' => $dbResult === false ? 'NOT OK' : 'OK',
-            'perconaSlave' => $db2Result === false ? 'NOT OK' : 'OK',
-            'activeDb' => $mc === false ? 'NOT OK' : $mc->get('DB_CONNECTION')
-                ];
+            'galeraCluster' => $dbResult === false ? 'NOT OK' : 'OK',
+        ];
 
         if ($mc === false || $dbResult === false || $db2Result === false) {
             return $response->withJson(ApiResponse::build($status, 500, 'Status Check Failed'), 500);
