@@ -31,13 +31,6 @@ class Config
                     'dbname' => getenv('MYSQL_DATABASE'),
                     'port' => 3306
                 ],
-                'database_slave' => [
-                    'host' => getenv('MYSQL_SLAVE_HOST'),
-                    'username' => getenv('MYSQL_SLAVE_USER'),
-                    'password' => getenv('MYSQL_SLAVE_PASSWORD'),
-                    'dbname' => getenv('MYSQL_SLAVE_DATABASE'),
-                    'port' => 3306
-                ],
                 'memcache' => [
                     'host' => getenv('MEMCACHED_HOST'),
                     'port' => getenv('MEMCACHED_PORT')
@@ -74,7 +67,7 @@ class Config
     {
         return $this->config['apikeys'][$id];
     }
-    
+
     /**
      * Returns the entire config array
      * @return Array The entire config array

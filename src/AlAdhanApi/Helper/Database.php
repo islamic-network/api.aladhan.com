@@ -37,11 +37,6 @@ class Database
     {
         $config = new \Doctrine\DBAL\Configuration();
 
-        if ($this->cacher !== false &&
-            in_array($this->cacher->get('DB_CONNECTION'), ['database', 'database_slave'])) {
-            $connection = $this->cacher->get('DB_CONNECTION');
-        }
-
         $c = $this->config->connection($connection);
 
         $connectionParams = array(
