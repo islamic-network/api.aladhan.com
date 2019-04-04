@@ -22,7 +22,7 @@ $app->group('/v1', function() {
 
         $status = [
             'memcached' => $mc === false ? 'NOT OK' : 'OK',
-            'galeraCluster' => $dbResult === false ? 'NOT OK' : 'OK',
+            'perconaDB' => $dbResult === false ? 'NOT OK' : 'OK',
         ];
 
         if ($mc === false || $dbResult === false || $db2Result === false) {
