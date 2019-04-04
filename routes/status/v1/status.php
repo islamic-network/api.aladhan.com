@@ -25,7 +25,7 @@ $app->group('/v1', function() {
             'perconaDB' => $dbResult === false ? 'NOT OK' : 'OK',
         ];
 
-        if ($mc === false || $dbResult === false || $db2Result === false) {
+        if ($mc === false || $dbResult === false) {
             return $response->withJson(ApiResponse::build($status, 500, 'Status Check Failed'), 500);
         }
 
