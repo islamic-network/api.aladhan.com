@@ -5,10 +5,11 @@ use AlAdhanApi\Exception\WafKeyMismatchException;
 use AlAdhanApi\Helper\Log;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Exception;
 
 class AlAdhanHandler
 {
-    public function __invoke(Request $request, Response $response, $exception = null) {
+    public function __invoke(Request $request, Response $response, Exception $exception) {
 
         if ($exception instanceof WafKeyMismatchException) {
             $r = [
@@ -21,15 +22,21 @@ class AlAdhanHandler
         };
 
         $r = [
-            'code' => 500,
+            'code' => $exception->getCode(),
             'status' => 'Internal Server Error',
             'data' => 'Something went wrong when the server tried to process this request. Sorry!'
         ];
 
         $log = new Log();
-        $log->error( $exception->getCode() . ' : ' . $exception->getMessage() . ' | ' . $exception->getTraceAsString());
+        $log->error('AlAdhan Exception Triggered.',
+            [
+                'code' => $exception->getCode(),
+                'message' => $exception->getMessage(),
+                'trace' => $exception->getTraceAsString()
+        ]
+        );
 
-        return $response->withJson($r, 500);
+        return $response->withJson($r, $exception->getCode());
     }
 
 }
