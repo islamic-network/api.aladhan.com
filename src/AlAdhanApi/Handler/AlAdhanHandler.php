@@ -22,19 +22,21 @@ class AlAdhanHandler
         };
 
         $r = [
-            'code' => $exception->getCode(),
+            'code' => 500,
             'status' => 'Internal Server Error',
             'data' => 'Something went wrong when the server tried to process this request. Sorry!'
         ];
 
         $log = new Log();
-        $log->error('AlAdhan Exception Triggered.',
+        $errorJson = json_encode(
             [
                 'code' => $exception->getCode(),
                 'message' => $exception->getMessage(),
                 'trace' => $exception->getTraceAsString()
-        ]
+            ]
         );
+
+        $log->error('AlAdhan Exception Triggered: ' . $errorJson);
 
         return $response->withJson($r, $exception->getCode());
     }
