@@ -23,7 +23,10 @@ The api and all its dependencies are fully Dockerised. You **just need docker an
 
 You should enter your Google Maps API Key and Ask Geo Account ID and keys in the docker-compose file on lines 27, 28 and 29.
 
-A production ready Docker image of the app is published as quay.io/islamic-network/api.aladhan.com on Quay.io.
+A production ready Docker image of the app is published as:
+
+* quay.io/islamic-network/api.aladhan.com on Quay 
+* islamicnetwork/api.aladhan.com on Docker Hub
 
 To get your own instance up, simply run:
 
