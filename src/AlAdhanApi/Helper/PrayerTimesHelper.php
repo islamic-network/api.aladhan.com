@@ -73,7 +73,7 @@ class PrayerTimesHelper
      * @return array
      * @throws \Exception
      */
-    public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', $adjustment = 0)
+    public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null)
     {
 
         $cs = new HijriCalendarService();
@@ -87,7 +87,11 @@ class PrayerTimesHelper
             // Create date time object for this date.
             $calstart = new \DateTime( date('Y-m-d H:i:s', $cal_start), new \DateTimeZone($timezone));
             if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart, $adjustment)) {
-                $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+                if ($tune !== null) {
+                    $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
+                } else {
+                    $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+                }
             }
             $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
             $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
@@ -113,7 +117,7 @@ class PrayerTimesHelper
      * @return array
      * @throws \Exception
      */
-    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', $adjustment = 0)
+    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null)
     {
         $cs = new HijriCalendarService();
 
@@ -125,7 +129,11 @@ class PrayerTimesHelper
             // Create date time object for this date.
             $calstart = new \DateTime( date('Y-m-d H:i:s', strtotime($i['gregorian']['year']. '-' . $i['gregorian']['month']['number'] . '-' . $i['gregorian']['day']. ' 09:01:01')), new \DateTimeZone($timezone));
             if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart, $adjustment)) {
-                $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+                if ($tune !== null) {
+                    $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
+                } else {
+                    $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+                }
             }
             $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
             $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
@@ -148,7 +156,7 @@ class PrayerTimesHelper
      * @return array
      * @throws \Exception
      */
-    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', $adjustment = 0)
+    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null)
     {
         $cs = new HijriCalendarService();
         $times = [];
@@ -162,7 +170,11 @@ class PrayerTimesHelper
                 // Create date time object for this date.
             $calstart = new \DateTime( date('Y-m-d H:i:s', strtotime($i['gregorian']['year']. '-' . $i['gregorian']['month']['number'] . '-' . $i['gregorian']['day']. ' 09:01:01')), new \DateTimeZone($timezone));
                 if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart, $adjustment)) {
-                    $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+                    if ($tune !== null) {
+                        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
+                    } else {
+                        $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+                    }
                 }
                 $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
                 $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
@@ -186,7 +198,7 @@ class PrayerTimesHelper
      * @return array
      * @throws \Exception
      */
-    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, $pt, $midnightMode = 'STANDARD', $adjustment = 0)
+    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null)
     {
         $cs = new HijriCalendarService();
         $times = [];
@@ -202,7 +214,11 @@ class PrayerTimesHelper
                 // Create date time object for this date.
                 $calstart = new \DateTime( date('Y-m-d H:i:s', $cal_start), new \DateTimeZone($timezone));
                 if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart, $adjustment)) {
-                    $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+                    if ($tune !== null) {
+                        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
+                    } else {
+                        $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+                    }
                 }
                 $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
                 $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
