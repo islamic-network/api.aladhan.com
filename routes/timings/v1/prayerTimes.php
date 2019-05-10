@@ -1377,16 +1377,16 @@ $app->group('/v1', function() {
         $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
+            // $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
             if ($method == PrayerTimes::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
+                $times = PrayerTimesHelper::calculateYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment, $tune);
             } else {
-                $times = PrayerTimesHelper::calculateMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
+                $times = PrayerTimesHelper::calculateMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment, $tune);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -1623,16 +1623,16 @@ $app->group('/v1', function() {
         $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
+            // $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
             if ($method == PrayerTimes::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
+                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment, $tune);
             } else {
-                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
+                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment, $tune);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -1873,16 +1873,16 @@ $app->group('/v1', function() {
         $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
+            //$pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
             if ($method == PrayerTimes::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
+                $times = PrayerTimesHelper::calculateYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment, $tune);
             } else {
-                $times = PrayerTimesHelper::calculateMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
+                $times = PrayerTimesHelper::calculateMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment, $tune);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
@@ -2124,16 +2124,16 @@ $app->group('/v1', function() {
         $adjustment = (int) $request->getQueryParam('adjustment');
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
+            // $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
             if ($method == PrayerTimes::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
                 $pt->setCustomMethod($customMethod);
             }
             if ($annual) {
-                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
+                $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment, $tune);
             } else {
-                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment);
+                $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($locInfo['latitude'], $locInfo['longitude'], $month, $year, $locInfo['timezone'], $latitudeAdjustmentMethod, $pt, $midnightMode, $adjustment, $tune);
             }
             return $response->withJson(ApiResponse::build($times, 200, 'OK'), 200);
         } else {
