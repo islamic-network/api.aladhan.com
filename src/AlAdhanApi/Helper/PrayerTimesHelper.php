@@ -92,6 +92,10 @@ class PrayerTimesHelper
                 } else {
                     $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
                 }
+            } else {
+                if ($tune !== null) {
+                    $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
+                }
             }
             $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
             $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
@@ -135,6 +139,11 @@ class PrayerTimesHelper
                     $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
                 }
             }
+            else {
+                if ($tune !== null) {
+                    $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
+                }
+            }
             $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
             $timings = Generic::addTimezoneAbbreviation($timings, $calstart);
             $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregorian' => $i['gregorian'], 'hijri' => $i['hijri']];
@@ -174,6 +183,11 @@ class PrayerTimesHelper
                         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
                     } else {
                         $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+                    }
+                }
+                else {
+                    if ($tune !== null) {
+                        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
                     }
                 }
                 $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
@@ -218,6 +232,11 @@ class PrayerTimesHelper
                         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
                     } else {
                         $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+                    }
+                }
+                else {
+                    if ($tune !== null) {
+                        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
                     }
                 }
                 $timings = $pt->getTimes($calstart, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode);
@@ -283,16 +302,19 @@ class PrayerTimesHelper
     public static function getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment = 0)
     {
         $pt = new PrayerTimes($method, $school, null);
-        $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
+
         if ($method == PrayerTimes::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = self::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
-
         if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($d, $adjustment)) {
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
         }
+        else {
+            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
+        }
+
 
         return $pt;
 
