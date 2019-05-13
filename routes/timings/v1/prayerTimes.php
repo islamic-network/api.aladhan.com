@@ -285,7 +285,7 @@ $app->group('/v1', function() {
     });
 
     /**
-     * @api {get} http://api.aladhan.com/v1//timingsByAddress/:date_or_timestamp Timings By Address
+     * @api {get} http://api.aladhan.com/v1/timingsByAddress/:date_or_timestamp Timings By Address
      * @apiDescription Returns all prayer times for a specific date at a particular address.
      * @apiName GetTimingsByAddresss
      * @apiGroup Timings
