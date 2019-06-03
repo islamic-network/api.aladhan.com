@@ -1,8 +1,8 @@
 [mysqld]
 server-id=1
 binlog_format=ROW
-#log_bin=mysql-bin
-log_bin=/var/lib/mysql/mysql-bin.log
+log_bin=mysql-bin
+#log_bin=/var/lib/mysql/mysql-bin.log
 log_error=mysql-bin.err
 max_connections = 1500
 
