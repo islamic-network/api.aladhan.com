@@ -37,9 +37,7 @@ services:
   # MySQL
   #######################################
   aa-db:
-    build:
-      context: db/master
-      dockerfile: Dockerfile
+      image: islamicnetwork/api.aladhan.com-db:master
     environment:
       MYSQL_ROOT_PASSWORD: "root"
       MYSQL_USER: "aladhan"
