@@ -20,8 +20,6 @@ class Config
      */
     public function __construct()
     {
-        //$configFilePath = realpath(__DIR__ . '/../../../config/') . '/config.yml';
-
         $this->config = [
             'connections' => [
                 'database' => [
@@ -29,6 +27,13 @@ class Config
                     'username' => getenv('MYSQL_USER'),
                     'password' => getenv('MYSQL_PASSWORD'),
                     'dbname' => getenv('MYSQL_DATABASE'),
+                    'port' => 3306
+                ],
+                'database_slave' => [
+                    'host' => getenv('MYSQL_SLAVE_HOST'),
+                    'username' => getenv('MYSQL_SLAVE_USER'),
+                    'password' => getenv('MYSQL_SLAVE_PASSWORD'),
+                    'dbname' => getenv('MYSQL_SLAVE_DATABASE'),
                     'port' => 3306
                 ],
                 'memcache' => [
@@ -45,7 +50,6 @@ class Config
             ]
         ];
 
-        //$this->config = Yaml::parse(file_get_contents($configFilePath));
     }
 
     /**
