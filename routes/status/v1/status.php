@@ -36,8 +36,8 @@ $app->group('/v1', function() {
         }
         $status = [
             'memcached' => $mc === false ? 'NOT OK' : 'OK',
-            'perconaMaster' => $dbResult === false ? 'NOT OK' : 'OK',
-            'perconaSlave' => $db2Result === false ? 'NOT OK' : 'OK',
+            'perconaMaster' => $dbResult,
+            'perconaSlave' => $db2Result,
             'activeDb' => $mc === false ? 'NOT OK' : $mc->get('DB_CONNECTION')
                 ];
         if ($mc === false || $dbResult === false || $db2Result === false) {
