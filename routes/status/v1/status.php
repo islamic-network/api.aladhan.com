@@ -23,7 +23,7 @@ $app->group('/v1', function() {
             $db2Result = $db2->fetchAssoc("SELECT id
                                 FROM geolocate WHERE
                                 city = ? AND countryiso = ?",
-                ['Dubai', 'AE']);
+                ['Ar-Rayyan', 'QA']);
             if ($mc !== false) {
                 if ($dbResult !== false) {
                     $mc->set('DB_CONNECTION', 'database');
