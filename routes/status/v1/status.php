@@ -14,7 +14,7 @@ $app->group('/v1', function() {
             $dbResult = $db->fetchAssoc("SELECT id
                                 FROM geolocate WHERE
                                 city = ? AND countryiso = ?",
-                ['Ar-Rayyan', 'QA']);
+                ['Dubai', 'AE']);    
         } catch (Exception $e) {
             $dbResult = false;
         }
@@ -36,8 +36,8 @@ $app->group('/v1', function() {
         }
         $status = [
             'memcached' => $mc === false ? 'NOT OK' : 'OK',
-            'perconaMaster' => $dbResult,
-            'perconaSlave' => $db2Result,
+            'perconaMaster' => $dbResult === false ? 'NOT OK' : 'OK (' . $dbResult['id']. ')',
+            'perconaSlave' => $db2Result === false ? 'NOT OK' : 'OK (' . $db2Result['id']. ')',
             'activeDb' => $mc === false ? 'NOT OK' : $mc->get('DB_CONNECTION')
                 ];
         if ($mc === false || $dbResult === false || $db2Result === false) {
