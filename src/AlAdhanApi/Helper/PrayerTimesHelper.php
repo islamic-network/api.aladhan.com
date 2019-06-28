@@ -1,7 +1,7 @@
 <?php
 namespace AlAdhanApi\Helper;
-use Meezaan\PrayerTimes\Method;
-use Meezaan\PrayerTimes\PrayerTimes;
+use IslamicNetwork\PrayerTimes\Method;
+use IslamicNetwork\PrayerTimes\PrayerTimes;
 use AlAdhanApi\Model\HijriCalendarService;
 use AlAdhanApi\Helper\Request as ApiRequest;
 
@@ -303,7 +303,7 @@ class PrayerTimesHelper
     {
         $pt = new PrayerTimes($method, $school, null);
 
-        if ($method == PrayerTimes::METHOD_CUSTOM) {
+        if ($method == Method::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
             $customMethod = self::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);

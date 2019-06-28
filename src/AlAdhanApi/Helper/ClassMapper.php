@@ -2,6 +2,9 @@
 
 namespace AlAdhanApi\Helper;
 
+use IslamicNetwork\PrayerTimes\Method;
+use IslamicNetwork\PrayerTimes\PrayerTimes;
+
 /**
  * Class ClassMapper
  * @package Helper\ClassMapper
@@ -16,21 +19,21 @@ class ClassMapper
     public static function method($methodId)
     {
         $arr = [
-            0 => 'JAFARI',
-            1 => 'KARACHI',
-            2 => 'ISNA',
-            3 => 'MWL',
-            4 => 'MAKKAH',
-            5 => 'EGYPT',
-            7 => 'TEHRAN',
-            8 => 'GULF',
-            9 => 'KUWAIT',
-            10 => 'QATAR',
-            11 => 'SINGAPORE',
-            12 => 'FRANCE',
-            13 => 'TURKEY',
-            14 => 'RUSSIA',
-            99 => 'CUSTOM',
+            0 => Method::METHOD_JAFARI,
+            1 => Method::METHOD_KARACHI,
+            2 => Method::METHOD_ISNA,
+            3 => Method::METHOD_MWL,
+            4 => Method::METHOD_MAKKAH,
+            5 => Method::METHOD_EGYPT,
+            7 => Method::METHOD_TEHRAN,
+            8 => Method::METHOD_GULF,
+            9 => Method::METHOD_KUWAIT,
+            10 => Method::METHOD_QATAR,
+            11 => Method::METHOD_SINGAPORE,
+            12 => Method::METHOD_FRANCE,
+            13 => Method::METHOD_TURKEY,
+            14 => Method::METHOD_RUSSIA,
+            99 => Method::METHOD_CUSTOM,
         ];
 
         if (array_key_exists($methodId, $arr)) {
@@ -50,14 +53,14 @@ class ClassMapper
     public static function school($id)
     {
         if ($id == 0) {
-            return 'STANDARD';
+            return PrayerTimes::SCHOOL_STANDARD;
         }
 
         if ($id == 1) {
-            return 'HANAFI';
+            return PrayerTimes::SCHOOL_HANAFI;
         };
 
-        return 'STANDARD';
+        return PrayerTimes::SCHOOL_STANDARD;
     }
 
         /**
@@ -68,14 +71,14 @@ class ClassMapper
     public static function midnightMode($id)
     {
         if ($id == 0) {
-            return 'STANDARD';
+            return PrayerTimes::MIDNIGHT_MODE_STANDARD;
         }
 
         if ($id == 1) {
-            return 'JAFARI';
+            return PrayerTimes::MIDNIGHT_MODE_JAFARI;
         };
 
-        return 'STANDARD';
+        return PrayerTimes::MIDNIGHT_MODE_STANDARD;
     }
 
     /**
@@ -86,17 +89,17 @@ class ClassMapper
     public static function latitudeAdjustmentMethod($id)
     {
         if ($id == 1) {
-            return 'MIDDLE_OF_THE_NIGHT';
+            return PrayerTimes::LATITUDE_ADJUSTMENT_METHOD_MOTN;
         }
 
         if ($id == 2) {
-            return 'ONE_SEVENTH';
+            return PrayerTimes::LATITUDE_ADJUSTMENT_METHOD_ONESEVENTH;
         }
 
         if ($id == 3) {
-            return 'ANGLE_BASED';
+            return PrayerTimes::LATITUDE_ADJUSTMENT_METHOD_ANGLE;
         }
 
-        return 'NONE';
+        return PrayerTimes::LATITUDE_ADJUSTMENT_METHOD_NONE;
     }
 }

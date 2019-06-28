@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "093d5bfcf6f6d2d9e5ae75a776514b73",
+    "content-hash": "09898fd2acbe1d48e7553bdb5eb0c2b5",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -706,16 +706,16 @@
         },
         {
             "name": "islamic-network/prayer-times",
-            "version": "1.0.5",
+            "version": "1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/islamic-network/prayer-times.git",
-                "reference": "bb065d01ad4e8fc63ddcfed41c1de8edff92855d"
+                "reference": "c908c9983a8986d8c8f254694ef821fcec4a2f48"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/islamic-network/prayer-times/zipball/bb065d01ad4e8fc63ddcfed41c1de8edff92855d",
-                "reference": "bb065d01ad4e8fc63ddcfed41c1de8edff92855d",
+                "url": "https://api.github.com/repos/islamic-network/prayer-times/zipball/c908c9983a8986d8c8f254694ef821fcec4a2f48",
+                "reference": "c908c9983a8986d8c8f254694ef821fcec4a2f48",
                 "shasum": ""
             },
             "require-dev": {
@@ -724,18 +724,12 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Meezaan\\PrayerTimes\\": "src/PrayerTimes/"
+                    "IslamicNetwork\\PrayerTimes\\": "src/PrayerTimes/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Meezaan-ud-Din Abdu Dhil-Jalali Wal-Ikram",
-                    "email": "website@meezaan.net"
-                }
-            ],
             "description": "Precision and Powerful PHP Prayer Times Library",
-            "time": "2019-03-20T15:10:09+00:00"
+            "time": "2019-06-28T14:34:33+00:00"
         },
         {
             "name": "meezaan/askgeo-api",
