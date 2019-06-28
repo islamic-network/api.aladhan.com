@@ -1,7 +1,7 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
-use Meezaan\PrayerTimes\PrayerTimes;
+use IslamicNetwork\PrayerTimes\PrayerTimes;
 use AlAdhanApi\Helper\Response as ApiResponse;
 use AlAdhanApi\Helper\Request as ApiRequest;
 use AlAdhanApi\Helper\ClassMapper;
