@@ -2,6 +2,7 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use IslamicNetwork\PrayerTimes\PrayerTimes;
+use IslamicNetwork\PrayerTimes\Method;
 use AlAdhanApi\Helper\Response as ApiResponse;
 use AlAdhanApi\Helper\Request as ApiRequest;
 use AlAdhanApi\Helper\ClassMapper;
@@ -878,7 +879,7 @@ $app->group('/v1', function() {
         if (ApiRequest::isCalendarRequestValid($latitude, $longitude, $timezone)) {
             $pt = new PrayerTimes($method, $school);
             //$pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
+            if ($method == Method::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
                 $pt->setCustomMethod($customMethod);
@@ -1132,7 +1133,7 @@ $app->group('/v1', function() {
         if (ApiRequest::isCalendarRequestValid($latitude, $longitude, $timezone)) {
             $pt = new PrayerTimes($method, $school);
             //$pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
+            if ($method == Method::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
                 $pt->setCustomMethod($customMethod);
@@ -1378,7 +1379,7 @@ $app->group('/v1', function() {
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
             // $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
+            if ($method == Method::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
                 $pt->setCustomMethod($customMethod);
@@ -1624,7 +1625,7 @@ $app->group('/v1', function() {
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
             // $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
+            if ($method == Method::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
                 $pt->setCustomMethod($customMethod);
@@ -1874,7 +1875,7 @@ $app->group('/v1', function() {
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
             //$pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
+            if ($method == Method::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
                 $pt->setCustomMethod($customMethod);
@@ -2125,7 +2126,7 @@ $app->group('/v1', function() {
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
             // $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
-            if ($method == PrayerTimes::METHOD_CUSTOM) {
+            if ($method == Method::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
                 $pt->setCustomMethod($customMethod);
