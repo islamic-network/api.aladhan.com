@@ -54,7 +54,7 @@ This app takes 19 MB per apache process / worker and is set to have a maximum of
 
 A single instance should be sized with a maximum of 1152 MB RAM, after which you should scale it horizontally.
 
-## Contributing Code
+## Contributing Code 
 
 You can contribute code by raising a pull request.
 
