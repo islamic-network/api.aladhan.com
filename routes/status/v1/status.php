@@ -24,20 +24,22 @@ $app->group('/v1', function() {
                                 FROM geolocate WHERE
                                 city = ? AND countryiso = ?",
                 ['Ar-Rayyan', 'QA']);
-            if ($mc !== false) {
-                if ($dbResult !== false) {
-                    $mc->set('DB_CONNECTION', 'database');
-                } else {
-                    $mc->set('DB_CONNECTION', 'database_slave');
-                }
-            }
         } catch (Exception $e) {
             $db2Result = false;
         }
+
+        if ($mc !== false) {
+            if ($dbResult !== false) {
+                $mc->set('DB_CONNECTION', 'database');
+            } else {
+                $mc->set('DB_CONNECTION', 'database_slave');
+            }
+        }
+
         $status = [
             'memcached' => $mc === false ? 'NOT OK' : 'OK',
-            'perconaMaster' => $dbResult === false ? 'NOT OK' : 'OK (' . $dbResult['id']. ')',
-            'perconaSlave' => $db2Result === false ? 'NOT OK' : 'OK (' . $db2Result['id']. ')',
+            'dbMaster' => $dbResult === false ? 'NOT OK' : 'OK (' . $dbResult['id']. ')',
+            'dbSlave' => $db2Result === false ? 'NOT OK' : 'OK (' . $db2Result['id']. ')',
             'activeDb' => $mc === false ? 'NOT OK' : $mc->get('DB_CONNECTION')
                 ];
         if ($mc === false || $dbResult === false || $db2Result === false) {
