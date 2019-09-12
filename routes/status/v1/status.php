@@ -10,7 +10,7 @@ $app->group('/v1', function() {
         $mc = new Cacher();
         $dbx = new Database();
         try {
-            $db = $dbx->getConnection('database');
+            $db = $dbx->getConnection('database_pxc_1');
             $dbResult = $db->fetchAssoc("SELECT id
                                 FROM geolocate WHERE
                                 city = ? AND countryiso = ?",
@@ -19,30 +19,42 @@ $app->group('/v1', function() {
             $dbResult = false;
         }
         try {
-            $db2 = $dbx->getConnection('database_slave');
+            $db2 = $dbx->getConnection('database_pxc_2');
             $db2Result = $db2->fetchAssoc("SELECT id
                                 FROM geolocate WHERE
                                 city = ? AND countryiso = ?",
-                ['Ar-Rayyan', 'QA']);
+                ['Dubai', 'AE']);
         } catch (Exception $e) {
             $db2Result = false;
         }
+        try {
+            $db3 = $dbx->getConnection('database_pxc_3');
+            $db3Result = $db3->fetchAssoc("SELECT id
+                                FROM geolocate WHERE
+                                city = ? AND countryiso = ?",
+                ['Dubai', 'AE']);
+        } catch (Exception $e) {
+            $db3Result = false;
+        }
 
         if ($mc !== false) {
-            if ($dbResult !== false) {
-                $mc->set('DB_CONNECTION', 'database');
-            } else {
-                $mc->set('DB_CONNECTION', 'database_slave');
+            if ($db2Result !== false) {
+                $mc->set('DB_CONNECTION', 'database_pxc_2');
+            } elseif ($dbResult !== false) {
+                $mc->set('DB_CONNECTION', 'database_pxc_1');
+            } elseif ($db3Result !== false) {
+                $mc->set('DB_CONNECTION', 'database_pxc_3');
             }
         }
 
         $status = [
             'memcached' => $mc === false ? 'NOT OK' : 'OK',
-            'dbMaster' => $dbResult === false ? 'NOT OK' : 'OK (' . $dbResult['id']. ')',
-            'dbSlave' => $db2Result === false ? 'NOT OK' : 'OK (' . $db2Result['id']. ')',
+            'pxc1' => $dbResult === false ? 'NOT OK' : 'OK (' . $dbResult['id']. ')',
+            'pxc2' => $db2Result === false ? 'NOT OK' : 'OK (' . $db2Result['id']. ')',
+            'pxc3' => $db3Result === false ? 'NOT OK' : 'OK (' . $db3Result['id']. ')',
             'activeDb' => $mc === false ? 'NOT OK' : $mc->get('DB_CONNECTION')
                 ];
-        if ($mc === false || $dbResult === false || $db2Result === false) {
+        if ($mc === false || $dbResult === false || $db2Result === false || $db3Result === false) {
             return $response->withJson(ApiResponse::build($status, 500, 'Status Check Failed'), 500);
         }
         return $response->withJson(ApiResponse::build($status, 200, 'OK'), 200);

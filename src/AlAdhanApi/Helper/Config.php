@@ -22,18 +22,25 @@ class Config
     {
         $this->config = [
             'connections' => [
-                'database' => [
-                    'host' => getenv('MYSQL_HOST'),
+                'database_pxc_1' => [
+                    'host' => getenv('MYSQL_HOST_1'),
                     'username' => getenv('MYSQL_USER'),
                     'password' => getenv('MYSQL_PASSWORD'),
                     'dbname' => getenv('MYSQL_DATABASE'),
                     'port' => 3306
                 ],
-                'database_slave' => [
-                    'host' => getenv('MYSQL_SLAVE_HOST'),
-                    'username' => getenv('MYSQL_SLAVE_USER'),
-                    'password' => getenv('MYSQL_SLAVE_PASSWORD'),
-                    'dbname' => getenv('MYSQL_SLAVE_DATABASE'),
+                'database_pxc_2' => [
+                    'host' => getenv('MYSQL_HOST_2'),
+                    'username' => getenv('MYSQL_USER'),
+                    'password' => getenv('MYSQL_PASSWORD'),
+                    'dbname' => getenv('MYSQL_DATABASE'),
+                    'port' => 3306
+                ],
+                'database_pxc_3' => [
+                    'host' => getenv('MYSQL_HOST_3'),
+                    'username' => getenv('MYSQL_USER'),
+                    'password' => getenv('MYSQL_PASSWORD'),
+                    'dbname' => getenv('MYSQL_DATABASE'),
                     'port' => 3306
                 ],
                 'memcache' => [
