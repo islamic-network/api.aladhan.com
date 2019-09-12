@@ -33,7 +33,7 @@ class Database
      * Returns a connection to the database
      * @return DriveManager
      */
-    public function getConnection($connection = 'database')
+    public function getConnection($connection = 'database_pxc_2')
     {
         $config = new \Doctrine\DBAL\Configuration();
 
