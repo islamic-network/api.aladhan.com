@@ -6,7 +6,9 @@ class ConfigTest extends \PHPUnit\Framework\TestCase
     public function testDatabase()
     {
         $c = new Config();
-        $this->assertEquals(5, count((array)$c->connection('database')));
+        $this->assertEquals(5, count((array)$c->connection('database_pxc_3')));
+        $this->assertEquals(5, count((array)$c->connection('database_pxc_2')));
+        $this->assertEquals(5, count((array)$c->connection('database_pxc_1')));
     }
 
     public function testMemcache()
