@@ -10,18 +10,16 @@ services:
     links:
       - aa-memcached
       - aa-db
-      - aa-db2
     depends_on:
       - aa-memcached
       - aa-db
-      - aa-db2
     environment:
       MYSQL_USER: "aladhan"
       MYSQL_PASSWORD: "aladhan"
       MYSQL_DATABASE: "aladhan_locations"
       MYSQL_HOST_1: "aa-db"
-      MYSQL_HOST_2: "aa-db2"
-      MYSQL_HOST_3: "aa-db3"
+      MYSQL_HOST_2: "aa-db"
+      MYSQL_HOST_3: "aa-db"
       MEMCACHED_HOST: "aa-memcached"
       MEMCACHED_PORT: 11211
       GOOGLE_API_KEY: "xyz"
@@ -48,30 +46,6 @@ services:
       MYSQL_PASSWORD: "aladhan"
       MYSQL_DATABASE: "aladhan_locations"
     container_name: aa-db
-
-  #######################################
-  # MySQL
-  #######################################
-  aa-db2:
-    image: islamicnetwork/api.aladhan.com-db:slave
-    environment:
-      MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_USER: "aladhan"
-      MYSQL_PASSWORD: "aladhan"
-      MYSQL_DATABASE: "aladhan_locations"
-    container_name: aa-db2 
-
-  #######################################
-  # MySQL
-  #######################################
-  aa-db3:
-    image: islamicnetwork/api.aladhan.com-db:slave
-    environment:
-      MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_USER: "aladhan"
-      MYSQL_PASSWORD: "aladhan"
-      MYSQL_DATABASE: "aladhan_locations"
-    container_name: aa-db3
 
   #######################################
   # PHPMyAdmin 1
