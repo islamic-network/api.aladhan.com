@@ -18,6 +18,10 @@ class HijriTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('02-11-1439', $r['hijri']['date']);
         $r = $this->hcs->gToH("14-07-2018", -1);
         $this->assertEquals('30-10-1439', $r['hijri']['date']);
+        $r = $this->hcs->gToH("30-10-2019");
+        $this->assertEquals('01-03-1441', $r['hijri']['date']);
+        $r = $this->hcs->gToH("29-10-2019");
+        $this->assertEquals('29-02-1441', $r['hijri']['date']);
     }
 
     public function testHToG()

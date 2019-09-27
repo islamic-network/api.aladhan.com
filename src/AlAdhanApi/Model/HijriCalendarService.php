@@ -66,7 +66,6 @@ class HijriCalendarService
      */
     public function HijriToGregorian($date, $format) // $date like 10121400, $format like DDMMYYYY, take date & check if its hijri then convert to gregorian date in format (DD-MM-YYYY), if it gregorian the return empty;
     {
-
         $this->ConstractDayMonthYear($date, $format);
         // $d=intval($this->Day)+1;
         $d=intval($this->Day);
@@ -217,6 +216,7 @@ class HijriCalendarService
         }
         $d = $this->GregorianToHijri($date, 'DD-MM-YYYY');
         $d = $this->adjustHijriDate($d, $adjustment);
+       
         $months = $this->getIslamicMonths();
         $monthsX = $this->getGregorianMonths();
         if ($d) {
@@ -265,11 +265,13 @@ class HijriCalendarService
     public function hToG($date, $adjustment = 0)
     {
         // Not ideal for Hijri date validation because this validates a gregorian date!
-        $date = $this->validate($date);
+        $date = $this->validateHijri($date);
         if (!$date) {
             return false;
         }
+
         $d = $this->HijriToGregorian($date, 'DD-MM-YYYY');
+
         // Don't adjust Hijri Date, it has been passed. Adjust Gregorian. $date = $this->adjustHijriDate($date, $adjustment);
         $adjustment = (int) $adjustment;
         if ($adjustment !== 0) {
@@ -424,7 +426,6 @@ class HijriCalendarService
         $day = intval($this->Day);
         $month = intval($this->Month);
         $year = intval($this->Year);
-        
         $day = $day + $days;
 
         if ($day > $daysInMonth) {
@@ -450,7 +451,38 @@ class HijriCalendarService
             $year = $year - 1;
         }
 
-        return $this->validate($day . '-' . $month . '-' . $year);
+        return $this->validateHijri($day . '-' . $month . '-' . $year);
+    }
+
+    /**
+     * Checks if the date is in the valid d-m-Y format
+     * @param  String $string
+     * @return mixed|String or Boolean
+     */
+    public function validateHijri($string)
+    {
+        try {
+            $d = DateTime::createFromFormat('d-m-Y', $string);
+            if ($d) {
+                // return $d->format('d-m-Y');
+                $parts = explode('-', $string);
+                $day = $parts[0];
+                $month = $parts[1];
+                $year = $parts[2];
+                if (strlen($day) === 1) {
+                   $day = '0' . $day; 
+                }
+                if (strlen($month) === 1) {
+                   $month = '0' . $month; 
+                }
+
+               return $day . '-' . $month . '-' . $year; 
+                
+            }
+            return false;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
     /**
@@ -463,7 +495,8 @@ class HijriCalendarService
         try {
             $d = DateTime::createFromFormat('d-m-Y', $string);
             if ($d) {
-                return $d->format('d-m-Y');
+                // return $d->format('d-m-Y');
+                return $string;
             }
             return false;
         } catch (Exception $e) {
