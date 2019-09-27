@@ -495,8 +495,7 @@ class HijriCalendarService
         try {
             $d = DateTime::createFromFormat('d-m-Y', $string);
             if ($d) {
-                // return $d->format('d-m-Y');
-                return $string;
+                return $d->format('d-m-Y');
             }
             return false;
         } catch (Exception $e) {
