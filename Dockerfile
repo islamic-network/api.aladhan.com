@@ -1,4 +1,4 @@
-FROM islamicnetwork/hp72:latest
+FROM islamicnetwork/php72:latest
 
 # Copy files
 RUN cd ../ && rm -rf /var/www/html

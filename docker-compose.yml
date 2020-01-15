@@ -75,7 +75,7 @@ services:
   # Memcached Admin
   #######################################
   aa-memadmin:
-    image: vesica/memadmin:latest
+    image: islamicnetwork/phpmemadmin:latest
     ports:
       - "7074:8080"
     environment:
