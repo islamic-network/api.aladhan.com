@@ -9,6 +9,9 @@ $app->group('/v1', function() {
     $this->get('/status', function (Request $request, Response $response) {
         $mc = new Cacher();
         $dbx = new Database();
+        $dbResult = false;
+        $db2Result = false;
+        $db3Result = false;
         try {
             $db = $dbx->getConnection('database_pxc_1');
             $dbResult = $db->fetchAssoc("SELECT id
@@ -38,10 +41,10 @@ $app->group('/v1', function() {
         }
 
         if ($mc !== false) {
-            if ($db2Result !== false) {
-                $mc->set('DB_CONNECTION', 'database_pxc_2');
-            } elseif ($dbResult !== false) {
+            if ($dbResult !== false) {
                 $mc->set('DB_CONNECTION', 'database_pxc_1');
+            } elseif ($db2Result !== false) {
+                $mc->set('DB_CONNECTION', 'database_pxc_2');
             } elseif ($db3Result !== false) {
                 $mc->set('DB_CONNECTION', 'database_pxc_3');
             }
