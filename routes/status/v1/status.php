@@ -28,7 +28,7 @@ $app->group('/v1', function() {
             $db2Result = $db2->fetchAssoc("SELECT id
                                 FROM geolocate WHERE
                                 city = ? AND countryiso = ?",
-                ['Dubai', 'AE']);
+                ['London', 'UK']);
         } catch (Exception $e) {
             $db2Result = false;
         }
