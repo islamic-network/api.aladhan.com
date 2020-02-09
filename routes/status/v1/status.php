@@ -9,6 +9,8 @@ $app->group('/v1', function() {
     $this->get('/status', function (Request $request, Response $response) {
         $mc = new Cacher();
         $dbx = new Database();
+        $dbx2 = new Database();
+        $dbx3 = new Database();
         $dbResult = false;
         $db2Result = false;
         $db3Result = false;
@@ -22,7 +24,7 @@ $app->group('/v1', function() {
             $dbResult = false;
         }
         try {
-            $db2 = $dbx->getConnection('database_pxc_2');
+            $db2 = $dbx2->getConnection('database_pxc_2');
             $db2Result = $db2->fetchAssoc("SELECT id
                                 FROM geolocate WHERE
                                 city = ? AND countryiso = ?",
@@ -31,7 +33,7 @@ $app->group('/v1', function() {
             $db2Result = false;
         }
         try {
-            $db3 = $dbx->getConnection('database_pxc_3');
+            $db3 = $dbx3->getConnection('database_pxc_3');
             $db3Result = $db3->fetchAssoc("SELECT id
                                 FROM geolocate WHERE
                                 city = ? AND countryiso = ?",
