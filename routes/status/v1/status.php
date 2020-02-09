@@ -43,9 +43,9 @@ $app->group('/v1', function() {
         if ($mc !== false) {
             if ($dbResult !== false) {
                 $mc->set('DB_CONNECTION', 'database_pxc_1');
-            } elseif ($db2Result !== false) {
+            } elseif ($db2Result !== false && $dbResult === false) {
                 $mc->set('DB_CONNECTION', 'database_pxc_2');
-            } elseif ($db3Result !== false) {
+            } elseif ($db3Result !== false && $db2Result === false && $dbResult === false) {
                 $mc->set('DB_CONNECTION', 'database_pxc_3');
             }
         }
@@ -56,7 +56,7 @@ $app->group('/v1', function() {
             'pxc2' => $db2Result === false ? 'NOT OK' : 'OK (' . $db2Result['id']. ')',
             'pxc3' => $db3Result === false ? 'NOT OK' : 'OK (' . $db3Result['id']. ')',
             'activeDb' => $mc === false ? 'NOT OK' : $mc->get('DB_CONNECTION')
-                ];
+        ];
         if ($mc === false || $dbResult === false || $db2Result === false || $db3Result === false) {
             return $response->withJson(ApiResponse::build($status, 500, 'Status Check Failed'), 500);
         }
