@@ -51,6 +51,7 @@ class Database
             'password' => $c->password,
             'host' => $c->host,
             'driver' => 'pdo_mysql',
+            'port' => $c->port
         );
 
         return \Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
