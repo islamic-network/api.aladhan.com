@@ -12,6 +12,7 @@ AlAdhan.com is an open source project and is powered by free APIs provided by [I
 
 ## Supporters via Patreon and PayPal
 * Zakaria Kerkeb
+* Saiful Abdul Aziz
 * Muhammad
 * Malik Mlitat
 * Walid Aredjal
