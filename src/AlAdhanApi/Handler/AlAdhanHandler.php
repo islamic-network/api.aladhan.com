@@ -11,16 +11,6 @@ class AlAdhanHandler
 {
     public function __invoke(Request $request, Response $response, Exception $exception) {
 
-        if ($exception instanceof WafKeyMismatchException) {
-            $r = [
-                'code' => 403,
-                'status' => 'Forbidden',
-                'data' => 'WAF Key Mismatch.'
-            ];
-
-            return $response->withJson($r, 403);
-        };
-
         $r = [
             'code' => 500,
             'status' => 'Internal Server Error',

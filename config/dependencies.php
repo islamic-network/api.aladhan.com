@@ -30,26 +30,3 @@ $container['errorHandler'] = function ($c) {
     return new AlAdhanHandler();
 };
 
-/** Invoke Middleware for WAF Checks */
-
-$app->add(function (Request $request, Response $response, $next) {
-
-    $proxyMode = (bool) getenv('WAF_PROXY_MODE');
-
-    if ($proxyMode) {
-        // Validate Key
-        if (isset($request->getHeader('X-WAF-KEY')[0]) && $request->getHeader('X-WAF-KEY')[0] === getenv('WAF_KEY')) {
-            $response = $next($request, $response);
-
-            return $response;
-        }
-
-        throw new \AlAdhanApi\Exception\WafKeyMismatchException();
-    }
-
-    $response = $next($request, $response);
-
-    return $response;
-
-});
-

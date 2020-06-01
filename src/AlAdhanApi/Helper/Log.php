@@ -126,14 +126,4 @@ class Log
 
         return $logger->error($this->id . ' :: ' . date('Y-m-d H:i:s') . ' :: ' . $message);
     }
-
-    public function writeWAFLog($message)
-    {
-        $logFile = 'waf';
-        $logger = new Logger('waf');
-        // Now add some handlers
-        $logger->pushHandler( new \Monolog\Handler\StreamHandler('php://stdout', Logger::INFO));
-
-        return $logger->info($this->id . ' :: ' . date('Y-m-d H:i:s') . ' :: ' . $message . ' :: ', $this->format($_SERVER, $_REQUEST));
-    }
 }
