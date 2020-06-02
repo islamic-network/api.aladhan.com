@@ -1,8 +1,3 @@
-#SetEnvIF X-Forwarded-For "(,| |^)217\.138\.37\.107(,| |$)" DenyIP
-#SetEnvIF X-Forwarded-For "(,| |^)31\.167\.60\.182(,| |$)" DenyIP
-#Order allow,deny
-#Deny from env=DenyIP
-#Allow from all
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
