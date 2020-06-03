@@ -107,6 +107,23 @@ jobs:
             IMAGE_TAG=${CIRCLE_TAG}
             docker tag $IMAGE_NAME:latest $IMAGE_NAME_DH:$IMAGE_TAG
             docker push $IMAGE_NAME_DH:$IMAGE_TAG
+  deploy-docker-tag:
+    executor: docker-publisher
+    steps:
+      - checkout
+      - run:
+          name: Install envsubst
+          command: |
+            sudo apt-get update && sudo apt-get -y install gettext-base
+      - run:
+          name: Install kubectl
+          command: |
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+            chmod u+x ./kubectl
+      - run:
+          name: Deploy Code
+          command: |
+            chmod u+x ./.k8s/deploy.sh && sh ./.k8s/deploy.sh
 
 workflows:
   version: 2
@@ -156,6 +173,15 @@ workflows:
           context: org-global
           requires:
             - build-docker-image
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
+      - deploy-docker-tag:
+          context: org-global
+          requires:
+            - publish-docker-tag
           filters:
             tags:
               only: /.*/

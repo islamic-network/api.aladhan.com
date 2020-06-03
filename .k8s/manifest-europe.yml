@@ -1,0 +1,108 @@
+# Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aladhan-com-api
+  namespace: aladhan-com
+spec:
+  replicas: 7 # 16 requests each
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 2
+  selector:
+    matchLabels:
+      app: aladhan-com-api
+  template:
+    metadata:
+      labels:
+        app: aladhan-com-api
+    spec:
+      hostAliases:
+        - ip: "192.168.141.220"
+          hostnames:
+            - "pxc1"
+        - ip: "192.168.140.152"
+          hostnames:
+            - "pxc2"
+        - ip: "192.168.133.47"
+          hostnames:
+            - "pxc3"
+      containers:
+        - name: aladhan-com-api
+          image: islamicnetwork/api.aladhan.com:$COMMIT_TAG
+          env:
+            - name:  MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-database
+                  key: username
+            - name:  MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-database
+                  key: password
+            - name:  MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-database
+                  key: database
+            - name:  MYSQL_HOST_1
+              value: "pxc1"
+            - name:  MYSQL_PORT_1
+              value: "3306"
+            - name:  MYSQL_HOST_2
+              value: "pxc2"
+            - name:  MYSQL_PORT_2
+              value: "3306"
+            - name:  MYSQL_HOST_3
+              value: "pxc3"
+            - name:  MYSQL_PORT_3
+              value: "3306"
+            - name:  MEMCACHED_HOST
+              value: "aladhan-com-api-memcached"
+            - name:  MEMCACHED_PORT
+              value: "11211"
+            - name:  GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-googlemaps-creds
+                  key: apikey
+            - name:  ASKGEO_ACCOUNT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-askgeo-creds
+                  key: accountid
+            - name:  ASKGEO_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-askgeo-creds
+                  key: apikey
+          livenessProbe:
+            httpGet:
+              path: /v1/status
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 3
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /v1/status
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 15
+            timeoutSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "0.25"
+              memory: 30Mi
+            limits:
+              cpu: "0.25"
+              memory: 512Mi
+          ports:
+            - containerPort: 8080
+              protocol: TCP
