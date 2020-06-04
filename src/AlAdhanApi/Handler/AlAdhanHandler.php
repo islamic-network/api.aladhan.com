@@ -1,7 +1,7 @@
 <?php
 namespace AlAdhanApi\Handler;
 
-use AlAdhanApi\Exception\WafKeyMismatchException;
+use AlAdhanApi\Exception\BadRequestException;
 use AlAdhanApi\Helper\Log;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -11,18 +11,22 @@ class AlAdhanHandler
 {
     public function __invoke(Request $request, Response $response, Exception $exception) {
 
-        $r = [
-            'code' => 500,
-            'status' => 'Internal Server Error',
-            'data' => 'Something went wrong when the server tried to process this request. Sorry!'
-        ];
+        if ($exception instanceof BadRequestException) {
+            $r = [
+                'code' => $exception->getCode(),
+                'status' => 'Bad Request',
+                'data' => $exception->getMessage()
+            ];
+
+            return $response->withJson($r, 400);
+        };
 
         $log = new Log();
         $errorJson = json_encode(
             [
-                'code' => $exception->getCode(),
-                'message' => $exception->getMessage(),
-                'trace' => $exception->getTraceAsString()
+                'code' => @$exception->getCode(),
+                'message' => @$exception->getMessage(),
+                'trace' => @$exception->getTraceAsString()
             ]
         );
 

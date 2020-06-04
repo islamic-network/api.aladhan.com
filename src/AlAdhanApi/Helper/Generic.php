@@ -108,4 +108,19 @@ class Generic
 
         return false;
     }
+
+    public static function isCoOrdinateAValidFormat(array $coordinates)
+    {
+        $invalidValues = [
+            "0.0", "0", "null", null, 0.0, 0
+        ];
+
+        foreach ($coordinates as $coordinate) {
+            if (in_array($coordinate, $invalidValues)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

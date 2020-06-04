@@ -8,6 +8,7 @@ use AlAdhanApi\Helper\Request as ApiRequest;
 use AlAdhanApi\Helper\ClassMapper;
 use AlAdhanApi\Helper\PrayerTimesHelper;
 use AlAdhanApi\Helper\Generic;
+use AlAdhanApi\Interceptor\CoOrdinates;
 
 
 /**
@@ -51,14 +52,14 @@ use AlAdhanApi\Helper\Generic;
  *
  **/
 $app->get('/methods', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $pt = new PrayerTimes();
 
     return $response->withJson(ApiResponse::build($pt->getMethods(), 200, 'OK'), 200);
 });
 
 $app->get('/nextPrayerByAddress', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -88,7 +89,7 @@ $app->get('/nextPrayerByAddress', function (Request $request, Response $response
 });
 
 $app->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
@@ -205,7 +206,7 @@ $app->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Respon
  * }
  */
 $app->get('/timings', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -213,6 +214,7 @@ $app->get('/timings', function (Request $request, Response $response) {
     $longitude = $request->getQueryParam('longitude');
     $timezone = Generic::computeTimezone($latitude, $longitude, $request->getQueryParam('timezonestring'), $this->model->locations);
     $tune = ApiRequest::tune($request->getQueryParam('tune'));
+    CoOrdinates::areValid($latitude, $longitude);
     if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
         $pt = new PrayerTimes($method, $school, null);
         $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
@@ -234,7 +236,6 @@ $app->get('/timings', function (Request $request, Response $response) {
 });
 
 $app->get('/timings/{timestamp}', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
     $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
@@ -349,7 +350,7 @@ $app->get('/timings/{timestamp}', function (Request $request, Response $response
  * }
  */
 $app->get('/timingsByAddress', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -378,7 +379,7 @@ $app->get('/timingsByAddress', function (Request $request, Response $response) {
 });
 
 $app->get('/timingsByAddress/{timestamp}', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
@@ -494,7 +495,7 @@ $app->get('/timingsByAddress/{timestamp}', function (Request $request, Response 
  * }
  */
 $app->get('/timingsByCity', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -524,7 +525,7 @@ $app->get('/timingsByCity', function (Request $request, Response $response) {
 });
 
 $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
@@ -689,7 +690,7 @@ $app->get('/timingsByCity/{timestamp}', function (Request $request, Response $re
  * }
  */
 $app->get('/calendar', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -700,6 +701,7 @@ $app->get('/calendar', function (Request $request, Response $response) {
     $annual = ApiRequest::annual($request->getQueryParam('annual'));
     $timezone = $request->getQueryParam('timezonestring');
     $tune = ApiRequest::tune($request->getQueryParam('tune'));
+    CoOrdinates::areValid($latitude, $longitude);
     if ($timezone == '' || $timezone  === null) {
         // Compute it.
         $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
@@ -857,7 +859,7 @@ $app->get('/calendar', function (Request $request, Response $response) {
  * }
  */
 $app->get('/calendarByAddress', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -1022,7 +1024,7 @@ $app->get('/calendarByAddress', function (Request $request, Response $response) 
  * }
  */
 $app->get('/calendarByCity', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
     $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
     $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -1082,7 +1084,7 @@ $app->get('/calendarByCity', function (Request $request, Response $response) {
  *
  **/
 $app->get('/cityInfo', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $city = $request->getQueryParam('city');
     $country = $request->getQueryParam('country');
     $state = $request->getQueryParam('state');
@@ -1120,7 +1122,7 @@ $app->get('/cityInfo', function (Request $request, Response $response) {
  *
  **/
 $app->get('/addressInfo', function (Request $request, Response $response) {
-    //$this->helper->logger->write();
+    
     $address = $request->getQueryParam('address');
     $result = $this->model->locations->getAddressCoOrdinatesAndZone($address);
     if ($result) {

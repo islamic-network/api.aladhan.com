@@ -9,6 +9,7 @@ use AlAdhanApi\Helper\ClassMapper;
 use AlAdhanApi\Helper\PrayerTimesHelper;
 use AlAdhanApi\Helper\Generic;
 use AlAdhanApi\Model\HijriCalendarService;
+use AlAdhanApi\Interceptor\CoOrdinates;
 
 $app->group('/v1', function() {
     /**
@@ -52,14 +53,14 @@ $app->group('/v1', function() {
      *
      **/
     $this->get('/methods', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $pt = new PrayerTimes();
 
         return $response->withJson(ApiResponse::build($pt->getMethods(), 200, 'OK'), 200);
     });
 
     $this->get('/nextPrayerByAddress', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
@@ -82,7 +83,7 @@ $app->group('/v1', function() {
     });
 
     $this->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
@@ -236,7 +237,7 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/timings', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
@@ -246,6 +247,7 @@ $app->group('/v1', function() {
         $timezone = Generic::computeTimezone($latitude, $longitude, $request->getQueryParam('timezonestring'), $this->model->locations);
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
+        CoOrdinates::areValid($latitude, $longitude);
         if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
             $d = new DateTime('now', new DateTimeZone($timezone));
             $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment);
@@ -260,7 +262,7 @@ $app->group('/v1', function() {
     });
 
     $this->get('/timings/{timestamp}', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
@@ -413,7 +415,7 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/timingsByAddress', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
@@ -436,7 +438,7 @@ $app->group('/v1', function() {
     });
 
     $this->get('/timingsByAddress/{timestamp}', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
@@ -590,7 +592,7 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/timingsByCity', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
@@ -615,7 +617,7 @@ $app->group('/v1', function() {
     });
 
     $this->get('/timingsByCity/{timestamp}', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
@@ -858,7 +860,7 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/calendar', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
@@ -871,6 +873,8 @@ $app->group('/v1', function() {
         $timezone = $request->getQueryParam('timezonestring');
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
+        CoOrdinates::areValid($latitude, $longitude);
+
         if ($timezone == '' || $timezone  === null) {
             // Compute it.
             $timezone = $this->model->locations->getTimezoneByCoOrdinates($latitude, $longitude);
@@ -1112,7 +1116,7 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/hijriCalendar', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
@@ -1364,7 +1368,7 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/calendarByAddress', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
@@ -1610,7 +1614,7 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/hijriCalendarByAddress', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
@@ -1858,7 +1862,7 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/calendarByCity', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
@@ -2109,7 +2113,7 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/hijriCalendarByCity', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
@@ -2143,7 +2147,7 @@ $app->group('/v1', function() {
     });
 
     $this->get('/cityInfo', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $city = $request->getQueryParam('city');
         $country = $request->getQueryParam('country');
         $state = $request->getQueryParam('state');
@@ -2156,7 +2160,7 @@ $app->group('/v1', function() {
     });
 
     $this->get('/addressInfo', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
+        
         $address = $request->getQueryParam('address');
         $result = $this->model->locations->getAddressCoOrdinatesAndZone($address);
         if ($result) {

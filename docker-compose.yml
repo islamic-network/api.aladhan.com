@@ -14,6 +14,7 @@ services:
       - aa-memcached
       - aa-db
     environment:
+      DEBUG_MODE: "true"
       MYSQL_USER: "aladhan"
       MYSQL_PASSWORD: "aladhan"
       MYSQL_DATABASE: "aladhan_locations"
