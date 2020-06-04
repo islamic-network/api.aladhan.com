@@ -6,7 +6,7 @@ metadata:
   name: aladhan-com-api
   namespace: aladhan-com
 spec:
-  replicas: 7 # 16 requests each
+  replicas: 9 # 16 requests each
   strategy:
     type: RollingUpdate
     rollingUpdate:
