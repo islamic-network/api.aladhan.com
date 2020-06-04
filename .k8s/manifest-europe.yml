@@ -88,7 +88,7 @@ spec:
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 30
-            timeoutSeconds: 3
+            timeoutSeconds: 5
             failureThreshold: 3
           readinessProbe:
             httpGet:
