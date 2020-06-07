@@ -5,15 +5,15 @@ executors:
       IMAGE_NAME: islamicnetwork/api.aladhan.com
     docker:
       - image: circleci/buildpack-deps:stretch
-  php72:
+  php74:
     docker:
-      - image: quay.io/vesica/php72
+      - image: islamicnetwork/php74
       - image: memcached:1.5
     working_directory: ~/repo
 
 jobs:
   build-app:
-    executor: php72
+    executor: php74
     steps:
       - checkout
       - restore_cache:
