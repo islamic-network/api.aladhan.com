@@ -19,8 +19,6 @@ spec:
     metadata:
       labels:
         app: aladhan-com-api
-      annotations:
-        kuma.io/mesh: islamic-network-mesh
     spec:
       hostAliases:
         - ip: "192.168.141.220"
