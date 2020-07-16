@@ -38,7 +38,7 @@ services:
   # MySQL
   #######################################
   aa-db:
-    image: islamicnetwork/api.aladhan.com-db:master
+    image: islamicnetwork/api.aladhan.com-db:25-Sep-2019-master
     environment:
       MYSQL_ROOT_PASSWORD: "root"
       MYSQL_USER: "aladhan"

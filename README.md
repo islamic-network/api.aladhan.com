@@ -10,12 +10,12 @@
 This repository powers the AlAdhan.com API on http://api.aladhan.com.
 
 # Technology Stack
-* PHP 7.2
-* PerconaDB 5.7
+* PHP 7.4
+* PerconaDB 8.x
 * Memcached 1.5
 * Slim Framework v3
-* Google Maps API Key for the GeoCoding API (https://developers.google.com/maps/documentation/geocoding/intro)
-* AskGeo API Key and Account ID for the Timezone API (https://askgeo.com/database/TimeZone)
+* Google Maps API for the GeoCoding API (https://developers.google.com/maps/documentation/geocoding/intro)
+* AskGeo API for the Timezone API (https://askgeo.com/database/TimeZone)
 
 ### Running the App
 
@@ -25,7 +25,6 @@ You should enter your Google Maps API Key and Ask Geo Account ID and keys in the
 
 A production ready Docker image of the app is published as:
 
-* quay.io/islamic-network/api.aladhan.com on Quay 
 * islamicnetwork/api.aladhan.com on Docker Hub
 
 To get your own instance up, simply run:
