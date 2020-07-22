@@ -243,6 +243,7 @@ $app->group('/v1', function() {
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
         CoOrdinates::areValid($latitude, $longitude);
 
         if ($timezone == '' || $timezone  === null) {
@@ -252,6 +253,7 @@ $app->group('/v1', function() {
 
         if (ApiRequest::isCalendarRequestValid($latitude, $longitude, $timezone)) {
             $pt = new PrayerTimes($method, $school);
+            $pt->setShafaq($shafaq);
             if ($method == Method::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
@@ -498,6 +500,7 @@ $app->group('/v1', function() {
         $timezone = $request->getQueryParam('timezonestring');
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
+        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
         $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
         if ($timezone == '' || $timezone  === null) {
             // Compute it.
@@ -506,6 +509,7 @@ $app->group('/v1', function() {
 
         if (ApiRequest::isCalendarRequestValid($latitude, $longitude, $timezone)) {
             $pt = new PrayerTimes($method, $school);
+            $pt->setShafaq($shafaq);
             if ($method == Method::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
@@ -749,9 +753,11 @@ $app->group('/v1', function() {
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
+        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
         $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
+            $pt->setShafaq($shafaq);
             if ($method == Method::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
@@ -995,9 +1001,11 @@ $app->group('/v1', function() {
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
+        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
         $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
+            $pt->setShafaq($shafaq);
             if ($method == Method::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
@@ -1245,9 +1253,11 @@ $app->group('/v1', function() {
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
+        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
         $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
+            $pt->setShafaq($shafaq);
             if ($method == Method::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
@@ -1496,9 +1506,11 @@ $app->group('/v1', function() {
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
+        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
         $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
+            $pt->setShafaq($shafaq);
             if ($method == Method::METHOD_CUSTOM) {
                 $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
                 $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);

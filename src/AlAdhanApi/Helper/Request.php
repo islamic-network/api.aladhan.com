@@ -3,7 +3,11 @@
 namespace AlAdhanApi\Helper;
 
 use AlAdhanApi\Helper\Generic;
-use AlAdhanApi\Model\HijriCalendarService;;
+use AlAdhanApi\Model\HijriCalendarService;
+use IslamicNetwork\MoonSighting\Isha;
+use phpDocumentor\Reflection\Types\String_;
+
+;
 
 /**
  * Class Request
@@ -11,66 +15,56 @@ use AlAdhanApi\Model\HijriCalendarService;;
  */
 class Request
 {
-    /**
-     * [school description]
-     * @param  [type] $data [description]
-     * @return [type]       [description]
-     */
-    public static function school($data)
+
+    public static function school($data): int
+    {
+        if (in_array($data, [0, 1])) {
+            return (int)$data;
+        }
+
+        return (int) 0;
+    }
+
+    public static function shafaq($data): string
+    {
+        if (in_array($data, [Isha::SHAFAQ_GENERAL, Isha::SHAFAQ_AHMER, Isha::SHAFAQ_ABYAD])) {
+            return $data;
+        }
+
+        return Isha::SHAFAQ_GENERAL;
+    }
+
+    public static function midnightMode($data):int
     {
         if (in_array($data, [0, 1])) {
             return $data;
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
-    /**
-     * [midnightMode description]
-     * @param  [type] $data [description]
-     * @return [type]       [description]
-     */
-    public static function midnightMode($data)
-    {
-        if (in_array($data, [0, 1])) {
-            return $data;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * [latitudeAdjustmentMethod description]
-     * @param  [type] $data [description]
-     * @return [type]       [description]
-     */
-    public static function latitudeAdjustmentMethod($data)
+    public static function latitudeAdjustmentMethod($data): int
     {
         if (!in_array($data, [1, 2, 3])) {
             return 3;
-        } else {
-            return $data;
         }
+
+        return $data;
     }
 
-    /**
-     * [method description]
-     * @param  [type] $data [description]
-     * @return [type]       [description]
-     */
-    public static function method($data)
+    public static function method($data): int
     {
         if ($data == 'null' || $data == '') {
             return 2; //ISNA;
         }
-        if (!in_array($data, [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 99])) {
+        if (!in_array($data, [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 99])) {
             return 2; // ISNA
         } else {
             return $data;
         }
     }
 
-    public static function customMethod($data)
+    public static function customMethod($data): array
     {
         $method = explode(',', $data);
         $result = [];
@@ -86,7 +80,7 @@ class Request
         return $result;
     }
 
-    public static function tune($data)
+    public static function tune($data): array
     {
         $method = explode(',', $data);
         $result = [];

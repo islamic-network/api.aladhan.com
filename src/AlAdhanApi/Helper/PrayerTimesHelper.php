@@ -299,9 +299,10 @@ class PrayerTimesHelper
      * @param int $adjustment
      * @return PrayerTimes
      */
-    public static function getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment = 0)
+    public static function getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment = 0, $shafaq)
     {
         $pt = new PrayerTimes($method, $school, null);
+        $pt->setShafaq($shafaq);
 
         if ($method == Method::METHOD_CUSTOM) {
             $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
@@ -314,7 +315,6 @@ class PrayerTimesHelper
         else {
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         }
-
 
         return $pt;
 
