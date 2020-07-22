@@ -2,12 +2,8 @@
 
 namespace AlAdhanApi\Helper;
 
-use AlAdhanApi\Helper\Generic;
 use AlAdhanApi\Model\HijriCalendarService;
 use IslamicNetwork\MoonSighting\Isha;
-use phpDocumentor\Reflection\Types\String_;
-
-;
 
 /**
  * Class Request
