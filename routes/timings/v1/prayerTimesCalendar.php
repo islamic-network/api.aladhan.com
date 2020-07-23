@@ -24,7 +24,7 @@ $app->group('/v1', function() {
      * @apiParam {number=1-12} month A gregorian calendar month. Example: 8 or 08 for August.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -39,7 +39,9 @@ $app->group('/v1', function() {
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
      *                               14 - Spiritual Administration of Muslims of Russia<br />
+     *                               15 - Moonsighting Committee Worldwide (also requires shafaq paramteer)<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {number{0-1}} [midnightMode = 0] 0 for Standard (Mid Sunset to Sunrise), 1 for Jafari (Mid Sunset to Fajr). If you leave this empty, it defaults to Standard.
@@ -49,7 +51,7 @@ $app->group('/v1', function() {
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
      * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
-     * @apiParam {boolean} [iso8601 = false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
+     * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/calendar?latitude=51.508515&longitude=-0.1254872&method=2&month=4&year=2017
@@ -282,7 +284,7 @@ $app->group('/v1', function() {
      * @apiParam {number=1-12} month A Hijri calendar month. Example: 9 or 09 for Ramadan.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -297,7 +299,9 @@ $app->group('/v1', function() {
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
      *                               14 - Spiritual Administration of Muslims of Russia<br />
+     *                               15 - Moonsighting Committee Worldwide (also requires shafaq paramteer)<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {number{0-1}} [midnightMode = 0] 0 for Standard (Mid Sunset to Sunrise), 1 for Jafari (Mid Sunset to Fajr). If you leave this empty, it defaults to Standard.
@@ -307,7 +311,7 @@ $app->group('/v1', function() {
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
      * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
-     * @apiParam {boolean} [iso8601 = false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
+     * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/hijriCalendar?latitude=51.508515&longitude=-0.1254872&method=2&month=4&year=1437
@@ -537,7 +541,7 @@ $app->group('/v1', function() {
      * @apiParam {number=1-12} month A gregorian calendar month. Example: 8 or 08 for August.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -552,7 +556,9 @@ $app->group('/v1', function() {
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
      *                               14 - Spiritual Administration of Muslims of Russia<br />
+     *                               15 - Moonsighting Committee Worldwide (also requires shafaq paramteer)<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {number{0-1}} [midnightMode = 0] 0 for Standard (Mid Sunset to Sunrise), 1 for Jafari (Mid Sunset to Fajr). If you leave this empty, it defaults to Standard.
@@ -561,7 +567,7 @@ $app->group('/v1', function() {
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
      * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
-     * @apiParam {boolean} [iso8601 = false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
+     * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/calendarByAddress?address=Sultanahmet Mosque, Istanbul, Turkey&method=2&month=04&year=2017
@@ -785,7 +791,7 @@ $app->group('/v1', function() {
      * @apiParam {number=1-12} month A Hijri calendar month. Example: 9 or 09 for August.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -800,7 +806,9 @@ $app->group('/v1', function() {
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
      *                               14 - Spiritual Administration of Muslims of Russia<br />
+     *                               15 - Moonsighting Committee Worldwide (also requires shafaq paramteer)<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {number{0-1}} [midnightMode = 0] 0 for Standard (Mid Sunset to Sunrise), 1 for Jafari (Mid Sunset to Fajr). If you leave this empty, it defaults to Standard.
@@ -809,7 +817,7 @@ $app->group('/v1', function() {
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
      * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
-     * @apiParam {boolean} [iso8601 = false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
+     * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/hijriCalendarByAddress?address=Sultanahmet Mosque, Istanbul, Turkey&method=2&month=04&year=1437
@@ -1035,7 +1043,7 @@ $app->group('/v1', function() {
      * @apiParam {number=1-12} month A gregorian calendar month. Example: 8 or 08 for August.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -1050,7 +1058,9 @@ $app->group('/v1', function() {
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
      *                               14 - Spiritual Administration of Muslims of Russia<br />
+     *                               15 - Moonsighting Committee Worldwide (also requires shafaq paramteer)<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {number{0-1}} [midnightMode = 0] 0 for Standard (Mid Sunset to Sunrise), 1 for Jafari (Mid Sunset to Fajr). If you leave this empty, it defaults to Standard.
@@ -1059,7 +1069,7 @@ $app->group('/v1', function() {
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
      * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
-     * @apiParam {boolean} [iso8601 = false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
+     * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/calendarByCity?city=London&country=United Kingdom&method=2&month=04&year=2017
@@ -1288,7 +1298,7 @@ $app->group('/v1', function() {
      * @apiParam {number=1-12} month A Hijri calendar month. Example: 9 or 09 for Ramadan.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -1303,7 +1313,9 @@ $app->group('/v1', function() {
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
      *                               14 - Spiritual Administration of Muslims of Russia<br />
+     *                               15 - Moonsighting Committee Worldwide (also requires shafaq paramteer)<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
      * @apiParam {number{0-1}} [midnightMode = 0] 0 for Standard (Mid Sunset to Sunrise), 1 for Jafari (Mid Sunset to Fajr). If you leave this empty, it defaults to Standard.
@@ -1312,7 +1324,7 @@ $app->group('/v1', function() {
      *                                                 2 - One Seventh<br />
      *                                                 3 - Angle Based<br />
      * @apiParam {number} adjustment Number of days to adjust hijri date(s). Example: 1 or 2 or -1 or -2
-     * @apiParam {boolean} [iso8601 = false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
+     * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
      *   http://api.aladhan.com/v1/hijriCalendarByCity?city=London&country=United Kingdom&method=2&month=04&year=1437
