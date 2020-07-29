@@ -5,13 +5,17 @@
   "authors": [
     {
       "name": "Meezaan-ud-Din Abdu Dhil-Jalali Wal-Ikram",
-      "email": "website@meezaan.net"
+      "email": "meezaan@islamic.network"
     }
   ],
   "repositories": [
     {
       "type": "vcs",
       "url": "https://github.com/meezaan/askgeo-api"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/meezaan/php-haversine-formula"
     }
   ],
   "require": {
@@ -22,7 +26,8 @@
     "symfony/yaml": "^4.1",
     "islamic-network/prayer-times": "1.0.12",
     "islamic-network/alqibla": "^1.2",
-    "meezaan/askgeo-api": "dev-master"
+    "meezaan/askgeo-api": "dev-master",
+    "rafaelfragoso/haversini-formula":"dev-master"
   },
   "autoload": {
     "psr-0": {

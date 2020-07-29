@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce4f46ee4b816f282ff414da712b6595",
+    "content-hash": "ac5272396676b2e99c006eca1ff58cf5",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -860,6 +860,51 @@
             "time": "2020-07-22T06:16:24+00:00"
         },
         {
+            "name": "jordanbrauer/unit-converter",
+            "version": "v0.8.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jordanbrauer/unit-converter.git",
+                "reference": "be778e107bdd19494be2f1b246612ddf51a5a30d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jordanbrauer/unit-converter/zipball/be778e107bdd19494be2f1b246612ddf51a5a30d",
+                "reference": "be778e107bdd19494be2f1b246612ddf51a5a30d",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "php": "^7.1"
+            },
+            "require-dev": {
+                "codedungeon/phpunit-result-printer": "^0.19.12",
+                "consolidation/robo": "^1.2",
+                "phpmetrics/phpmetrics": "^2.4",
+                "phpunit/phpunit": "^6.3",
+                "symfony/var-dumper": "^3.3",
+                "vlucas/phpdotenv": "^2.4"
+            },
+            "type": "component",
+            "autoload": {
+                "psr-4": {
+                    "UnitConverter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "jordanbrauer",
+                    "email": "18744334+jordanbrauer@users.noreply.github.com"
+                }
+            ],
+            "description": "Convert standard units from one to another with this easy to use, lightweight package",
+            "time": "2020-04-28T00:05:02+00:00"
+        },
+        {
             "name": "meezaan/askgeo-api",
             "version": "dev-master",
             "source": {
@@ -906,16 +951,16 @@
         },
         {
             "name": "monolog/monolog",
-            "version": "1.25.4",
+            "version": "1.25.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "3022efff205e2448b560c833c6fbbf91c3139168"
+                "reference": "1817faadd1846cd08be9a49e905dc68823bc38c0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/3022efff205e2448b560c833c6fbbf91c3139168",
-                "reference": "3022efff205e2448b560c833c6fbbf91c3139168",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/1817faadd1846cd08be9a49e905dc68823bc38c0",
+                "reference": "1817faadd1846cd08be9a49e905dc68823bc38c0",
                 "shasum": ""
             },
             "require": {
@@ -989,7 +1034,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-05-22T07:31:27+00:00"
+            "time": "2020-07-23T08:35:51+00:00"
         },
         {
             "name": "nikic/fast-route",
@@ -1277,6 +1322,61 @@
                 "psr-3"
             ],
             "time": "2020-03-23T09:12:05+00:00"
+        },
+        {
+            "name": "rafaelfragoso/haversini-formula",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/meezaan/php-haversine-formula.git",
+                "reference": "d421da4052b7c8c693118ff1a7b59126784b33f9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/meezaan/php-haversine-formula/zipball/d421da4052b7c8c693118ff1a7b59126784b33f9",
+                "reference": "d421da4052b7c8c693118ff1a7b59126784b33f9",
+                "shasum": ""
+            },
+            "require": {
+                "jordanbrauer/unit-converter": "^0.8.4",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/php-code-coverage": "^6.1",
+                "phpunit/phpunit": "~7.0",
+                "symfony/var-dumper": "^4.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Haversini\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rafael Fragoso",
+                    "email": "rafaelfragosom@gmail.com"
+                },
+                {
+                    "name": "Leonardo do Carmo",
+                    "email": "leonardo.docarmo@hotmail.com"
+                }
+            ],
+            "description": "This PHP class can replace the Google Distance Matrix to calculate the distance between two points using latitude and longitude. It will prevent you to do massive requests to Google servers and enhance your service performance.",
+            "homepage": "https://github.com/rafaelfragosom/php-haversine-formula",
+            "support": {
+                "source": "https://github.com/meezaan/php-haversine-formula/tree/master"
+            },
+            "funding": [
+                {
+                    "type": "github",
+                    "url": "https://github.com/orafaelfragoso"
+                }
+            ],
+            "time": "2020-07-25T04:35:21+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -1785,7 +1885,7 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.4.10",
+            "version": "v4.4.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
@@ -3395,7 +3495,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "meezaan/askgeo-api": 20
+        "meezaan/askgeo-api": 20,
+        "rafaelfragoso/haversini-formula": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
