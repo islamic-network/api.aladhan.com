@@ -4,6 +4,7 @@
 [![](https://img.shields.io/docker/pulls/islamicnetwork/api.aladhan.com.svg)](https://cloud.docker.com/u/vesica/repository/islamicnetwork/vesica/api.aladhan.com)
 [![](https://img.shields.io/github/release/islamic-network/api.aladhan.com.svg)](https://github.com/islamic-network/api.aladhan.com/releases)
 [![](https://img.shields.io/github/license/islamic-network/api.aladhan.com.svg)](https://github.com/islamic-network/api.aladhan.com/blob/master/LICENSE)
+![GitHub All Releases](https://img.shields.io/github/downloads/islamic-network/api.aladhan.com/total)
 
 # AlAdhan API - api.aladhan.com
 
