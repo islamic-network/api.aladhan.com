@@ -39,8 +39,7 @@ spec:
             - containerPort: 9117
               protocol: TCP
         - name: aladhan-com-api
-          #image: islamicnetwork/api.aladhan.com:$COMMIT_TAG
-          image: islamicnetwork/api.aladhan.com:latest
+          image: islamicnetwork/api.aladhan.com:$COMMIT_TAG
           env:
             - name:  DEBUG_MODE
               value: "false"
