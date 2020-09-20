@@ -6,7 +6,7 @@ metadata:
   name: aladhan-com-api
   namespace: aladhan-com
 spec:
-  replicas: 9 # 16 requests each
+  replicas: 7 # 16 requests each
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -31,6 +31,13 @@ spec:
           hostnames:
             - "pxc3"
       containers:
+        - name: apache-exporter-sidecar
+          image: lusotycoon/apache-exporter
+          args:
+            - '--scrape_uri=http://localhost:8080/server-status?auto'
+          ports:
+            - containerPort: 9117
+              protocol: TCP
         - name: aladhan-com-api
           image: islamicnetwork/api.aladhan.com:$COMMIT_TAG
           env:
@@ -100,11 +107,11 @@ spec:
             failureThreshold: 3
           resources:
             requests:
-              cpu: "0.25"
-              memory: 30Mi
+              cpu: "0.1"
+              memory: 250Mi
             limits:
               cpu: "0.25"
-              memory: 512Mi
+              memory: 450Mi
           ports:
             - containerPort: 8080
               protocol: TCP
