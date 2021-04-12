@@ -98,7 +98,7 @@ spec:
                   key: apikey
           livenessProbe:
             httpGet:
-              path: /v1/status
+              path: /v1/methods
               port: 8080
             initialDelaySeconds: 15
             periodSeconds: 30
@@ -106,7 +106,7 @@ spec:
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /v1/status
+              path: /v1/methods
               port: 8080
             initialDelaySeconds: 2
             periodSeconds: 15
