@@ -6,7 +6,7 @@ metadata:
   name: aladhan-com-api
   namespace: aladhan-com
 spec:
-  replicas: 7 # 16 requests each
+  replicas: 10 # 16 requests each
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -114,7 +114,7 @@ spec:
             failureThreshold: 3
           resources:
             requests:
-              cpu: "300m"
+              cpu: "250m"
               memory: 250Mi
             limits:
               cpu: "500m"
