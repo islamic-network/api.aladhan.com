@@ -64,4 +64,8 @@ $app->group('/v1', function() {
         }
         return $response->withJson(ApiResponse::build($status, 200, 'OK'), 200);
     });
+
+    $this->get('/liveness', function (Request $request, Response $response) {
+        return $response->withJson('OK', 200);
+    });
 });
