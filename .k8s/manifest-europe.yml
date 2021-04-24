@@ -10,8 +10,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 2
-      maxUnavailable: 2
+      maxSurge: 3
+      maxUnavailable: 0
   selector:
     matchLabels:
       app: aladhan-com-api
@@ -134,4 +134,4 @@ spec:
     name: aladhan-com-api
   minReplicas: 10
   maxReplicas: 30
-  targetCPUUtilizationPercentage: 65
+  targetCPUUtilizationPercentage: 60
