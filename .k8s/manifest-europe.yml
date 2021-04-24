@@ -112,11 +112,26 @@ spec:
             failureThreshold: 10
           resources:
             requests:
-              cpu: "250m"
+              cpu: "400m"
               memory: 250Mi
             limits:
-              cpu: "500m"
+              cpu: "400m"
               memory: 600Mi
           ports:
             - containerPort: 8080
               protocol: TCP
+---
+# HPA
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: aladhan-com-api
+  namespace: aladhan-com
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: aladhan-com-api
+  minReplicas: 10
+  maxReplicas: 30
+  targetCPUUtilizationPercentage: 65
