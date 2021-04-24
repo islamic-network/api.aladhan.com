@@ -104,7 +104,7 @@ spec:
             periodSeconds: 30
             timeoutSeconds: 5
             failureThreshold: 3
-          StartupProbe:
+          startupProbe:
             httpGet:
               path: /v1/liveness
               port: 8080
