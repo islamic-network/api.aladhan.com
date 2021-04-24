@@ -100,7 +100,7 @@ spec:
             httpGet:
               path: /v1/liveness
               port: 8080
-            initialDelaySeconds: 15
+            initialDelaySeconds: 7
             periodSeconds: 30
             timeoutSeconds: 5
             failureThreshold: 3
@@ -108,8 +108,8 @@ spec:
             httpGet:
               path: /v1/liveness
               port: 8080
-            periodSeconds: 10
-            failureThreshold: 10
+            periodSeconds: 7
+            failureThreshold: 5
           resources:
             requests:
               cpu: "400m"
