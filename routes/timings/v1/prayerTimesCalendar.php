@@ -755,12 +755,12 @@ $app->group('/v1', function() {
         $month = ApiRequest::month($request->getQueryParam('month'));
         $year = ApiRequest::year($request->getQueryParam('year'));
         $address = $request->getQueryParam('address');
-        $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
         $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $locInfo = ApiRequest::isValidAddress($address) ? $this->model->locations->getAddressCoOrdinatesAndZone($address) : false;
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
             $pt->setShafaq($shafaq);
@@ -1005,12 +1005,12 @@ $app->group('/v1', function() {
         $month = ApiRequest::hijriMonth($request->getQueryParam('month'));
         $year = ApiRequest::hijriYear($request->getQueryParam('year'));
         $address = $request->getQueryParam('address');
-        $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
         $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $locInfo = ApiRequest::isValidAddress($address) ? $this->model->locations->getAddressCoOrdinatesAndZone($address) : false;
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
             $pt->setShafaq($shafaq);
@@ -1259,12 +1259,12 @@ $app->group('/v1', function() {
         $city = $request->getQueryParam('city');
         $country = $request->getQueryParam('country');
         $state = $request->getQueryParam('state');
-        $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
         $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $locInfo = ApiRequest::isValidLocationPair($city, $country) ? $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state) : false;
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
             $pt->setShafaq($shafaq);
@@ -1514,12 +1514,12 @@ $app->group('/v1', function() {
         $city = $request->getQueryParam('city');
         $country = $request->getQueryParam('country');
         $state = $request->getQueryParam('state');
-        $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
         $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
         $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $locInfo = ApiRequest::isValidLocationPair($city, $country) ? $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state) : false;
         if ($locInfo) {
             $pt = new PrayerTimes($method, $school);
             $pt->setShafaq($shafaq);

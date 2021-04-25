@@ -300,4 +300,21 @@ class Request
     {
         return self::isLatitudeValid($lat) && self::isLongitudeValid($lng) && self::isTimeZoneValid($timezone);
     }
+
+    public static function isValidAddress(string $string): bool
+    {
+        $characters = ['#', '@', '<', '>', '!'];
+        foreach ($characters as $x) {
+            if (strpos($string, $x) !== false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static function isValidLocationPair(string $city, string $country): bool
+    {
+        return self::isValidAddress($city) && self::isValidAddress($country);
+    }
+
 }
