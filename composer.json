@@ -22,7 +22,8 @@
     "symfony/yaml": "^4.1",
     "islamic-network/prayer-times": "1.0.12",
     "islamic-network/alqibla": "^1.2",
-    "meezaan/askgeo-api": "dev-master"
+    "meezaan/askgeo-api": "dev-master",
+    "p3k/emoji-detector": "^0.2.1"
   },
   "autoload": {
     "psr-0": {

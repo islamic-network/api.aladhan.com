@@ -4,6 +4,7 @@ namespace AlAdhanApi\Helper;
 
 use AlAdhanApi\Model\HijriCalendarService;
 use IslamicNetwork\MoonSighting\Isha;
+use Emoji;
 
 /**
  * Class Request
@@ -310,46 +311,18 @@ class Request
             }
         }
 
+        if (self::containsEmoji($string)) {
+            return false;
+        }
+
         return true;
     }
 
-    private static function checkEmoji($str): bool
+    public static function containsEmoji($str): bool
     {
-        $regexEmoticons = '/[\x{1F600}-\x{1F64F}]/u';
-        preg_match($regexEmoticons, $str, $matches_emo);
-        if (!empty($matches_emo[0])) {
-            return false;
-        }
+        $emoji = Emoji\detect_emoji($str);
 
-        // Match Miscellaneous Symbols and Pictographs
-        $regexSymbols = '/[\x{1F300}-\x{1F5FF}]/u';
-        preg_match($regexSymbols, $str, $matches_sym);
-        if (!empty($matches_sym[0])) {
-            return false;
-        }
-
-        // Match Transport And Map Symbols
-        $regexTransport = '/[\x{1F680}-\x{1F6FF}]/u';
-        preg_match($regexTransport, $str, $matches_trans);
-        if (!empty($matches_trans[0])) {
-            return false;
-        }
-
-        // Match Miscellaneous Symbols
-        $regexMisc = '/[\x{2600}-\x{26FF}]/u';
-        preg_match($regexMisc, $str, $matches_misc);
-        if (!empty($matches_misc[0])) {
-            return false;
-        }
-
-        // Match Dingbats
-        $regexDingbats = '/[\x{2700}-\x{27BF}]/u';
-        preg_match($regexDingbats, $str, $matches_bats);
-        if (!empty($matches_bats[0])) {
-            return false;
-        }
-
-        return true;
+        return count($emoji) > 0;
     }
 
     public static function isValidLocationPair(string $city, string $country): bool
