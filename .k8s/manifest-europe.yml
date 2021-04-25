@@ -21,13 +21,13 @@ spec:
         app: aladhan-com-api
     spec:
       hostAliases:
-        - ip: "192.168.136.12"
+        - ip: "192.168.130.79"
           hostnames:
             - "pxc1"
-        - ip: "192.168.136.12"
+        - ip: "192.168.130.79"
           hostnames:
             - "pxc2"
-        - ip: "192.168.136.12"
+        - ip: "192.168.130.79"
           hostnames:
             - "pxc3"
       containers:
