@@ -309,9 +309,6 @@ class Request
                 return false;
             }
         }
-        if (self::checkEmoji($string)) {
-            return false;
-        }
 
         return true;
     }
