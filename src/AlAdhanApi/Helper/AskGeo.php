@@ -95,15 +95,18 @@ class AskGeo
             $this->response->lng = $lng;
         }
         try {
+            $startTime = microtime(true);
             $this->logger->writeAskGeoQueryLog('Sending Request :: timezone :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this->response->lng]));
             $res2 = $this->client->getTimeZone([$this->response->lat, $this->response->lng]);
+            $endTime = microtime(true);
+            $responseTime = $endTime - $startTime;
             $x2 = $res2->data[0];
             if ($res2->message == 'ok') {
-                $this->logger->writeAskGeoQueryLog('Request Successful :: timezone :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this->response->lng]));
+                $this->logger->writeAskGeoQueryLog('Request Successful :: timezone :: ' . json_encode(['lat' => $this->response->lat, 'lng' => $this->response->lng, 'response_time' => $responseTime]));
                 return $x2->TimeZone;
             }
 
-            $this->logger->writeAskGeoQueryLog('Request Unsuccessful :: timezone :: ' . json_encode($res2));
+            $this->logger->writeAskGeoQueryLog('Request Unsuccessful :: timezone :: ' . json_encode(['response' => $res2, 'response_time' => $responseTime]));
 
             return false;
         } catch (Exception $e) {
