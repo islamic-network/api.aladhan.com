@@ -109,7 +109,7 @@ spec:
               path: /v1/liveness
               port: 8080
             periodSeconds: 7
-            failureThreshold: 5
+            failureThreshold: 3
           resources:
             requests:
               cpu: "400m"
