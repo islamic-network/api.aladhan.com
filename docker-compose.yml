@@ -19,8 +19,6 @@ services:
       MYSQL_PASSWORD: "aladhan"
       MYSQL_DATABASE: "aladhan_locations"
       MYSQL_HOST_1: "aa-db"
-      MYSQL_HOST_2: "aa-db"
-      MYSQL_HOST_3: "aa-db"
       MEMCACHED_HOST: "aa-memcached"
       MEMCACHED_PORT: 11211
       GOOGLE_API_KEY: "xyz"
