@@ -53,8 +53,8 @@ jobs:
       - run:
           name: Build Production Docker image
           command: |
-            docker build -t $IMAGE_NAME:latest .
             echo "$DOCKERHUB_PASSWORD" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            docker build -t $IMAGE_NAME:latest .
             docker push $IMAGE_NAME:latest
             IMAGE_TAG=${CIRCLE_TAG}
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG
