@@ -58,6 +58,7 @@ jobs:
             docker push $IMAGE_NAME:latest
             IMAGE_TAG=${CIRCLE_TAG}
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG
+            docker push $IMAGE_NAME:$IMAGE_TAG
   deploy-docker-tag:
     executor: docker-publisher
     steps:
