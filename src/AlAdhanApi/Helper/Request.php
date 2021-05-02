@@ -304,7 +304,7 @@ class Request
 
     public static function isValidAddress(string $string): bool
     {
-        $characters = ["#", "@", "<", ">", "!", "", "Ä", "\n", "\x84", "\xd9", "\x8a"];
+        $characters = ["#", "@", "<", ">", "!", "", "Ä", "\n", "\x84", "\xd9", "\x8a", "\x8", "\xD", "\xA"];
         foreach ($characters as $x) {
             if (strpos($string, $x) !== false) {
                 return false;
