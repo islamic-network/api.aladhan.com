@@ -315,6 +315,11 @@ class Request
             return false;
         }
 
+        if (preg_match("/\p{Han}+/u", $string))
+        {
+            return false;
+        }
+
         if (self::containsEmoji($string)) {
             return false;
         }
