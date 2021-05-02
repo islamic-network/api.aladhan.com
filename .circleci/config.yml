@@ -111,7 +111,7 @@ workflows:
       - deploy-docker-tag:
           context: org-global
           requires:
-            - publish-docker-tag
+            - build-and-publish-docker-tag
           filters:
             tags:
               only: /.*/
