@@ -59,7 +59,7 @@ jobs:
             IMAGE_TAG=${CIRCLE_TAG}
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG
             docker push $IMAGE_NAME:$IMAGE_TAG
-  deploy-docker-tag:
+  deploy-docker-tag-europe:
     executor: docker-publisher
     steps:
       - checkout
@@ -75,7 +75,26 @@ jobs:
       - run:
           name: Deploy Code
           command: |
-            curl -o ./.k8s/deploy.sh https://raw.githubusercontent.com/islamic-network/k8s-deployment/master/deploy.sh
+            curl -o ./.k8s/deploy.sh https://raw.githubusercontent.com/islamic-network/k8s-deployment/master/deploy-europe.sh
+            chmod u+x ./.k8s/deploy.sh
+            sh ./.k8s/deploy.sh
+  deploy-docker-tag-asia:
+    executor: docker-publisher
+    steps:
+      - checkout
+      - run:
+          name: Install envsubst
+          command: |
+            sudo apt-get update && sudo apt-get -y install gettext-base
+      - run:
+          name: Install kubectl
+          command: |
+            curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+            chmod u+x ./kubectl
+      - run:
+          name: Deploy Code
+          command: |
+            curl -o ./.k8s/deploy.sh https://raw.githubusercontent.com/islamic-network/k8s-deployment/master/deploy-asia.sh
             chmod u+x ./.k8s/deploy.sh
             sh ./.k8s/deploy.sh
 
@@ -111,7 +130,16 @@ workflows:
               only: /.*/
             branches:
               ignore: /.*/
-      - deploy-docker-tag:
+      - deploy-docker-tag-europe:
+          context: org-global
+          requires:
+            - build-and-publish-docker-image
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
+      - deploy-docker-tag-asia:
           context: org-global
           requires:
             - build-and-publish-docker-image
