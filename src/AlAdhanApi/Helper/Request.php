@@ -304,6 +304,9 @@ class Request
 
     public static function isValidAddress(string $string): bool
     {
+        if (Generic::isGoogleBot()) {
+            return false;
+        }
         $characters = ["#", "@", "<", ">", "!", "", "Ä", "\n", "\x"];
         foreach ($characters as $x) {
             if (strpos($string, $x) !== false) {
