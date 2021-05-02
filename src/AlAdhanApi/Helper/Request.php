@@ -304,6 +304,7 @@ class Request
 
     public static function isValidAddress(string $string): bool
     {
+        // Adding this here because bots are generating most of the invalid addresses
         if (Generic::isGoogleBot()) {
             return false;
         }
