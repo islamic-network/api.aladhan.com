@@ -3,6 +3,7 @@ executors:
   docker-publisher:
     environment:
       IMAGE_NAME: islamicnetwork/api.aladhan.com
+      QUAYIO_IMAGE_NAME: islamic-network/api.aladhan.com
     docker:
       - image: circleci/buildpack-deps:stretch
   php74:
@@ -54,11 +55,16 @@ jobs:
           name: Build Production Docker image
           command: |
             echo "$DOCKERHUB_PASSWORD" | docker login --username "$DOCKERHUB_USERNAME" --password-stdin
+            echo "$QUAYIO_PASSWORD" | docker login --username "$QUAYIO_USERNAME" --password-stdin
             docker build -t $IMAGE_NAME:latest .
             docker push $IMAGE_NAME:latest
             IMAGE_TAG=${CIRCLE_TAG}
             docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG
             docker push $IMAGE_NAME:$IMAGE_TAG
+            docker tag $IMAGE_NAME:latest $QUAYIO_IMAGE_NAME:latest
+            docker push $QUAYIO_IMAGE_NAME:latest
+            docker tag $IMAGE_NAME:latest $QUAYIO_IMAGE_NAME:$IMAGE_TAG
+            docker push $QUAYIO_IMAGE_NAME:$IMAGE_TAG
   deploy-docker-tag-europe:
     executor: docker-publisher
     steps:
