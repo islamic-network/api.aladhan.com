@@ -83,8 +83,8 @@ spec:
               path: /v1/liveness
               port: 8080
             initialDelaySeconds: 3
-            periodSeconds: 30
-            timeoutSeconds: 5
+            periodSeconds: 5
+            timeoutSeconds: 3
             failureThreshold: 3
           startupProbe:
             httpGet:
