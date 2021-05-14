@@ -116,7 +116,7 @@ spec:
     name: aladhan-com-api
   minReplicas: 5
   maxReplicas: 30
-  targetCPUUtilizationPercentage: 65
+  targetCPUUtilizationPercentage: 60
 ---
 # Memcached
 apiVersion: apps/v1
