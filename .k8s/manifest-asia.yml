@@ -6,7 +6,7 @@ metadata:
   name: aladhan-com-api
   namespace: aladhan-com
 spec:
-  replicas: 10
+  replicas: 7
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -114,7 +114,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: aladhan-com-api
-  minReplicas: 10
+  minReplicas: 7
   maxReplicas: 30
   targetCPUUtilizationPercentage: 50
 ---
