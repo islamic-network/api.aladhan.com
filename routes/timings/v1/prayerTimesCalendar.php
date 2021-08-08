@@ -232,7 +232,6 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/calendar', function (Request $request, Response $response) {
-        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -240,6 +239,7 @@ $app->group('/v1', function() {
         $year = ApiRequest::year($request->getQueryParam('year'));
         $latitude = $request->getQueryParam('latitude');
         $longitude = $request->getQueryParam('longitude');
+        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $latitude, $longitude));
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $timezone = $request->getQueryParam('timezonestring');
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
@@ -492,7 +492,6 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/hijriCalendar', function (Request $request, Response $response) {
-        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -500,6 +499,7 @@ $app->group('/v1', function() {
         $year = ApiRequest::hijriYear($request->getQueryParam('year'));
         $latitude = $request->getQueryParam('latitude');
         $longitude = $request->getQueryParam('longitude');
+        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $latitude, $longitude));
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $timezone = $request->getQueryParam('timezonestring');
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
@@ -748,7 +748,6 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/calendarByAddress', function (Request $request, Response $response) {
-        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -756,6 +755,7 @@ $app->group('/v1', function() {
         $year = ApiRequest::year($request->getQueryParam('year'));
         $address = $request->getQueryParam('address');
         $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
+        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $locInfo['latitude'], $locInfo['longitude']));
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
@@ -998,7 +998,6 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/hijriCalendarByAddress', function (Request $request, Response $response) {
-        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -1006,6 +1005,7 @@ $app->group('/v1', function() {
         $year = ApiRequest::hijriYear($request->getQueryParam('year'));
         $address = $request->getQueryParam('address');
         $locInfo = $this->model->locations->getAddressCoOrdinatesAndZone($address);
+        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $locInfo['latitude'], $locInfo['longitude']));
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
@@ -1250,7 +1250,6 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/calendarByCity', function (Request $request, Response $response) {
-        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -1260,6 +1259,7 @@ $app->group('/v1', function() {
         $country = $request->getQueryParam('country');
         $state = $request->getQueryParam('state');
         $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
+        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $locInfo['latitude'], $locInfo['longitude']));
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
@@ -1505,7 +1505,6 @@ $app->group('/v1', function() {
      * }
      */
     $this->get('/hijriCalendarByCity', function (Request $request, Response $response) {
-        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method')));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -1515,6 +1514,7 @@ $app->group('/v1', function() {
         $country = $request->getQueryParam('country');
         $state = $request->getQueryParam('state');
         $locInfo = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
+        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $locInfo['latitude'], $locInfo['longitude']));
         $annual = ApiRequest::annual($request->getQueryParam('annual'));
         $tune = ApiRequest::tune($request->getQueryParam('tune'));
         $adjustment = (int) $request->getQueryParam('adjustment');
