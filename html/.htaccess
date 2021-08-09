@@ -1,4 +1,12 @@
+Options +FollowSymLinks
 RewriteEngine On
+
+RewriteRule ^timingsByCity(.*)$ https://api.aladhan.com/v1/timingsByCity$1 [R=301,NC,L]
+RewriteRule ^timingsByAddress(.*)$ https://api.aladhan.com/v1/timingsByAddress$1 [R=301,NC,L]
+RewriteRule ^calendarByCity(.*)$ https://api.aladhan.com/v1/calendarByCity$1 [R=301,NC,L]
+RewriteRule ^calendarByAddress(.*)$ https://api.aladhan.com/v1/calendarByAddress$1 [R=301,NC,L]
+RewriteRule ^addressInfo(.*)$ https://api.aladhan.com/v1/addressInfo$1 [R=301,NC,L]
+
 RewriteCond %{REQUEST_URI} !=/server-status
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d

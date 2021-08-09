@@ -48,6 +48,8 @@ This will bring up several containers:
 
 With the above ```docker-compose up``` command your code is mapped to the aa-app docker container. You can make any changes and simply refresh the page to see them in real-time.
 
+Please run ```composer install``` from within the container or on your machine because the first time to you run ```docker-compose up```, your empty vendor directory will overwrite what is in the container.
+
 ## Scaling and Sizing
 
 This app takes 19 MB per apache process / worker and is set to have a maximum of 16 Apache workers.

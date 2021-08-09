@@ -6,7 +6,7 @@ metadata:
   name: aladhan-com-api
   namespace: aladhan-com
 spec:
-  replicas: 5 # 16 requests each
+  replicas: 5
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -56,7 +56,7 @@ spec:
                   name: aladhan-com-api-database
                   key: database
             - name:  MYSQL_HOST_1
-              value: "aladhan.db.europe.local.islamic.network"
+              value: "aladhan.db.asia.local.islamic.network"
             - name:  MYSQL_PORT_1
               value: "3306"
             - name:  MEMCACHED_HOST
@@ -243,7 +243,7 @@ spec:
   tls:
     - hosts:
         - "api.aladhan.com"
-        - "europe.api.aladhan.com"
+        - "asia.api.aladhan.com"
       secretName: "aladhan-com-api-tls"
   rules:
     - host: api.aladhan.com
@@ -256,7 +256,7 @@ spec:
                 name: aladhan-com-api
                 port:
                   number: 80
-    - host: europe.api.aladhan.com
+    - host: asia.api.aladhan.com
       http:
         paths:
           - path: /

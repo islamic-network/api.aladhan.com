@@ -5,7 +5,7 @@
   "authors": [
     {
       "name": "Meezaan-ud-Din Abdu Dhil-Jalali Wal-Ikram",
-      "email": "meezaan@islamic.network"
+      "email": "website@meezaan.net"
     }
   ],
   "repositories": [
@@ -27,6 +27,7 @@
     "islamic-network/prayer-times": "1.0.14",
     "islamic-network/alqibla": "^1.2",
     "meezaan/askgeo-api": "dev-master",
+    "p3k/emoji-detector": "^0.2.1",
     "rafaelfragoso/haversini-formula":"dev-master"
   },
   "autoload": {

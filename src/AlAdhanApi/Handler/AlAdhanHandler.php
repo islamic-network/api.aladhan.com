@@ -32,7 +32,7 @@ class AlAdhanHandler
 
         $log->error('AlAdhan Exception Triggered: ' . $errorJson);
 
-        return $response->withJson($r, 500);
+        return $response->withJson($errorJson, 500);
     }
 
 }

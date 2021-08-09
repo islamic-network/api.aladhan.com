@@ -100,7 +100,8 @@ class Generic
             isset($_SERVER['HTTP_USER_AGENT']) &&
             (
             strpos($_SERVER['HTTP_USER_AGENT'], 'Googlebot') !== false ||
-            strpos($_SERVER['HTTP_USER_AGENT'], 'YandexBot') !== false
+            strpos($_SERVER['HTTP_USER_AGENT'], 'YandexBot') !== false || 
+            strpos($_SERVER['HTTP_USER_AGENT'], 'Trident') !== false
             )
         ) {
             return true;

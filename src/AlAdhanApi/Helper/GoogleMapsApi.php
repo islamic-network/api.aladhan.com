@@ -172,18 +172,20 @@ class GoogleMapsApi
     private function geoCode($address)
     {
         try {
+            $startTime = microtime(true);
             $this->logger->writeGoogleQueryLog('Sending Request :: geocode :: ' .  json_encode(['city_state_country' => $address]));
 
             $res = $this->queryApi('geocode/json', ['address' => $address]);
             $r = (string) $res->getBody()->getContents();
+            $endTime = microtime(true);
             $x = json_decode($r);
-
+            $responseTime = $endTime - $startTime;
             if ($x->status == 'OK') {
-                $this->logger->writeGoogleQueryLog('Request Successful :: geocode :: ' .  json_encode(['city_state_country' => $address]));
+                $this->logger->writeGoogleQueryLog('Request Successful :: geocode :: ' .  json_encode(['city_state_country' => $address, 'response_time' => $responseTime]));
                 return $x;
             }
 
-            $this->logger->writeGoogleQueryLog('Request Unsuccessful :: geocode :: ' .  json_encode(['city_state_country' => $address, 'result' => $x]));
+            $this->logger->writeGoogleQueryLog('Request Unsuccessful :: geocode :: ' .  json_encode(['city_state_country' => $address, 'result' => $x, 'response_time' => $responseTime]));
 
             return false;
         } catch (Exception $e) {
@@ -206,7 +208,11 @@ class GoogleMapsApi
 
         return $this->client->request('GET',
             $endpoint,
-            ['query' => $queryString]
+            [
+                'query' => $queryString,
+                'connect_timeout' => 3,
+                'read_timeout' => 3
+            ]
         );
     }
 }
