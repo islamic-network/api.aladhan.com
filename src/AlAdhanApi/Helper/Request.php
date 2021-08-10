@@ -3,7 +3,9 @@
 namespace AlAdhanApi\Helper;
 
 use AlAdhanApi\Model\HijriCalendarService;
+use Haversini\Haversini;
 use IslamicNetwork\MoonSighting\Isha;
+use IslamicNetwork\PrayerTimes\Method;
 use Emoji;
 
 /**
@@ -49,10 +51,15 @@ class Request
         return $data;
     }
 
-    public static function method($data): int
+    public static function method($data, $latitude = null, $longitude= null): int
     {
         if ($data == 'null' || $data == '') {
-            return 2; //ISNA;
+            // Calculate Method user Haversine
+            if ($latitude !== null && $longitude !== null) {
+                return self::calculateClosestMethod($latitude, $longitude);
+            }
+
+            return 2; // ISNA
         }
         if (!in_array($data, [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 99])) {
             return 2; // ISNA
@@ -380,4 +387,20 @@ class Request
         return self::isValidAddress($city) && self::isValidAddress($country);
     }
 
+
+    public static function calculateClosestMethod($latitude, $longitude)
+    {
+        $methods = Method::getMethods();
+        $distances = [];
+        foreach ($methods as $method) {
+            if (!in_array($method['id'], [15, 99])) {
+                $distances[$method['id']] = Haversini::calculate($latitude, $longitude, $method['location']['latitude'], $method['location']['longitude']);
+            }
+        }
+
+        $smallest = min($distances);
+
+        return array_search($smallest, $distances);
+
+    }
 }
