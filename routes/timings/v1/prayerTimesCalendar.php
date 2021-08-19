@@ -24,7 +24,7 @@ $app->group('/v1', function() {
      * @apiParam {number=1-12} month A gregorian calendar month. Example: 8 or 08 for August.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} Optional. A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
@@ -283,7 +283,7 @@ $app->group('/v1', function() {
      * @apiParam {number=1-12} month A Hijri calendar month. Example: 9 or 09 for Ramadan.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} Optional. A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
@@ -539,7 +539,7 @@ $app->group('/v1', function() {
      * @apiParam {number=1-12} month A gregorian calendar month. Example: 8 or 08 for August.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} Optional. A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
@@ -788,7 +788,7 @@ $app->group('/v1', function() {
      * @apiParam {number=1-12} month A Hijri calendar month. Example: 9 or 09 for August.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} Optional. A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
@@ -1039,7 +1039,7 @@ $app->group('/v1', function() {
      * @apiParam {number=1-12} month A gregorian calendar month. Example: 8 or 08 for August.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} Optional. A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
@@ -1293,7 +1293,7 @@ $app->group('/v1', function() {
      * @apiParam {number=1-12} month A Hijri calendar month. Example: 9 or 09 for Ramadan.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
      * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} Optional. A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
