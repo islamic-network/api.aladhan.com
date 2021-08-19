@@ -75,7 +75,7 @@ $app->group('/v1', function() {
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
             $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment, $shafaq);
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode, $iso8601);
-            $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod);
+            $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod, $iso8601);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
             return $response->withJson(ApiResponse::build(['timings' => $nextPrayer, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
         } else {
@@ -100,7 +100,7 @@ $app->group('/v1', function() {
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
             $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment, $shafaq);
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode, $iso8601);
-            $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod);
+            $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod, $iso8601);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
             return $response->withJson(ApiResponse::build(['timings' => $nextPrayer, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
         } else {

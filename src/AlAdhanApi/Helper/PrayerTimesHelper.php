@@ -4,6 +4,7 @@ use IslamicNetwork\PrayerTimes\Method;
 use IslamicNetwork\PrayerTimes\PrayerTimes;
 use AlAdhanApi\Model\HijriCalendarService;
 use AlAdhanApi\Helper\Request as ApiRequest;
+use DateTime;
 
 /**
  * Class PrayerTimesHelper
@@ -20,13 +21,15 @@ class PrayerTimesHelper
      * @return array|null
      * @throws \Exception
      */
-    public static function nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod)
+    public static function nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod, $iso8601)
     {
         $currentHour = date('H');
         $currentMinute = date('i');
         $currentTime = $currentHour . ':' . $currentMinute;
         $timestamps = [];
         $nextPrayer = null;
+        // Recalculate timings without iso8601 so this calculation works
+        $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod);
         foreach ($timings as $p => $t) {
             if (in_array($p, ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'])) {
                 $time = explode(':', $t);
@@ -38,6 +41,7 @@ class PrayerTimesHelper
                 }
             }
         }
+
         if ($nextPrayer == null) {
             $interval = new \DateInterval('P1D');
             $d->add($interval);
@@ -56,6 +60,13 @@ class PrayerTimesHelper
                 }
             }
         }
+        if ($iso8601 == PrayerTimes::TIME_FORMAT_ISO8601) {
+            $dateForIso = $d;
+            $dateForIso->setTime($time[0], $time[1]);
+            $time = $dateForIso->format(DateTime::ATOM);
+            $nextPrayer[$p] = $time;
+        }
+
 
         return $nextPrayer;
     }
