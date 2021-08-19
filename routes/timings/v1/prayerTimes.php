@@ -119,7 +119,7 @@ $app->group('/v1', function() {
      * @apiParam {string} [date_or_timestamp = 'now'] A date in the DD-MM-YYYY format or UNIX timestamp. Default's to the current date.
      * @apiParam {decimal} latitude The decimal value for the latitude co-ordinate of the location you want the time computed for. Example: 51.75865125
      * @apiParam {decimal} longitude The decimal value for the longitude co-ordinate of the location you want the time computed for. Example: -1.25387785
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} Optional. A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />
      *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -303,8 +303,7 @@ $app->group('/v1', function() {
      *
      * @apiParam {string} [date_or_timestamp = 'now'] A date in the DD-MM-YYYY format or UNIX timestamp. Default's to the current date.
      * @apiParam {string} address An address string. Example: 1420 Austin Bluffs Parkway, Colorado Springs, CO OR 25 Hampstead High Street, London, NW3 1RL, United Kingdom OR Sultanahmet Mosque, Istanbul, Turkey
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
-     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} Optional. A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
@@ -485,8 +484,7 @@ $app->group('/v1', function() {
      * @apiParam {string} city A city name. Example: London
      * @apiParam {string} country A country name or 2 character alpha ISO 3166 code. Examples: GB or United Kindom
      * @apiParam {string} [state] State or province. A state name or abbreviation. Examples: Colorado / CO / Punjab / Bengal
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method=2] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. This parameter accepts values from 0-12 and 99, as specified below:<br />
-     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} Optional. A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
