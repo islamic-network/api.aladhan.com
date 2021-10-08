@@ -6,11 +6,11 @@ metadata:
   name: aladhan-com-api
   namespace: aladhan-com
 spec:
-  replicas: 5
+  replicas: 3
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 3
+      maxSurge: 2
       maxUnavailable: 0
   selector:
     matchLabels:
@@ -56,7 +56,7 @@ spec:
                   name: aladhan-com-api-database
                   key: database
             - name:  MYSQL_HOST_1
-              value: "aladhan.db.asia.local.islamic.network"
+              value: "db.newark.local.islamic.network"
             - name:  MYSQL_PORT_1
               value: "3306"
             - name:  MEMCACHED_HOST
@@ -114,7 +114,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: aladhan-com-api
-  minReplicas: 5
+  minReplicas: 3
   maxReplicas: 30
   targetCPUUtilizationPercentage: 50
 ---
@@ -243,7 +243,7 @@ spec:
   tls:
     - hosts:
         - "api.aladhan.com"
-        - "asia.api.aladhan.com"
+        - "newark.api.aladhan.com"
       secretName: "aladhan-com-api-tls"
   rules:
     - host: api.aladhan.com
@@ -256,7 +256,7 @@ spec:
                 name: aladhan-com-api
                 port:
                   number: 80
-    - host: asia.api.aladhan.com
+    - host: newark.api.aladhan.com
       http:
         paths:
           - path: /

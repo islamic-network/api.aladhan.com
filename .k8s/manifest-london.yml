@@ -1,0 +1,268 @@
+# Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aladhan-com-api
+  namespace: aladhan-com
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: aladhan-com-api
+  template:
+    metadata:
+      labels:
+        app: aladhan-com-api
+    spec:
+      containers:
+        - name: apache-exporter-sidecar
+          image: lusotycoon/apache-exporter
+          args:
+            - '--scrape_uri=http://localhost:8080/server-status?auto'
+          ports:
+            - containerPort: 9117
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+        - name: aladhan-com-api
+          image: islamicnetwork/api.aladhan.com:$COMMIT_TAG
+          env:
+            - name:  DEBUG_MODE
+              value: "false"
+            - name:  MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-database
+                  key: username
+            - name:  MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-database
+                  key: password
+            - name:  MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-database
+                  key: database
+            - name:  MYSQL_HOST_1
+              value: "db.london.local.islamic.network"
+            - name:  MYSQL_PORT_1
+              value: "3306"
+            - name:  MEMCACHED_HOST
+              value: "aladhan-com-api-memcached"
+            - name:  MEMCACHED_PORT
+              value: "11211"
+            - name:  GOOGLE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-googlemaps-creds
+                  key: apikey
+            - name:  ASKGEO_ACCOUNT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-askgeo-creds
+                  key: accountid
+            - name:  ASKGEO_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-askgeo-creds
+                  key: apikey
+          livenessProbe:
+            httpGet:
+              path: /v1/liveness
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 7
+            timeoutSeconds: 7
+            failureThreshold: 7
+          startupProbe:
+            httpGet:
+              path: /v1/status
+              port: 8080
+            periodSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "250m"
+              memory: 250Mi
+            limits:
+              cpu: "350m"
+              memory: 600Mi
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+---
+# HPA
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: aladhan-com-api
+  namespace: aladhan-com
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: aladhan-com-api
+  minReplicas: 3
+  maxReplicas: 30
+  targetCPUUtilizationPercentage: 50
+---
+# Memcached
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aladhan-com-api-memcached
+  namespace: aladhan-com
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: aladhan-com-api-memcached
+  template:
+    metadata:
+      labels:
+        app: aladhan-com-api-memcached
+    spec:
+      containers:
+        - name: aladhan-com-api-memcached
+          image: memcached:1.5
+          args:
+            - '-m 64'
+          resources:
+            requests:
+              memory: 64Mi
+            limits:
+              memory: 64Mi
+          ports:
+            - containerPort: 11211
+              protocol: TCP
+---
+#  Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: aladhan-com-api
+  namespace: aladhan-com
+  annotations:
+    konghq.com/plugins: rate-limiting-aladhan-api
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: aladhan-com-api
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aladhan-com-api-memcached
+  namespace: aladhan-com
+spec:
+  ports:
+    - port: 11211
+      targetPort: 11211
+  selector:
+    app: aladhan-com-api-memcached
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aladhan-com-api-metrics
+  namespace: aladhan-com
+  labels:
+    name: aladhan-com-api-metrics
+spec:
+  type: ClusterIP
+  selector:
+    app: aladhan-com-api
+  ports:
+    - name: metrics
+      port: 9117
+      targetPort: 9117
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: rate-limiting-aladhan-api
+  namespace: aladhan-com
+config:
+  second: 7 # Currently there are 2 ingress pods, so set to 16 requests each per IP per second. Which means a total of only 240 requests / min / IP (~4 per second).
+  policy: local
+plugin: rate-limiting
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: bot-detection-aladhan-api
+  namespace: aladhan-com
+plugin: bot-detection
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: aladhan-com-api-metrics
+  namespace: monitoring
+  labels:
+    release: lke-monitor
+spec:
+  selector:
+    matchLabels:
+      name: aladhan-com-api-metrics
+  namespaceSelector:
+    any: true
+  endpoints:
+    - port: "metrics"
+      interval: 30s
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aladhan-com-api-ingress
+  namespace: aladhan-com
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: kong
+spec:
+  tls:
+    - hosts:
+        - "api.aladhan.com"
+        - "london.api.aladhan.com"
+      secretName: "aladhan-com-api-tls"
+  rules:
+    - host: api.aladhan.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aladhan-com-api
+                port:
+                  number: 80
+    - host: london.api.aladhan.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aladhan-com-api
+                port:
+                  number: 80
