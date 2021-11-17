@@ -5,7 +5,7 @@ class CacherTest extends \PHPUnit\Framework\TestCase
 {
     private $mc;
 
-    public function setUp()
+    public function Setup(): void
     {
         $this->mc = new Cacher('127.0.0.1', 11211);
     }

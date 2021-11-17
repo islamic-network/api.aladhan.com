@@ -5,7 +5,7 @@ class LocationsTest extends \PHPUnit\Framework\TestCase
 {
     private $client;
 
-    public function setup()
+    public function Setup(): void
     {
         $this->locations = new Locations();
     }

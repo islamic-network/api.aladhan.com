@@ -4,12 +4,13 @@ class timingsByCityTest extends \PHPUnit\Framework\TestCase
 {
     private $http;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->http = new GuzzleHttp\Client(['base_uri' => 'http://api.aladhan.com/v1/']);
     }
 
-    public function tearDown() {
+    public function tearDown():void
+    {
         $this->http = null;
     }
 
@@ -35,11 +36,11 @@ class timingsByCityTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(200, $response->getStatusCode());
 
         $contentType = $response->getHeaders()["Content-Type"][0];
-        $this->assertEquals("application/json;charset=utf-8", $contentType);
+        $this->assertEquals("application/json", $contentType);
 
         $responseBody = json_decode($response->getBody());
-        $this->assertEquals("05:41", $responseBody->data->timings->Fajr);
-        $this->assertEquals("18:36", $responseBody->data->timings->Isha);
+        $this->assertEquals("05:20", $responseBody->data->timings->Fajr);
+        $this->assertEquals("18:59", $responseBody->data->timings->Isha);
         $this->assertEquals("00:08", $responseBody->data->timings->Midnight);
         $this->assertEquals("STANDARD", $responseBody->data->meta->midnightMode);
     }
@@ -56,12 +57,12 @@ class timingsByCityTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(200, $response->getStatusCode());
 
         $contentType = $response->getHeaders()["Content-Type"][0];
-        $this->assertEquals("application/json;charset=utf-8", $contentType);
+        $this->assertEquals("application/json", $contentType);
 
         $responseBody = json_decode($response->getBody());
-        $this->assertEquals("05:41", $responseBody->data->timings->Fajr);
-        $this->assertEquals("18:36", $responseBody->data->timings->Isha);
-        $this->assertEquals("23:35", $responseBody->data->timings->Midnight);
+        $this->assertEquals("05:20", $responseBody->data->timings->Fajr);
+        $this->assertEquals("18:59", $responseBody->data->timings->Isha);
+        $this->assertEquals("23:24", $responseBody->data->timings->Midnight);
         $this->assertEquals("JAFARI", $responseBody->data->meta->midnightMode);
     }
 

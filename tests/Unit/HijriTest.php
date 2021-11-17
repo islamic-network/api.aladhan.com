@@ -5,7 +5,7 @@ class HijriTest extends \PHPUnit\Framework\TestCase
 {
     private $hcs;
 
-    public function setup()
+    public function Setup(): void
     {
         $this->hcs = new HijriCalendarService();
     }
