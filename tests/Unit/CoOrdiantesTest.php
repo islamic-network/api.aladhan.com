@@ -4,7 +4,7 @@ use AlAdhanApi\Model\Locations;
 class CoOrdiantesTest extends \PHPUnit\Framework\TestCase
 {
 
-    public function setup()
+    public function Setup(): void
     {
         $this->locations = new Locations();
     }

@@ -5,7 +5,7 @@ class GoogleMapsApiTest extends \PHPUnit\Framework\TestCase
 {
     private $client;
 
-    public function setup()
+    public function Setup(): void
     {
         $this->client = new GoogleMapsApi();
     }
