@@ -114,7 +114,7 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: aladhan-com-api
-  minReplicas: 4
+  minReplicas: 7
   maxReplicas: 30
   targetCPUUtilizationPercentage: 50
 ---
