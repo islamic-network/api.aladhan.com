@@ -130,11 +130,11 @@ class Request
             // Cool, we have a date
             $month = self::month($date[1]);
             $year =  self::year($date[2]);
-            $timestamp = strtotime(
-                self::monthDay($date[0], $month, $year) .
+            $dt = new \DateTimeImmutable(self::monthDay($date[0], $month, $year) .
                 '-' . $month .
-                '-' . $year
-            );
+                '-' . $year, new \DateTimeZone('UTC'));
+            $timestamp = $dt->getTimestamp();
+
             // If we can get a timestamp from the date, return that.
             if ($timestamp !== false) {
                 return $timestamp;
@@ -149,7 +149,7 @@ class Request
     {
         $maxDaysAllowed = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         if ($day > $maxDaysAllowed || $day < 0) {
-            // return doday
+            // return today
             return date('j');
         }
 
