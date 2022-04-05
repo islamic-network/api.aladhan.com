@@ -268,7 +268,6 @@ $app->group('/v1', function() {
     });
 
     $this->get('/timings/{timestamp}', function (Request $request, Response $response) {
-        $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -280,6 +279,7 @@ $app->group('/v1', function() {
         $adjustment = (int) $request->getQueryParam('adjustment');
         $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
         $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
+        $timestamp = ApiRequest::time($request->getAttribute('timestamp'), $timezone);
         if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($timezone));
@@ -448,7 +448,6 @@ $app->group('/v1', function() {
     });
 
     $this->get('/timingsByAddress/{timestamp}', function (Request $request, Response $response) {
-        $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -459,6 +458,7 @@ $app->group('/v1', function() {
         $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
         $locInfo = ApiRequest::isValidAddress($address) ? $this->model->locations->getAddressCoOrdinatesAndZone($address) : false;
         if ($locInfo) {
+            $timestamp = ApiRequest::time($request->getAttribute('timestamp'), $locInfo['timezone']);
             $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $locInfo['latitude'], $locInfo['longitude']));
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
@@ -631,8 +631,6 @@ $app->group('/v1', function() {
     });
 
     $this->get('/timingsByCity/{timestamp}', function (Request $request, Response $response) {
-        
-        $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
         $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
@@ -645,6 +643,7 @@ $app->group('/v1', function() {
         $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
         $locInfo = ApiRequest::isValidLocationPair($city, $country) ? $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state) : false;
         if ($locInfo) {
+            $timestamp = ApiRequest::time($request->getAttribute('timestamp'), $locInfo['timezone']);
             $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $locInfo['latitude'], $locInfo['longitude']));
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));

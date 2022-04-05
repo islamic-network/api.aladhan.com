@@ -117,7 +117,7 @@ class Request
      * @param string $data
      * @return int
      */
-    public static function time(string $data): int
+    public static function time(string $data, string $timezone = 'UTC'): int
     {
         // If it is a timestamp, just return it.
         if (self::isUnixTimeStamp($data)) {
@@ -132,7 +132,7 @@ class Request
             $year =  self::year($date[2]);
             $dt = new \DateTimeImmutable(self::monthDay($date[0], $month, $year) .
                 '-' . $month .
-                '-' . $year, new \DateTimeZone('UTC'));
+                '-' . $year, new \DateTimeZone($timezone));
             $timestamp = $dt->getTimestamp();
 
             // If we can get a timestamp from the date, return that.
