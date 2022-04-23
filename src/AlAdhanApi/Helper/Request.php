@@ -385,7 +385,7 @@ class Request
     public static function isValidLocationPair(string $city = null, string $country = null): bool
     {
         if ($city === null || $country === null) {
-            return false
+            return false;
         }
         return self::isValidAddress($city) && self::isValidAddress($country);
     }
