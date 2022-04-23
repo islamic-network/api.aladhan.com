@@ -382,8 +382,11 @@ class Request
         return count($emoji) > 0;
     }
 
-    public static function isValidLocationPair(string $city, string $country): bool
+    public static function isValidLocationPair(string $city = null, string $country = null): bool
     {
+        if ($city === null || $country === null) {
+            return false
+        }
         return self::isValidAddress($city) && self::isValidAddress($country);
     }
 
