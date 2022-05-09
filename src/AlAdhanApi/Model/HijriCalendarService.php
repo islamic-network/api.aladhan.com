@@ -245,7 +245,7 @@ class HijriCalendarService
                     'weekday' => ['en' => date('l', strtotime($date))],
                     'month' => $monthX,
                     'year' => $dX[2],
-                    'designation' => ['abbreviated' => 'AD', 'expanded' => 'Anno Domini']
+                    'designation' => ['abbreviated' => 'AD', 'expanded' => 'Common Era']
                 ],
 
             ];
@@ -296,7 +296,7 @@ class HijriCalendarService
                     'weekday' => ['en' => date('l', strtotime($d))],
                     'month' => $month,
                     'year' => $dP[2],
-                    'designation' => ['abbreviated' => 'AD', 'expanded' => 'Anno Domini']
+                    'designation' => ['abbreviated' => 'AD', 'expanded' => 'Common Era']
                     ],
                     'hijri' =>
                     [

@@ -39,8 +39,8 @@ use AlAdhanApi\Model\HijriCalendarService;
  *             },
  *             year: "2578",
  *             designation: {
- *                 abbreviated: "AD",
- *                 expanded: "Anno Domini"
+ *                 abbreviated: "CE",
+ *                 expanded: "Common Era"
  *             }
  *         },
  *         hijri: {
@@ -115,8 +115,8 @@ $app->get('/gToHCalendar/{month}/{year}', function (Request $request, Response $
  *             },
  *             year: "2578",
  *             designation: {
- *                 abbreviated: "AD",
- *                 expanded: "Anno Domini"
+ *                 abbreviated: "CE",
+ *                 expanded: "Common Era"
  *             }
  *         },
  *         hijri: {
@@ -200,8 +200,8 @@ $app->get('/hToGCalendar/{month}/{year}', function (Request $request, Response $
  *                 },
  *                 year: "2014",
  *                 designation: {
- *                     abbreviated: "AD",
- *                     expanded: "Anno Domini"
+ *                     abbreviated: "CE",
+ *                     expanded: "Common Era"
  *                 }
  *             }
  *         }
@@ -264,8 +264,8 @@ $app->get('/gToH', function (Request $request, Response $response) {
  *                 },
  *                 year: "2014",
  *                 designation: {
- *                     abbreviated: "AD",
- *                     expanded: "Anno Domini"
+ *                     abbreviated: "CE",
+ *                     expanded: "Common Era"
  *                 }
  *             }
  *         }

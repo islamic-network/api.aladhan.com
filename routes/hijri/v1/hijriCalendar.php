@@ -40,8 +40,8 @@ $app->group('/v1', function() {
      *             },
      *             year: "2578",
      *             designation: {
-     *                 abbreviated: "AD",
-     *                 expanded: "Anno Domini"
+     *                 abbreviated: "CE",
+     *                 expanded: "Common Era"
      *             }
      *         },
      *         hijri: {
@@ -117,8 +117,8 @@ $app->group('/v1', function() {
      *             },
      *             year: "2578",
      *             designation: {
-     *                 abbreviated: "AD",
-     *                 expanded: "Anno Domini"
+     *                 abbreviated: "CE",
+     *                 expanded: "Common Era"
      *             }
      *         },
      *         hijri: {
@@ -204,8 +204,8 @@ $app->group('/v1', function() {
      *                 },
      *                 year: "2014",
      *                 designation: {
-     *                     abbreviated: "AD",
-     *                     expanded: "Anno Domini"
+     *                     abbreviated: "CE",
+     *                     expanded: "Common Era"
      *                 }
      *             }
      *         }
@@ -270,8 +270,8 @@ $app->group('/v1', function() {
      *                 },
      *                 year: "2014",
      *                 designation: {
-     *                     abbreviated: "AD",
-     *                     expanded: "Anno Domini"
+     *                     abbreviated: "CE",
+     *                     expanded: "Common Era"
      *                 }
      *             }
      *         }

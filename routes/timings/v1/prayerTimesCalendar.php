@@ -88,8 +88,8 @@ $app->group('/v1', function() {
      *                },
      *                "year": "2018",
      *                "designation": {
-     *                    "abbreviated": "AD",
-     *                    "expanded": "Anno Domini",
+     *                    "abbreviated": "CE",
+     *                    "expanded": "Common Era",
      *                },
      *            },
      *            "hijri": {
@@ -171,8 +171,8 @@ $app->group('/v1', function() {
      *                },
      *                "year": "2018",
      *                "designation": {
-     *                    "abbreviated": "AD",
-     *                    "expanded": "Anno Domini",
+     *                    "abbreviated": "CE",
+     *                    "expanded": "Common Era",
      *                },
      *            },
      *            "hijri": {
@@ -347,8 +347,8 @@ $app->group('/v1', function() {
      *                },
      *                "year": "2018",
      *                "designation": {
-     *                    "abbreviated": "AD",
-     *                    "expanded": "Anno Domini",
+     *                    "abbreviated": "CE",
+     *                    "expanded": "Common Era",
      *                },
      *            },
      *            "hijri": {
@@ -430,8 +430,8 @@ $app->group('/v1', function() {
      *                },
      *                "year": "2018",
      *                "designation": {
-     *                    "abbreviated": "AD",
-     *                    "expanded": "Anno Domini",
+     *                    "abbreviated": "CE",
+     *                    "expanded": "Common Era",
      *                },
      *            },
      *            "hijri": {
@@ -602,8 +602,8 @@ $app->group('/v1', function() {
      *                },
      *                "year": "2018",
      *                "designation": {
-     *                    "abbreviated": "AD",
-     *                    "expanded": "Anno Domini",
+     *                    "abbreviated": "CE",
+     *                    "expanded": "Common Era",
      *                },
      *            },
      *            "hijri": {
@@ -685,8 +685,8 @@ $app->group('/v1', function() {
      *                },
      *                "year": "2018",
      *                "designation": {
-     *                    "abbreviated": "AD",
-     *                    "expanded": "Anno Domini",
+     *                    "abbreviated": "CE",
+     *                    "expanded": "Common Era",
      *                },
      *            },
      *            "hijri": {
@@ -851,8 +851,8 @@ $app->group('/v1', function() {
      *                },
      *                "year": "2018",
      *                "designation": {
-     *                    "abbreviated": "AD",
-     *                    "expanded": "Anno Domini",
+     *                    "abbreviated": "CE",
+     *                    "expanded": "Common Era",
      *                },
      *            },
      *            "hijri": {
@@ -934,8 +934,8 @@ $app->group('/v1', function() {
      *                },
      *                "year": "2018",
      *                "designation": {
-     *                    "abbreviated": "AD",
-     *                    "expanded": "Anno Domini",
+     *                    "abbreviated": "CE",
+     *                    "expanded": "Common Era",
      *                },
      *            },
      *            "hijri": {
@@ -1102,8 +1102,8 @@ $app->group('/v1', function() {
      *                },
      *                "year": "2018",
      *                "designation": {
-     *                    "abbreviated": "AD",
-     *                    "expanded": "Anno Domini",
+     *                    "abbreviated": "CE",
+     *                    "expanded": "Common Era",
      *                },
      *            },
      *            "hijri": {
@@ -1185,8 +1185,8 @@ $app->group('/v1', function() {
      *                },
      *                "year": "2018",
      *                "designation": {
-     *                    "abbreviated": "AD",
-     *                    "expanded": "Anno Domini",
+     *                    "abbreviated": "CE",
+     *                    "expanded": "Common Era",
      *                },
      *            },
      *            "hijri": {
@@ -1356,8 +1356,8 @@ $app->group('/v1', function() {
      *                },
      *                "year": "2018",
      *                "designation": {
-     *                    "abbreviated": "AD",
-     *                    "expanded": "Anno Domini",
+     *                    "abbreviated": "CE",
+     *                    "expanded": "Common Era",
      *                },
      *            },
      *            "hijri": {
@@ -1439,8 +1439,8 @@ $app->group('/v1', function() {
      *                },
      *                "year": "2018",
      *                "designation": {
-     *                    "abbreviated": "AD",
-     *                    "expanded": "Anno Domini",
+     *                    "abbreviated": "CE",
+     *                    "expanded": "Common Era",
      *                },
      *            },
      *            "hijri": {
