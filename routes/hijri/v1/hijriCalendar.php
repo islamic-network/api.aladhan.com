@@ -2,10 +2,10 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use AlAdhanApi\Helper\Response as ApiResponse;
-use AlAdhanApi\Helper\Request as ApiRequest;
 use AlAdhanApi\Model\HijriCalendarService;
+use Slim\Routing\RouteCollectorProxy;
 
-$app->group('/v1', function() {
+$app->group('/v1', function(RouteCollectorProxy $group) {
     /**
      * @api {get} http://api.aladhan.com/v1/gToHCalendar/:month/:year Request a Hijri Calendar for a Gregorian month
      * @apiName GetGToHCalendar
@@ -71,15 +71,15 @@ $app->group('/v1', function() {
      *     ]
      * }
      */
-    $this->get('/gToHCalendar/{month}/{year}', function (Request $request, Response $response) {
+    $group->get('/gToHCalendar/{month}/{year}', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $cs = new HijriCalendarService();
 
         $y = (int) $request->getAttribute('year');
         $m = (int) $request->getAttribute('month');
-        $adjustment = (int) $request->getQueryParam('adjustment');
+        $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
 
-        return $response->withJson(ApiResponse::build($cs->getGToHCalendar($m, $y, $adjustment), 200, 'OK'), 200);
+        return ApiResponse::print($response, $cs->getGToHCalendar($m, $y, $adjustment), 200, 'OK');
     });
 
 
@@ -148,15 +148,15 @@ $app->group('/v1', function() {
      *     ]
      * }
      */
-    $this->get('/hToGCalendar/{month}/{year}', function (Request $request, Response $response) {
+    $group->get('/hToGCalendar/{month}/{year}', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $cs = new HijriCalendarService();
 
         $y = (int) $request->getAttribute('year');
         $m = (int) $request->getAttribute('month');
-        $adjustment = (int) $request->getQueryParam('adjustment');
+        $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
 
-        return $response->withJson(ApiResponse::build($cs->getHtoGCalendar($m, $y, $adjustment), 200, 'OK'), 200);
+        return ApiResponse::print($response, $cs->getHtoGCalendar($m, $y, $adjustment), 200, 'OK');
     });
 
     /**
@@ -212,16 +212,15 @@ $app->group('/v1', function() {
      *     }
      * }
      */
-    $this->get('/gToH', function (Request $request, Response $response) {
-        //$this->helper->logger->write();
-        $date = $request->getQueryParam('date') == '' || null ? date('d-m-Y', time()) : $request->getQueryParam('date');
-        $adjustment = (int) $request->getQueryParam('adjustment');
+    $group->get('/gToH', function (Request $request, Response $response) {
+        $date = isset($request->getQueryParams()['date']) ? $request->getQueryParams()['date'] : date('d-m-Y', time());
+        $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
         $hs = new HijriCalendarService();
         $result = $hs->gToH($date, $adjustment);
         if ($result) {
-            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+            return ApiResponse::print($response, $result, 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Invalid date or unable to convert it', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Invalid date or unable to convert it', 400, 'Bad Request');
         }
     });
 
@@ -278,118 +277,118 @@ $app->group('/v1', function() {
      *     }
      * }
      */
-    $this->get('/hToG', function (Request $request, Response $response) {
+    $group->get('/hToG', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
-        $adjustment = (int) $request->getQueryParam('adjustment');
-        if ($request->getQueryParam('date') == '' || $request->getQueryParam('date') == null) {
+        $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
+        if (!isset($request->getQueryParams()['date'])) {
             $date = date('d-m-Y', time());
             $fs = $hs->gToH($date);
             $date = $fs['hijri']['date'];
         } else {
-            $date = $request->getQueryParam('date');
+            $date = $request->getQueryParams()['date'];
         }
         $result = $hs->hToG($date, $adjustment);
         if ($result) {
-            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+            return ApiResponse::print($response, $result, 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Invalid date or unable to convert it.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Invalid date or unable to convert it.', 400, 'Bad Request');
         }
     });
 
-    $this->get('/nextHijriHoliday', function (Request $request, Response $response) {
+    $group->get('/nextHijriHoliday', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
-        $adjustment = (int) $request->getQueryParam('adjustment');
+        $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
         $result = $hs->nextHijriHoliday(360, $adjustment);
         if ($result) {
-            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+            return ApiResponse::print($response, $result, 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Unable to compute next holiday.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Unable to compute next holiday.', 400, 'Bad Request');
         }
     });
 
-    $this->get('/currentIslamicYear', function (Request $request, Response $response) {
+    $group->get('/currentIslamicYear', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
-        $adjustment = (int) $request->getQueryParam('adjustment');
+        $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
         $result = $hs->getCurrentIslamicYear($adjustment);
         if ($result) {
-            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+            return ApiResponse::print($response, $result, 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Unable to compute year.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Unable to compute year.', 400, 'Bad Request');
         }
     });
 
-    $this->get('/currentIslamicMonth', function (Request $request, Response $response) {
+    $group->get('/currentIslamicMonth', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
-        $adjustment = (int) $request->getQueryParam('adjustment');
+        $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
         $result = $hs->getCurrentIslamicMonth($adjustment);
         if ($result) {
-            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+            return ApiResponse::print($response, $result, 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Unable to compute year.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Unable to compute year.', 400, 'Bad Request');
         }
     });
 
-    $this->get('/islamicYearFromGregorianForRamadan/{year}', function (Request $request, Response $response) {
+    $group->get('/islamicYearFromGregorianForRamadan/{year}', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $y = (int) $request->getAttribute('year');
         $hs = new HijriCalendarService();
         $result = $hs->getIslamicYearFromGregorianForRamadan($y);
         if ($result) {
-            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+            return ApiResponse::print($response, $result, 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Unable to compute year.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Unable to compute year.', 400, 'Bad Request');
         }
     });
 
-    $this->get('/hijriHolidays/{day}/{month}', function (Request $request, Response $response) {
+    $group->get('/hijriHolidays/{day}/{month}', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $d = (int) $request->getAttribute('day');
         $m = (int) $request->getAttribute('month');
         $hs = new HijriCalendarService();
         $result = $hs->getHijriHolidays($d, $m);
         if ($result !== false) {
-            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+            return ApiResponse::print($response, $result, 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Please specify a valid day and month. Example, 23 and 11.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Please specify a valid day and month. Example, 23 and 11.', 400, 'Bad Request');
         }
     });
 
-    $this->get('/specialDays', function (Request $request, Response $response) {
+    $group->get('/specialDays', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
         $result = $hs->specialDays();
         if ($result) {
-            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+            return ApiResponse::print($response, $result, 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Something went wrong. Please try again later. Sorry.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Something went wrong. Please try again later. Sorry.', 400, 'Bad Request');
         }
     });
 
-    $this->get('/islamicMonths', function (Request $request, Response $response) {
+    $group->get('/islamicMonths', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
         $result = $hs->getIslamicMonths();
         if ($result) {
-            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+            return ApiResponse::print($response, $result, 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Something went wrong. Please try again later. Sorry.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Something went wrong. Please try again later. Sorry.', 400, 'Bad Request');
         }
     });
 
-    $this->get('/islamicHolidaysByHijriYear/{year}', function (Request $request, Response $response) {
+    $group->get('/islamicHolidaysByHijriYear/{year}', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $y = (int) $request->getAttribute('year');
-        $adjustment = (int) $request->getQueryParam('adjustment');
+        $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
         $hs = new HijriCalendarService();
         $result = $hs->getIslamicHolidaysByHijriYear($y, $adjustment);
         if ($result) {
-            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+            return ApiResponse::print($response, $result, 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Something went wrong. Please try again later. Sorry.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Something went wrong. Please try again later. Sorry.', 400, 'Bad Request');
         }
     });
 });

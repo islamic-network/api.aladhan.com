@@ -2,8 +2,9 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use AlAdhanApi\Helper\Response as ApiResponse;
+use Slim\Routing\RouteCollectorProxy;
 
-$app->group('/v1', function() {
+$app->group('/v1', function(RouteCollectorProxy $group) {
     /**
      * @api {get} http://api.aladhan.com/v1/qibla/:latitude/:longitude Qibla Direction
      * @apiName qibla
@@ -29,7 +30,7 @@ $app->group('/v1', function() {
      *     }
      * }
      */
-    $this->get('/qibla/{latitude}/{longitude}', function (Request $request, Response $response) {
+    $group->get('/qibla/{latitude}/{longitude}', function (Request $request, Response $response) {
         $latitude = floatval($request->getAttribute('latitude'));
         $longitude = floatval($request->getAttribute('longitude'));
         $direction = \AlQibla\Calculation::get($latitude, $longitude);
@@ -39,6 +40,6 @@ $app->group('/v1', function() {
             'direction' => $direction
         ];
 
-        return $response->withJson(ApiResponse::build($calculation, 200, 'OK'), 200);
+        return ApiResponse::print($response, $calculation, 200, 'OK');
     });
 });

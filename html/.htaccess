@@ -6,6 +6,14 @@ RewriteRule ^timingsByAddress(.*)$ https://api.aladhan.com/v1/timingsByAddress$1
 RewriteRule ^calendarByCity(.*)$ https://api.aladhan.com/v1/calendarByCity$1 [R=301,NC,L]
 RewriteRule ^calendarByAddress(.*)$ https://api.aladhan.com/v1/calendarByAddress$1 [R=301,NC,L]
 RewriteRule ^addressInfo(.*)$ https://api.aladhan.com/v1/addressInfo$1 [R=301,NC,L]
+RewriteRule ^cityInfo(.*)$ https://api.aladhan.com/v1/addressInfo$1 [R=301,NC,L]
+RewriteRule ^timings(.*)$ https://api.aladhan.com/v1/timings$1 [R=301,NC,L]
+RewriteRule ^calendar(.*)$ https://api.aladhan.com/v1/calendar$1 [R=301,NC,L]
+RewriteRule ^gToHCalendar(.*)$ https://api.aladhan.com/v1/gToHCalendar$1 [R=301,NC,L]
+RewriteRule ^gToH(.*)$ https://api.aladhan.com/v1/gToH$1 [R=301,NC,L]
+RewriteRule ^hToGCalendar(.*)$ https://api.aladhan.com/v1/hToGCalendar$1 [R=301,NC,L]
+RewriteRule ^hToG(.*)$ https://api.aladhan.com/v1/hToG$1 [R=301,NC,L]
+
 
 RewriteCond %{REQUEST_URI} !=/server-status
 RewriteCond %{REQUEST_FILENAME} !-f

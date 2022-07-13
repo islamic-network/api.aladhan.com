@@ -1,38 +1,73 @@
 <?php
 namespace AlAdhanApi\Handler;
 
-use AlAdhanApi\Exception\BadRequestException;
-use AlAdhanApi\Helper\Log;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface;
+use Slim\Exception\HttpBadRequestException;
+use Slim\Exception\HttpException;
+use Slim\Exception\HttpForbiddenException;
+use Slim\Exception\HttpMethodNotAllowedException;
+use Slim\Exception\HttpNotFoundException;
+use Slim\Exception\HttpNotImplementedException;
+use Slim\Exception\HttpUnauthorizedException;
+use Slim\Handlers\ErrorHandler;
 use Exception;
+use Throwable;
+use AlAdhanApi\Helper\Log;
 
-class AlAdhanHandler
+class AlAdhanHandler extends ErrorHandler
 {
-    public function __invoke(Request $request, Response $response, Exception $exception) {
+    public const BAD_REQUEST = 'BAD_REQUEST';
+    public const INSUFFICIENT_PRIVILEGES = 'INSUFFICIENT_PRIVILEGES';
+    public const NOT_ALLOWED = 'NOT_ALLOWED';
+    public const NOT_IMPLEMENTED = 'NOT_IMPLEMENTED';
+    public const RESOURCE_NOT_FOUND = 'RESOURCE_NOT_FOUND';
+    public const SERVER_ERROR = 'SERVER_ERROR';
+    public const UNAUTHENTICATED = 'UNAUTHENTICATED';
 
-        if ($exception instanceof BadRequestException) {
-            $r = [
-                'code' => $exception->getCode(),
-                'status' => 'Bad Request',
-                'data' => $exception->getMessage()
-            ];
+    protected function respond(): ResponseInterface
+    {
+        $exception = $this->exception;
+        $statusCode = 500;
+        $type = self::SERVER_ERROR;
 
-            return $response->withJson($r, 400);
-        };
+        if ($exception instanceof HttpException) {
+            if ($statusCode >= 200) {
+                $statusCode = $exception->getCode();
+            }
 
+
+            if ($exception instanceof HttpNotFoundException) {
+                $type = self::RESOURCE_NOT_FOUND;
+            } elseif ($exception instanceof HttpMethodNotAllowedException) {
+                $type = self::NOT_ALLOWED;
+            } elseif ($exception instanceof HttpUnauthorizedException) {
+                $type = self::UNAUTHENTICATED;
+            } elseif ($exception instanceof HttpForbiddenException) {
+                $type = self::UNAUTHENTICATED;
+            } elseif ($exception instanceof HttpBadRequestException) {
+                $type = self::BAD_REQUEST;
+            } elseif ($exception instanceof HttpNotImplementedException) {
+                $type = self::NOT_IMPLEMENTED;
+            }
+        }
+
+        $description = $exception->getMessage();
+
+        $error = [
+            'code' => $statusCode,
+            'status' => $type,
+            'message' => $description,
+            'trace' => @$exception->getTraceAsString()
+        ];
+
+        $payload = json_encode($error, JSON_PRETTY_PRINT);
         $log = new Log();
-        $errorJson = json_encode(
-            [
-                'code' => @$exception->getCode(),
-                'message' => @$exception->getMessage(),
-                'trace' => @$exception->getTraceAsString()
-            ]
-        );
+        $log->error('AlAdhan Exception Triggered: ' . $payload);
+        $response = $this->responseFactory->createResponse($statusCode);
 
-        $log->error('AlAdhan Exception Triggered: ' . $errorJson);
+        $response->getBody()->write($payload);
 
-        return $response->withJson($errorJson, 500);
+        return $response->withHeader('Content-Type', 'application/json');
+
     }
-
 }

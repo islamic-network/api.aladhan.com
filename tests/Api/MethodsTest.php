@@ -6,7 +6,7 @@ class MethodsTest extends \PHPUnit\Framework\TestCase
 
     public function setUp(): void
     {
-        $this->http = new GuzzleHttp\Client(['base_uri' => 'https://api.aladhan.com/v1/']);
+        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://localhost:8080/v1/']);
     }
 
     public function tearDown(): void

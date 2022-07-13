@@ -2,7 +2,6 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use IslamicNetwork\PrayerTimes\PrayerTimes;
-use IslamicNetwork\PrayerTimes\Method;
 use AlAdhanApi\Helper\Response as ApiResponse;
 use AlAdhanApi\Helper\Request as ApiRequest;
 use AlAdhanApi\Helper\ClassMapper;
@@ -10,8 +9,9 @@ use AlAdhanApi\Helper\PrayerTimesHelper;
 use AlAdhanApi\Helper\Generic;
 use AlAdhanApi\Model\HijriCalendarService;
 use AlAdhanApi\Interceptor\CoOrdinates;
+use Slim\Routing\RouteCollectorProxy;
 
-$app->group('/v1', function() {
+$app->group('/v1', function(RouteCollectorProxy $group) {
     /**
      * @api {get} http://api.aladhan.com/v1/methods Prayer Times Methods
      * @apiDescription  Returns all the prayer times calculation methods supported by this API. For more information on how to use custom methods, see <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>.
@@ -52,59 +52,59 @@ $app->group('/v1', function() {
      * }
      *
      **/
-    $this->get('/methods', function (Request $request, Response $response) {
+    $group->get('/methods', function (Request $request, Response $response) {
         
         $pt = new PrayerTimes();
 
-        return $response->withJson(ApiResponse::build($pt->getMethods(), 200, 'OK'), 200);
+        return ApiResponse::print($response, $pt->getMethods(), 200, 'OK', true, 3600);
     });
 
-    $this->get('/nextPrayerByAddress', function (Request $request, Response $response) {
-        $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
-        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
-        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
-        $address = $request->getQueryParam('address');
-        $tune = ApiRequest::tune($request->getQueryParam('tune'));
-        $adjustment = (int) $request->getQueryParam('adjustment');
-        $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
-        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
-        $locInfo = ApiRequest::isValidAddress($address) ? $this->model->locations->getAddressCoOrdinatesAndZone($address) : false;
+    $group->get('/nextPrayerByAddress', function (Request $request, Response $response) {
+        $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
+        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
+        $address = ApiRequest::getQueryParam($request, 'address');
+        $tune = ApiRequest::tune(ApiRequest::getQueryParam($request, 'tune'));
+        $adjustment = (int) ApiRequest::getQueryParam($request, 'adjustment');
+        $iso8601 = ApiRequest::getQueryParam($request, 'iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $shafaq = ApiRequest::shafaq(ApiRequest::getQueryParam($request, 'shafaq'));
+        $locInfo = ApiRequest::isValidAddress($address) ? $this->get('model')->locations->getAddressCoOrdinatesAndZone($address) : false;
         if ($locInfo) {
-            $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $locInfo['latitude'], $locInfo['longitude']));
+            $method = ClassMapper::method(ApiRequest::method(ApiRequest::getQueryParam($request, 'method'), $locInfo['latitude'], $locInfo['longitude']));
             $d = new DateTime('@' . time());
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
             $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment, $shafaq);
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode, $iso8601);
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod, $iso8601);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
-            return $response->withJson(ApiResponse::build(['timings' => $nextPrayer, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
+            return ApiResponse::print($response, ['timings' => $nextPrayer, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Unable to locate address (even via google geocoding). It is probably invalid!', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Unable to locate address (even via google geocoding). It is probably invalid!', 400, 'Bad Request');
         }
     });
 
-    $this->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Response $response) {
+    $group->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Response $response) {
         $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
-        $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
-        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
-        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
-        $address = $request->getQueryParam('address');
-        $tune = ApiRequest::tune($request->getQueryParam('tune'));
-        $adjustment = (int) $request->getQueryParam('adjustment');
-        $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
-        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
-        $locInfo = ApiRequest::isValidAddress($address) ? $this->model->locations->getAddressCoOrdinatesAndZone($address) : false;
+        $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
+        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
+        $address = ApiRequest::getQueryParam($request, 'address');
+        $tune = ApiRequest::tune(ApiRequest::getQueryParam($request, 'tune'));
+        $adjustment = (int) ApiRequest::getQueryParam($request, 'adjustment');
+        $iso8601 = ApiRequest::getQueryParam($request, 'iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $shafaq = ApiRequest::shafaq(ApiRequest::getQueryParam($request, 'shafaq'));
+        $locInfo = ApiRequest::isValidAddress($address) ? $this->get('model')->locations->getAddressCoOrdinatesAndZone($address) : false;
         if ($locInfo) {
-            $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $locInfo['latitude'], $locInfo['longitude']));
+            $method = ClassMapper::method(ApiRequest::method(ApiRequest::getQueryParam($request, 'method'), $locInfo['latitude'], $locInfo['longitude']));
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
             $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment, $shafaq);
             $timings = $pt->getTimes($d, $locInfo['latitude'], $locInfo['longitude'], null, $latitudeAdjustmentMethod, $midnightMode, $iso8601);
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($timings, $pt, $d, $locInfo, $latitudeAdjustmentMethod, $iso8601);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U')];
-            return $response->withJson(ApiResponse::build(['timings' => $nextPrayer, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
+            return ApiResponse::print($response, ['timings' => $nextPrayer, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Unable to locate address (even via google geocoding). It is probably invalid!', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Unable to locate address (even via google geocoding). It is probably invalid!', 400, 'Bad Request');
         }
     });
 
@@ -241,18 +241,18 @@ $app->group('/v1', function() {
      *     }
      * }
      */
-    $this->get('/timings', function (Request $request, Response $response) {
-        $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
-        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
-        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
-        $latitude = $request->getQueryParam('latitude');
-        $longitude = $request->getQueryParam('longitude');
-        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $latitude, $longitude));
-        $timezone = Generic::computeTimezone($latitude, $longitude, $request->getQueryParam('timezonestring'), $this->model->locations);
-        $tune = ApiRequest::tune($request->getQueryParam('tune'));
-        $adjustment = (int) $request->getQueryParam('adjustment');
-        $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
-        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
+    $group->get('/timings', function (Request $request, Response $response) {
+        $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
+        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
+        $latitude = ApiRequest::getQueryParam($request, 'latitude');
+        $longitude = ApiRequest::getQueryParam($request, 'longitude');
+        $method = ClassMapper::method(ApiRequest::method(ApiRequest::getQueryParam($request, 'method'), $latitude, $longitude));
+        $timezone = Generic::computeTimezone($latitude, $longitude, ApiRequest::getQueryParam($request, 'timezonestring'), $this->get('model')->locations);
+        $tune = ApiRequest::tune(ApiRequest::getQueryParam($request, 'tune'));
+        $adjustment = (int) ApiRequest::getQueryParam($request, 'adjustment');
+        $iso8601 = ApiRequest::getQueryParam($request, 'iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $shafaq = ApiRequest::shafaq(ApiRequest::getQueryParam($request, 'shafaq'));
         CoOrdinates::areValid($latitude, $longitude);
         if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
             $d = new DateTime('now', new DateTimeZone($timezone));
@@ -261,24 +261,24 @@ $app->group('/v1', function() {
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
-            return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
+            return ApiResponse::print($response, ['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Please specify a valid latitude and longitude.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Please specify a valid latitude and longitude.', 400, 'Bad Request');
         }
     });
 
-    $this->get('/timings/{timestamp}', function (Request $request, Response $response) {
-        $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
-        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
-        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
-        $latitude = $request->getQueryParam('latitude');
-        $longitude = $request->getQueryParam('longitude');
-        $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $latitude, $longitude));
-        $timezone = Generic::computeTimezone($latitude, $longitude, $request->getQueryParam('timezonestring'), $this->model->locations);
-        $tune = ApiRequest::tune($request->getQueryParam('tune'));
-        $adjustment = (int) $request->getQueryParam('adjustment');
-        $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
-        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
+    $group->get('/timings/{timestamp}', function (Request $request, Response $response) {
+        $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
+        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
+        $latitude = ApiRequest::getQueryParam($request, 'latitude');
+        $longitude = ApiRequest::getQueryParam($request, 'longitude');
+        $method = ClassMapper::method(ApiRequest::method(ApiRequest::getQueryParam($request, 'method'), $latitude, $longitude));
+        $timezone = Generic::computeTimezone($latitude, $longitude, ApiRequest::getQueryParam($request, 'timezonestring'), $this->get('model')->locations);
+        $tune = ApiRequest::tune(ApiRequest::getQueryParam($request, 'tune'));
+        $adjustment = (int) ApiRequest::getQueryParam($request, 'adjustment');
+        $iso8601 = ApiRequest::getQueryParam($request, 'iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $shafaq = ApiRequest::shafaq(ApiRequest::getQueryParam($request, 'shafaq'));
         $timestamp = ApiRequest::time($request->getAttribute('timestamp'), $timezone);
         if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
             $d = new DateTime(date('@' . $timestamp));
@@ -288,9 +288,9 @@ $app->group('/v1', function() {
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
             $timings = $pt->getTimes($d, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode, $iso8601);
-            return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
+            return ApiResponse::print($response, ['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Please specify a valid latitude and longitude.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Please specify a valid latitude and longitude.', 400, 'Bad Request');
         }
     });
 
@@ -423,43 +423,43 @@ $app->group('/v1', function() {
      *     }
      * }
      */
-    $this->get('/timingsByAddress', function (Request $request, Response $response) {
-        $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
-        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
-        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
-        $address = $request->getQueryParam('address');
-        $tune = ApiRequest::tune($request->getQueryParam('tune'));
-        $adjustment = (int) $request->getQueryParam('adjustment');
-        $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
-        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
-        $locInfo = ApiRequest::isValidAddress($address) ? $this->model->locations->getAddressCoOrdinatesAndZone($address) : false;
+    $group->get('/timingsByAddress', function (Request $request, Response $response) {
+        $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
+        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
+        $address = ApiRequest::getQueryParam($request, 'address');
+        $tune = ApiRequest::tune(ApiRequest::getQueryParam($request, 'tune'));
+        $adjustment = (int) ApiRequest::getQueryParam($request, 'adjustment');
+        $iso8601 = ApiRequest::getQueryParam($request, 'iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $shafaq = ApiRequest::shafaq(ApiRequest::getQueryParam($request, 'shafaq'));
+        $locInfo = ApiRequest::isValidAddress($address) ? $this->get('model')->locations->getAddressCoOrdinatesAndZone($address) : false;
         if ($locInfo) {
-            $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $locInfo['latitude'], $locInfo['longitude']));
+            $method = ClassMapper::method(ApiRequest::method(ApiRequest::getQueryParam($request, 'method'), $locInfo['latitude'], $locInfo['longitude']));
             $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
             $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment, $shafaq);
             $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod, $midnightMode, $iso8601);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
-            return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
+            return ApiResponse::print($response, ['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Unable to locate address (even via google geocoding). It is probably invalid!', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Unable to locate address (even via google geocoding). It is probably invalid!', 400, 'Bad Request');
         }
     });
 
-    $this->get('/timingsByAddress/{timestamp}', function (Request $request, Response $response) {
-        $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
-        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
-        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
-        $address = $request->getQueryParam('address');
-        $tune = ApiRequest::tune($request->getQueryParam('tune'));
-        $adjustment = (int) $request->getQueryParam('adjustment');
-        $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
-        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
-        $locInfo = ApiRequest::isValidAddress($address) ? $this->model->locations->getAddressCoOrdinatesAndZone($address) : false;
+    $group->get('/timingsByAddress/{timestamp}', function (Request $request, Response $response) {
+        $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
+        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
+        $address = ApiRequest::getQueryParam($request, 'address');
+        $tune = ApiRequest::tune(ApiRequest::getQueryParam($request, 'tune'));
+        $adjustment = (int) ApiRequest::getQueryParam($request, 'adjustment');
+        $iso8601 = ApiRequest::getQueryParam($request, 'iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $shafaq = ApiRequest::shafaq(ApiRequest::getQueryParam($request, 'shafaq'));
+        $locInfo = ApiRequest::isValidAddress($address) ? $this->get('model')->locations->getAddressCoOrdinatesAndZone($address) : false;
         if ($locInfo) {
             $timestamp = ApiRequest::time($request->getAttribute('timestamp'), $locInfo['timezone']);
-            $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $locInfo['latitude'], $locInfo['longitude']));
+            $method = ClassMapper::method(ApiRequest::method(ApiRequest::getQueryParam($request, 'method'), $locInfo['latitude'], $locInfo['longitude']));
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
             $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment, $shafaq);
@@ -467,9 +467,9 @@ $app->group('/v1', function() {
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
-            return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
+            return ApiResponse::print($response, ['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Unable to locate address (even via google geocoding). It is probably invalid!', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Unable to locate address (even via google geocoding). It is probably invalid!', 400, 'Bad Request');
         }
     });
 
@@ -604,47 +604,47 @@ $app->group('/v1', function() {
      *     }
      * }
      */
-    $this->get('/timingsByCity', function (Request $request, Response $response) {
-        $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
-        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
-        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
-        $city = $request->getQueryParam('city');
-        $country = $request->getQueryParam('country');
-        $state = $request->getQueryParam('state');
-        $tune = ApiRequest::tune($request->getQueryParam('tune'));
-        $adjustment = (int) $request->getQueryParam('adjustment');
-        $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
-        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
-        $locInfo = ApiRequest::isValidLocationPair($city, $country) ? $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state) : false;
+    $group->get('/timingsByCity', function (Request $request, Response $response) {
+        $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
+        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
+        $city = ApiRequest::getQueryParam($request, 'city');
+        $country = ApiRequest::getQueryParam($request, 'country');
+        $state = ApiRequest::getQueryParam($request, 'state');
+        $tune = ApiRequest::tune(ApiRequest::getQueryParam($request, 'tune'));
+        $adjustment = (int) ApiRequest::getQueryParam($request, 'adjustment');
+        $iso8601 = ApiRequest::getQueryParam($request, 'iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $shafaq = ApiRequest::shafaq(ApiRequest::getQueryParam($request, 'shafaq'));
+        $locInfo = ApiRequest::isValidLocationPair($city, $country) ? $this->get('model')->locations->getGoogleCoOrdinatesAndZone($city, $country, $state) : false;
         if ($locInfo) {
-            $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $locInfo['latitude'], $locInfo['longitude']));
+            $method = ClassMapper::method(ApiRequest::method(ApiRequest::getQueryParam($request, 'method'), $locInfo['latitude'], $locInfo['longitude']));
             $d = new DateTime('now', new DateTimeZone($locInfo['timezone']));
             $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment, $shafaq);
             $timings = $pt->getTimesForToday($locInfo['latitude'], $locInfo['longitude'],$locInfo['timezone'], null, $latitudeAdjustmentMethod, $midnightMode, $iso8601);
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
-            return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
+            return ApiResponse::print($response, ['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Unable to locate city and country (even via google geocoding). It is probably invalid!', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Unable to locate city and country (even via google geocoding). It is probably invalid!', 400, 'Bad Request');
         }
     });
 
-    $this->get('/timingsByCity/{timestamp}', function (Request $request, Response $response) {
-        $school = ClassMapper::school(ApiRequest::school($request->getQueryParam('school')));
-        $midnightMode = ClassMapper::midnightMode(ApiRequest::school($request->getQueryParam('midnightMode')));
-        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod($request->getQueryParam('latitudeAdjustmentMethod')));
-        $city = $request->getQueryParam('city');
-        $country = $request->getQueryParam('country');
-        $state = $request->getQueryParam('state');
-        $tune = ApiRequest::tune($request->getQueryParam('tune'));
-        $adjustment = (int) $request->getQueryParam('adjustment');
-        $iso8601 = $request->getQueryParam('iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
-        $shafaq = ApiRequest::shafaq($request->getQueryParam('shafaq'));
-        $locInfo = ApiRequest::isValidLocationPair($city, $country) ? $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state) : false;
+    $group->get('/timingsByCity/{timestamp}', function (Request $request, Response $response) {
+        $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
+        $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
+        $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
+        $city = ApiRequest::getQueryParam($request, 'city');
+        $country = ApiRequest::getQueryParam($request, 'country');
+        $state = ApiRequest::getQueryParam($request, 'state');
+        $tune = ApiRequest::tune(ApiRequest::getQueryParam($request, 'tune'));
+        $adjustment = (int) ApiRequest::getQueryParam($request, 'adjustment');
+        $iso8601 = ApiRequest::getQueryParam($request, 'iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
+        $shafaq = ApiRequest::shafaq(ApiRequest::getQueryParam($request, 'shafaq'));
+        $locInfo = ApiRequest::isValidLocationPair($city, $country) ? $this->get('model')->locations->getGoogleCoOrdinatesAndZone($city, $country, $state) : false;
         if ($locInfo) {
             $timestamp = ApiRequest::time($request->getAttribute('timestamp'), $locInfo['timezone']);
-            $method = ClassMapper::method(ApiRequest::method($request->getQueryParam('method'), $locInfo['latitude'], $locInfo['longitude']));
+            $method = ClassMapper::method(ApiRequest::method(ApiRequest::getQueryParam($request, 'method'), $locInfo['latitude'], $locInfo['longitude']));
             $d = new DateTime(date('@' . $timestamp));
             $d->setTimezone(new DateTimeZone($locInfo['timezone']));
             $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment, $shafaq);
@@ -652,31 +652,31 @@ $app->group('/v1', function() {
             $cs = new HijriCalendarService();
             $hd = $cs->gToH($d->format('d-m-Y'), $adjustment);
             $date = ['readable' => $d->format('d M Y'), 'timestamp' => $d->format('U'), 'hijri' => $hd['hijri'], 'gregorian' => $hd['gregorian']];
-            return $response->withJson(ApiResponse::build(['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK'), 200);
+            return ApiResponse::print($response, ['timings' => $timings, 'date' => $date, 'meta' => PrayerTimesHelper::getMetaArray($pt)], 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Unable to locate city and country (even via google geocoding). It is probably invalid!', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Unable to locate city and country (even via google geocoding). It is probably invalid!', 400, 'Bad Request');
         }
     });
 
-    $this->get('/cityInfo', function (Request $request, Response $response) {
-        $city = $request->getQueryParam('city');
-        $country = $request->getQueryParam('country');
-        $state = $request->getQueryParam('state');
-        $result = $this->model->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
+    $group->get('/cityInfo', function (Request $request, Response $response) {
+        $city = ApiRequest::getQueryParam($request, 'city');
+        $country = ApiRequest::getQueryParam($request, 'country');
+        $state = ApiRequest::getQueryParam($request, 'state');
+        $result = $this->get('model')->locations->getGoogleCoOrdinatesAndZone($city, $country, $state);
         if ($result) {
-            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+            return ApiResponse::print($response, $result, 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Unable to find city and country.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Unable to find city and country.', 400, 'Bad Request');
         }
     });
 
-    $this->get('/addressInfo', function (Request $request, Response $response) {
-        $address = $request->getQueryParam('address');
-        $result = $this->model->locations->getAddressCoOrdinatesAndZone($address);
+    $group->get('/addressInfo', function (Request $request, Response $response) {
+        $address = ApiRequest::getQueryParam($request, 'address');
+        $result = $this->get('model')->locations->getAddressCoOrdinatesAndZone($address);
         if ($result) {
-            return $response->withJson(ApiResponse::build($result, 200, 'OK'), 200);
+            return ApiResponse::print($response, $result, 200, 'OK');
         } else {
-            return $response->withJson(ApiResponse::build('Unable to find address.', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Unable to find address.', 400, 'Bad Request');
         }
     });
 });

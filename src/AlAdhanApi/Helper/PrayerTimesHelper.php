@@ -4,6 +4,7 @@ use IslamicNetwork\PrayerTimes\Method;
 use IslamicNetwork\PrayerTimes\PrayerTimes;
 use AlAdhanApi\Model\HijriCalendarService;
 use AlAdhanApi\Helper\Request as ApiRequest;
+use IslamicNetwork\MoonSighting\Isha;
 use DateTime;
 
 /**
@@ -310,7 +311,7 @@ class PrayerTimesHelper
      * @param int $adjustment
      * @return PrayerTimes
      */
-    public static function getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment = 0, $shafaq)
+    public static function getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment = 0, $shafaq = Isha::SHAFAQ_GENERAL)
     {
         $pt = new PrayerTimes($method, $school, null);
         $pt->setShafaq($shafaq);

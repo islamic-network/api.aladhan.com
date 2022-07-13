@@ -4,9 +4,10 @@ use \Psr\Http\Message\ResponseInterface as Response;
 use AlAdhanApi\Helper\Response as ApiResponse;
 use AlAdhanApi\Helper\Cacher;
 use AlAdhanApi\Helper\Database;
+use Slim\Routing\RouteCollectorProxy;
 
-$app->group('/v1', function() {
-    $this->get('/status', function (Request $request, Response $response) {
+$app->group('/v1', function(RouteCollectorProxy $group) {
+    $group->get('/status', function (Request $request, Response $response) {
         $mc = new Cacher();
         $dbx = new Database();
         $dbResult = false;
@@ -25,12 +26,13 @@ $app->group('/v1', function() {
             'database' => $dbResult === false ? 'NOT OK' : 'OK (' . $dbResult['id']. ')'
         ];
         if ($mc === false || $dbResult === false) {
-            return $response->withJson(ApiResponse::build($status, 500, 'Status Check Failed'), 500);
+            return ApiResponse::print($response, $status, 500, 'Status Check Failed');
         }
-        return $response->withJson(ApiResponse::build($status, 200, 'OK'), 200);
+        return ApiResponse::print($response, $status, 200, 'OK');
+
     });
 
-    $this->get('/liveness', function (Request $request, Response $response) {
-        return $response->withJson('OK', 200);
+    $group->get('/liveness', function (Request $request, Response $response) {
+        return ApiResponse::print($response, 'OK',200, 'OK');
     });
 });

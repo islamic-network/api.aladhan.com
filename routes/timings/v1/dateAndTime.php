@@ -2,10 +2,10 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use AlAdhanApi\Helper\Response as ApiResponse;
-use AlAdhanApi\Helper\Request as ApiRequest;
 use AlAdhanApi\Helper\Generic;
+use Slim\Routing\RouteCollectorProxy;
 
-$app->group('/v1', function() {
+$app->group('/v1', function(RouteCollectorProxy $group) {
     /**
      * @api {get} http://api.aladhan.com/v1/currentTime Current Time
      * @apiDescription Returns the current time (in the HH:MM format) for the specified time zone
@@ -26,14 +26,14 @@ $app->group('/v1', function() {
      *   "data": "13:56"
      * }
      */
-    $this->get('/currentTime', function (Request $request, Response $response) {
+    $group->get('/currentTime', function (Request $request, Response $response) {
         //$this->helper->logger->write();
-        $zone = $request->getQueryParam('zone');
+        $zone = isset($request->getQueryParams()['zone']) ? $request->getQueryParams()['zone'] : '';
         if ($zone == '' || $zone == null || !Generic::isTimeZoneValid($zone)) {
-            return $response->withJson(ApiResponse::build('Please specify a valid timezone. Example: Europe/London', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Please specify a valid timezone. Example: Europe/London', 400, 'Bad Request');
         } else {
             $date = new DateTime('now', new DateTimeZone($zone));
-            return $response->withJson(ApiResponse::build($date->format('H:i'), 200, 'OK'), 200);
+            return ApiResponse::print($response, $date->format('H:i'), 200, 'OK');
         }
 
     });
@@ -58,14 +58,14 @@ $app->group('/v1', function() {
      *   "data": "23-08-2017"
      * }
      */
-    $this->get('/currentDate', function (Request $request, Response $response) {
+    $group->get('/currentDate', function (Request $request, Response $response) {
         //$this->helper->logger->write();
-        $zone = $request->getQueryParam('zone');
+        $zone = isset($request->getQueryParams()['zone']) ? $request->getQueryParams()['zone'] : '';
         if ($zone == '' || $zone == null || !Generic::isTimeZoneValid($zone)) {
-            return $response->withJson(ApiResponse::build('Please specify a valid timezone. Example: Europe/London', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Please specify a valid timezone. Example: Europe/London', 400, 'Bad Request');
         } else {
             $date = new DateTime('now', new DateTimeZone($zone));
-            return $response->withJson(ApiResponse::build($date->format('d-m-Y'), 200, 'OK'), 200);
+            return ApiResponse::print($response, $date->format('d-m-Y'), 200, 'OK');
         }
 
     });
@@ -90,13 +90,13 @@ $app->group('/v1', function() {
      *   "data": "1503495668"
      * }
      */
-    $this->get('/currentTimestamp', function (Request $request, Response $response) {
-        $zone = $request->getQueryParam('zone');
+    $group->get('/currentTimestamp', function (Request $request, Response $response) {
+        $zone = isset($request->getQueryParams()['zone']) ? $request->getQueryParams()['zone'] : '';
         if ($zone == '' || $zone == null || !Generic::isTimeZoneValid($zone)) {
-            return $response->withJson(ApiResponse::build('Please specify a valid timezone. Example: Europe/London', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Please specify a valid timezone. Example: Europe/London', 400, 'Bad Request');
         } else {
             $date = new DateTime('now', new DateTimeZone($zone));
-            return $response->withJson(ApiResponse::build($date->format('U'), 200, 'OK'), 200);
+            return ApiResponse::print($response, $date->format('U'), 200, 'OK');
         }
     });
 });
