@@ -61,14 +61,14 @@ class HijriTest extends \PHPUnit\Framework\TestCase
 
     }
 
-    public function testDateContruct()
+    public function testDateConstruct()
     {
-        $this->hcs->ConstractDayMonthYear('25-10-2018', 'DD-MM-YYYY');
+        $this->hcs->ConstructDayMonthYear('25-10-2018', 'DD-MM-YYYY');
         $this->assertEquals('25', $this->hcs->Day);
         $this->assertEquals('10', $this->hcs->Month);
         $this->assertEquals('2018', $this->hcs->Year);
 
-        $this->hcs->ConstractDayMonthYear('25102018', 'DDMMYYYY');
+        $this->hcs->ConstructDayMonthYear('25102018', 'DDMMYYYY');
         $this->assertEquals('25', $this->hcs->Day);
         $this->assertEquals('10', $this->hcs->Month);
         $this->assertEquals('2018', $this->hcs->Year);
