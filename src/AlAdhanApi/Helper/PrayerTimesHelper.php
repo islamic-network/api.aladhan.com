@@ -317,7 +317,7 @@ class PrayerTimesHelper
         $pt->setShafaq($shafaq);
 
         if ($method == Method::METHOD_CUSTOM) {
-            $methodSettings = ApiRequest::customMethod($request->getQueryParam('methodSettings'));
+            $methodSettings = ApiRequest::customMethod(ApiRequest::getQueryParam($request, 'methodSettings'));
             $customMethod = self::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         }
