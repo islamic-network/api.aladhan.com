@@ -253,7 +253,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         $adjustment = (int) ApiRequest::getQueryParam($request, 'adjustment');
         $iso8601 = ApiRequest::getQueryParam($request, 'iso8601') === 'true' ? PrayerTimes::TIME_FORMAT_ISO8601 : PrayerTimes::TIME_FORMAT_24H;
         $shafaq = ApiRequest::shafaq(ApiRequest::getQueryParam($request, 'shafaq'));
-        CoOrdinates::areValid($latitude, $longitude);
+        CoOrdinates::areValid($request, $latitude, $longitude);
         if (ApiRequest::isTimingsRequestValid($latitude, $longitude, $timezone)) {
             $d = new DateTime('now', new DateTimeZone($timezone));
             $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($request, $d, $method, $school, $tune, $adjustment, $shafaq);
