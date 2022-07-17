@@ -24,7 +24,7 @@
     "guzzlehttp/guzzle": "^7.0",
     "slim/slim": "^4.0",
     "symfony/yaml": "^4.1",
-    "islamic-network/prayer-times": "^1.0.17",
+    "islamic-network/prayer-times": "^1.0.18",
     "islamic-network/alqibla": "^1.2",
     "meezaan/askgeo-api": "dev-master",
     "p3k/emoji-detector": "^0.2.1",
