@@ -11,10 +11,10 @@
 This repository powers the AlAdhan.com API on http://api.aladhan.com.
 
 # Technology Stack
-* PHP 7.4
+* PHP 8.1
 * PerconaDB 8.x
 * Memcached 1.5
-* Slim Framework v3
+* Slim Framework v4
 * Google Maps API for the GeoCoding API (https://developers.google.com/maps/documentation/geocoding/intro)
 * AskGeo API for the Timezone API (https://askgeo.com/database/TimeZone)
 
