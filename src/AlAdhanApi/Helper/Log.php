@@ -89,7 +89,6 @@ class Log
      */
     public function writeGoogleQueryLog($message)
     {
-        $logFile = 'Google_' . date('Y-m-d');
         // Create the logger
         $logger = new Logger('Google');
         // Now add some handlers
@@ -105,7 +104,6 @@ class Log
      */
     public function write()
     {
-        $logFile = date('Y-m-d');
         $logger = new Logger('ApiService');
         // Now add some handlers
         $logger->pushHandler( new \Monolog\Handler\StreamHandler('php://stdout', Logger::INFO));
@@ -119,7 +117,6 @@ class Log
      */
     public function error($message = '')
     {
-        $logFile = date('Y-m-d');
         $logger = new Logger('ApiError');
         // Now add some handlers
         $logger->pushHandler( new \Monolog\Handler\StreamHandler('php://stderr', Logger::INFO));

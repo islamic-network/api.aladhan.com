@@ -33,7 +33,7 @@ class Request
         return Isha::SHAFAQ_GENERAL;
     }
 
-    public static function midnightMode($data):int
+    public static function midnightMode($data): int
     {
         if (in_array($data, [0, 1])) {
             return $data;
@@ -405,5 +405,10 @@ class Request
 
         return array_search($smallest, $distances);
 
+    }
+
+    public static function getQueryParam(\Psr\Http\Message\ServerRequestInterface $request, string $name): string
+    {
+        return isset($request->getQueryParams()[$name]) ? $request->getQueryParams()[$name] : '';
     }
 }

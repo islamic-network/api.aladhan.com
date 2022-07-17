@@ -1,32 +1,29 @@
 <?php
 use AlAdhanApi\Helper\Log;
 use AlAdhanApi\Model\Locations;
-use AlAdhanApi\Handler\AlAdhanHandler;
-use AlAdhanApi\Handler\AlAdhanNotFoundHandler;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use Psr7Middlewares\Middleware;
 
-$container = $app->getContainer();
-
-$container['helper'] = function($c) {
+$container->set('helper', function($c) {
     $helper = new \stdClass();
     $helper->logger = new Log();
 
     return $helper;
-};
+});
 
-$container['model'] = function($c) {
+$container->set('model', function($c) {
     $model = new \stdClass();
-    $model->locations = new Locations($c['helper']->logger);
+    $helper = $c->get('helper');
+    $model->locations = new Locations($helper->logger);
 
     return $model;
-};
+});
 
-$container['notFoundHandler'] = function ($c) {
-    return new AlAdhanNotFoundHandler();
-};
+// Application middleware
+$errorMiddleware = $app->addErrorMiddleware($debug, true, true);
 
-$container['errorHandler'] = function ($c) {
-    return new AlAdhanHandler();
-};
+$callableResolver = $app->getCallableResolver();
+$responseFactory = $app->getResponseFactory();
+$errorHandler = new \AlAdhanApi\Handler\AlAdhanHandler($callableResolver, $responseFactory);
+$errorMiddleware->setDefaultErrorHandler($errorHandler);
+
 

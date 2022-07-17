@@ -2,11 +2,11 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 use AlAdhanApi\Helper\Response as ApiResponse;
-use AlAdhanApi\Helper\Request as ApiRequest;
 use AlAdhanApi\Model\AsmaAlHusna;
+use Slim\Routing\RouteCollectorProxy;
 
 
-$app->group('/v1', function() {
+$app->group('/v1', function(RouteCollectorProxy $group) {
     /**
      *
      * @api {get} http://api.aladhan.com/v1/asmaAlHusna/:numbers All or Multiple Names
@@ -58,11 +58,11 @@ $app->group('/v1', function() {
      * "data": "Please specify a valid number between 1 and 99."
      * }
      */
-    $this->get('/asmaAlHusna', function (Request $request, Response $response) {
+    $group->get('/asmaAlHusna', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $names = AsmaAlHusna::get();
 
-        return $response->withJson(ApiResponse::build($names, 200, 'OK'), 200);
+        return ApiResponse::print($response, $names, 200, 'OK', true, 86400);
 
     });
 
@@ -107,7 +107,7 @@ $app->group('/v1', function() {
      * "data": "Please specify a valid number between 1 and 99."
      * }
      */
-    $this->get('/asmaAlHusna/{no}', function (Request $request, Response $response) {
+    $group->get('/asmaAlHusna/{no}', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $number = $request->getAttribute('no');
         $number = explode(',', $number);
@@ -118,10 +118,10 @@ $app->group('/v1', function() {
         $names = AsmaAlHusna::get($nos);
 
         if ($names == false) {
-            return $response->withJson(ApiResponse::build('Please specify a valid number between 1 and 99', 400, 'Bad Request'), 400);
+            return ApiResponse::print($response, 'Please specify a valid number between 1 and 99', 400, 'Bad Request');
         }
 
-        return $response->withJson(ApiResponse::build($names, 200, 'OK'), 200);
+        return ApiResponse::print($response, $names, 200, 'OK', true, 86400 );
 
     });
 });

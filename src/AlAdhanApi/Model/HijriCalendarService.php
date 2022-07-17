@@ -34,7 +34,7 @@ class HijriCalendarService
      * @param String $date
      * @param String $format
      */
-    public function ConstractDayMonthYear($date, $format)
+    public function ConstructDayMonthYear($date, $format)
     {
         $this->Day="";
         $this->Month="";
@@ -47,13 +47,13 @@ class HijriCalendarService
         for ($i=0; $i<count($format_Ar); $i++) {
             switch ($format_Ar[$i]) {
                 case "D":
-                    $this->Day.=$srcDate_Ar[$i];
+                    $this->Day .= $srcDate_Ar[$i];
                     break;
                 case "M":
-                    $this->Month.=$srcDate_Ar[$i];
+                    $this->Month .= $srcDate_Ar[$i];
                     break;
                 case "Y":
-                    $this->Year.=$srcDate_Ar[$i];
+                    $this->Year .= isset($srcDate_Ar[$i]) ? $srcDate_Ar[$i] : '';
                     break;
             }
         }
@@ -66,7 +66,7 @@ class HijriCalendarService
      */
     public function HijriToGregorian($date, $format) // $date like 10121400, $format like DDMMYYYY, take date & check if its hijri then convert to gregorian date in format (DD-MM-YYYY), if it gregorian the return empty;
     {
-        $this->ConstractDayMonthYear($date, $format);
+        $this->ConstructDayMonthYear($date, $format);
         // $d=intval($this->Day)+1;
         $d=intval($this->Day);
         $m=intval($this->Month);
@@ -122,7 +122,7 @@ class HijriCalendarService
      */
     public function GregorianToHijri($date, $format) // $date like 10122011, $format like DDMMYYYY, take date & check if its gregorian then convert to hijri date in format (DD-MM-YYYY), if it hijri the return empty;
     {
-        $this->ConstractDayMonthYear($date, $format);
+        $this->ConstructDayMonthYear($date, $format);
         //$d=intval($this->Day)-1;
         $d=intval($this->Day);
         $m=intval($this->Month);
@@ -419,7 +419,7 @@ class HijriCalendarService
      */
     public function adjustHijriDate($date, int $days)
     {
-        $this->ConstractDayMonthYear($date, 'DD-MM-YYYY');
+        $this->ConstructDayMonthYear($date, 'DD-MM-YYYY');
         $daysInMonth = 30;
         $monthsInYear = 12;
 
