@@ -13,6 +13,7 @@ RewriteRule ^gToHCalendar(.*)$ https://api.aladhan.com/v1/gToHCalendar$1 [R=301,
 RewriteRule ^gToH(.*)$ https://api.aladhan.com/v1/gToH$1 [R=301,NC,L]
 RewriteRule ^hToGCalendar(.*)$ https://api.aladhan.com/v1/hToGCalendar$1 [R=301,NC,L]
 RewriteRule ^hToG(.*)$ https://api.aladhan.com/v1/hToG$1 [R=301,NC,L]
+RewriteRule ^methods(.*)$ https://api.aladhan.com/v1/methods$1 [R=301,NC,L]
 
 
 RewriteCond %{REQUEST_URI} !=/server-status
