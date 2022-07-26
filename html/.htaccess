@@ -14,6 +14,8 @@ RewriteRule ^gToH(.*)$ https://api.aladhan.com/v1/gToH$1 [R=301,NC,L]
 RewriteRule ^hToGCalendar(.*)$ https://api.aladhan.com/v1/hToGCalendar$1 [R=301,NC,L]
 RewriteRule ^hToG(.*)$ https://api.aladhan.com/v1/hToG$1 [R=301,NC,L]
 RewriteRule ^methods(.*)$ https://api.aladhan.com/v1/methods$1 [R=301,NC,L]
+RewriteRule ^asnaAlHusna(.*)$ https://api.aladhan.com/v1/asmaAlHusna$1 [R=301,NC,L]
+RewriteRule ^qibla(.*)$ https://api.aladhan.com/v1/qibla$1 [R=301,NC,L]
 
 
 RewriteCond %{REQUEST_URI} !=/server-status
