@@ -30,7 +30,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     }
      * }
      */
-    $group->get('/qibla/{latitude}/{longitude}', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/qibla/{latitude}/{longitude}', function (Request $request, Response $response) {
         $latitude = floatval($request->getAttribute('latitude'));
         $longitude = floatval($request->getAttribute('longitude'));
         $direction = \AlQibla\Calculation::get($latitude, $longitude);

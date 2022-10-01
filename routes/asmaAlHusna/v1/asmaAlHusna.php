@@ -58,7 +58,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * "data": "Please specify a valid number between 1 and 99."
      * }
      */
-    $group->get('/asmaAlHusna', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/asmaAlHusna', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $names = AsmaAlHusna::get();
 
@@ -107,7 +107,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * "data": "Please specify a valid number between 1 and 99."
      * }
      */
-    $group->get('/asmaAlHusna/{no}', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/asmaAlHusna/{no}', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $number = $request->getAttribute('no');
         $number = explode(',', $number);

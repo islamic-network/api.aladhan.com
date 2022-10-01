@@ -71,7 +71,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     ]
      * }
      */
-    $group->get('/gToHCalendar/{month}/{year}', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/gToHCalendar/{month}/{year}', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $cs = new HijriCalendarService();
 
@@ -148,7 +148,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     ]
      * }
      */
-    $group->get('/hToGCalendar/{month}/{year}', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/hToGCalendar/{month}/{year}', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $cs = new HijriCalendarService();
 
@@ -212,7 +212,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     }
      * }
      */
-    $group->get('/gToH', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/gToH', function (Request $request, Response $response) {
         $date = isset($request->getQueryParams()['date']) ? $request->getQueryParams()['date'] : date('d-m-Y', time());
         $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
         $hs = new HijriCalendarService();
@@ -277,7 +277,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     }
      * }
      */
-    $group->get('/hToG', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/hToG', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
         $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
@@ -296,7 +296,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/nextHijriHoliday', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/nextHijriHoliday', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
         $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
@@ -308,7 +308,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/currentIslamicYear', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/currentIslamicYear', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
         $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
@@ -320,7 +320,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/currentIslamicMonth', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/currentIslamicMonth', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
         $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;
@@ -332,7 +332,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/islamicYearFromGregorianForRamadan/{year}', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/islamicYearFromGregorianForRamadan/{year}', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $y = (int) $request->getAttribute('year');
         $hs = new HijriCalendarService();
@@ -344,7 +344,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/hijriHolidays/{day}/{month}', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/hijriHolidays/{day}/{month}', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $d = (int) $request->getAttribute('day');
         $m = (int) $request->getAttribute('month');
@@ -357,7 +357,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/specialDays', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/specialDays', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
         $result = $hs->specialDays();
@@ -368,7 +368,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/islamicMonths', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/islamicMonths', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $hs = new HijriCalendarService();
         $result = $hs->getIslamicMonths();
@@ -379,7 +379,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/islamicHolidaysByHijriYear/{year}', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/islamicHolidaysByHijriYear/{year}', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $y = (int) $request->getAttribute('year');
         $adjustment = isset($request->getQueryParams()['adjustment']) ? (int) $request->getQueryParams()['adjustment'] : 0;

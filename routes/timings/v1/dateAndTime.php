@@ -26,7 +26,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *   "data": "13:56"
      * }
      */
-    $group->get('/currentTime', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/currentTime', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $zone = isset($request->getQueryParams()['zone']) ? $request->getQueryParams()['zone'] : '';
         if ($zone == '' || $zone == null || !Generic::isTimeZoneValid($zone)) {
@@ -58,7 +58,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *   "data": "23-08-2017"
      * }
      */
-    $group->get('/currentDate', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/currentDate', function (Request $request, Response $response) {
         //$this->helper->logger->write();
         $zone = isset($request->getQueryParams()['zone']) ? $request->getQueryParams()['zone'] : '';
         if ($zone == '' || $zone == null || !Generic::isTimeZoneValid($zone)) {
@@ -90,7 +90,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *   "data": "1503495668"
      * }
      */
-    $group->get('/currentTimestamp', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/currentTimestamp', function (Request $request, Response $response) {
         $zone = isset($request->getQueryParams()['zone']) ? $request->getQueryParams()['zone'] : '';
         if ($zone == '' || $zone == null || !Generic::isTimeZoneValid($zone)) {
             return ApiResponse::print($response, 'Please specify a valid timezone. Example: Europe/London', 400, 'Bad Request');

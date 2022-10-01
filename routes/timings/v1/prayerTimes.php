@@ -52,14 +52,14 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * }
      *
      **/
-    $group->get('/methods', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/methods', function (Request $request, Response $response) {
         
         $pt = new PrayerTimes();
 
         return ApiResponse::print($response, $pt->getMethods(), 200, 'OK', true, 3600);
     });
 
-    $group->get('/nextPrayerByAddress', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/nextPrayerByAddress', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
@@ -83,7 +83,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/nextPrayerByAddress/{timestamp}', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/nextPrayerByAddress/{timestamp}', function (Request $request, Response $response) {
         $timestamp = ApiRequest::time($request->getAttribute('timestamp'));
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
@@ -241,7 +241,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     }
      * }
      */
-    $group->get('/timings', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/timings', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
@@ -267,7 +267,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/timings/{timestamp}', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/timings/{timestamp}', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
@@ -423,7 +423,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     }
      * }
      */
-    $group->get('/timingsByAddress', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/timingsByAddress', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
@@ -447,7 +447,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/timingsByAddress/{timestamp}', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/timingsByAddress/{timestamp}', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
@@ -604,7 +604,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     }
      * }
      */
-    $group->get('/timingsByCity', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/timingsByCity', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
@@ -630,7 +630,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/timingsByCity/{timestamp}', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/timingsByCity/{timestamp}', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
@@ -658,7 +658,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/cityInfo', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/cityInfo', function (Request $request, Response $response) {
         $city = ApiRequest::getQueryParam($request, 'city');
         $country = ApiRequest::getQueryParam($request, 'country');
         $state = ApiRequest::getQueryParam($request, 'state');
@@ -670,7 +670,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
         }
     });
 
-    $group->get('/addressInfo', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/addressInfo', function (Request $request, Response $response) {
         $address = ApiRequest::getQueryParam($request, 'address');
         $result = $this->get('model')->locations->getAddressCoOrdinatesAndZone($address);
         if ($result) {

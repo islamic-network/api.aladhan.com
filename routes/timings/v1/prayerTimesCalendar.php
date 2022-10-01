@@ -229,7 +229,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     ]
      * }
      */
-    $group->get('/calendar', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/calendar', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
@@ -488,7 +488,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     ]
      * }
      */
-    $group->get('/hijriCalendar', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/hijriCalendar', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
@@ -743,7 +743,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     ]
      * }
      */
-    $group->get('/calendarByAddress', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/calendarByAddress', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
@@ -992,7 +992,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     ]
      * }
      */
-    $group->get('/hijriCalendarByAddress', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/hijriCalendarByAddress', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
@@ -1243,7 +1243,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     ]
      * }
      */
-    $group->get('/calendarByCity', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/calendarByCity', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
@@ -1497,7 +1497,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *     ]
      * }
      */
-    $group->get('/hijriCalendarByCity', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/hijriCalendarByCity', function (Request $request, Response $response) {
         $school = ClassMapper::school(ApiRequest::school(ApiRequest::getQueryParam($request, 'school')));
         $midnightMode = ClassMapper::midnightMode(ApiRequest::midnightMode(ApiRequest::getQueryParam($request, 'midnightMode')));
         $latitudeAdjustmentMethod = ClassMapper::latitudeAdjustmentMethod(ApiRequest::latitudeAdjustmentMethod(ApiRequest::getQueryParam($request, 'latitudeAdjustmentMethod')));
