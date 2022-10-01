@@ -35,4 +35,9 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
     $group->get('/liveness', function (Request $request, Response $response) {
         return ApiResponse::print($response, 'OK',200, 'OK');
     });
+
+    // Allow preflight requests
+    $group->options('', function (Request $request, Response $response): Response {
+        return $response;
+    });
 });
