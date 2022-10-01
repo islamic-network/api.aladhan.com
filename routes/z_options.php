@@ -10,8 +10,9 @@ $app->options('/{routes:.+}', function (Request $request, Response $response, $a
 /**
  * Catch-all route to serve a 404 Not Found page if none of the routes match
  * NOTE: make sure this route is defined last
- */
+
 $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function (Request $request, Response $response) {
     throw new HttpNotFoundException($request);
 });
+ *  */
 
