@@ -7,7 +7,7 @@ use AlAdhanApi\Helper\Database;
 use Slim\Routing\RouteCollectorProxy;
 
 $app->group('/v1', function(RouteCollectorProxy $group) {
-    $group->get('/status', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/status', function (Request $request, Response $response) {
         $mc = new Cacher();
         $dbx = new Database();
         $dbResult = false;
@@ -32,12 +32,8 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
 
     });
 
-    $group->get('/liveness', function (Request $request, Response $response) {
+    $group->map(['GET', 'OPTIONS'], '/liveness', function (Request $request, Response $response) {
         return ApiResponse::print($response, 'OK',200, 'OK');
     });
 
-    // Allow preflight requests
-    $group->options('', function (Request $request, Response $response): Response {
-        return $response;
-    });
 });
