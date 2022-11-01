@@ -33,7 +33,7 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
     public function testTime()
     {
         $this->assertEquals(strtotime('11-11-2017'), Request::time('11-11-2017'));
-        $time = time();
+        $time = time() + 25200;
         $this->assertEquals($time, Request::time($time));
     }
 

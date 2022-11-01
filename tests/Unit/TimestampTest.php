@@ -25,7 +25,7 @@ class TimestampTest extends \PHPUnit\Framework\TestCase
 
     public function testTime()
     {
-        $this->assertEquals(1649030400, Request::time('04-04-2022'));
+        $this->assertEquals(1649030400 + 25200, Request::time('04-04-2022'));
         $this->assertEquals(1649030400, Request::time('1649030400'));
 
     }
