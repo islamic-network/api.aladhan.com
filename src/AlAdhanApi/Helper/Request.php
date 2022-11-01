@@ -133,7 +133,6 @@ class Request
             $dt = new \DateTimeImmutable(self::monthDay($date[0], $month, $year) .
                 '-' . $month .
                 '-' . $year, new \DateTimeZone($timezone));
-            // $dt->add(new \DateInterval('PT7H'));
             $timestamp = $dt->getTimestamp() + 25200;
 
             // If we can get a timestamp from the date, return that.
