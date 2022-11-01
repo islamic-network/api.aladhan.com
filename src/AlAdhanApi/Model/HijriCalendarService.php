@@ -344,10 +344,12 @@ class HijriCalendarService
         for ($i=1; $i<=$days; $i++) {
             $curDate = $i . '-' . $m . '-' . $y;
             $calendar = $this->hToG($curDate, $adjustment);
-            if ($calendar['hijri']['month']['number'] != $m) {
-                unset($calendar[$i]);
+            if ($calendar !== false) {
+                if ($calendar['hijri']['month']['number'] != $m) {
+                    unset($calendar[$i]);
+                }
+                $combineCal[] = $calendar;
             }
-            $combineCal[] = $calendar;
         }
 
         return $combineCal;
