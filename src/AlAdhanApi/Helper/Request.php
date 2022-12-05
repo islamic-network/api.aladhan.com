@@ -61,7 +61,7 @@ class Request
 
             return 2; // ISNA
         }
-        if (!in_array($data, [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 99])) {
+        if (!in_array($data, [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 99])) {
             return 2; // ISNA
         } else {
             return (int) $data;
