@@ -40,7 +40,7 @@ class RequestHelperTest extends \PHPUnit\Framework\TestCase
     public function testClosestMethodTest()
     {
         // Dubai, UAE
-        $this->assertEquals(8, Request::calculateClosestMethod(25.002074, 55.168764));
+        $this->assertEquals(16, Request::calculateClosestMethod(25.002074, 55.168764));
 
         // Paris, France
         $this->assertEquals(12, Request::calculateClosestMethod(48.8566, 2.3522));
