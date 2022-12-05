@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "279571da5939a971c941a602e8f46257",
+    "content-hash": "0dad2fa089b2a373d02ff6fca9a98ca9",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -775,16 +775,16 @@
         },
         {
             "name": "islamic-network/prayer-times",
-            "version": "1.0.20",
+            "version": "1.0.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/islamic-network/prayer-times.git",
-                "reference": "df2df0ec064b065a4289a2e24b4cb4010f659ad1"
+                "reference": "92185099bd1e79cd0c6bc35fd1e8a3347325ee21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/islamic-network/prayer-times/zipball/df2df0ec064b065a4289a2e24b4cb4010f659ad1",
-                "reference": "df2df0ec064b065a4289a2e24b4cb4010f659ad1",
+                "url": "https://api.github.com/repos/islamic-network/prayer-times/zipball/92185099bd1e79cd0c6bc35fd1e8a3347325ee21",
+                "reference": "92185099bd1e79cd0c6bc35fd1e8a3347325ee21",
                 "shasum": ""
             },
             "require": {
@@ -806,7 +806,7 @@
             "description": "Precise and Powerful PHP Prayer Times Library",
             "support": {
                 "issues": "https://github.com/islamic-network/prayer-times/issues",
-                "source": "https://github.com/islamic-network/prayer-times/tree/1.0.20"
+                "source": "https://github.com/islamic-network/prayer-times/tree/1.0.21"
             },
             "funding": [
                 {
@@ -818,7 +818,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2022-12-04T19:58:19+00:00"
+            "time": "2022-12-05T04:56:52+00:00"
         },
         {
             "name": "islamic-network/prayer-times-moonsighting",
