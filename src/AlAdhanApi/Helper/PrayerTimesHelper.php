@@ -320,11 +320,11 @@ class PrayerTimesHelper
             $methodSettings = ApiRequest::customMethod(ApiRequest::getQueryParam($request, 'methodSettings'));
             $customMethod = self::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
-        }
-        if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($d, $adjustment)) {
+        } elseif ($pt->getMethod() == Method::METHOD_MAKKAH && self::isRamadan($d, $adjustment)) {
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
-        }
-        else {
+        } elseif ($pt->getMethod() == Method::METHOD_UAE) {
+            $pt->tune($tune[0], $tune[1], $tune[2], 3, $tune[4], 3,3, $tune[7], $tune[8]);
+        } else {
             $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
         }
 

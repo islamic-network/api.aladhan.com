@@ -34,6 +34,7 @@ class ClassMapper
             13 => Method::METHOD_TURKEY,
             14 => Method::METHOD_RUSSIA,
             15 => Method::METHOD_MOONSIGHTING,
+            16 => Method::METHOD_UAE,
             99 => Method::METHOD_CUSTOM,
         ];
 
