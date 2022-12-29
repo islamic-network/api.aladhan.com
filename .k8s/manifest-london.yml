@@ -202,10 +202,11 @@ metadata:
   name: rate-limiting-aladhan-api
   namespace: aladhan-com
 config:
-  second: 11 # Currently there are 2 ingress pods, so set to 16 requests each per IP per second. Which means a total of only 240 requests / min / IP (~4 per second).
+  second: 12
   policy: redis
   redis_host: redis-master
   redis_port: 6379
+  limit_by: ip
 plugin: rate-limiting
 ---
 apiVersion: configuration.konghq.com/v1
