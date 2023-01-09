@@ -140,7 +140,7 @@ spec:
         app: aladhan-com-api-memcached
     spec:
       nodeSelector:
-        lke.linode.com/pool-id: 130435
+        lke.linode.com/pool-id: "130435"
       containers:
         - name: aladhan-com-api-memcached
           image: memcached:1.5
