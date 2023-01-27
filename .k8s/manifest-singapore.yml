@@ -145,7 +145,7 @@ spec:
         - name: aladhan-com-api-memcached
           image: memcached:1.5
           args:
-            - '-m 64'
+            - '-m 44'
           resources:
             requests:
               memory: 64Mi
