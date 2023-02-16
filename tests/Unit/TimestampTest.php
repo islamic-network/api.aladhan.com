@@ -1,4 +1,7 @@
 <?php
+
+namespace Tests\Unit;
+
 use AlAdhanApi\Helper\Request;
 
 class TimestampTest extends \PHPUnit\Framework\TestCase

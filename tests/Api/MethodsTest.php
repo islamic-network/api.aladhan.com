@@ -6,7 +6,7 @@ class MethodsTest extends \PHPUnit\Framework\TestCase
 
     public function setUp(): void
     {
-        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://localhost:8080/v1/']);
+        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://localhost/v1/']);
     }
 
     public function tearDown(): void
@@ -24,7 +24,7 @@ class MethodsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("application/json", $contentType);
 
         $responseBody = json_decode($response->getBody());
-        $this->assertEquals(16, count((array)$responseBody->data));
+        $this->assertEquals(17, count((array)$responseBody->data));
     }
 
 }

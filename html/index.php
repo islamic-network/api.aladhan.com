@@ -1,21 +1,20 @@
 <?php
+/**
+ * Tweak these headers as needed, especially if you are going to use this API from a client side SPA
+ * without a Backend for Frontend
+ */
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH, OPTIONS');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Headers: Authorization, origin');
 
-// Setup app.
-require_once realpath(__DIR__) . '/../config/init.php';
-require_once realpath(__DIR__) . '/../config/dependencies.php';
+require_once (realpath(__DIR__ . '/../vendor/autoload.php'));
 
-/** Load routes **/
-$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(realpath(__DIR__) . '/../routes'));
-$routes = array_keys(array_filter(iterator_to_array($iterator), function($file) {
-    return $file->isFile();
-}));
-foreach ($routes as $route) {
-    if (strpos($route, '.php') !== false) {
-        require_once(realpath($route));
-    }
-}
-/***/
+use Mamluk\Kipchak\Api;
+
+// Instantiate Slim, load dependencies and middlewares
+$app = Api::boot();
+
+$app->addBodyParsingMiddleware();
 
 $app->run();

@@ -1,12 +1,12 @@
 <?php
 
-class timingsByCityTest extends \PHPUnit\Framework\TestCase
+class TimingsByCityTest extends \PHPUnit\Framework\TestCase
 {
     private $http;
 
     public function setUp(): void
     {
-        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://localhost:8080/v1/']);
+        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://localhost/v1/']);
     }
 
     public function tearDown():void

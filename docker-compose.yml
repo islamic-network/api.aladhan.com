@@ -1,83 +1,43 @@
-version: '2'
+version: '3'
 services:
-  #######################################
-  # PHP application Docker container
-  #######################################
-  app:
+  aladhan_api:
     build:
       context: .
       dockerfile: Dockerfile
     links:
-      - aa-memcached
-      - aa-db
+      - aladhan_memcached
     depends_on:
-      - aa-memcached
-      - aa-db
+      - aladhan_memcached
     environment:
-      DEBUG_MODE: "true"
-      MYSQL_USER: "aladhan"
-      MYSQL_PASSWORD: "aladhan"
-      MYSQL_DATABASE: "aladhan_locations"
-      MYSQL_HOST_1: "aa-db"
-      MEMCACHED_HOST: "aa-memcached"
+      DEBUG: "true" # Any value equals true. To turn off debug mode, comment or delete this env var.
+      MEMCACHED_HOST: "aladhan_memcached"
       MEMCACHED_PORT: 11211
-      GOOGLE_API_KEY: "xyz"
-      ASKGEO_ACCOUNT_ID: "1234"
-      ASKGEO_API_KEY: "xyz"
     ports:
-      - "7070:8080"
+      - "80:8080"
     volumes:
       - .:/var/www
     privileged: true
-    container_name: aa-app
+    container_name: aladhan_api
 
+#  mysql:
+#    image: percona:8
+#    environment:
+#      MYSQL_ROOT_PASSWORD: "root"
+#      MYSQL_USER: "api"
+#      MYSQL_PASSWORD: "api"
+#      MYSQL_DATABASE: "api"
+#    container_name: mysql
 
-  #######################################
-  # MySQL
-  #######################################
-  aa-db:
-    image: islamicnetwork/api.aladhan.com-db:25-Sep-2019-master
-    environment:
-      MYSQL_ROOT_PASSWORD: "root"
-      MYSQL_USER: "aladhan"
-      MYSQL_PASSWORD: "aladhan"
-      MYSQL_DATABASE: "aladhan_locations"
-    container_name: aa-db
+#  couchdb:
+#    image: couchdb:3.2
+#    environment:
+#      COUCHDB_USER: "api"
+#      COUCHDB_PASSWORD: "api"
+#    ports:
+#      - "5984:5984"
+#    container_name: couchdb
 
-  #######################################
-  # PHPMyAdmin 1
-  #######################################
-  aa-pma:
-    image: phpmyadmin/phpmyadmin:4.8.3
-    environment:
-      PMA_HOST: aa-db
-    ports:
-      - "7071:80"
-    links:
-      - aa-db
-    depends_on:
-      - aa-db
-    container_name: aa-pma
+  aladhan_memcached:
+    image: memcached:1.6
+    container_name: aladhan_memcached
 
-  #######################################
-  # Memcached
-  #######################################
-  aa-memcached:
-    image: memcached:1.5
-    #ports:
-    #  - "11211:11211"
-    container_name: aa-memcached
-
-  #######################################
-  # Memcached Admin
-  #######################################
-  aa-memadmin:
-    image: islamicnetwork/phpmemadmin:latest
-    ports:
-      - "7074:8080"
-    environment:
-      MEMADMIN_USERNAME: aa
-      MEMADMIN_PASSWORD: aa
-      MEMCACHED_HOST: aa-memcached
-      MEMCACHED_PORT: 11211
-    container_name: aa--memadmin
