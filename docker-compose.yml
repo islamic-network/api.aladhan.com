@@ -19,24 +19,6 @@ services:
     privileged: true
     container_name: aladhan_api
 
-#  mysql:
-#    image: percona:8
-#    environment:
-#      MYSQL_ROOT_PASSWORD: "root"
-#      MYSQL_USER: "api"
-#      MYSQL_PASSWORD: "api"
-#      MYSQL_DATABASE: "api"
-#    container_name: mysql
-
-#  couchdb:
-#    image: couchdb:3.2
-#    environment:
-#      COUCHDB_USER: "api"
-#      COUCHDB_PASSWORD: "api"
-#    ports:
-#      - "5984:5984"
-#    container_name: couchdb
-
   aladhan_memcached:
     image: memcached:1.6
     container_name: aladhan_memcached

@@ -12,11 +12,9 @@ This repository powers the AlAdhan.com API on http://api.aladhan.com.
 
 # Technology Stack
 * PHP 8.1
-* PerconaDB 8.x
-* Memcached 1.5
-* Slim Framework v4
-* Google Maps API for the GeoCoding API (https://developers.google.com/maps/documentation/geocoding/intro)
-* AskGeo API for the Timezone API (https://askgeo.com/database/TimeZone)
+* Memcached 1.6
+* Kipchak (https://github.com/mamluk/kipchak)
+* 7x APIs (https://7x.ax)
 
 ### Running the App
 
@@ -36,11 +34,8 @@ docker-compose up
 
 This will bring up several containers:
 
-1. aa-app - This is the actual PHP / Apache instance. This runs on https://localhost:7070 - see https://localhost:7070/v1/status.
-2. aa-db - This is the Percona DB Container.
-3. aa-memcached - This is the Memcached Container.
-4. aa-pma - PHPMYAdmin to acccess your Percona DB. This runs on https://localhost:7071. The default username and password are both 'aladhan'.
-5. aa-memadmin - PHPMemcachedAdmin to access your Memcached container. This runs on localhost:7074. The default username and password are both 'aa'
+1. aladhan_api - This is the actual PHP / Apache instance. This runs on https://localhost:7070 - see https://localhost:7070/v1/status.
+3. aladhan_memcached - This is the Memcached Container.
 
 #### Build and Contribute
 
