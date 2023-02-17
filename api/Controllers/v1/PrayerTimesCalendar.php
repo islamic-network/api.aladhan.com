@@ -24,9 +24,9 @@ class PrayerTimesCalendar extends Slim
     public function calendar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $hijri = str_contains($request->getUri(), 'hijri');
-        $month = Http\Request::getQueryParam($request, 'month');
         $year = Http\Request::getQueryParam($request, 'year');
         $annual = Http\Request::getQueryParam($request, 'annual') === "true";
+        $annual === true ? $month = 1 : $month = Http\Request::getQueryParam($request, 'month');
         if (Http\Request::getQueryParam($request, 'latitude') === null ||
             Http\Request::getQueryParam($request, 'longitude') === null ||
             $month === null ||
@@ -57,9 +57,9 @@ class PrayerTimesCalendar extends Slim
     public function calendarByAddress(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $hijri = str_contains($request->getUri(), 'hijri');
-        $month = Http\Request::getQueryParam($request, 'month');
         $year = Http\Request::getQueryParam($request, 'year');
         $annual = Http\Request::getQueryParam($request, 'annual') === "true";
+        $annual === true ? $month = 1 : $month = Http\Request::getQueryParam($request, 'month');
         if (Http\Request::getQueryParam($request, 'address') === null ||
             $month === null ||
             $year === null) {
@@ -88,9 +88,9 @@ class PrayerTimesCalendar extends Slim
     public function calendarByCity(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $hijri = str_contains($request->getUri(), 'hijri');
-        $month = Http\Request::getQueryParam($request, 'month');
         $year = Http\Request::getQueryParam($request, 'year');
         $annual = Http\Request::getQueryParam($request, 'annual') === "true";
+        $annual === true ? $month = 1 : $month = Http\Request::getQueryParam($request, 'month');
         if (Http\Request::getQueryParam($request, 'city') === null ||
             Http\Request::getQueryParam($request, 'country') === null ||
             $month === null ||
