@@ -19,9 +19,6 @@ class Status extends Controllers\Slim
 
     public function get(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-
-        $this->logger->debug('Checking Status...');
-
         return Http\Response::json($response,
             [
                 'status' => 'alive'
