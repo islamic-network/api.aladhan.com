@@ -20,7 +20,7 @@ This repository powers the AlAdhan.com API on http://api.aladhan.com.
 
 The api and all its dependencies are fully Dockerised. You **just need docker and docker-compose** to spin everything up.
 
-You should enter your Google Maps API Key and Ask Geo Account ID and keys in the docker-compose file on lines 27, 28 and 29.
+You should enter your 7x API key in the docker-compose file on line 15.
 
 A production ready Docker image of the app is published as:
 
