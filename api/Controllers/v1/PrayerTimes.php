@@ -36,7 +36,7 @@ class PrayerTimes extends Slim
             $d = ApiRequest::getRedirectableDate($datestring);
             $d->setTimezone(new DateTimeZone($ptm->timezone));
 
-            return Http\Response::redirect($response, '/v1/timings/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 301);
+            return Http\Response::redirect($response, '/v1/timings/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 302);
         }
 
         if (ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
@@ -70,7 +70,7 @@ class PrayerTimes extends Slim
             $d = ApiRequest::getRedirectableDate($datestring);
             $d->setTimezone(new DateTimeZone($ptm->timezone));
 
-            return Http\Response::redirect($response, '/v1/timingsByAddress/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 301);
+            return Http\Response::redirect($response, '/v1/timingsByAddress/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 302);
         }
 
         if (ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
@@ -104,7 +104,7 @@ class PrayerTimes extends Slim
             $d = ApiRequest::getRedirectableDate($datestring);
             $d->setTimezone(new DateTimeZone($ptm->timezone));
 
-            return Http\Response::redirect($response, '/v1/timingsByCity/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 301);
+            return Http\Response::redirect($response, '/v1/timingsByCity/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 302);
         }
 
         if (ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
@@ -136,7 +136,7 @@ class PrayerTimes extends Slim
             $d = ApiRequest::getRedirectableDate($datestring);
             $d->setTimezone(new DateTimeZone($ptm->timezone));
 
-            return Http\Response::redirect($response, '/v1/nextPrayer/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 301);
+            return Http\Response::redirect($response, '/v1/nextPrayer/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 302);
         }
 
         if (ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
@@ -171,7 +171,7 @@ class PrayerTimes extends Slim
             $d = ApiRequest::getRedirectableDate($datestring);
             $d->setTimezone(new DateTimeZone($ptm->timezone));
 
-            return Http\Response::redirect($response, '/v1/nextPrayerByAddress/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 301);
+            return Http\Response::redirect($response, '/v1/nextPrayerByAddress/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 302);
         }
 
         if (ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
