@@ -1,13 +1,18 @@
 <?php
-use AlAdhanApi\Model\HijriCalendarService;
 
-class HijriTest extends \PHPUnit\Framework\TestCase
+namespace Tests\Unit;
+
+
+use PHPUnit\Framework\TestCase;
+use Api\Models\HijriCalendar;
+
+class HijriTest extends TestCase
 {
     private $hcs;
 
     public function Setup(): void
     {
-        $this->hcs = new HijriCalendarService();
+        $this->hcs = new HijriCalendar();
     }
 
     public function testGToH()
@@ -64,14 +69,14 @@ class HijriTest extends \PHPUnit\Framework\TestCase
     public function testDateConstruct()
     {
         $this->hcs->ConstructDayMonthYear('25-10-2018', 'DD-MM-YYYY');
-        $this->assertEquals('25', $this->hcs->Day);
-        $this->assertEquals('10', $this->hcs->Month);
-        $this->assertEquals('2018', $this->hcs->Year);
+        $this->assertEquals('25', $this->hcs->day);
+        $this->assertEquals('10', $this->hcs->month);
+        $this->assertEquals('2018', $this->hcs->year);
 
         $this->hcs->ConstructDayMonthYear('25102018', 'DDMMYYYY');
-        $this->assertEquals('25', $this->hcs->Day);
-        $this->assertEquals('10', $this->hcs->Month);
-        $this->assertEquals('2018', $this->hcs->Year);
+        $this->assertEquals('25', $this->hcs->day);
+        $this->assertEquals('10', $this->hcs->month);
+        $this->assertEquals('2018', $this->hcs->year);
     }
 
     public function testIslamicHolidaysByHijriYear()
@@ -81,6 +86,5 @@ class HijriTest extends \PHPUnit\Framework\TestCase
         //print_r($holydays);
         $this->assertEquals('Ashura', $holydays[0]['hijri']['holidays'][0]);
     }
+
 }
-
-

@@ -1,12 +1,12 @@
 <?php
 
-class timingsByAddressTest extends \PHPUnit\Framework\TestCase
+class TimingsByAddressTest extends \PHPUnit\Framework\TestCase
 {
     private $http;
 
     public function setUp(): void
     {
-        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://localhost:8080/v1/']);
+        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://localhost/v1/']);
     }
 
     public function tearDown(): void
@@ -23,6 +23,7 @@ class timingsByAddressTest extends \PHPUnit\Framework\TestCase
             ]
         ]);
 
+        // This will ensure the 301 is followed
         $this->assertEquals(200, $response->getStatusCode());
 
         // With a date (should also add one with a UNIX timestamp)

@@ -1,7 +1,6 @@
 FROM islamicnetwork/php:8.1-apache
 
 # Copy files
-RUN cd ../ && rm -rf /var/www/html
 COPY . /var/www/
 COPY etc/apache2/mods-enabled/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_prefork.conf
 
@@ -9,19 +8,17 @@ COPY etc/apache2/mods-enabled/mpm_prefork.conf /etc/apache2/mods-enabled/mpm_pre
 RUN cd /var/www && composer install --no-dev
 
 # Delete stuff we do not need
-RUN rm -rf /var/www/db
 RUN rm -rf /var/www/.git
 RUN rm -rf /var/www/.gitignore
-RUN rm -rf /var/www/build.sh
-RUN rm -rf /var/www/.idea
 
+# Set the correct permissions
 RUN chown -R www-data:www-data /var/www/
-ENV MYSQL_USER "aladhan"
-ENV MYSQL_PASSWORD "aladhan"
-ENV MYSQL_DATABASE "aladhan_locations"
-ENV MYSQL_HOST_1 "db1"
-ENV MEMCACHED_HOST "host"
-ENV MEMCACHED_PORT "port"
-ENV GOOGLE_API_KEY "key"
-ENV ASKGEO_ACCOUNT_ID "account"
-ENV ASKGEO_API_KEY "key"
+
+# The correct environment variables are set in the docker-compose file. Set any other ones here.
+
+###############################################################################################################
+## If you are using Doctine ORM, comment out the next 3 lines to generate proxies at container startup time. ##
+# COPY bin/doctrine/proxies.sh /usr/local/bin/doctrine-proxies.sh
+# RUN chmod -R 777 /tmp && chmod 755 /usr/local/bin/doctrine-proxies.sh
+# CMD ["/usr/local/bin/doctrine-proxies.sh"]
+###################################### Doctrine Proxies end ###################################################

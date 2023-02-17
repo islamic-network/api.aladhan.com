@@ -6,7 +6,7 @@ class SmokeTest extends \PHPUnit\Framework\TestCase
 
     public function setUp(): void
     {
-        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://localhost:8080/v1/']);
+        $this->http = new GuzzleHttp\Client(['base_uri' => 'http://localhost/v1/']);
     }
 
     public function tearDown(): void
@@ -22,23 +22,6 @@ class SmokeTest extends \PHPUnit\Framework\TestCase
 
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json", $contentType);
-    }
-
-    public function testStatus()
-    {
-        $response = $this->http->request('GET', 'status');
-        $this->assertEquals(200, $response->getStatusCode());
-
-
-
-        $contentType = $response->getHeaders()["Content-Type"][0];
-        $this->assertEquals("application/json", $contentType);
-    }
-
-    public function testLiveness()
-    {
-        $response = $this->http->request('GET', 'liveness');
-        $this->assertEquals(200, $response->getStatusCode());
     }
 
     public function testgToH()
@@ -95,7 +78,7 @@ class SmokeTest extends \PHPUnit\Framework\TestCase
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json", $contentType);
 
-        $response = $this->http->request('GET', 'hijriHolidays/9/7');
+        $response = $this->http->request('GET', 'hijriHolidays/27/7');
         $this->assertEquals(200, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json", $contentType);
@@ -145,12 +128,12 @@ class SmokeTest extends \PHPUnit\Framework\TestCase
 
     public function testNextPrayerByAddress()
     {
-        $response = $this->http->request('GET', 'nextPrayerByAddress?address=Wafi City, Oud Metha, Dubai, UAE&iso8601=true');
+        $response = $this->http->request('GET', 'nextPrayerByAddress?address=Wafi City, Dubai, UAE&iso8601=true');
         $this->assertEquals(200, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json", $contentType);
 
-        $response = $this->http->request('GET', 'nextPrayerByAddress/' . time() . '?address=Wafi City, Oud Metha, Dubai, UAE');
+        $response = $this->http->request('GET', 'nextPrayerByAddress/' . time() . '?address=Wafi City, Dubai, UAE');
         $this->assertEquals(200, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json", $contentType);

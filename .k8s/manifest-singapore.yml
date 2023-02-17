@@ -38,49 +38,18 @@ spec:
         - name: aladhan-com-api
           image: islamicnetwork/api.aladhan.com:$COMMIT_TAG
           env:
-            - name:  DEBUG_MODE
-              value: "false"
-            - name:  MYSQL_USER
-              valueFrom:
-                secretKeyRef:
-                  name: aladhan-com-api-database
-                  key: username
-            - name:  MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: aladhan-com-api-database
-                  key: password
-            - name:  MYSQL_DATABASE
-              valueFrom:
-                secretKeyRef:
-                  name: aladhan-com-api-database
-                  key: database
-            - name:  MYSQL_HOST_1
-              value: "db.singapore.local.islamic.network"
-            - name:  MYSQL_PORT_1
-              value: "3306"
-            - name:  MEMCACHED_HOST
+            - name: MEMCACHED_HOST
               value: "aladhan-com-api-memcached"
-            - name:  MEMCACHED_PORT
+            - name: MEMCACHED_PORT
               value: "11211"
-            - name:  GOOGLE_API_KEY
+            - name: 7X_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: aladhan-com-api-googlemaps-creds
-                  key: apikey
-            - name:  ASKGEO_ACCOUNT_ID
-              valueFrom:
-                secretKeyRef:
-                  name: aladhan-com-api-askgeo-creds
-                  key: accountid
-            - name:  ASKGEO_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: aladhan-com-api-askgeo-creds
+                  name: aladhan-com-api-7x-creds
                   key: apikey
           livenessProbe:
             httpGet:
-              path: /v1/liveness
+              path: /status
               port: 8080
             initialDelaySeconds: 3
             periodSeconds: 7
@@ -88,7 +57,7 @@ spec:
             failureThreshold: 7
           startupProbe:
             httpGet:
-              path: /v1/status
+              path: /status
               port: 8080
             periodSeconds: 3
             failureThreshold: 3
@@ -143,14 +112,16 @@ spec:
         lke.linode.com/pool-id: "130426"
       containers:
         - name: aladhan-com-api-memcached
-          image: memcached:1.5
+          image: memcached:1.6
           args:
-            - '-m 44'
+            - "memcached"
+            - "-m"
+            - "256"
           resources:
             requests:
-              memory: 64Mi
+              memory: 288Mi
             limits:
-              memory: 64Mi
+              memory: 288Mi
           ports:
             - containerPort: 11211
               protocol: TCP
