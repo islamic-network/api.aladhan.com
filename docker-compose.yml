@@ -12,6 +12,7 @@ services:
       DEBUG: "true" # Any value equals true. To turn off debug mode, comment or delete this env var.
       MEMCACHED_HOST: "aladhan_memcached"
       MEMCACHED_PORT: 11211
+#      X7X_API_KEY: ""
     ports:
       - "80:8080"
     volumes:

@@ -42,7 +42,7 @@ spec:
               value: "aladhan-com-api-memcached"
             - name:  MEMCACHED_PORT
               value: "11211"
-            - name:  7X_API_KEY
+            - name:  X7X_API_KEY
               valueFrom:
                 secretKeyRef:
                   name: aladhan-com-api-7x-creds
