@@ -82,7 +82,9 @@ class Timezone
 
                 $tzx = $tz->get($latitude, $longitude);
 
-                return $tzx->timezones[0];
+                if (isset($tzx->timezones) && is_array($tzx->timezones)) {
+                    return $tzx->timezones[0];
+                }
             }
         }
 
