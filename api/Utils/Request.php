@@ -312,12 +312,12 @@ class Request
     public static function isValidAddress(string $string): bool
     {
         // Adding this here because bots are generating most of the invalid addresses
-        if (Timezone::isGoogleBot()) {
-            return false;
-        }
+//        if (Timezone::isGoogleBot()) {
+//            return false;
+//        }
         $characters = ["#", "@", "<", ">", "!", "", "Ä", "\n", "\x"];
         foreach ($characters as $x) {
-            if (strpos($string, $x) !== false) {
+            if (str_contains($string, $x)) {
                 return false;
             }
         }
@@ -419,5 +419,23 @@ class Request
         } else {
             return self::getDateObjectFromUnixTimestamp($datestring);
         }
+    }
+
+    public static function isMonthValid($data): bool
+    {
+        if ($data == '' || $data == null || !is_numeric($data) || ((int) $data) > 12 || ((int) $data) < 1 || strlen($data) > 2 || strlen($data) < 1) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function isYearValid($data): bool
+    {
+        if ($data == '' || $data == null || !is_numeric($data) || strlen($data) < 1 || ((int) $data) < 1 ) {
+            return false;
+        }
+
+        return true;
     }
 }

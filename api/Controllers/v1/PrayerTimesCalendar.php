@@ -2,6 +2,7 @@
 
 namespace Api\Controllers\v1;
 
+use Api\Utils\Request;
 use Mamluk\Kipchak\Components\Controllers\Slim;
 use Mamluk\Kipchak\Components\Http;
 use Psr\Container\ContainerInterface;
@@ -29,8 +30,8 @@ class PrayerTimesCalendar extends Slim
         $annual === true ? $month = 1 : $month = Http\Request::getQueryParam($request, 'month');
         if (Http\Request::getQueryParam($request, 'latitude') === null ||
             Http\Request::getQueryParam($request, 'longitude') === null ||
-            $month === null ||
-            $year === null) {
+            !Request::isMonthValid($month) ||
+            !Request::isYearValid($year)) {
             throw new HttpBadRequestException($request, 'Please specify a latitude, longitude, month and year.');
         }
 
@@ -61,8 +62,8 @@ class PrayerTimesCalendar extends Slim
         $annual = Http\Request::getQueryParam($request, 'annual') === "true";
         $annual === true ? $month = 1 : $month = Http\Request::getQueryParam($request, 'month');
         if (Http\Request::getQueryParam($request, 'address') === null ||
-            $month === null ||
-            $year === null) {
+            !Request::isMonthValid($month) ||
+            !Request::isYearValid($year)) {
             throw new HttpBadRequestException($request, 'Please specify an address, month and year.');
         }
 
@@ -93,8 +94,8 @@ class PrayerTimesCalendar extends Slim
         $annual === true ? $month = 1 : $month = Http\Request::getQueryParam($request, 'month');
         if (Http\Request::getQueryParam($request, 'city') === null ||
             Http\Request::getQueryParam($request, 'country') === null ||
-            $month === null ||
-            $year === null) {
+            !Request::isMonthValid($month) ||
+            !Request::isYearValid($year)) {
             throw new HttpBadRequestException($request, 'Please specify a city, country, month and year.');
         }
 

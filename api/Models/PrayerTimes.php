@@ -102,7 +102,7 @@ class PrayerTimes
             // This means that this is a /timings call, nothing is required.
         }
 
-        if ($this->address !== null) {
+        if ($this->address !== null && ApiRequest::isValidAddress($this->address)) {
             // /timingsByAddress call. Geocode.
             $coordinates = $this->mc->get(md5('addr.' . strtolower($this->address)), function (ItemInterface $item)  {
                 $item->expiresAfter(604800);
