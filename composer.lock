@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "7x/sdk",
-            "version": "1.1",
+            "version": "1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/7x-ax/sdk-php.git",
-                "reference": "363231a6ccf45f2769dfc76a59c0f90153773f95"
+                "reference": "5dcf06a2e0cb2313873a6e8c8ebc1b2c5289f2c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/7x-ax/sdk-php/zipball/363231a6ccf45f2769dfc76a59c0f90153773f95",
-                "reference": "363231a6ccf45f2769dfc76a59c0f90153773f95",
+                "url": "https://api.github.com/repos/7x-ax/sdk-php/zipball/5dcf06a2e0cb2313873a6e8c8ebc1b2c5289f2c6",
+                "reference": "5dcf06a2e0cb2313873a6e8c8ebc1b2c5289f2c6",
                 "shasum": ""
             },
             "require": {
@@ -48,9 +48,9 @@
             ],
             "support": {
                 "issues": "https://github.com/7x-ax/sdk-php/issues",
-                "source": "https://github.com/7x-ax/sdk-php/tree/1.1"
+                "source": "https://github.com/7x-ax/sdk-php/tree/1.2"
             },
-            "time": "2023-02-16T11:48:47+00:00"
+            "time": "2023-02-17T15:17:50+00:00"
         },
         {
             "name": "bryanjhv/slim-session",
