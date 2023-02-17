@@ -44,7 +44,7 @@ class PrayerTimesCalendar extends Slim
                 $r,
                 200,
                 true,
-                604800
+                3600
             );
         }
 
@@ -76,7 +76,7 @@ class PrayerTimesCalendar extends Slim
                 $r,
                 200,
                 true,
-                604800
+                3600
             );
         }
 
@@ -108,7 +108,7 @@ class PrayerTimesCalendar extends Slim
                 $r,
                 200,
                 true,
-                604800
+                3600
             );
         }
 

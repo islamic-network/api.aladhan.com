@@ -46,7 +46,7 @@ class PrayerTimes extends Slim
                 ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2])],
                 200,
                 true,
-                604800
+                3600
             );
         }
 
@@ -81,7 +81,7 @@ class PrayerTimes extends Slim
                 ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2])],
                 200,
                 true,
-                604800
+                3600
             );
         }
 
@@ -114,7 +114,7 @@ class PrayerTimes extends Slim
                 ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2])],
                 200,
                 true,
-                604800
+                3600
             );
         }
 
@@ -148,7 +148,7 @@ class PrayerTimes extends Slim
                 ['timings' => $nextPrayer, 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2])],
                 200,
                 true,
-                604800
+                300
             );
         }
 
@@ -183,7 +183,7 @@ class PrayerTimes extends Slim
                 ['timings' => $nextPrayer, 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2])],
                 200,
                 true,
-                604800
+                300
             );
         }
 
