@@ -199,6 +199,7 @@ config:
     - application/json
   cache_ttl: 300
   cache_control: true
+  allow_force_cache_header: false
   storage_ttl: 259200
   redis_port: 6379
   redis_host: redis-cache-master
