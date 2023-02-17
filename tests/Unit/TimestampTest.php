@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use AlAdhanApi\Helper\Request;
+use Api\Utils\Request;
 
 class TimestampTest extends \PHPUnit\Framework\TestCase
 {
