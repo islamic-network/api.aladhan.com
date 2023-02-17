@@ -5,6 +5,7 @@ use IslamicNetwork\PrayerTimes\Method;
 use IslamicNetwork\PrayerTimes\PrayerTimes;
 use Api\Utils\Request as ApiRequest;
 use IslamicNetwork\MoonSighting\Isha;
+use Mamluk\Kipchak\Components\Http;
 use DateTime;
 use Api\Utils\Timezone;
 
@@ -318,7 +319,7 @@ class PrayerTimesHelper
         $pt->setShafaq($shafaq);
 
         if ($method == Method::METHOD_CUSTOM) {
-            $methodSettings = ApiRequest::customMethod(ApiRequest::getQueryParam($request, 'methodSettings'));
+            $methodSettings = ApiRequest::customMethod(Http\Request::getQueryParam($request, 'methodSettings'));
             $customMethod = self::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
         } elseif ($pt->getMethod() == Method::METHOD_MAKKAH && self::isRamadan($d, $adjustment)) {
