@@ -33,12 +33,13 @@ class PrayerTimesHelper
         $nextPrayer = null;
         // Recalculate timings without iso8601 so this calculation works
         $timings = $pt->getTimes($d, $latitude, $longitude, null, $latitudeAdjustmentMethod);
+        $timeNow = new \DateTime('now', new \DateTimeZone($timezone));
         foreach ($timings as $p => $t) {
             if (in_array($p, ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'])) {
                 $time = explode(':', $t);
                 $prayerTime = new \DateTime(date("Y-m-d $time[0]:$time[1]:00"), new \DateTimeZone($timezone));
                 $ts = $timestamps[$p] = $prayerTime->getTimestamp();
-                if ($ts > $d->getTimestamp()) {
+                if ($ts > $timeNow->getTimestamp()) {
                     $nextPrayer = [$p => $t];
                     break;
                 }
