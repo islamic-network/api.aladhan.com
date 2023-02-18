@@ -34,7 +34,7 @@ class Timezone
      * @param  String  $timezone Example: Europe/London
      * @return boolean
      */
-    public static function isTimeZoneValid(string $timezone): bool
+    public static function isTimeZoneValid(?string $timezone): bool
     {
         return in_array($timezone, \DateTimeZone::listIdentifiers(\DateTimeZone::ALL_WITH_BC));
     }
