@@ -222,7 +222,17 @@ class SmokeTest extends \PHPUnit\Framework\TestCase
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json", $contentType);
 
+        $response = $this->http->request('GET', 'calendar?latitude=51.508515&longitude=-0.1254872');
+        $this->assertEquals(200, $response->getStatusCode());
+        $contentType = $response->getHeaders()["Content-Type"][0];
+        $this->assertEquals("application/json", $contentType);
+
         $response = $this->http->request('GET', 'hijriCalendar?latitude=51.508515&longitude=-0.1254872&method=2&month=4&year=1437');
+        $this->assertEquals(200, $response->getStatusCode());
+        $contentType = $response->getHeaders()["Content-Type"][0];
+        $this->assertEquals("application/json", $contentType);
+
+        $response = $this->http->request('GET', 'hijriCalendar?latitude=51.508515&longitude=-0.1254872&method=2');
         $this->assertEquals(200, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json", $contentType);
@@ -235,7 +245,17 @@ class SmokeTest extends \PHPUnit\Framework\TestCase
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json", $contentType);
 
+        $response = $this->http->request('GET', 'calendarByAddress?address=Sultanahmet Mosque, Istanbul, Turkey&method=2&year=2017');
+        $this->assertEquals(200, $response->getStatusCode());
+        $contentType = $response->getHeaders()["Content-Type"][0];
+        $this->assertEquals("application/json", $contentType);
+
         $response = $this->http->request('GET', 'hijriCalendarByAddress?address=Sultanahmet Mosque, Istanbul, Turkey&method=2&month=04&year=1437');
+        $this->assertEquals(200, $response->getStatusCode());
+        $contentType = $response->getHeaders()["Content-Type"][0];
+        $this->assertEquals("application/json", $contentType);
+
+        $response = $this->http->request('GET', 'hijriCalendarByAddress?address=Sultanahmet Mosque, Istanbul, Turkey&method=2&month=9');
         $this->assertEquals(200, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json", $contentType);

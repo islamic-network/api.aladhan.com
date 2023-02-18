@@ -102,9 +102,9 @@ class PrayerTimesHelper
             $calstart = new \DateTime( date('Y-m-d H:i:s', $cal_start), new \DateTimeZone($timezone));
             if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart, $adjustment)) {
                 if ($tune !== null) {
-                    $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], '30 min', $tune[8]);
+                    $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], intval('30 min'), $tune[8]);
                 } else {
-                    $pt->tune(0, 0, 0, 0, 0, 0, 0, '30 min', 0);
+                    $pt->tune(0, 0, 0, 0, 0, 0, 0, intval('30 min'), 0);
                 }
             } else {
                 if ($tune !== null) {

@@ -2,6 +2,7 @@
 
 namespace Api\Controllers\v1;
 
+use Api\Models\HijriCalendar;
 use Mamluk\Kipchak\Components\Controllers\Slim;
 use Mamluk\Kipchak\Components\Http;
 use Psr\Container\ContainerInterface;
@@ -17,10 +18,13 @@ use Symfony\Component\Cache\Adapter\MemcachedAdapter;
 class PrayerTimes extends Slim
 {
     public MemcachedAdapter $mc;
+
+
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
         $this->mc = $this->container->get('cache.memcached.cache');
+        $this->hc = new HijriCalendar();
     }
 
     public function timings(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface

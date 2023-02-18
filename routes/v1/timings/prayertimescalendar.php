@@ -223,6 +223,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * }
      */
     $group->map(['GET', 'OPTIONS'],'/calendar', [Controllers\v1\PrayerTimesCalendar::class, 'calendar']);
+    $group->map(['GET', 'OPTIONS'],'/calendar/{month}/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendar']);
 
     /**
      * @api {get} http://api.aladhan.com/v1/calendarByAddress Prayer Times Calendar by address
@@ -441,6 +442,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * }
      */
     $group->map(['GET', 'OPTIONS'],'/calendarByAddress', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByAddress']);
+    $group->map(['GET', 'OPTIONS'],'/calendarByAddress/{month}/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByAddress']);
 
     /**
      * @api {get} http://api.aladhan.com/v1/calendarByCity Prayer Times Calendar by city
@@ -661,6 +663,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * }
      */
     $group->map(['GET', 'OPTIONS'],'/calendarByCity', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByCity']);
+    $group->map(['GET', 'OPTIONS'],'/calendarByCity/{month}/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByCity']);
 
     /**
      * @api {get} http://api.aladhan.com/v1/hijriCalendar Prayer Times Hijri Calendar
@@ -881,6 +884,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * }
      */
     $group->map(['GET', 'OPTIONS'],'/hijriCalendar', [Controllers\v1\PrayerTimesCalendar::class, 'calendar']);
+    $group->map(['GET', 'OPTIONS'],'/hijriCalendar/{month}/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendar']);
 
     /**
      * @api {get} http://api.aladhan.com/v1/hijriCalendarByAddress Prayer Times Hijri Calendar by address
@@ -1099,6 +1103,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * }
      */
     $group->map(['GET', 'OPTIONS'],'/hijriCalendarByAddress', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByAddress']);
+    $group->map(['GET', 'OPTIONS'],'/hijriCalendarByAddress/{month}/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByAddress']);
 
     /**
      * @api {get} http://api.aladhan.com/v1/hijriCalendarByCity Prayer Times Hijri Calendar by city
@@ -1319,6 +1324,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * }
      */
     $group->map(['GET', 'OPTIONS'],'/hijriCalendarByCity', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByCity']);
+    $group->map(['GET', 'OPTIONS'],'/hijriCalendarByCity/{month}/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByCity']);
 
 
 });
