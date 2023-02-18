@@ -282,7 +282,7 @@ class Request
      */
     public static function isTimeZoneValid($data)
     {
-        return Timezone::isTimeZoneValid($data);
+        return $data !== null && Timezone::isTimeZoneValid($data);
     }
 
     /**
