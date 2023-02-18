@@ -197,10 +197,10 @@ config:
     - HEAD
   content_type:
     - application/json
-  cache_ttl: 300
+  cache_ttl: 3600
   cache_control: false
   allow_force_cache_header: false
-  storage_ttl: 259200
+  storage_ttl: 3600
   redis_port: 6379
   redis_host: redis-cache-master
 plugin: proxy-cache-redis
