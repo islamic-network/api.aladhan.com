@@ -3,7 +3,6 @@
 namespace Api\Controllers\v1;
 
 use Api\Models\HijriCalendar;
-use Api\Utils\Generic;
 use Mamluk\Kipchak\Components\Controllers\Slim;
 use Mamluk\Kipchak\Components\Http;
 use Psr\Container\ContainerInterface;
@@ -44,7 +43,7 @@ class PrayerTimes extends Slim
             return Http\Response::redirect($response, '/v1/timings/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 302);
         }
 
-        if (Generic::isCoOrdinateAValidFormat([$ptm->latitude, $ptm->longitude]) && ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+        if (ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
             $r = $ptm->respond($datestring, 'timings');
 
             return Http\Response::json($response,
@@ -78,7 +77,7 @@ class PrayerTimes extends Slim
             return Http\Response::redirect($response, '/v1/timingsByAddress/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 302);
         }
 
-        if (Generic::isCoOrdinateAValidFormat([$ptm->latitude, $ptm->longitude]) && ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+        if (ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
 
             $r = $ptm->respond($datestring, 'timingsByAddress');
 
@@ -112,7 +111,7 @@ class PrayerTimes extends Slim
             return Http\Response::redirect($response, '/v1/timingsByCity/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 302);
         }
 
-        if (Generic::isCoOrdinateAValidFormat([$ptm->latitude, $ptm->longitude]) && ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+        if (ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
             $r = $ptm->respond($datestring, 'timingsByCity');
 
             return Http\Response::json($response,
@@ -144,7 +143,7 @@ class PrayerTimes extends Slim
             return Http\Response::redirect($response, '/v1/nextPrayer/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 302);
         }
 
-        if (Generic::isCoOrdinateAValidFormat([$ptm->latitude, $ptm->longitude]) && ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+        if (ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
             $r = $ptm->respond($datestring, 'nextPrayer');
 
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($r[2], $r[3], $ptm->latitude, $ptm->longitude, $ptm->latitudeAdjustmentMethod, $ptm->iso8601, $ptm->timezone);
@@ -179,7 +178,7 @@ class PrayerTimes extends Slim
             return Http\Response::redirect($response, '/v1/nextPrayerByAddress/' . $d->format('d-m-Y') . '?' . http_build_query($request->getQueryParams()), 302);
         }
 
-        if (Generic::isCoOrdinateAValidFormat([$ptm->latitude, $ptm->longitude]) && ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+        if (ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
             $r = $ptm->respond($datestring, 'nextPrayerByAddress');
 
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($r[2], $r[3], $ptm->latitude, $ptm->longitude, $ptm->latitudeAdjustmentMethod, $ptm->iso8601, $ptm->timezone);

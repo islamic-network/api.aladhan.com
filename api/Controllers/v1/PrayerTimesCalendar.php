@@ -3,7 +3,6 @@
 namespace Api\Controllers\v1;
 
 use Api\Models\HijriCalendar;
-use Api\Utils\Generic;
 use Api\Utils\Request;
 use Mamluk\Kipchak\Components\Controllers\Slim;
 use Mamluk\Kipchak\Components\Http;
@@ -64,7 +63,7 @@ class PrayerTimesCalendar extends Slim
 
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
 
-        if (Generic::isCoOrdinateAValidFormat([$ptm->latitude, $ptm->longitude]) && ApiRequest::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+        if (ApiRequest::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
             $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendar', $hijri);
 
             return Http\Response::json($response,
@@ -118,7 +117,7 @@ class PrayerTimesCalendar extends Slim
 
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
 
-        if (Generic::isCoOrdinateAValidFormat([$ptm->latitude, $ptm->longitude]) && ApiRequest::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+        if (ApiRequest::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
             $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByAddress', $hijri);
 
             return Http\Response::json($response,
@@ -171,7 +170,7 @@ class PrayerTimesCalendar extends Slim
 
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
 
-        if (Generic::isCoOrdinateAValidFormat([$ptm->latitude, $ptm->longitude]) && ApiRequest::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+        if (ApiRequest::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
             $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByCity', $hijri);
 
             return Http\Response::json($response,
