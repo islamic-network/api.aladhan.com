@@ -74,15 +74,7 @@ class PrayerTimes
     public function validate(): void
     {
         $this->validateAddress();
-        $this->validateCoOrdinates();
 
-    }
-
-    public function validateCoOrdinates(): void
-    {
-        if (!Generic::isCoOrdinateAValidFormat([$this->latitude, $this->longitude])) {
-            throw new HttpBadRequestException($this->request,'The geographical coordinates you specified (latitude and longitude) are invalid.');
-        }
     }
 
     public function validateAddress(): void
