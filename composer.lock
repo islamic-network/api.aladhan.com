@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8bf3b784cbe6d516d7b80e3eef37f847",
+    "content-hash": "60b10fc4a01440ffe71844a3c15e4920",
     "packages": [
         {
             "name": "7x/sdk",
@@ -2546,7 +2546,7 @@
         },
         {
             "name": "mamluk/kipchak",
-            "version": "dev-master",
+            "version": "0.31",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mam-luk/kipchak.git",
@@ -2577,7 +2577,6 @@
             "require-dev": {
                 "phpunit/phpunit": "^9.5"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -2596,7 +2595,7 @@
             ],
             "support": {
                 "issues": "https://github.com/mam-luk/kipchak/issues",
-                "source": "https://github.com/mam-luk/kipchak/tree/master"
+                "source": "https://github.com/mam-luk/kipchak/tree/0.31"
             },
             "time": "2023-02-18T11:38:17+00:00"
         },
@@ -7775,7 +7774,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "mamluk/kipchak": 20,
         "rafaelfragoso/haversini-formula": 20
     },
     "prefer-stable": true,

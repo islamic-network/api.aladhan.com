@@ -125,11 +125,11 @@ class PrayerTimes
         }
     }
 
-    public function respond(string $datestring, string $endpoint): array
+    public function respond(string $datestring, string $endpoint, int $expires = 604800): array
     {
         $r = $this->mc->get(md5($endpoint . $datestring . json_encode(get_object_vars($this))),
-            function (ItemInterface $item) use ($datestring) {
-                $item->expiresAfter(604800);
+            function (ItemInterface $item) use ($datestring, $expires) {
+                $item->expiresAfter($expires);
                 $timestamp = ApiRequest::time($datestring, $this->timezone);
                 $d = new DateTime(date('@' . $timestamp));
                 $d->setTimezone(new DateTimeZone($this->timezone));
@@ -151,11 +151,11 @@ class PrayerTimes
 
     }
 
-    public function respondWithCalendar(int $month, int $year, bool $annual, string $endpoint, bool $hijri = false): array
+    public function respondWithCalendar(int $month, int $year, bool $annual, string $endpoint, bool $hijri = false, int $expires = 604800): array
     {
         $r = $this->mc->get(md5($endpoint . $month . $year . $annual . $hijri . json_encode(get_object_vars($this))),
-            function (ItemInterface $item) use ($month, $year, $annual, $hijri) {
-                $item->expiresAfter(604800);
+            function (ItemInterface $item) use ($month, $year, $annual, $hijri, $expires) {
+                $item->expiresAfter($expires);
                 $pt = new \IslamicNetwork\PrayerTimes\PrayerTimes($this->method, $this->school);
                 $pt->setShafaq($this->shafaq);
                 if ($this->method == Method::METHOD_CUSTOM) {

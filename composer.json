@@ -18,7 +18,7 @@
         "7x/sdk": "^1.1",
         "islamic-network/alqibla": "^1.2",
         "islamic-network/prayer-times": "^1.0.22",
-        "mamluk/kipchak": "dev-master",
+        "mamluk/kipchak": "^0.31",
         "rafaelfragoso/haversini-formula": "dev-master",
         "p3k/emoji-detector": "^0.2.1"
     },

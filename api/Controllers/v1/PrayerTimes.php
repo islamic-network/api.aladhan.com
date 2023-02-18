@@ -144,7 +144,7 @@ class PrayerTimes extends Slim
         }
 
         if (ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
-            $r = $ptm->respond($datestring, 'nextPrayer');
+            $r = $ptm->respond($datestring, 'nextPrayer', 3600);
 
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($r[2], $r[3], $ptm->latitude, $ptm->longitude, $ptm->latitudeAdjustmentMethod, $ptm->iso8601, $ptm->timezone);
 
@@ -179,7 +179,7 @@ class PrayerTimes extends Slim
         }
 
         if (ApiRequest::isTimingsRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
-            $r = $ptm->respond($datestring, 'nextPrayerByAddress');
+            $r = $ptm->respond($datestring, 'nextPrayerByAddress', 3600);
 
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($r[2], $r[3], $ptm->latitude, $ptm->longitude, $ptm->latitudeAdjustmentMethod, $ptm->iso8601, $ptm->timezone);
 
