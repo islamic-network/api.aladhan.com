@@ -3,13 +3,12 @@
 namespace Api\Controllers\v1;
 
 use Api\Models\HijriCalendar;
-use Api\Utils\Request;
 use Mamluk\Kipchak\Components\Controllers\Slim;
 use Mamluk\Kipchak\Components\Http;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Api\Utils\Request as ApiRequest;
+use Api\Utils\Request;
 use Api\Models\PrayerTimes as PrayerTimesModel;
 use Slim\Exception\HttpBadRequestException;
 use Symfony\Component\Cache\Adapter\MemcachedAdapter;
@@ -29,41 +28,35 @@ class PrayerTimesCalendar extends Slim
     public function calendar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $hijri = str_contains($request->getUri(), 'hijri');
-        $qyear = Http\Request::getQueryParam($request, 'year');
-        $qmonth = Http\Request::getQueryParam($request, 'month');
+        $adjustment = Http\Request::getQueryParam($request, 'adjustment') === null ? 0 : (int) Http\Request::getQueryParam($request, 'adjustment');
+        $qyear = Http\Request::getQueryParam($request, 'year') === null ?  Request::calendarGetQYear($hijri, $this->hc) :  Http\Request::getQueryParam($request, 'year');
+        $qmonth = Http\Request::getQueryParam($request, 'month') === null ? Request::calendarGetQMonth($hijri, $this->hc, $adjustment) : Http\Request::getQueryParam($request, 'month');
         $annual = Http\Request::getQueryParam($request, 'annual') === "true";
-        if ($qyear === null) {
-            if ($hijri) {
-                $qyear = $this->hc->getCurrentIslamicYear();
-            } else {
-                $qyear = date('Y');
-            }
-        }
-        if ($qmonth === null) {
-            $qmonth = date('n');
-        }
-
-        $month = Http\Request::getAttribute($request, 'month');
         $year = Http\Request::getAttribute($request, 'year');
+        $month = Http\Request::getAttribute($request, 'month');
 
-        if ($month === null || $year === null) {
-            if ($hijri) {
-                return Http\Response::redirect($response, "/v1/hijriCalendar/$qmonth/$qyear?" . http_build_query($request->getQueryParams()), 302);
-            } else {
-                return Http\Response::redirect($response, "/v1/calendar/$qmonth/$qyear?" . http_build_query($request->getQueryParams()), 302);
-            }
+        if ($year === null && $month === null) {
+            // This is a legacy
+            $url = Request::getCalendarRedirectableUrl($hijri, $annual, (int) $qyear, (int) $qmonth);
+
+            return Http\Response::redirect($response, $url . http_build_query($request->getQueryParams()), 302);
+        }
+
+        if ($month === null) {
+            $annual = true;
+            $month = 1; // any value will do
         }
 
         if (Http\Request::getQueryParam($request, 'latitude') === null ||
             Http\Request::getQueryParam($request, 'longitude') === null ||
-            !Request::isMonthValid($month) ||
-            !Request::isYearValid($year)) {
-            throw new HttpBadRequestException($request, 'Please specify a latitude, longitude, month and year.');
+            !Request::isYearValid($year) ||
+            !Request::isMonthValid($month)) {
+            throw new HttpBadRequestException($request, 'Please specify a latitude, longitude, year and/or year.');
         }
 
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
 
-        if (ApiRequest::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+        if (Request::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
             $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendar', $hijri);
 
             return Http\Response::json($response,
@@ -84,29 +77,23 @@ class PrayerTimesCalendar extends Slim
     public function calendarByAddress(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $hijri = str_contains($request->getUri(), 'hijri');
-        $qyear = Http\Request::getQueryParam($request, 'year');
-        $qmonth = Http\Request::getQueryParam($request, 'month');
+        $adjustment = Http\Request::getQueryParam($request, 'adjustment') === null ? 0 : (int) Http\Request::getQueryParam($request, 'adjustment');
+        $qyear = Http\Request::getQueryParam($request, 'year') === null ?  Request::calendarGetQYear($hijri, $this->hc) :  Http\Request::getQueryParam($request, 'year');
+        $qmonth = Http\Request::getQueryParam($request, 'month') === null ? Request::calendarGetQMonth($hijri, $this->hc, $adjustment) : Http\Request::getQueryParam($request, 'month');
         $annual = Http\Request::getQueryParam($request, 'annual') === "true";
-        if ($qyear === null) {
-            if ($hijri) {
-                $qyear = $this->hc->getCurrentIslamicYear();
-            } else {
-                $qyear = date('Y');
-            }
-        }
-        if ($qmonth === null) {
-            $qmonth = date('n');
-        }
-
-        $month = Http\Request::getAttribute($request, 'month');
         $year = Http\Request::getAttribute($request, 'year');
+        $month = Http\Request::getAttribute($request, 'month');
 
-        if ($month === null || $year === null) {
-            if ($hijri) {
-                return Http\Response::redirect($response, "/v1/hijriCalendarByAddress/$qmonth/$qyear?" . http_build_query($request->getQueryParams()), 302);
-            } else {
-                return Http\Response::redirect($response, "/v1/calendarByAddress/$qmonth/$qyear?" . http_build_query($request->getQueryParams()), 302);
-            }
+        if ($year === null && $month === null) {
+            // This is a legacy
+            $url = Request::getCalendarRedirectableUrl($hijri, $annual, (int) $qyear, (int) $qmonth, "ByAddress");
+
+            return Http\Response::redirect($response, $url . http_build_query($request->getQueryParams()), 302);
+        }
+
+        if ($month === null) {
+            $annual = true;
+            $month = 1; // any value will do
         }
 
         if (Http\Request::getQueryParam($request, 'address') === null ||
@@ -117,7 +104,7 @@ class PrayerTimesCalendar extends Slim
 
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
 
-        if (ApiRequest::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+        if (Request::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
             $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByAddress', $hijri);
 
             return Http\Response::json($response,
@@ -137,29 +124,24 @@ class PrayerTimesCalendar extends Slim
     public function calendarByCity(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $hijri = str_contains($request->getUri(), 'hijri');
-        $qyear = Http\Request::getQueryParam($request, 'year');
-        $qmonth = Http\Request::getQueryParam($request, 'month');
+        $adjustment = Http\Request::getQueryParam($request, 'adjustment') === null ? 0 : (int) Http\Request::getQueryParam($request, 'adjustment');
+        $qyear = Http\Request::getQueryParam($request, 'year') === null ?  Request::calendarGetQYear($hijri, $this->hc) :  Http\Request::getQueryParam($request, 'year');
+        $qmonth = Http\Request::getQueryParam($request, 'month') === null ? Request::calendarGetQMonth($hijri, $this->hc, $adjustment) : Http\Request::getQueryParam($request, 'month');
         $annual = Http\Request::getQueryParam($request, 'annual') === "true";
-        if ($qyear === null) {
-            if ($hijri) {
-                $qyear = $this->hc->getCurrentIslamicYear();
-            } else {
-                $qyear = date('Y');
-            }
-        }
-        if ($qmonth === null) {
-            $qmonth = date('n');
-        }
-
-        $month = Http\Request::getAttribute($request, 'month');
         $year = Http\Request::getAttribute($request, 'year');
+        $month = Http\Request::getAttribute($request, 'month');
 
-        if ($month === null || $year === null) {
-            if ($hijri) {
-                return Http\Response::redirect($response, "/v1/hijriCalendarByCity/$qmonth/$qyear?" . http_build_query($request->getQueryParams()), 302);
-            } else {
-                return Http\Response::redirect($response, "/v1/calendarByCity/$qmonth/$qyear?" . http_build_query($request->getQueryParams()), 302);
-            }        }
+        if ($year === null && $month === null) {
+            // This is a legacy
+            $url = Request::getCalendarRedirectableUrl($hijri, $annual, (int) $qyear, (int) $qmonth, "ByCity");
+
+            return Http\Response::redirect($response, $url . http_build_query($request->getQueryParams()), 302);
+        }
+
+        if ($month === null) {
+            $annual = true;
+            $month = 1; // any value will do
+        }
 
         if (Http\Request::getQueryParam($request, 'city') === null ||
             Http\Request::getQueryParam($request, 'country') === null ||
@@ -170,7 +152,7 @@ class PrayerTimesCalendar extends Slim
 
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
 
-        if (ApiRequest::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+        if (Request::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
             $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByCity', $hijri);
 
             return Http\Response::json($response,

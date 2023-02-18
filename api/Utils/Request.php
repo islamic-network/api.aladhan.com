@@ -3,6 +3,7 @@
 namespace Api\Utils;
 
 use AlAdhanApi\Model\HijriCalendarService;
+use Api\Models\HijriCalendar;
 use Haversini\Haversini;
 use IslamicNetwork\MoonSighting\Isha;
 use IslamicNetwork\PrayerTimes\Method;
@@ -410,6 +411,41 @@ class Request
     public static function redirectableByDate(?string $datestring): bool
     {
         return $datestring === null || self::isUnixTimeStamp($datestring);
+    }
+
+    public static function getCalendarRedirectableUrl(bool $hijri, bool $annual, int $qyear, int $qmonth, string $endpointSuffix = ""): string
+    {
+        if ($annual) {
+            if ($hijri) {
+                return "/v1/hijriCalendar$endpointSuffix/$qyear?";
+            } else {
+                return "/v1/calendar$endpointSuffix/$qyear?";
+            }
+        } else {
+            if ($hijri) {
+                return "/v1/hijriCalendar$endpointSuffix/$qyear/$qmonth?";
+            } else {
+                return "/v1/calendar$endpointSuffix/$qyear/$qmonth?";
+            }
+        }
+    }
+
+    public static function calendarGetQYear(bool $hijri, HijriCalendar $hc): int
+    {
+        if ($hijri) {
+            return $hc->getCurrentIslamicYear();
+        }
+
+        return date('Y');
+    }
+
+    public static function calendarGetQMonth(bool $hijri, HijriCalendar $hc, $adjustment): int
+    {
+        if ($hijri) {
+            return $hc->getCurrentIslamicMonth($adjustment);
+        }
+
+        return date('n');
     }
 
     public static function getRedirectableDate(?string $datestring): \DateTime
