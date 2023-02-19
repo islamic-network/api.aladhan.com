@@ -175,7 +175,7 @@ metadata:
   name: rate-limiting-aladhan-api
   namespace: aladhan-com
 config:
-  second: 12
+  second: 24
   policy: redis
   redis_host: redis-ratelimit-master
   redis_port: 6379
