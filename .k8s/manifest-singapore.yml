@@ -63,10 +63,10 @@ spec:
             failureThreshold: 3
           resources:
             requests:
-              cpu: "250m"
+              cpu: "450m"
               memory: 250Mi
             limits:
-              cpu: "450m"
+              cpu: "750m"
               memory: 600Mi
           ports:
             - containerPort: 8080
@@ -85,7 +85,7 @@ spec:
     name: aladhan-com-api
   minReplicas: 3
   maxReplicas: 30
-  targetCPUUtilizationPercentage: 50
+  targetCPUUtilizationPercentage: 75
 ---
 # Memcached
 apiVersion: apps/v1
