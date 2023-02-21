@@ -163,6 +163,7 @@ class PrayerTimes
                     $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0],
                         $methodSettings[1], $methodSettings[2]);
                     $pt->setCustomMethod($customMethod);
+                    $pt->tune($this->tune[0], $this->tune[1], $this->tune[2], $this->tune[3], $this->tune[4], $this->tune[5], $this->tune[6], $this->tune[7], $this->tune[8]);
                 }
 
                 if ($hijri) {

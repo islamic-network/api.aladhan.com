@@ -141,7 +141,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
     $group->map(['GET', 'OPTIONS'],'/timings/{date}', [Controllers\v1\PrayerTimes::class, 'timings']);
 
     /**
-     * @api {get} http://api.aladhan.com/v1/timingsByAddress/:date_or_timestamp Timings By Address
+     * @api {get} http://api.aladhan.com/v1/timingsByAddress/:date Timings By Address
      * @apiDescription Returns all prayer times for a specific date at a particular address.
      * @apiName GetTimingsByAddresss
      * @apiGroup Timings
@@ -273,7 +273,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
     $group->map(['GET', 'OPTIONS'],'/timingsByAddress/{date}', [Controllers\v1\PrayerTimes::class, 'timingsByAddress']);
 
     /**
-     * @api {get} http://api.aladhan.com/v1/timingsByCity/:date_or_timestamp Timings By City
+     * @api {get} http://api.aladhan.com/v1/timingsByCity/:date Timings By City
      * @apiDescription Returns all prayer times for a specific date in a particular city.
      * @apiName GetTimingsByCity
      * @apiGroup Timings

@@ -5,7 +5,7 @@ use Slim\Routing\RouteCollectorProxy;
 
 $app->group('/v1', function(RouteCollectorProxy $group) {
     /**
-     * @api {get} http://api.aladhan.com/v1/calendar Prayer Times Calendar
+     * @api {get} http://api.aladhan.com/v1/calendar/:year/:month Prayer Times Calendar
      * @apiDescription Returns all prayer times for a specific calendar month.
      * @apiName GetCalendar
      * @apiGroup Calendar
@@ -13,9 +13,8 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *
      * @apiParam {decimal} latitude The decimal value for the latitude co-ordinate of the location you want the time computed for. Example: 51.75865125
      * @apiParam {decimal} longitude The decimal value for the longitude co-ordinate of the location you want the time computed for. Example: -1.25387785
-     * @apiParam {number=1-12} month A gregorian calendar month. Example: 8 or 08 for August.
+     * @apiParam {number=1-12} month Optional. A gregorian calendar month. Example: 8 or 08 for August. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
-     * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -227,16 +226,15 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
     $group->map(['GET', 'OPTIONS'],'/calendar/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendar']);
 
     /**
-     * @api {get} http://api.aladhan.com/v1/calendarByAddress Prayer Times Calendar by address
+     * @api {get} http://api.aladhan.com/v1/calendarByAddress/:year/:month Prayer Times Calendar by address
      * @apiDescription Returns all prayer times for a specific calendar month at a particular address.
      * @apiName GetCalendarByAddress
      * @apiGroup Calendar
      * @apiVersion 1.0.1
      *
      * @apiParam {string} address An address string. Example: 1420 Austin Bluffs Parkway, Colorado Springs, CO OR 25 Hampstead High Street, London, NW3 1RL, United Kingdom OR Sultanahmet Mosque, Istanbul, Turkey
-     * @apiParam {number=1-12} month A gregorian calendar month. Example: 8 or 08 for August.
+     * @apiParam {number=1-12} month Optional. A gregorian calendar month. Example: 8 or 08 for August. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
-     * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -447,7 +445,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
     $group->map(['GET', 'OPTIONS'],'/calendarByAddress/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByAddress']);
 
     /**
-     * @api {get} http://api.aladhan.com/v1/calendarByCity Prayer Times Calendar by city
+     * @api {get} http://api.aladhan.com/v1/calendarByCity/:year/:month Prayer Times Calendar by city
      * @apiDescription Returns all prayer times for a specific calendar month by City.
      * @apiName GetCalendarByCitys
      * @apiGroup Calendar
@@ -456,9 +454,8 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {string} city A city name. Example: London
      * @apiParam {string} country A country name or 2 character alpha ISO 3166 code. Examples: GB or United Kindom
      * @apiParam {string} [state] State or province. A state name or abbreviation. Examples: Colorado / CO / Punjab / Bengal
-     * @apiParam {number=1-12} month A gregorian calendar month. Example: 8 or 08 for August.
+     * @apiParam {number=1-12} month Optional. A gregorian calendar month. Example: 8 or 08 for August. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
-     * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -669,7 +666,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
     $group->map(['GET', 'OPTIONS'],'/calendarByCity/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByCity']);
 
     /**
-     * @api {get} http://api.aladhan.com/v1/hijriCalendar Prayer Times Hijri Calendar
+     * @api {get} http://api.aladhan.com/v1/hijriCalendar/:year/:month Prayer Times Hijri Calendar
      * @apiDescription Returns all prayer times for a specific Hijri calendar month.
      * @apiName GetHijriCalendar
      * @apiGroup Calendar
@@ -677,9 +674,8 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *
      * @apiParam {decimal} latitude The decimal value for the latitude co-ordinate of the location you want the time computed for. Example: 51.75865125
      * @apiParam {decimal} longitude The decimal value for the longitude co-ordinate of the location you want the time computed for. Example: -1.25387785
-     * @apiParam {number=1-12} month A Hijri calendar month. Example: 9 or 09 for Ramadan.
+     * @apiParam {number=1-12} month Optional. A Hijri calendar month. Example: 9 or 09 for Ramadan. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
-     * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -891,16 +887,15 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
     $group->map(['GET', 'OPTIONS'],'/hijriCalendar/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendar']);
 
     /**
-     * @api {get} http://api.aladhan.com/v1/hijriCalendarByAddress Prayer Times Hijri Calendar by address
+     * @api {get} http://api.aladhan.com/v1/hijriCalendarByAddress/:year/:month Prayer Times Hijri Calendar by address
      * @apiDescription Returns all prayer times for a specific Hijri calendar month at a particular address.
      * @apiName GetHijriCalendarByAddress
      * @apiGroup Calendar
      * @apiVersion 1.0.1
      *
      * @apiParam {string} address An address string. Example: 1420 Austin Bluffs Parkway, Colorado Springs, CO OR 25 Hampstead High Street, London, NW3 1RL, United Kingdom OR Sultanahmet Mosque, Istanbul, Turkey
-     * @apiParam {number=1-12} month A Hijri calendar month. Example: 9 or 09 for August.
+     * @apiParam {number=1-12} month Optional. A Hijri calendar month. Example: 9 or 09 for Ramadan. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
-     * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -1111,7 +1106,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
     $group->map(['GET', 'OPTIONS'],'/hijriCalendarByAddress/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByAddress']);
 
     /**
-     * @api {get} http://api.aladhan.com/v1/hijriCalendarByCity Prayer Times Hijri Calendar by city
+     * @api {get} http://api.aladhan.com/v1/hijriCalendarByCity/:year/:month Prayer Times Hijri Calendar by city
      * @apiDescription Returns all prayer times for a specific Hijri calendar month by City.
      * @apiName GetHijriCalendarByCity
      * @apiGroup Calendar
@@ -1120,9 +1115,8 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {string} city A city name. Example: London
      * @apiParam {string} country A country name or 2 character alpha ISO 3166 code. Examples: GB or United Kindom
      * @apiParam {string} [state] State or province. A state name or abbreviation. Examples: Colorado / CO / Punjab / Bengal
-     * @apiParam {number=1-12} month A Hijri calendar month. Example: 9 or 09 for Ramadan.
+     * @apiParam {number=1-12} month Optional. A Hijri calendar month. Example: 9 or 09 for Ramadan. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
-     * @apiParam {boolean} [annual=false] If true, we'll ignore the month and return the calendar for the whole year.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />

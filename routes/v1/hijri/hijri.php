@@ -75,7 +75,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
     /**
      * @api {get} http://api.aladhan.com/v1/hToGCalendar/:month/:year Request a Gregoran Calendar for a Hijri month
      * @apiName GetHToGCalendar
-     * @apiDescription Request a Gregoran Calendar for a Hijri month
+     * @apiDescription Request a Gregorian Calendar for a Hijri month
      * @apiGroup IslamicCalendar
      * @apiVersion 1.0.1
      *
