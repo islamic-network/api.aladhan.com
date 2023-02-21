@@ -30,7 +30,8 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
      *                               14 - Spiritual Administration of Muslims of Russia<br />
-     *                               15 - Moonsighting Committee Worldwide (also requires shafaq paramteer)<br />
+     *                               15 - Moonsighting Committee Worldwide (also requires shafaq parameter)<br />
+     *                               16 - Dubai (unofficial)<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
@@ -163,7 +164,8 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
      *                               14 - Spiritual Administration of Muslims of Russia<br />
-     *                               15 - Moonsighting Committee Worldwide (also requires shafaq paramteer)<br />
+     *                               15 - Moonsighting Committee Worldwide (also requires shafaq parameter)<br />
+     *                               16 - Dubai (unofficial)<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
@@ -297,7 +299,8 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *                               12 - Union Organization islamic de France<br />
      *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
      *                               14 - Spiritual Administration of Muslims of Russia<br />
-     *                               15 - Moonsighting Committee Worldwide (also requires shafaq paramteer)<br />
+     *                               15 - Moonsighting Committee Worldwide (also requires shafaq parameter)<br />
+     *                               16 - Dubai (unofficial)<br />
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
