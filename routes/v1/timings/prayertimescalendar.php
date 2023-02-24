@@ -45,7 +45,8 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
-     *   http://api.aladhan.com/v1/calendar?latitude=51.508515&longitude=-0.1254872&method=2&month=4&year=2017
+     *   http://api.aladhan.com/v1/calendar/2017/4?latitude=51.508515&longitude=-0.1254872&method=2
+     *   http://api.aladhan.com/v1/calendar/2019?latitude=51.508515&longitude=-0.1254872&method=2
      *
      * @apiSuccessExample Success-Response:
      * HTTP/1.1 200 OK
@@ -265,7 +266,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
-     *   http://api.aladhan.com/v1/calendarByAddress?address=Sultanahmet Mosque, Istanbul, Turkey&method=2&month=04&year=2017
+     *   http://api.aladhan.com/v1/calendarByAddress/2017/4?address=Sultanahmet Mosque, Istanbul, Turkey&method=2
      *
      * @apiSuccessExample Success-Response:
      * HTTP/1.1 200 OK
@@ -487,7 +488,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
-     *   http://api.aladhan.com/v1/calendarByCity?city=London&country=United Kingdom&method=2&month=04&year=2017
+     *   http://api.aladhan.com/v1/calendarByCity/2017/4?city=London&country=United Kingdom&method=2
      *
      * @apiSuccessExample Success-Response:
      * HTTP/1.1 200 OK
@@ -709,7 +710,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
-     *   http://api.aladhan.com/v1/hijriCalendar?latitude=51.508515&longitude=-0.1254872&method=2&month=4&year=1437
+     *   http://api.aladhan.com/v1/hijriCalendar/1437/4?latitude=51.508515&longitude=-0.1254872&method=2
      *
      * @apiSuccessExample Success-Response:
      * HTTP/1.1 200 OK
@@ -929,7 +930,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
-     *   http://api.aladhan.com/v1/hijriCalendarByAddress?address=Sultanahmet Mosque, Istanbul, Turkey&method=2&month=04&year=1437
+     *   http://api.aladhan.com/v1/hijriCalendarByAddress/1437/4?address=Sultanahmet Mosque, Istanbul, Turkey&method=2
      *
      * @apiSuccessExample Success-Response:
      * HTTP/1.1 200 OK
@@ -1151,7 +1152,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
-     *   http://api.aladhan.com/v1/hijriCalendarByCity?city=London&country=United Kingdom&method=2&month=04&year=1437
+     *   http://api.aladhan.com/v1/hijriCalendarByCity/1437/4?city=London&country=United Kingdom&method=2
      *
      * @apiSuccessExample Success-Response:
      * HTTP/1.1 200 OK

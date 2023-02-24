@@ -58,10 +58,10 @@ class Hijri extends Slim
             if ($d === null) {
                 $date = date('d-m-Y', time());
 
-                return Http\Response::redirect($response, '/v1/gToH/' . $date, 301);
+                return Http\Response::redirect($response, '/v1/gToH/' . $date . '?' . http_build_query($request->getQueryParams()), 302);
             }
 
-            return Http\Response::redirect($response, '/v1/gToH/' . $d, 301);
+            return Http\Response::redirect($response, '/v1/gToH/' . $d . '?' . http_build_query($request->getQueryParams()), 301);
         }
 
         $a = Http\Request::getQueryParam($request, 'adjustment');
@@ -94,10 +94,10 @@ class Hijri extends Slim
                 $fs = $this->h->gToH($date);
                 $date = $fs['hijri']['date'];
 
-                return Http\Response::redirect($response, '/v1/hToG/' . $date, 301);
+                return Http\Response::redirect($response, '/v1/hToG/' . $date . '?' . http_build_query($request->getQueryParams()), 302);
             }
 
-            return Http\Response::redirect($response, '/v1/hToG/' . $d, 301);
+            return Http\Response::redirect($response, '/v1/hToG/' . $d . '?' . http_build_query($request->getQueryParams()), 301);
         }
 
         $a = Http\Request::getQueryParam($request, 'adjustment');
