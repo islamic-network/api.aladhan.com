@@ -34,12 +34,12 @@ docker-compose up
 
 This will bring up several containers:
 
-1. aladhan_api - This is the actual PHP / Apache instance. This runs on https://localhost:7070 - see https://localhost:7070/v1/status.
+1. aladhan_api - This is the actual PHP / Apache instance. This runs on http://localhost - see http://localhost/status.
 3. aladhan_memcached - This is the Memcached Container.
 
 #### Build and Contribute
 
-**Please note that the Dockerfile included builds a production ready container which has opcache switched on and xdebug turned off, so you will only see your changes every 5 minutes if you are developing. To actively develop, change the ```FROM vesica/php72:latest``` line to ```vesica/php72:dev```.**
+**Please note that the Dockerfile included builds a production ready container which has opcache switched on and xdebug turned off, so you will only see your changes every 5 minutes if you are developing. To actively develop, change the ```FROM islamicnetwork/php:8.1-apache``` line to ```FROM islamicnetwork/php:8.1-apache-dev```.**
 
 With the above ```docker-compose up``` command your code is mapped to the aa-app docker container. You can make any changes and simply refresh the page to see them in real-time.
 
