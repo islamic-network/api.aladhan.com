@@ -66,8 +66,8 @@ spec:
               cpu: "450m"
               memory: 250Mi
             limits:
-              cpu: "750m"
-              memory: 600Mi
+              cpu: "650m"
+              memory: 700Mi
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -85,7 +85,7 @@ spec:
     name: aladhan-com-api
   minReplicas: 3
   maxReplicas: 30
-  targetCPUUtilizationPercentage: 75
+  targetCPUUtilizationPercentage: 65
 ---
 # Memcached
 apiVersion: apps/v1
