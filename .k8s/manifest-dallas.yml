@@ -202,7 +202,7 @@ config:
   allow_force_cache_header: false
   storage_ttl: 3600
   redis_port: 6379
-  redis_host: redis-cache-master
+  redis_host: redis-cache-aladhan-master
 plugin: proxy-cache-redis
 ---
 apiVersion: configuration.konghq.com/v1
