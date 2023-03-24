@@ -1,0 +1,20 @@
+{
+  "listeners": {
+    "*:8080": {
+      "application": "api.aladhan.com"
+    }
+  },
+  "applications": {
+    "api.aladhan.com": {
+      "type": "php",
+      "user": "nobody",
+      "processes": 2,
+      "root": "/var/www/html",
+      "index": "index.php",
+      "script": "index.php"
+    }
+  },
+  "access_log": {
+    "path": "/dev/stdout"
+  }
+}
