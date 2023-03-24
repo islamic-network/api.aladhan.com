@@ -36,7 +36,7 @@ spec:
               cpu: 100m
               memory: 128Mi
         - name: aladhan-com-api
-          image: islamicnetwork/api.aladhan.com:$COMMIT_TAG
+          image: ghcr.io/islamic-network/api.aladhan.com:$COMMIT_TAG
           env:
             - name:  MEMCACHED_HOST
               value: "aladhan-com-api-memcached"
