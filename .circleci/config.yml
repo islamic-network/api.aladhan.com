@@ -61,7 +61,7 @@ jobs:
             
             echo "Default registry: GHCR"
             echo "Build latest Unit Image"
-            docker build -f Dockerfile.nunit . -t $IMAGE_NAME:unit-latest
+            docker build -f Dockerfile.unit . -t $IMAGE_NAME:unit-latest
             
             echo "Build latest Apache Image"
             docker build -f Dockerfile.apache . -t $IMAGE_NAME:apache-latest
