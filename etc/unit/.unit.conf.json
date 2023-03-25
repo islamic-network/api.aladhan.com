@@ -48,8 +48,5 @@
         }
       }
     ]
-  },
-  "access_log": {
-    "path": "/dev/stdout"
   }
 }
