@@ -8,7 +8,11 @@
     "api.aladhan.com": {
       "type": "php",
       "user": "nobody",
-      "processes": 2,
+      "processes": {
+        "max": 10,
+        "spare": 3,
+        "idle_timeout": 5
+      },
       "root": "/var/www/html",
       "index": "index.php",
       "script": "index.php"
