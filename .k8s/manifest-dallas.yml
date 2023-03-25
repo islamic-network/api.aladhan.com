@@ -167,6 +167,8 @@ config:
     - HEAD
   content_type:
     - application/json
+    - text/html; charset=UTF-8
+    - text/hml
   cache_ttl: 3600
   cache_control: false
   storage_ttl: 3600
