@@ -1,0 +1,13 @@
+---
+apiVersion: "autoscaling.k8s.io/v1"
+kind: VerticalPodAutoscaler
+metadata:
+  name: aladhan-com-api
+  namespace: aladhan-com
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: aladhan-com-api
+  updatePolicy:
+    updateMode: "Off"  

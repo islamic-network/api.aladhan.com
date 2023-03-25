@@ -3,7 +3,7 @@ services:
   aladhan_api:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.unit
     links:
       - aladhan_memcached
     depends_on:
@@ -12,7 +12,7 @@ services:
       DEBUG: "true" # Any value equals true. To turn off debug mode, comment or delete this env var.
       MEMCACHED_HOST: "aladhan_memcached"
       MEMCACHED_PORT: 11211
-#      X7X_API_KEY: ""
+      X7X_API_KEY: "d3ec4acaa7978ba6329845ee15fd66d9"
     ports:
       - "80:8080"
     volumes:
