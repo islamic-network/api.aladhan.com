@@ -21,8 +21,22 @@ spec:
         app: aladhan-com-api
     spec:
       containers:
+        - name: apache-exporter-sidecar
+          image: lusotycoon/apache-exporter
+          args:
+            - '--scrape_uri=http://localhost:8080/server-status?auto'
+          ports:
+            - containerPort: 9117
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
         - name: aladhan-com-api
-          image: ghcr.io/islamic-network/api.aladhan.com:unit-$COMMIT_TAG
+          image: ghcr.io/islamic-network/api.aladhan.com:$COMMIT_TAG
           env:
             - name: MEMCACHED_HOST
               value: "aladhan-com-api-memcached"
@@ -139,13 +153,29 @@ spec:
   selector:
     app: aladhan-com-api-memcached
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: aladhan-com-api-metrics
+  namespace: aladhan-com
+  labels:
+    name: aladhan-com-api-metrics
+spec:
+  type: ClusterIP
+  selector:
+    app: aladhan-com-api
+  ports:
+    - name: metrics
+      port: 9117
+      targetPort: 9117
+---
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
   name: rate-limiting-aladhan-api
   namespace: aladhan-com
 config:
-  second: 44
+  second: 24
   policy: redis
   redis_host: redis-ratelimit-master
   redis_port: 6379
@@ -169,6 +199,7 @@ config:
     - application/json
   cache_ttl: 3600
   cache_control: false
+  allow_force_cache_header: false
   storage_ttl: 3600
   redis_port: 6379
   redis_host: redis-cache-aladhan-master
@@ -180,6 +211,23 @@ metadata:
   name: bot-detection-aladhan-api
   namespace: aladhan-com
 plugin: bot-detection
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: aladhan-com-api-metrics
+  namespace: monitoring
+  labels:
+    release: lke-monitor
+spec:
+  selector:
+    matchLabels:
+      name: aladhan-com-api-metrics
+  namespaceSelector:
+    any: true
+  endpoints:
+    - port: "metrics"
+      interval: 30s
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

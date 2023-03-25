@@ -1,7 +1,7 @@
 {
   "listeners": {
     "*:8080": {
-      "application": "api.aladhan.com"
+      "pass": "routes/main"
     }
   },
   "applications": {
@@ -13,6 +13,37 @@
       "index": "index.php",
       "script": "index.php"
     }
+  },
+  "routes": {
+    "main": [
+      {
+        "match": {
+          "uri": [
+            "/timings*",
+            "/calendar*",
+            "/address*",
+            "/city*",
+            "/g*",
+            "/h*",
+            "/methods",
+            "/asmaAlHusna",
+            "/qibla"
+          ]
+        },
+        "action": {
+          "return": 301,
+          "location": "/v1$request_uri"
+        }
+      },
+      {
+        "match": {
+          "uri": "*"
+        },
+        "action": {
+          "pass": "applications/api.aladhan.com"
+        }
+      }
+    ]
   },
   "access_log": {
     "path": "/dev/stdout"
