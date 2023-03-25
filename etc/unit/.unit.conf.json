@@ -8,6 +8,10 @@
     "api.aladhan.com": {
       "type": "php",
       "user": "nobody",
+      "limits": {
+        "timeout": 5,
+        "requests": 10000
+      },
       "processes": {
         "max": 10,
         "spare": 3,
