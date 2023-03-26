@@ -13,8 +13,8 @@
         "requests": 10000
       },
       "processes": {
-        "max": 10,
-        "spare": 3,
+        "max": 25,
+        "spare": 5,
         "idle_timeout": 5
       },
       "root": "/var/www/html",
