@@ -94,8 +94,6 @@ spec:
       labels:
         app: aladhan-com-api-memcached
     spec:
-      nodeSelector:
-        lke.linode.com/pool-id: "130436"
       containers:
         - name: aladhan-com-api-memcached
           image: memcached:1.6
