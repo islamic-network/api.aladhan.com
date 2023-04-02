@@ -101,11 +101,15 @@ class PrayerTimesHelper
         for ($i = 0; $i <= ($days_in_month -1); $i++) {
             // Create date time object for this date.
             $calstart = new \DateTime( date('Y-m-d H:i:s', $cal_start), new \DateTimeZone($timezone));
-            if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart, $adjustment)) {
+            if ($pt->getMethod() == Method::METHOD_MAKKAH && self::isRamadan($calstart, $adjustment)) {
                 if ($tune !== null) {
                     $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], intval('30 min'), $tune[8]);
                 } else {
                     $pt->tune(0, 0, 0, 0, 0, 0, 0, intval('30 min'), 0);
+                }
+            } elseif ($pt->getMethod() == Method::METHOD_DUBAI) {
+                if ($tune !== null) {
+                    $pt->tune($tune[0], $tune[1], $tune[2], 3, $tune[4], 3, 3, $tune[7], $tune[8]);
                 }
             } else {
                 if ($tune !== null) {
@@ -147,14 +151,17 @@ class PrayerTimesHelper
         foreach ($hm as $key => $i) {
             // Create date time object for this date.
             $calstart = new \DateTime( date('Y-m-d H:i:s', strtotime($i['gregorian']['year']. '-' . $i['gregorian']['month']['number'] . '-' . $i['gregorian']['day']. ' 09:01:01')), new \DateTimeZone($timezone));
-            if ($pt->getMethod() == 'MAKKAH' && self::isRamadan($calstart, $adjustment)) {
+            if ($pt->getMethod() == Method::METHOD_MAKKAH && self::isRamadan($calstart, $adjustment)) {
                 if ($tune !== null) {
                     $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], intval('30 min'), $tune[8]);
                 } else {
                     $pt->tune(0, 0, 0, 0, 0, 0, 0, intval('30 min'), 0);
                 }
-            }
-            else {
+            } elseif ($pt->getMethod() == Method::METHOD_DUBAI) {
+                if ($tune !== null) {
+                    $pt->tune($tune[0], $tune[1], $tune[2], 3, $tune[4], 3, 3, $tune[7], $tune[8]);
+                }
+            } else {
                 if ($tune !== null) {
                     $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
                 }
@@ -323,9 +330,15 @@ class PrayerTimesHelper
             $methodSettings = ApiRequest::customMethod(Http\Request::getQueryParam($request, 'methodSettings'));
             $customMethod = self::createCustomMethod($methodSettings[0], $methodSettings[1], $methodSettings[2]);
             $pt->setCustomMethod($customMethod);
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
+            if ($tune !== null) {
+                $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
+            }
         } elseif ($pt->getMethod() == Method::METHOD_MAKKAH && self::isRamadan($d, $adjustment)) {
-            $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], intval('30 min'), $tune[8]);
+            if ($tune !== null) {
+                $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], intval('30 min'), $tune[8]);
+            } else {
+                $pt->tune(0, 0, 0, 0, 0, 0, 0, intval('30 min'), 0);
+            }
         } elseif ($pt->getMethod() == Method::METHOD_DUBAI) {
             $pt->tune($tune[0], $tune[1], $tune[2], 3, $tune[4], 3,3, $tune[7], $tune[8]);
         } else {
