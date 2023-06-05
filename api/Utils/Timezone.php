@@ -86,6 +86,9 @@ class Timezone
                     return $tzx->timezones[0];
                 }
             }
+
+            // If we get here it means that we could not calculate the timezone. Just return UTC in this case.
+            return 'UTC';
         }
 
         return $timezone;
