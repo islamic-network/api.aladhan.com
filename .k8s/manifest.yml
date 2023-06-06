@@ -6,7 +6,7 @@ metadata:
   name: aladhan-com-api
   namespace: aladhan-com
 spec:
-  replicas: 3
+  replicas: 2
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -21,20 +21,6 @@ spec:
         app: aladhan-com-api
     spec:
       containers:
-        - name: apache-exporter-sidecar
-          image: lusotycoon/apache-exporter
-          args:
-            - '--scrape_uri=http://localhost:8080/server-status?auto'
-          ports:
-            - containerPort: 9117
-              protocol: TCP
-          resources:
-            requests:
-              cpu: 50m
-              memory: 32Mi
-            limits:
-              cpu: 100m
-              memory: 128Mi
         - name: aladhan-com-api
           image: ghcr.io/islamic-network/api.aladhan.com:$COMMIT_TAG
           env:
@@ -108,8 +94,6 @@ spec:
       labels:
         app: aladhan-com-api-memcached
     spec:
-      nodeSelector:
-        lke.linode.com/pool-id: "130436"
       containers:
         - name: aladhan-com-api-memcached
           image: memcached:1.6
@@ -153,22 +137,6 @@ spec:
   selector:
     app: aladhan-com-api-memcached
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: aladhan-com-api-metrics
-  namespace: aladhan-com
-  labels:
-    name: aladhan-com-api-metrics
-spec:
-  type: ClusterIP
-  selector:
-    app: aladhan-com-api
-  ports:
-    - name: metrics
-      port: 9117
-      targetPort: 9117
----
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
@@ -197,9 +165,10 @@ config:
     - HEAD
   content_type:
     - application/json
+    - text/html; charset=UTF-8
+    - text/hml
   cache_ttl: 3600
   cache_control: false
-  allow_force_cache_header: false
   storage_ttl: 3600
   redis_port: 6379
   redis_host: redis-cache-aladhan-master
@@ -211,23 +180,6 @@ metadata:
   name: bot-detection-aladhan-api
   namespace: aladhan-com
 plugin: bot-detection
----
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: aladhan-com-api-metrics
-  namespace: monitoring
-  labels:
-    release: lke-monitor
-spec:
-  selector:
-    matchLabels:
-      name: aladhan-com-api-metrics
-  namespaceSelector:
-    any: true
-  endpoints:
-    - port: "metrics"
-      interval: 30s
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -242,7 +194,7 @@ spec:
   tls:
     - hosts:
         - "api.aladhan.com"
-        - "dallas.api.aladhan.com"
+        - "dubai.api.aladhan.com"
       secretName: "aladhan-com-api-tls"
   rules:
     - host: api.aladhan.com
@@ -255,7 +207,7 @@ spec:
                 name: aladhan-com-api
                 port:
                   number: 80
-    - host: dallas.api.aladhan.com
+    - host: dubai.api.aladhan.com
       http:
         paths:
           - path: /
