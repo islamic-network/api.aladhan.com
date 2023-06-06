@@ -16,21 +16,27 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Login to GitHub Actions Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.GHA_TOKEN }}
-      - name: Build and push
+      - name: Build and push to Docker Hub
         uses: docker/build-push-action@v2
         with:
           push: true
           tags: |
             islamicnetwork/api.aladhan.com:latest
             islamicnetwork/api.aladhan.com:${{ github.ref_name }}
+      - name: Login to GitHub Actions Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.GHA_TOKEN }}
+      - name: Build and push to GitHub container registry
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: |
             ghcr.io/islamic-network/api.aladhan.com:latest
             ghcr.io/islamic-network/api.aladhan.com:${{ github.ref_name }}
+
   deploy-dubai:
     needs: docker-build-and-push
     runs-on: ubuntu-latest
