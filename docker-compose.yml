@@ -3,7 +3,7 @@ services:
   aladhan_api:
     build:
       context: .
-      dockerfile: Dockerfile.unit
+      dockerfile: Dockerfile
     links:
       - aladhan_memcached
     depends_on:
