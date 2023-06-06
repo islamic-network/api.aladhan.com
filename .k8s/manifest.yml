@@ -20,6 +20,15 @@ spec:
       labels:
         app: aladhan-com-api
     spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+      tolerations:
+        - key: kubernetes.azure.com/scalesetpriority
+          operator: "Equal"
+          value: spot
+          effect: NoSchedule
       containers:
         - name: aladhan-com-api
           image: ghcr.io/islamic-network/api.aladhan.com:$COMMIT_TAG
