@@ -20,6 +20,8 @@ spec:
       labels:
         app: aladhan-com-api
     spec:
+      nodeSelector:
+        "kubernetes.azure.com/scalesetpriority": "spot"
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
