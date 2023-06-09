@@ -20,7 +20,8 @@ class AsmaAlHusna extends Slim
             $aah->get([]),
             200,
             true,
-            604800
+            604800,
+            ['public']
         );
     }
 
