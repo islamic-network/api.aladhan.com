@@ -19,7 +19,8 @@ class Methods extends Slim
             $pt->getMethods(),
             200,
             true,
-            604800
+            604800,
+            ['public']
         );
     }
 

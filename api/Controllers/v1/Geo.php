@@ -36,7 +36,8 @@ class Geo extends Slim
             ['latitude' => $ptm->latitude, 'longitude' => $ptm->longitude, 'timezone' => $ptm->timezone],
             200,
             true,
-            604800
+            604800,
+            ['public']
         );
 
     }
@@ -53,7 +54,8 @@ class Geo extends Slim
             ['latitude' => $ptm->latitude, 'longitude' => $ptm->longitude, 'timezone' => $ptm->timezone],
             200,
             true,
-            604800
+            604800,
+            ['public']
         );
     }
 

@@ -25,7 +25,8 @@ class Qibla extends Slim
             $calculation,
             200,
             true,
-            604800
+            604800,
+            ['public']
         );
     }
 

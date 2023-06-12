@@ -31,7 +31,8 @@ class Hijri extends Slim
             $this->h->getGToHCalendar($m, $y, $adjustment),
             200,
             true,
-            604800
+            604800,
+            ['public']
         );
     }
 
@@ -46,7 +47,8 @@ class Hijri extends Slim
             $this->h->getHtoGCalendar($m, $y, $adjustment),
             200,
             true,
-            604800
+            604800,
+            ['public']
         );
     }
 
@@ -73,7 +75,8 @@ class Hijri extends Slim
                 $result,
                 200,
                 true,
-                604800
+                604800,
+                ['public']
             );
         }
 
@@ -109,7 +112,8 @@ class Hijri extends Slim
                 $result,
                 200,
                 true,
-                604800
+                604800,
+                ['public']
             );
         }
 
