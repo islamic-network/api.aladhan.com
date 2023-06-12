@@ -15,7 +15,7 @@
         }
     ],
     "require": {
-        "7x/sdk": "^1.1",
+        "7x/sdk": "^1.4",
         "islamic-network/alqibla": "^1.2",
         "islamic-network/prayer-times": "^1.0.23",
         "mamluk/kipchak": "^0.31",

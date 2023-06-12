@@ -35,6 +35,10 @@ spec:
         - name: aladhan-com-api
           image: ghcr.io/islamic-network/api.aladhan.com:$COMMIT_TAG
           env:
+            - name: X7X_GEOCODE_BASEURL
+              value: "http://geocode.7x"
+            - name: X7X_TIMEZONE_BASEURL
+              value: "http://timezone.7x"
             - name:  MEMCACHED_HOST
               value: "aladhan-com-api-memcached"
             - name:  MEMCACHED_PORT

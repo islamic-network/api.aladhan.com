@@ -13,6 +13,8 @@ services:
       MEMCACHED_HOST: "aladhan_memcached"
       MEMCACHED_PORT: 11211
       X7X_API_KEY: "d3ec4acaa7978ba6329845ee15fd66d9"
+      #X7X_GEOCODE_BASEURL: ""
+      #X7X_TIMEZONE_BASEURL: ""
     ports:
       - "80:8080"
     volumes:

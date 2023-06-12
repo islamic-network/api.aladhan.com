@@ -72,13 +72,13 @@ class Timezone
      * @param  [type] $locations Locations Model Objext
      * @return String           [description]
      */
-    public static function computeTimezone(float $latitude, float $longitude, ?string $timezone, string $apikey): null|string
+    public static function computeTimezone(float $latitude, float $longitude, ?string $timezone, string $apikey, string $timezoneBaseUrl): null|string
     {
         //Compute only if timezone is empty or null
         if ($timezone == '' || $timezone  === null) {
             // Compute it.
             if ( ApiRequest::isLatitudeValid($latitude) && ApiRequest::isLongitudeValid($longitude)) {
-                $tz = new SevenExTimeZone($apikey);
+                $tz = new SevenExTimeZone($apikey,  $timezoneBaseUrl);
 
                 $tzx = $tz->get($latitude, $longitude);
 

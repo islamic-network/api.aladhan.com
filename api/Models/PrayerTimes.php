@@ -11,8 +11,8 @@ use Mamluk\Kipchak\Components\Http\Request;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Api\Utils\Timezone;
-use Slim\Exception\HttpBadRequestException;
 use SevenEx\SDK\Geocode;
+use Slim\Exception\HttpBadRequestException;
 use Symfony\Component\Cache\Adapter\MemcachedAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
 use DateTimeZone;
@@ -22,6 +22,8 @@ use DateTime;
 class PrayerTimes
 {
     public string $SevenExApiKey;
+    public string $SevenExGeocodeBaseUrl;
+    public string $SevenExTimezoneBaseUrl;
     public ServerRequestInterface $request;
     public string $school;
     public string $midnightMode;
@@ -46,6 +48,8 @@ class PrayerTimes
         $c = $container->get('config')['kipchak.7x'];
         $this->mc = $mc;
         $this->SevenExApiKey = $c['apikey'];
+        $this->SevenExGeocodeBaseUrl = $c['geocode_baseurl'];
+        $this->SevenExTimezoneBaseUrl = $c['timezone_baseurl'];
         $this->request = $request;
         $this->latitude = (float) Request::getQueryParam($request, 'latitude');
         $this->longitude = (float) Request::getQueryParam($request, 'longitude');
@@ -66,7 +70,7 @@ class PrayerTimes
         $this->timezone = $this->mc->get(md5('tz.' . $this->latitude . '.' . $this->longitude), function (ItemInterface $item) use ($request) {
             $item->expiresAfter(604800);
             return Timezone::computeTimezone($this->latitude, $this->longitude,
-                Request::getQueryParam($request, 'timezonestring'), $this->SevenExApiKey);
+                Request::getQueryParam($request, 'timezonestring'), $this->SevenExApiKey, $this->SevenExTimezoneBaseUrl);
         });
 
     }
@@ -106,7 +110,7 @@ class PrayerTimes
             // /timingsByAddress call. Geocode.
             $coordinates = $this->mc->get(md5('addr.' . strtolower($this->address)), function (ItemInterface $item)  {
                 $item->expiresAfter(604800);
-                $gc = new Geocode($this->SevenExApiKey);
+                $gc = new Geocode($this->SevenExApiKey, $this->SevenExGeocodeBaseUrl);
                 $gcode = $gc->geocode($this->address);
                 if(!empty($gcode->objects)) {
                     return $gcode->objects[0]->coordinates;
