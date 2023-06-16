@@ -20,10 +20,17 @@ spec:
       labels:
         app: aladhan-com-api
     spec:
+      nodeSelector:
+        "kubernetes.azure.com/scalesetpriority": "spot"
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
           whenUnsatisfiable: ScheduleAnyway
+      tolerations:
+        - key: kubernetes.azure.com/scalesetpriority
+          operator: "Equal"
+          value: spot
+          effect: NoSchedule
       containers:
         - name: aladhan-com-api
           image: ghcr.io/islamic-network/api.aladhan.com:$COMMIT_TAG
@@ -106,6 +113,11 @@ spec:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname
           whenUnsatisfiable: ScheduleAnyway
+      tolerations:
+        - key: kubernetes.azure.com/scalesetpriority
+          operator: "Equal"
+          value: spot
+          effect: NoSchedule
       containers:
         - name: aladhan-com-api-memcached
           image: memcached:1.6
@@ -206,7 +218,7 @@ spec:
   tls:
     - hosts:
         - "api.aladhan.com"
-        - "london.api.aladhan.com"
+        - "dubai.api.aladhan.com"
       secretName: "aladhan-com-api-tls"
   rules:
     - host: api.aladhan.com
@@ -219,7 +231,7 @@ spec:
                 name: aladhan-com-api
                 port:
                   number: 80
-    - host: london.api.aladhan.com
+    - host: dubai.api.aladhan.com
       http:
         paths:
           - path: /
