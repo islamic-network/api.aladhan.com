@@ -1,4 +1,4 @@
-FROM ghcr.io/islamic-network/php:8.1-unit
+FROM ghcr.io/islamic-network/php:8.2-unit
 
 # Copy files
 COPY . /var/www/
@@ -6,7 +6,7 @@ COPY . /var/www/
 COPY etc/unit/.unit.conf.json /docker-entrypoint.d/.unit.conf.json
 
 # Run Composer
-RUN cd /var/www && composer install --no-dev
+RUN export COMPOSER_ALLOW_SUPERUSER=1 && cd /var/www && composer install --no-dev
 
 # Delete stuff we do not need
 RUN rm -rf /var/www/.git

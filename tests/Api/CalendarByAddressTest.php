@@ -28,8 +28,8 @@ class CalendarByAddressTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("application/json", $contentType);
 
         $responseBody = json_decode($response->getBody());
-        $this->assertEquals("05:20 (+04)", $responseBody->data[1]->timings->Fajr);
-        $this->assertEquals("18:59 (+04)", $responseBody->data[1]->timings->Isha);
+        $this->assertEquals("05:26 (+04)", $responseBody->data[1]->timings->Fajr);
+        $this->assertEquals("18:50 (+04)", $responseBody->data[1]->timings->Isha);
         $this->assertEquals("00:08 (+04)", $responseBody->data[1]->timings->Midnight);
         $this->assertEquals("STANDARD", $responseBody->data[1]->meta->midnightMode);
     }
@@ -51,9 +51,9 @@ class CalendarByAddressTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("application/json", $contentType);
 
         $responseBody = json_decode($response->getBody());
-        $this->assertEquals("05:20 (+04)", $responseBody->data[1]->timings->Fajr);
-        $this->assertEquals("18:59 (+04)", $responseBody->data[1]->timings->Isha);
-        $this->assertEquals("23:24 (+04)", $responseBody->data[1]->timings->Midnight);
+        $this->assertEquals("05:26 (+04)", $responseBody->data[1]->timings->Fajr);
+        $this->assertEquals("18:50 (+04)", $responseBody->data[1]->timings->Isha);
+        $this->assertEquals("23:27 (+04)", $responseBody->data[1]->timings->Midnight);
         $this->assertEquals("JAFARI", $responseBody->data[1]->meta->midnightMode);
     }
 

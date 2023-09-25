@@ -39,8 +39,8 @@ class TimingsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("application/json", $contentType);
 
         $responseBody = json_decode($response->getBody());
-        $this->assertEquals("05:20", $responseBody->data->timings->Fajr);
-        $this->assertEquals("18:59", $responseBody->data->timings->Isha);
+        $this->assertEquals("05:26", $responseBody->data->timings->Fajr);
+        $this->assertEquals("18:50", $responseBody->data->timings->Isha);
         $this->assertEquals("00:08", $responseBody->data->timings->Midnight);
         $this->assertEquals("STANDARD", $responseBody->data->meta->midnightMode);
     }
@@ -61,9 +61,9 @@ class TimingsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("application/json", $contentType);
 
         $responseBody = json_decode($response->getBody());
-        $this->assertEquals("05:20", $responseBody->data->timings->Fajr);
-        $this->assertEquals("18:59", $responseBody->data->timings->Isha);
-        $this->assertEquals("23:24", $responseBody->data->timings->Midnight);
+        $this->assertEquals("05:26", $responseBody->data->timings->Fajr);
+        $this->assertEquals("18:50", $responseBody->data->timings->Isha);
+        $this->assertEquals("23:27", $responseBody->data->timings->Midnight);
         $this->assertEquals("JAFARI", $responseBody->data->meta->midnightMode);
     }
 

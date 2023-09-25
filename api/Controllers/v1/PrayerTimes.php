@@ -19,6 +19,8 @@ class PrayerTimes extends Slim
 {
     public MemcachedAdapter $mc;
 
+    public HijriCalendar $hc;
+
 
     public function __construct(ContainerInterface $container)
     {
