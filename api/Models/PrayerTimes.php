@@ -162,33 +162,26 @@ class PrayerTimes
                 $item->expiresAfter($expires);
                 $pt = new \IslamicNetwork\PrayerTimes\PrayerTimes($this->method, $this->school);
                 $pt->setShafaq($this->shafaq);
-                if ($this->method == Method::METHOD_CUSTOM) {
-                    $methodSettings = ApiRequest::customMethod($this->methodSettings);
-                    $customMethod = PrayerTimesHelper::createCustomMethod($methodSettings[0],
-                        $methodSettings[1], $methodSettings[2]);
-                    $pt->setCustomMethod($customMethod);
-                    $pt->tune($this->tune[0], $this->tune[1], $this->tune[2], $this->tune[3], $this->tune[4], $this->tune[5], $this->tune[6], $this->tune[7], $this->tune[8]);
-                }
 
                 if ($hijri) {
                     if ($annual) {
                         $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($this->latitude, $this->longitude,
                             $year, $this->timezone, $this->latitudeAdjustmentMethod, $pt, $this->midnightMode,
-                            $this->adjustment, $this->tune, $this->iso8601);
+                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings);
                     } else {
                         $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($this->latitude, $this->longitude,
                             $month, $year, $this->timezone, $this->latitudeAdjustmentMethod, $pt, $this->midnightMode,
-                            $this->adjustment, $this->tune, $this->iso8601);
+                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings);
                     }
                 } else {
                     if ($annual) {
                         $times = PrayerTimesHelper::calculateYearPrayerTimes($this->latitude, $this->longitude,
                             $year, $this->timezone, $this->latitudeAdjustmentMethod, $pt, $this->midnightMode,
-                            $this->adjustment, $this->tune, $this->iso8601);
+                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings);
                     } else {
                         $times = PrayerTimesHelper::calculateMonthPrayerTimes($this->latitude, $this->longitude,
                             $month, $year, $this->timezone, $this->latitudeAdjustmentMethod, $pt, $this->midnightMode,
-                            $this->adjustment, $this->tune, $this->iso8601);
+                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings);
                     }
                 }
 

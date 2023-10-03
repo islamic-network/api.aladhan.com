@@ -89,7 +89,7 @@ class PrayerTimesHelper
      * @return array
      * @throws \Exception
      */
-    public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H): array
+    public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null): array
     {
 
         $cs = new HijriCalendar();
@@ -102,7 +102,7 @@ class PrayerTimesHelper
         for ($i = 0; $i <= ($days_in_month - 1); $i++) {
             // Create date time object for this date.
             $calstart = new DateTime(date('Y-m-d H:i:s', $cal_start), new DateTimeZone($timezone));
-            $timings = self::calculateTimings($calstart, $pt, $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode, $adjustment, $timeFormat);
+            $timings = self::calculateTimings($calstart, $pt, $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode, $adjustment, $timeFormat, $methodSettings);
             $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregorian' => $hm[$i]['gregorian'], 'hijri' => $hm[$i]['hijri']];
             $times[$i] = ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
             // Add 24 hours to start date
@@ -125,7 +125,7 @@ class PrayerTimesHelper
      * @return array
      * @throws \Exception
      */
-    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H): array
+    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null): array
     {
         $cs = new HijriCalendar();
 
@@ -136,7 +136,7 @@ class PrayerTimesHelper
         foreach ($hm as $key => $i) {
             // Create date time object for this date.
             $calstart = new DateTime(date('Y-m-d H:i:s', strtotime($i['gregorian']['year'] . '-' . $i['gregorian']['month']['number'] . '-' . $i['gregorian']['day'] . ' 09:01:01')), new DateTimeZone($timezone));
-            $timings = self::calculateTimings($calstart, $pt, $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode, $adjustment, $timeFormat);
+            $timings = self::calculateTimings($calstart, $pt, $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode, $adjustment, $timeFormat, $methodSettings);
             $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregorian' => $i['gregorian'], 'hijri' => $i['hijri']];
             $times[$key] = ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
         }
@@ -156,7 +156,7 @@ class PrayerTimesHelper
      * @return array
      * @throws \Exception
      */
-    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H): array
+    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null): array
     {
         $cs = new HijriCalendar();
         $times = [];
@@ -169,7 +169,7 @@ class PrayerTimesHelper
             foreach ($hm as $key => $i) {
                 // Create date time object for this date.
                 $calstart = new DateTime(date('Y-m-d H:i:s', strtotime($i['gregorian']['year'] . '-' . $i['gregorian']['month']['number'] . '-' . $i['gregorian']['day'] . ' 09:01:01')), new DateTimeZone($timezone));
-                $timings = self::calculateTimings($calstart, $pt, $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode, $adjustment, $timeFormat);
+                $timings = self::calculateTimings($calstart, $pt, $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode, $adjustment, $timeFormat, $methodSettings);
                 $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregorian' => $i['gregorian'], 'hijri' => $i['hijri']];
                 $times[$month][$key] = ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
             }
@@ -190,7 +190,7 @@ class PrayerTimesHelper
      * @return array
      * @throws \Exception
      */
-    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H): array
+    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null): array
     {
         $cs = new HijriCalendar();
         $times = [];
@@ -205,7 +205,7 @@ class PrayerTimesHelper
             for ($i = 0; $i <= ($days_in_month - 1); $i++) {
                 // Create date time object for this date.
                 $calstart = new DateTime(date('Y-m-d H:i:s', $cal_start), new DateTimeZone($timezone));
-                $timings = self::calculateTimings($calstart, $pt, $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode, $adjustment, $timeFormat);
+                $timings = self::calculateTimings($calstart, $pt, $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode, $adjustment, $timeFormat, $methodSettings);
                 $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregorian' => $hm[$i]['gregorian'], 'hijri' => $hm[$i]['hijri']];
                 $times[$month][$i] = ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt)];
                 // Add 24 hours to start date
@@ -306,9 +306,10 @@ class PrayerTimesHelper
         return $pt;
     }
 
-    private static function calculateTimings(DateTime $d, PrayerTimes $pt, ?array $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode = ' STANDARD', $adjustment = 0, $timeFormat = PrayerTimes::TIME_FORMAT_24H): array
+    private static function calculateTimings(DateTime $d, PrayerTimes $pt, ?array $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode = 'STANDARD', $adjustment = 0, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null): array
     {
-        $pt = self::applyMethodSpecificTuning($pt, $tune, $d, $adjustment);
+        $methodSettings = ApiRequest::customMethod($methodSettings);
+        $pt = self::applyMethodSpecificTuning($pt, $tune, $d, $adjustment, $methodSettings);
         $timings = $pt->getTimes($d, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode, $timeFormat);
 
         return Timezone::addTimezoneAbbreviation($timings, $d);
