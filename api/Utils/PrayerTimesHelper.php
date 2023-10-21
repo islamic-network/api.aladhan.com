@@ -314,7 +314,11 @@ class PrayerTimesHelper
         $pt = self::applyMethodSpecificTuning($pt, $tune, $d, $adjustment, $methodSettings);
         $timings = $pt->getTimes($d, $latitude, $longitude, null, $latitudeAdjustmentMethod, $midnightMode, $timeFormat);
 
-        return Timezone::addTimezoneAbbreviation($timings, $d);
+        if ($timeFormat !== PrayerTimes::TIME_FORMAT_ISO8601) {
+            return Timezone::addTimezoneAbbreviation($timings, $d);
+        }
+
+        return $timings;
     }
 
 }
