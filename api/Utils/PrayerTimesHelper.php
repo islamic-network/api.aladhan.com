@@ -290,6 +290,8 @@ class PrayerTimesHelper
             case Method::METHOD_MAKKAH:
                 if (self::isRamadan($d, $adjustment)) {
                     $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], intval('30 min'), $tune[8]);
+                } else {
+                    $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
                 }
                 break;
             case Method::METHOD_DUBAI:
