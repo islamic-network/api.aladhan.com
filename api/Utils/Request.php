@@ -62,7 +62,7 @@ class Request
 
             return 2; // ISNA
         }
-        if (!in_array($data, [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 99])) {
+        if (!in_array($data, [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 99])) {
             return 2; // ISNA
         } else {
             return (int) $data;
@@ -71,14 +71,17 @@ class Request
 
     public static function customMethod($data): array
     {
-        $method = explode(',', $data);
         $result = [];
-        // PrayerTimesHelper::createCustomMethod() takes a total of 12 params
-        for ($i=0; $i<=11; $i++) {
-            if (isset($method[$i]) && $method[$i] != 0 && $method[$i] != null) {
-                $result[] = (string) $method[$i];
-            } else {
-                $result[] = null;
+
+        if ($data !== null) {
+            $method = explode(',', $data);
+            // PrayerTimesHelper::createCustomMethod() takes a total of 12 params
+            for ($i=0; $i<=11; $i++) {
+                if (isset($method[$i]) && $method[$i] != 0 && $method[$i] != null) {
+                    $result[] = (string) $method[$i];
+                } else {
+                    $result[] = null;
+                }
             }
         }
 

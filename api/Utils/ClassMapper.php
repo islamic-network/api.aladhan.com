@@ -35,6 +35,11 @@ class ClassMapper
             14 => Method::METHOD_RUSSIA,
             15 => Method::METHOD_MOONSIGHTING,
             16 => Method::METHOD_DUBAI,
+            17 => Method::METHOD_JAKIM,
+            18 => Method::METHOD_TUNISIA,
+            19 => Method::METHOD_ALGERIA,
+            20 => Method::METHOD_KEMENAG,
+            21 => Method::METHOD_MOROCCO,
             99 => Method::METHOD_CUSTOM,
         ];
 
