@@ -40,6 +40,7 @@ class ClassMapper
             19 => Method::METHOD_ALGERIA,
             20 => Method::METHOD_KEMENAG,
             21 => Method::METHOD_MOROCCO,
+            22 => Method::METHOD_PORTUGAL,
             99 => Method::METHOD_CUSTOM,
         ];
 
