@@ -112,12 +112,14 @@ spec:
           args:
             - "memcached"
             - "-m"
-            - "256"
+            - "900"
+            - "-I"
+            - "64M"
           resources:
             requests:
-              memory: 288Mi
+              memory: 1000Mi
             limits:
-              memory: 288Mi
+              memory: 1000Mi
           ports:
             - containerPort: 11211
               protocol: TCP
@@ -129,7 +131,7 @@ metadata:
   name: aladhan-com-api
   namespace: aladhan-com
   annotations:
-    konghq.com/plugins: rate-limiting-aladhan-api, proxy-cache-redis-aladhan-api
+    konghq.com/plugins: rate-limiting-aladhan-api
 spec:
   ports:
     - port: 80
@@ -156,35 +158,9 @@ metadata:
   namespace: aladhan-com
 config:
   second: 24
-  policy: redis
-  redis_host: redis-ratelimit-master
-  redis_port: 6379
+  policy: cluster
   limit_by: ip
 plugin: rate-limiting
----
-apiVersion: configuration.konghq.com/v1
-kind: KongPlugin
-metadata:
-  name: proxy-cache-redis-aladhan-api
-  namespace: aladhan-com
-config:
-  response_code:
-    - 200
-    - 400
-    - 301
-  request_method:
-    - GET
-    - HEAD
-  content_type:
-    - application/json
-    - text/html; charset=UTF-8
-    - text/hml
-  cache_ttl: 3600
-  cache_control: false
-  storage_ttl: 3600
-  redis_port: 6379
-  redis_host: redis-cache-aladhan-master
-plugin: proxy-cache-redis
 ---
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
