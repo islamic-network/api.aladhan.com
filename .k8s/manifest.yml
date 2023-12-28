@@ -158,7 +158,7 @@ metadata:
   namespace: aladhan-com
 config:
   second: 24
-  policy: cluster
+  policy: local
   limit_by: ip
 plugin: rate-limiting
 ---
