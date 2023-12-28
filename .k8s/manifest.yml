@@ -131,7 +131,7 @@ metadata:
   name: aladhan-com-api
   namespace: aladhan-com
   annotations:
-    konghq.com/plugins: rate-limiting-aladhan-api
+    konghq.com/plugins: rate-limiting-aladhan-api, proxy-cache-aladhan-api
 spec:
   ports:
     - port: 80
@@ -161,6 +161,30 @@ config:
   policy: local
   limit_by: ip
 plugin: rate-limiting
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: proxy-cache-aladhan-api
+  namespace: aladhan-com
+config:
+  response_code:
+  - 200
+  - 400
+  - 301
+  request_method:
+  - GET
+  - HEAD
+  content_type:
+  - application/json
+  - text/html; charset=UTF-8
+  - text/hml
+  cache_control: false
+  cache_ttl: 3600
+  strategy: memory
+  memory:
+    dictionary_name: mamluk_proxy_cache
+plugin: proxy-cache
 ---
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
