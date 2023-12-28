@@ -15,7 +15,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {decimal} longitude The decimal value for the longitude co-ordinate of the location you want the time computed for. Example: -1.25387785
      * @apiParam {number=1-12} month Optional. A gregorian calendar month. Example: 8 or 08 for August. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ashari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
@@ -237,7 +237,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {string} address An address string. Example: 1420 Austin Bluffs Parkway, Colorado Springs, CO OR 25 Hampstead High Street, London, NW3 1RL, United Kingdom OR Sultanahmet Mosque, Istanbul, Turkey
      * @apiParam {number=1-12} month Optional. A gregorian calendar month. Example: 8 or 08 for August. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ashari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
@@ -459,7 +459,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {string} [state] State or province. A state name or abbreviation. Examples: Colorado / CO / Punjab / Bengal
      * @apiParam {number=1-12} month Optional. A gregorian calendar month. Example: 8 or 08 for August. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ashari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
@@ -680,7 +680,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {decimal} longitude The decimal value for the longitude co-ordinate of the location you want the time computed for. Example: -1.25387785
      * @apiParam {number=1-12} month Optional. A Hijri calendar month. Example: 9 or 09 for Ramadan. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ashari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
@@ -901,7 +901,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {string} address An address string. Example: 1420 Austin Bluffs Parkway, Colorado Springs, CO OR 25 Hampstead High Street, London, NW3 1RL, United Kingdom OR Sultanahmet Mosque, Istanbul, Turkey
      * @apiParam {number=1-12} month Optional. A Hijri calendar month. Example: 9 or 09 for Ramadan. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ashari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
@@ -1123,7 +1123,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {string} [state] State or province. A state name or abbreviation. Examples: Colorado / CO / Punjab / Bengal
      * @apiParam {number=1-12} month Optional. A Hijri calendar month. Example: 9 or 09 for Ramadan. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
-     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ansari<br />
+     * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ashari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
      *                               3 - Muslim World League<br />
