@@ -208,6 +208,7 @@ spec:
         - "api.aladhan.com"
         - "london.api.aladhan.com"
         - "mumbai.api.aladhan.com"
+        - "alparslan.api.aladhan.com"
       secretName: "aladhan-com-api-tls"
   rules:
     - host: api.aladhan.com
@@ -231,6 +232,16 @@ spec:
                 port:
                   number: 80
     - host: mumbai.api.aladhan.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aladhan-com-api
+                port:
+                  number: 80
+    - host: alparslan.api.aladhan.com
       http:
         paths:
           - path: /
