@@ -211,6 +211,7 @@ spec:
         - "api.aladhan.com"
         - "cagri.api.aladhan.com"
         - "alparslan.api.aladhan.com"
+        - "beyazid.api.aladhan.com"
       secretName: "aladhan-com-api-tls"
   rules:
     - host: api.aladhan.com
@@ -234,6 +235,16 @@ spec:
                 port:
                   number: 80
     - host: alparslan.api.aladhan.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aladhan-com-api
+                port:
+                  number: 80
+    - host: beyazid.api.aladhan.com
       http:
         paths:
           - path: /
