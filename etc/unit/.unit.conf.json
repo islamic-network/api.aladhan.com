@@ -20,6 +20,13 @@
       "root": "/var/www/html",
       "index": "index.php",
       "script": "index.php"
+    },
+    "phpinfo": {
+      "type": "php",
+      "user": "nobody",
+      "root": "/var/www/html",
+      "index": "phpinfo.php",
+      "script": "phpinfo.php"
     }
   },
   "routes": {
@@ -41,6 +48,16 @@
         "action": {
           "return": 301,
           "location": "/v1$request_uri"
+        }
+      },
+      {
+        "match": {
+          "uri": [
+            "/phpinfo"
+          ]
+        },
+        "action": {
+          "pass": "applications/phpinfo"
         }
       },
       {
