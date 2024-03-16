@@ -8,13 +8,8 @@ services:
       - aladhan_memcached
     depends_on:
       - aladhan_memcached
-    environment:
-      DEBUG: "true" # Any value equals true. To turn off debug mode, comment or delete this env var.
-      MEMCACHED_HOST: "aladhan_memcached"
-      MEMCACHED_PORT: 11211
-      X7X_API_KEY: "4c18550069efc72965c54bde3c8f316a"
-      #X7X_GEOCODE_BASEURL: ""
-      #X7X_TIMEZONE_BASEURL: ""
+    env_file:
+      - aladhan_api.env
     ports:
       - "80:8080"
     volumes:
