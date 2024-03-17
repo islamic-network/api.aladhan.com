@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e408e29e3824fd2992ae422017f1d6aa",
+    "content-hash": "32c8149a877ed934f20b916fee5d5679",
     "packages": [
         {
             "name": "7x/sdk",
@@ -1013,16 +1013,16 @@
         },
         {
             "name": "doctrine/orm",
-            "version": "2.19.0",
+            "version": "2.19.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/orm.git",
-                "reference": "a809a71aa6a233a6c82e68ebaaf8954adc4998dc"
+                "reference": "abcad6fa45768fe8481cf4772c6e20a80c42bf72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/orm/zipball/a809a71aa6a233a6c82e68ebaaf8954adc4998dc",
-                "reference": "a809a71aa6a233a6c82e68ebaaf8954adc4998dc",
+                "url": "https://api.github.com/repos/doctrine/orm/zipball/abcad6fa45768fe8481cf4772c6e20a80c42bf72",
+                "reference": "abcad6fa45768fe8481cf4772c6e20a80c42bf72",
                 "shasum": ""
             },
             "require": {
@@ -1108,9 +1108,9 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/orm/issues",
-                "source": "https://github.com/doctrine/orm/tree/2.19.0"
+                "source": "https://github.com/doctrine/orm/tree/2.19.1"
             },
-            "time": "2024-03-03T17:43:41+00:00"
+            "time": "2024-03-16T20:23:13+00:00"
         },
         {
             "name": "doctrine/persistence",
@@ -2303,23 +2303,23 @@
         },
         {
             "name": "islamic-network/prayer-times",
-            "version": "1.0.28",
+            "version": "1.0.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/islamic-network/prayer-times.git",
-                "reference": "46b4d4e4c43a344a0656b74f8de00726265ffe5d"
+                "reference": "f7ed3a2467fbced252a0914c8b202c8b61ca58b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/islamic-network/prayer-times/zipball/46b4d4e4c43a344a0656b74f8de00726265ffe5d",
-                "reference": "46b4d4e4c43a344a0656b74f8de00726265ffe5d",
+                "url": "https://api.github.com/repos/islamic-network/prayer-times/zipball/f7ed3a2467fbced252a0914c8b202c8b61ca58b9",
+                "reference": "f7ed3a2467fbced252a0914c8b202c8b61ca58b9",
                 "shasum": ""
             },
             "require": {
                 "islamic-network/prayer-times-moonsighting": "^1.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^6.2"
+                "phpunit/phpunit": "^9.2"
             },
             "type": "library",
             "autoload": {
@@ -2334,7 +2334,7 @@
             "description": "Precise and Powerful PHP Prayer Times Library",
             "support": {
                 "issues": "https://github.com/islamic-network/prayer-times/issues",
-                "source": "https://github.com/islamic-network/prayer-times/tree/1.0.28"
+                "source": "https://github.com/islamic-network/prayer-times/tree/1.0.29"
             },
             "funding": [
                 {
@@ -2346,7 +2346,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2024-03-13T07:03:49+00:00"
+            "time": "2024-03-17T08:24:32+00:00"
         },
         {
             "name": "islamic-network/prayer-times-moonsighting",
@@ -6112,16 +6112,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "4.8.5",
+            "version": "4.8.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "038da8ad219f1e9c3f82c5d84c47da3b6f35039c"
+                "reference": "fe45a0e98a156999ddafc31c9ad333fdcadbcb2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/038da8ad219f1e9c3f82c5d84c47da3b6f35039c",
-                "reference": "038da8ad219f1e9c3f82c5d84c47da3b6f35039c",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/fe45a0e98a156999ddafc31c9ad333fdcadbcb2d",
+                "reference": "fe45a0e98a156999ddafc31c9ad333fdcadbcb2d",
                 "shasum": ""
             },
             "require": {
@@ -6187,9 +6187,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/4.8.5"
+                "source": "https://github.com/zircote/swagger-php/tree/4.8.6"
             },
-            "time": "2024-03-07T23:56:26+00:00"
+            "time": "2024-03-15T01:13:55+00:00"
         }
     ],
     "packages-dev": [
@@ -7652,16 +7652,16 @@
         },
         {
             "name": "sebastian/resource-operations",
-            "version": "3.0.3",
+            "version": "3.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/resource-operations.git",
-                "reference": "0f4443cb3a1d92ce809899753bc0d5d5a8dd19a8"
+                "reference": "05d5692a7993ecccd56a03e40cd7e5b09b1d404e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/resource-operations/zipball/0f4443cb3a1d92ce809899753bc0d5d5a8dd19a8",
-                "reference": "0f4443cb3a1d92ce809899753bc0d5d5a8dd19a8",
+                "url": "https://api.github.com/repos/sebastianbergmann/resource-operations/zipball/05d5692a7993ecccd56a03e40cd7e5b09b1d404e",
+                "reference": "05d5692a7993ecccd56a03e40cd7e5b09b1d404e",
                 "shasum": ""
             },
             "require": {
@@ -7673,7 +7673,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.0-dev"
+                    "dev-main": "3.0-dev"
                 }
             },
             "autoload": {
@@ -7694,8 +7694,7 @@
             "description": "Provides a list of PHP built-in functions that operate on resources",
             "homepage": "https://www.github.com/sebastianbergmann/resource-operations",
             "support": {
-                "issues": "https://github.com/sebastianbergmann/resource-operations/issues",
-                "source": "https://github.com/sebastianbergmann/resource-operations/tree/3.0.3"
+                "source": "https://github.com/sebastianbergmann/resource-operations/tree/3.0.4"
             },
             "funding": [
                 {
@@ -7703,7 +7702,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2020-09-28T06:45:17+00:00"
+            "time": "2024-03-14T16:00:52+00:00"
         },
         {
             "name": "sebastian/type",
