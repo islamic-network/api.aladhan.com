@@ -8,7 +8,6 @@ use IslamicNetwork\MoonSighting\Isha;
 use Mamluk\Kipchak\Components\Http;
 use DateTime;
 use DateTimeZone;
-use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Class PrayerTimesHelper

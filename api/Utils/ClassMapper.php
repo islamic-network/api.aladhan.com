@@ -13,7 +13,7 @@ class ClassMapper
 {
     /**
      * Returns the method name
-     * @param  Integer $methodId 0 to 16
+     * @param  Integer $methodId 0 to 23 and 99
      * @return String
      */
     public static function method($methodId)
@@ -41,6 +41,7 @@ class ClassMapper
             20 => Method::METHOD_KEMENAG,
             21 => Method::METHOD_MOROCCO,
             22 => Method::METHOD_PORTUGAL,
+            23 => Method::METHOD_JORDAN,
             99 => Method::METHOD_CUSTOM,
         ];
 

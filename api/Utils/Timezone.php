@@ -77,7 +77,7 @@ class Timezone
         //Compute only if timezone is empty or null
         if ($timezone == '' || $timezone  === null) {
             // Compute it.
-            if ( ApiRequest::isLatitudeValid($latitude) && ApiRequest::isLongitudeValid($longitude)) {
+            if (ApiRequest::isLatitudeValid($latitude) && ApiRequest::isLongitudeValid($longitude)) {
                 $tz = new SevenExTimeZone($apikey,  $timezoneBaseUrl);
 
                 $tzx = $tz->get($latitude, $longitude);
