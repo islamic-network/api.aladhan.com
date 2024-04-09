@@ -303,7 +303,7 @@ class PrayerTimesHelper
                 $pt->tune($tune[0], $tune[1], $tune[2], 5, $tune[4], 5, $tune[6], $tune[7], $tune[8]);
                 break;
             case Method::METHOD_PORTUGAL:
-                $pt->tune($tune[0], $tune[1], $tune[2], 5, $tune[4], $tune[4], $tune[6], $tune[7], $tune[8]);
+                $pt->tune($tune[0], $tune[1], $tune[2], 5, $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
                 break;
             default:
                 $pt->tune($tune[0], $tune[1], $tune[2], $tune[3], $tune[4], $tune[5], $tune[6], $tune[7], $tune[8]);
