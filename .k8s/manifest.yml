@@ -111,7 +111,7 @@ spec:
           whenUnsatisfiable: ScheduleAnyway
       containers:
         - name: aladhan-com-api-memcached
-          image: memcached:1.6
+          image: memcached:1.6.25
           args:
             - "memcached"
             - "-m"
