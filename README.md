@@ -11,7 +11,7 @@
 This repository powers the AlAdhan.com API on http://api.aladhan.com.
 
 # Technology Stack
-* PHP 8.1
+* PHP 8.2
 * Memcached 1.6
 * Kipchak (https://github.com/mamluk/kipchak)
 * 7x APIs (https://7x.ax)
