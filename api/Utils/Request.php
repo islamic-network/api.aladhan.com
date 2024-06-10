@@ -45,11 +45,11 @@ class Request
 
     public static function latitudeAdjustmentMethod($data): int
     {
-        if (!in_array($data, [1, 2, 3])) {
+        if (!in_array($data, [0, 1, 2, 3])) {
             return 3;
         }
 
-        return $data;
+        return (int) $data;
     }
 
     public static function method($data, $latitude = null, $longitude= null): int
