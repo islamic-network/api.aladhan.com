@@ -322,7 +322,7 @@ class Request
 //        if (Timezone::isGoogleBot()) {
 //            return false;
 //        }
-        $characters = ["#", "@", "<", ">", "!", "", "Ä", "\n", "\x"];
+        $characters = ["#", "@", "<", ">", "!", "", "Ä", "\n", "\x", "_"];
         foreach ($characters as $x) {
             if (str_contains($string, $x)) {
                 return false;
