@@ -234,8 +234,8 @@ class PrayerTimesHelper
     public static function getMetaArray(PrayerTimes $prayerTimesModel): array
     {
         $meta = $prayerTimesModel->getMeta();
-        $meta['latitude'] = '*******';
-        $meta['longitude'] = '*******';
+        $meta['latitude'] = 0.00000;
+        $meta['longitude'] = 0.00000;
 
         return $meta;
     }
