@@ -256,6 +256,7 @@ class PrayerTimesHelper
     public static function getMetaArray(PrayerTimes $prayerTimesModel, bool $enableMasking = false): array
     {
         $meta = $prayerTimesModel->getMeta();
+
         if ($enableMasking) {
             $meta['latitude'] = (float) 0.00;
             $meta['longitude'] = (float) 0.00;
