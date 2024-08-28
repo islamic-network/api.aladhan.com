@@ -31,6 +31,13 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               15 - Moonsighting Committee Worldwide (also requires shafaq parameter)<br />
      *                               16 - Dubai (unofficial)<br />
+     *                               17 - JAKIM, Malaysia<br />
+     *                               18 - Tunisia
+     *                               19 - Algeria
+     *                               20 - KEMENAG, Indonesia
+     *                               21 - Morocco
+     *                               22 - Portugal
+     *                               23 - Jordan
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
@@ -237,6 +244,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {string} address An address string. Example: 1420 Austin Bluffs Parkway, Colorado Springs, CO OR 25 Hampstead High Street, London, NW3 1RL, United Kingdom OR Sultanahmet Mosque, Istanbul, Turkey
      * @apiParam {number=1-12} month Optional. A gregorian calendar month. Example: 8 or 08 for August. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
+     * @apiParam {string} x7xapikey An API key from https://7x.ax to geocode the address. If you do not provide one the response will mask the geocoded co-ordinates.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ashari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -253,6 +261,13 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               15 - Moonsighting Committee Worldwide (also requires shafaq parameter)<br />
      *                               16 - Dubai (unofficial)<br />
+     *                               17 - JAKIM, Malaysia<br />
+     *                               18 - Tunisia
+     *                               19 - Algeria
+     *                               20 - KEMENAG, Indonesia
+     *                               21 - Morocco
+     *                               22 - Portugal
+     *                               23 - Jordan
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
@@ -459,6 +474,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {string} [state] State or province. A state name or abbreviation. Examples: Colorado / CO / Punjab / Bengal
      * @apiParam {number=1-12} month Optional. A gregorian calendar month. Example: 8 or 08 for August. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A gregorian calendar year. Example: 2014.
+     * @apiParam {string} x7xapikey An API key from https://7x.ax to geocode the city and country. If you do not provide one the response will mask the geocoded co-ordinates.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ashari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -475,6 +491,13 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               15 - Moonsighting Committee Worldwide (also requires shafaq parameter)<br />
      *                               16 - Dubai (unofficial)<br />
+     *                               17 - JAKIM, Malaysia<br />
+     *                               18 - Tunisia
+     *                               19 - Algeria
+     *                               20 - KEMENAG, Indonesia
+     *                               21 - Morocco
+     *                               22 - Portugal
+     *                               23 - Jordan
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
@@ -901,6 +924,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {string} address An address string. Example: 1420 Austin Bluffs Parkway, Colorado Springs, CO OR 25 Hampstead High Street, London, NW3 1RL, United Kingdom OR Sultanahmet Mosque, Istanbul, Turkey
      * @apiParam {number=1-12} month Optional. A Hijri calendar month. Example: 9 or 09 for Ramadan. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
+     * @apiParam {string} x7xapikey An API key from https://7x.ax to geocode the address. If you do not provide one the response will mask the geocoded co-ordinates.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ashari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -917,6 +941,13 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               15 - Moonsighting Committee Worldwide (also requires shafaq parameter)<br />
      *                               16 - Dubai (unofficial)<br />
+     *                               17 - JAKIM, Malaysia<br />
+     *                               18 - Tunisia
+     *                               19 - Algeria
+     *                               20 - KEMENAG, Indonesia
+     *                               21 - Morocco
+     *                               22 - Portugal
+     *                               23 - Jordan
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
@@ -1123,6 +1154,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {string} [state] State or province. A state name or abbreviation. Examples: Colorado / CO / Punjab / Bengal
      * @apiParam {number=1-12} month Optional. A Hijri calendar month. Example: 9 or 09 for Ramadan. If not specified, an annual calendar will be returned.
      * @apiParam {number} year A Hijri calendar year. Example: 1437.
+     * @apiParam {string} x7xapikey An API key from https://7x.ax to geocode the city and country. If you do not provide one the response will mask the geocoded co-ordinates.
      * @apiParam {number=0,1,2,3,4,5,7,8,9,10,11,12,13,14,15,99} [method] A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. If not specified, it defaults to the closest authority based on the location or co-ordinates specified in the API call. This parameter accepts values from 0-12 and 99, as specified below:<br />     *                               0 - Shia Ithna-Ashari<br />
      *                               1 - University of Islamic Sciences, Karachi<br />
      *                               2 - Islamic Society of North America<br />
@@ -1139,6 +1171,13 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               15 - Moonsighting Committee Worldwide (also requires shafaq parameter)<br />
      *                               16 - Dubai (unofficial)<br />
+     *                               17 - JAKIM, Malaysia<br />
+     *                               18 - Tunisia
+     *                               19 - Algeria
+     *                               20 - KEMENAG, Indonesia
+     *                               21 - Morocco
+     *                               22 - Portugal
+     *                               23 - Jordan
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>

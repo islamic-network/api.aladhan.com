@@ -28,10 +28,17 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *                               10 - Qatar<br />
      *                               11 - Majlis Ugama Islam Singapura, Singapore<br />
      *                               12 - Union Organization islamic de France<br />
-     *                               13 - Diyanet İşleri Başkanlığı, Turkey<br />
+     *                               13 - Diyanet İşleri Başkanlığı, Turkey (experimental) <br />
      *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               15 - Moonsighting Committee Worldwide (also requires shafaq parameter)<br />
      *                               16 - Dubai (unofficial)<br />
+     *                               17 - JAKIM, Malaysia<br />
+     *                               18 - Tunisia
+     *                               19 - Algeria
+     *                               20 - KEMENAG, Indonesia
+     *                               21 - Morocco
+     *                               22 - Portugal
+     *                               23 - Jordan
      *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
@@ -46,7 +53,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
-     *   http://api.aladhan.com/v1/timings/17-07-2007?latitude=51.508515&longitude=-0.1254872&method=2
+     *   http://api.aladhan.com/v1/timings/05-11-2023?latitude=51.508515&longitude=-0.1254872&method=2
      *
      * @apiSuccessExample Success-Response:
      * HTTP/1.1 200 OK
@@ -166,7 +173,14 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               15 - Moonsighting Committee Worldwide (also requires shafaq parameter)<br />
      *                               16 - Dubai (unofficial)<br />
-     *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     *                               17 - JAKIM, Malaysia<br />
+     *                               18 - Tunisia
+     *                               19 - Algeria
+     *                               20 - KEMENAG, Indonesia
+     *                               21 - Morocco
+     *                               22 - Portugal
+     *                               23 - Jordan
+ *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
@@ -179,7 +193,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
-     *   http://api.aladhan.com/v1/timingsByAddress?address=Regents Park Mosque, London, UK
+     *   http://api.aladhan.com/v1/timingsByAddress/05-11-2023?address=Regents Park Mosque, London, UK
      *
      * @apiSuccessExample Success-Response:
      * HTTP/1.1 200 OK
@@ -301,7 +315,14 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      *                               14 - Spiritual Administration of Muslims of Russia<br />
      *                               15 - Moonsighting Committee Worldwide (also requires shafaq parameter)<br />
      *                               16 - Dubai (unofficial)<br />
-     *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
+     *                               17 - JAKIM, Malaysia<br />
+     *                               18 - Tunisia
+     *                               19 - Algeria
+     *                               20 - KEMENAG, Indonesia
+     *                               21 - Morocco
+     *                               22 - Portugal
+     *                               23 - Jordan
+ *                               99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {string} [shafaq=general] Which Shafaq to use if the method is Moonsighting Commitee Worldwide. Acceptable options are 'general', 'ahmer' and 'abyad'. Defaults to 'general'.
      * @apiParam {string} [tune] Comma Separated String of integers to offset timings returned by the API in minutes. Example: 5,3,5,7,9,7. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
      * @apiParam {number{0-1}} [school = 0] 0 for Shafi (or the standard way), 1 for Hanafi. If you leave this empty, it defaults to Shafii.
@@ -314,7 +335,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
      * @apiParam {boolean} [iso8601=false] Whether to return the prayer times in the iso8601 format. Example: true will return 2020-07-01T02:56:00+01:00 instead of 02:56
      *
      * @apiExample {http} Example usage:
-     *   http://api.aladhan.com/v1/timingsByCity?city=Dubai&country=United Arab Emirates&method=8
+     *   http://api.aladhan.com/v1/timingsByCity/05-11-2023?city=Dubai&country=United Arab Emirates&method=8
      *
      * @apiSuccessExample Success-Response:
      * HTTP/1.1 200 OK

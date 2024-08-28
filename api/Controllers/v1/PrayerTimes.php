@@ -72,6 +72,7 @@ class PrayerTimes extends Slim
 
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
         $datestring = Http\Request::getAttribute($request, 'date');
+        $enableMasking = Http\Request::getQueryParam($request, 'x7xapikey') === null;
 
         if (ApiRequest::redirectableByDate($datestring)) {
             $d = ApiRequest::getRedirectableDate($datestring);
@@ -85,7 +86,7 @@ class PrayerTimes extends Slim
             $r = $ptm->respond($datestring, 'timingsByAddress');
 
             return Http\Response::json($response,
-                ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2])],
+                ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2], $enableMasking)],
                 200,
                 true,
                 3600,
@@ -107,6 +108,7 @@ class PrayerTimes extends Slim
 
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
         $datestring = Http\Request::getAttribute($request, 'date');
+        $enableMasking = Http\Request::getQueryParam($request, 'x7xapikey') === null;
 
         if (ApiRequest::redirectableByDate($datestring)) {
             $d = ApiRequest::getRedirectableDate($datestring);
@@ -119,7 +121,7 @@ class PrayerTimes extends Slim
             $r = $ptm->respond($datestring, 'timingsByCity');
 
             return Http\Response::json($response,
-                ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2])],
+                ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2], $enableMasking)],
                 200,
                 true,
                 3600,
@@ -177,6 +179,8 @@ class PrayerTimes extends Slim
 
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
         $datestring = Http\Request::getAttribute($request, 'date');
+        $enableMasking = Http\Request::getQueryParam($request, 'x7xapikey') === null;
+
         if (ApiRequest::redirectableByDate($datestring)) {
             $d = ApiRequest::getRedirectableDate($datestring);
             $d->setTimezone(new DateTimeZone($ptm->timezone));
@@ -190,7 +194,7 @@ class PrayerTimes extends Slim
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($r[2], $r[3], $ptm->latitude, $ptm->longitude, $ptm->latitudeAdjustmentMethod, $ptm->iso8601, $ptm->timezone);
 
             return Http\Response::json($response,
-                ['timings' => $nextPrayer, 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2])],
+                ['timings' => $nextPrayer, 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2], $enableMasking)],
                 200,
                 true,
                 300,
