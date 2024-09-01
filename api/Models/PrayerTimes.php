@@ -6,7 +6,6 @@ use Api\Utils\ClassMapper;
 use Api\Utils\Generic;
 use Api\Utils\PrayerTimesHelper;
 use Api\Utils\Request as ApiRequest;
-use IslamicNetwork\PrayerTimes\Method;
 use Mamluk\Kipchak\Components\Http\Request;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,6 +21,7 @@ use DateTime;
 class PrayerTimes
 {
     public string $SevenExApiKey;
+    public ?string $customSevenExApiKey;
     public string $SevenExGeocodeBaseUrl;
     public string $SevenExTimezoneBaseUrl;
     public ServerRequestInterface $request;
@@ -47,7 +47,13 @@ class PrayerTimes
     {
         $c = $container->get('config')['kipchak.7x'];
         $this->mc = $mc;
-        $this->SevenExApiKey = $c['apikey'];
+        $this->customSevenExApiKey = Request::getQueryParam($request, 'x7xapikey');
+        if ($this->customSevenExApiKey === null) { // This means no custom 7x api key was passed. Use default.
+            $this->SevenExApiKey = $c['apikey'];
+        } else {
+            // Use the custom 7x API key passed by the user.
+            $this->SevenExApiKey = $this->customSevenExApiKey;
+        }
         $this->SevenExGeocodeBaseUrl = $c['geocode_baseurl'];
         $this->SevenExTimezoneBaseUrl = $c['timezone_baseurl'];
         $this->request = $request;
@@ -108,7 +114,7 @@ class PrayerTimes
 
         if ($this->address !== null && ApiRequest::isValidAddress($this->address)) {
             // /timingsByAddress call. Geocode.
-            $coordinates = $this->mc->get(md5('addr.' . strtolower($this->address)), function (ItemInterface $item)  {
+            $coordinates = $this->mc->get(md5('addr.' . strtolower($this->address) . $this->SevenExApiKey), function (ItemInterface $item)  {
                 $item->expiresAfter(604800);
                 $gc = new Geocode($this->SevenExApiKey, $this->SevenExGeocodeBaseUrl);
                 $gcode = $gc->geocode($this->address);
@@ -155,10 +161,10 @@ class PrayerTimes
 
     }
 
-    public function respondWithCalendar(int $month, int $year, bool $annual, string $endpoint, bool $hijri = false, int $expires = 604800): array
+    public function respondWithCalendar(int $month, int $year, bool $annual, string $endpoint, bool $hijri = false, int $expires = 604800, bool $enableMasking = true): array
     {
         $r = $this->mc->get(md5($endpoint . $month . $year . $annual . $hijri . json_encode(get_object_vars($this))),
-            function (ItemInterface $item) use ($month, $year, $annual, $hijri, $expires) {
+            function (ItemInterface $item) use ($month, $year, $annual, $hijri, $expires, $enableMasking) {
                 $item->expiresAfter($expires);
                 $pt = new \IslamicNetwork\PrayerTimes\PrayerTimes($this->method, $this->school);
                 $pt->setShafaq($this->shafaq);
@@ -167,21 +173,21 @@ class PrayerTimes
                     if ($annual) {
                         $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($this->latitude, $this->longitude,
                             $year, $this->timezone, $this->latitudeAdjustmentMethod, $pt, $this->midnightMode,
-                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings);
+                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings, $enableMasking);
                     } else {
                         $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($this->latitude, $this->longitude,
                             $month, $year, $this->timezone, $this->latitudeAdjustmentMethod, $pt, $this->midnightMode,
-                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings);
+                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings, $enableMasking);
                     }
                 } else {
                     if ($annual) {
                         $times = PrayerTimesHelper::calculateYearPrayerTimes($this->latitude, $this->longitude,
                             $year, $this->timezone, $this->latitudeAdjustmentMethod, $pt, $this->midnightMode,
-                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings);
+                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings, $enableMasking);
                     } else {
                         $times = PrayerTimesHelper::calculateMonthPrayerTimes($this->latitude, $this->longitude,
                             $month, $year, $this->timezone, $this->latitudeAdjustmentMethod, $pt, $this->midnightMode,
-                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings);
+                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings, $enableMasking);
                     }
                 }
 

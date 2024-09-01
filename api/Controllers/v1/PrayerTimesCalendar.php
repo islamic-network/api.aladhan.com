@@ -84,6 +84,7 @@ class PrayerTimesCalendar extends Slim
         $annual = Http\Request::getQueryParam($request, 'annual') === "true";
         $year = Http\Request::getAttribute($request, 'year');
         $month = Http\Request::getAttribute($request, 'month');
+        $enableMasking = Http\Request::getQueryParam($request, 'x7xapikey') === null;
 
         if ($year === null && $month === null) {
             // This is a legacy
@@ -106,7 +107,7 @@ class PrayerTimesCalendar extends Slim
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
 
         if (Request::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
-            $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByAddress', $hijri);
+            $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByAddress', $hijri, 604800, $enableMasking);
 
             return Http\Response::json($response,
                 $r,
@@ -132,6 +133,7 @@ class PrayerTimesCalendar extends Slim
         $annual = Http\Request::getQueryParam($request, 'annual') === "true";
         $year = Http\Request::getAttribute($request, 'year');
         $month = Http\Request::getAttribute($request, 'month');
+        $enableMasking = Http\Request::getQueryParam($request, 'x7xapikey') === null;
 
         if ($year === null && $month === null) {
             // This is a legacy
@@ -155,7 +157,7 @@ class PrayerTimesCalendar extends Slim
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
 
         if (Request::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
-            $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByCity', $hijri);
+            $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByCity', $hijri, 604800, $enableMasking);
 
             return Http\Response::json($response,
                 $r,
