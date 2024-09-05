@@ -258,8 +258,8 @@ class PrayerTimesHelper
         $meta = $prayerTimesModel->getMeta();
 
         if ($enableMasking) {
-            $meta['latitude'] = (float) 0.00;
-            $meta['longitude'] = (float) 0.00;
+            $meta['latitude'] = (float) 1.234567;
+            $meta['longitude'] = (float) 2.34567;
         }
 
         return $meta;
