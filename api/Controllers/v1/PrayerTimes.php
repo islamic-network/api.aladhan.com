@@ -21,7 +21,6 @@ class PrayerTimes extends Slim
 
     public HijriCalendar $hc;
 
-
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
@@ -49,7 +48,7 @@ class PrayerTimes extends Slim
             $r = $ptm->respond($datestring, 'timings');
 
             return Http\Response::json($response,
-                ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2])],
+                ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2], $r[4])],
                 200,
                 true,
                 3600,
@@ -86,7 +85,7 @@ class PrayerTimes extends Slim
             $r = $ptm->respond($datestring, 'timingsByAddress');
 
             return Http\Response::json($response,
-                ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2], $enableMasking)],
+                ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2], $r[4], $enableMasking)],
                 200,
                 true,
                 3600,
@@ -121,7 +120,7 @@ class PrayerTimes extends Slim
             $r = $ptm->respond($datestring, 'timingsByCity');
 
             return Http\Response::json($response,
-                ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2], $enableMasking)],
+                ['timings' => $r[0], 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2], $r[4], $enableMasking)],
                 200,
                 true,
                 3600,
@@ -156,7 +155,7 @@ class PrayerTimes extends Slim
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($r[2], $r[3], $ptm->latitude, $ptm->longitude, $ptm->latitudeAdjustmentMethod, $ptm->iso8601, $ptm->timezone);
 
             return Http\Response::json($response,
-                ['timings' => $nextPrayer, 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2])],
+                ['timings' => $nextPrayer, 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2], $r[4])],
                 200,
                 true,
                 300,
@@ -194,7 +193,7 @@ class PrayerTimes extends Slim
             $nextPrayer = PrayerTimesHelper::nextPrayerTime($r[2], $r[3], $ptm->latitude, $ptm->longitude, $ptm->latitudeAdjustmentMethod, $ptm->iso8601, $ptm->timezone);
 
             return Http\Response::json($response,
-                ['timings' => $nextPrayer, 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2], $enableMasking)],
+                ['timings' => $nextPrayer, 'date' => $r[1], 'meta' => PrayerTimesHelper::getMetaArray($r[2], $r[4], $enableMasking)],
                 200,
                 true,
                 300,
