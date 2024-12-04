@@ -10,7 +10,9 @@ use Mamluk\Kipchak\Components\Http\Request;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Api\Utils\Timezone;
+use SevenEx\DTO\Geocode\Location;
 use SevenEx\SDK\Geocode;
+use SevenEx\DTO\Geocode\Geocode as GeocodeDTO;
 use Slim\Exception\HttpBadRequestException;
 use Symfony\Component\Cache\Adapter\MemcachedAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -30,6 +32,7 @@ class PrayerTimes
     public string $latitudeAdjustmentMethod;
     public ?float $latitude;
     public ?float $longitude;
+    public ?Location $location;
     public string $method;
     public ?string $timezone;
     public int $adjustment;
@@ -114,20 +117,23 @@ class PrayerTimes
 
         if ($this->address !== null && ApiRequest::isValidAddress($this->address)) {
             // /timingsByAddress call. Geocode.
-            $coordinates = $this->mc->get(md5('addr.' . strtolower($this->address) . $this->SevenExApiKey), function (ItemInterface $item)  {
+            $geocode = $this->mc->get(md5('addr.' . strtolower($this->address) . $this->SevenExApiKey), function (ItemInterface $item)  {
                 $item->expiresAfter(604800);
                 $gc = new Geocode($this->SevenExApiKey, $this->SevenExGeocodeBaseUrl);
                 $gcode = $gc->geocode($this->address);
                 if(!empty($gcode->objects)) {
-                    return $gcode->objects[0]->coordinates;
+                    return $gcode->objects[0];
                 }
 
                 return false;
             });
-
-            if ($coordinates) {
-                $this->latitude = $coordinates->latitude;
-                $this->longitude = $coordinates->longitude;
+            /**
+             * @var GeocodeDTO $geocode
+             */
+            if ($geocode) {
+                $this->latitude = $geocode->coordinates->latitude;
+                $this->longitude = $geocode->coordinates->longitude;
+                $this->location = $geocode->location;
             } else {
                 throw new HttpBadRequestException($this->request,'Unable to geocode address.');
             }
@@ -135,7 +141,7 @@ class PrayerTimes
         }
     }
 
-    public function respond(string $datestring, string $endpoint, int $expires = 604800): array
+    public function respond(string $datestring, string $endpoint, int $expires = 1): array
     {
         $r = $this->mc->get(md5($endpoint . $datestring . json_encode(get_object_vars($this))),
             function (ItemInterface $item) use ($datestring, $expires) {
@@ -154,7 +160,7 @@ class PrayerTimes
                     'gregorian' => $hd['gregorian']
                 ];
 
-                return [$timings, $date, $pt, $d];
+                return [$timings, $date, $pt, $d, $this->location];
             });
 
         return $r;

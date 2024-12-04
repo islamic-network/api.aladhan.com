@@ -3,11 +3,14 @@ namespace Api\Utils;
 use Api\Models\HijriCalendar;
 use IslamicNetwork\PrayerTimes\Method;
 use IslamicNetwork\PrayerTimes\PrayerTimes;
+use Api\Models\PrayerTimes as PrayerTimesModel;
 use Api\Utils\Request as ApiRequest;
 use IslamicNetwork\MoonSighting\Isha;
 use Mamluk\Kipchak\Components\Http;
 use DateTime;
 use DateTimeZone;
+use SevenEx\DTO\Geocode\Country;
+use SevenEx\DTO\Geocode\Location;
 
 /**
  * Class PrayerTimesHelper
@@ -253,13 +256,19 @@ class PrayerTimesHelper
      * @param bool $enableMasking
      * @return array
      */
-    public static function getMetaArray(PrayerTimes $prayerTimesModel, bool $enableMasking = false): array
+    public static function getMetaArray(PrayerTimes $prayerTimesModel, ?Location $location, bool $enableMasking = false): array
     {
         $meta = $prayerTimesModel->getMeta();
 
         if ($enableMasking) {
             $meta['latitude'] = (float) 1.234567;
             $meta['longitude'] = (float) 2.34567;
+            $meta['location'] = new Location('****', '****',
+                new Country('**', '*******'), '*******',
+                '*******', '*******', '*******');
+        } else {
+            // Enhance meta with location information
+            $meta['location'] = $location;
         }
 
         return $meta;
