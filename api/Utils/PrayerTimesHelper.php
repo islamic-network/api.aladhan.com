@@ -263,7 +263,9 @@ class PrayerTimesHelper
         if ($enableMasking) {
             $meta['latitude'] = (float) 1.234567;
             $meta['longitude'] = (float) 2.34567;
-            $meta['location'] = new Location('****', '****', new Country('**', '*******'), '*******', '*******', '*******', '*******');
+            $meta['location'] = new Location('****', '****',
+                new Country('**', '*******'), '*******',
+                '*******', '*******', '*******');
         } else {
             // Enhance meta with location information
             $meta['location'] = $location;
