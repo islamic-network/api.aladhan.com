@@ -340,7 +340,7 @@ class PrayerTimesHelper
                 $pt->tune($tune[0], $tune[1], $tune[2], 3, $tune[4], 3, 3, $tune[7], $tune[8]);
                 break;
             case Method::METHOD_TURKEY:
-                $pt->tune($tune[0], $tune[1], -7, 5, 4, 7, 7, $tune[7], $tune[8]);
+                $pt->tune($tune[0], $tune[1], $tune[2] === 0 ? -7 : $tune[2], $tune[3] === 0 ? 5 : $tune[3], $tune[4] === 0 ? 4 : $tune[4], $tune[5] === 0 ? 7 : $tune[5], $tune[6] === 0 ? 7 : $tune[6], $tune[7], $tune[8]);
                 break;
             case Method::METHOD_MOROCCO:
                 $pt->tune($tune[0], $tune[1], $tune[2], 5, $tune[4], 5, $tune[6], $tune[7], $tune[8]);
