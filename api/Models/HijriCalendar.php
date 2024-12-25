@@ -419,7 +419,8 @@ class HijriCalendar
 
         if ($day > $daysInMonth) {
             // Adjust it and increase the month
-            $day = $day - $daysInMonth;
+            // $day = $day - $daysInMonth;
+            $day = 1; // Always make it the first day of the month, because you don't ever want to go from 29th of the current one to the 2nd of the next one
             $month = $month + 1;
         }
 
