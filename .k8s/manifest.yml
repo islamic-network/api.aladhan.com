@@ -117,7 +117,7 @@ spec:
             - "-m"
             - "900"
             - "-I"
-            - "125M"
+            - "16M"
           resources:
             requests:
               memory: 1000Mi
