@@ -2304,12 +2304,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/islamic-network/calendar.git",
-                "reference": "d1cc4bf40a2d4bce3e84c5da6e7879804cd903ad"
+                "reference": "61b4d40f67f80eec0820109fba1534e1f5ed6e66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/islamic-network/calendar/zipball/d1cc4bf40a2d4bce3e84c5da6e7879804cd903ad",
-                "reference": "d1cc4bf40a2d4bce3e84c5da6e7879804cd903ad",
+                "url": "https://api.github.com/repos/islamic-network/calendar/zipball/61b4d40f67f80eec0820109fba1534e1f5ed6e66",
+                "reference": "61b4d40f67f80eec0820109fba1534e1f5ed6e66",
                 "shasum": ""
             },
             "require-dev": {
@@ -2331,7 +2331,7 @@
                 "issues": "https://github.com/islamic-network/calendar/issues",
                 "source": "https://github.com/islamic-network/calendar/tree/master"
             },
-            "time": "2024-12-28T05:55:15+00:00"
+            "time": "2024-12-28T08:17:13+00:00"
         },
         {
             "name": "islamic-network/prayer-times",

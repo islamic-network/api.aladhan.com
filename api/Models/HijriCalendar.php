@@ -41,18 +41,19 @@ class HijriCalendar
      */
     public function hToG($date, $cm, $adjustment = 0): array | false
     {
+
         // Not ideal for Hijri date validation because this validates a gregorian date!
         $hdstring = $this->validateHijri($date);
-        if (!$date) {
+        if (!$hdstring) {
             return false;
         }
 
         $calculator = HijriDate::createCalculator($cm);
         if (HijriDate::isCalendarMethodAdjustable($cm)) {
             $gd = $calculator->hToG($hdstring, $adjustment);
-            $hd = $calculator->gToH($hdstring, $adjustment);
+            $hd = $calculator->gToH($gd->format('d-m-Y'), $adjustment);
         } else {
-            $gd = $calculator->hToG($hdstring);
+            $gd = $calculator->hToG($hdstring, $adjustment);
             $hd = $calculator->gToH($gd->format('d-m-Y'));
         }
 
@@ -84,19 +85,24 @@ class HijriCalendar
         $days = $x['hijri']['month']->days;
 
         $calendar = [];
-        $combineCal = [];
         for ($i = 1; $i <= $days; $i++) {
             $curDate = $i . '-' . $m . '-' . $y;
-            $calendar = $this->hToG($curDate, $cm, $adjustment);
-            if ($calendar !== false) {
-                if ($calendar['hijri']['month']->number != $m) {
-                    unset($calendar[$i]);
+            $result = $this->hToG($curDate, $cm, $adjustment);
+            if ($i === 1) {
+                // Check the returned hijri date
+                $firstDay = ($result['hijri']['day']);
+                if ($firstDay !== 1) {
+                    // The hijri to julian calc is off by a day in this case because it is not astronomical, let's go back a day and compute again.
+                    $result = $this->hToG($curDate, $cm, -1);
+                    var_dump($result);exit;
+                    $calendar[] = $result;
                 }
-                $combineCal[] = $calendar;
+            } else {
+                $calendar[] = $result;
             }
-        }
 
-        return $combineCal;
+        }
+        return $calendar;
     }
 
     /**
