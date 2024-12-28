@@ -93,7 +93,8 @@ class HijriCalendar
                 $firstDay = ($result['hijri']['day']);
                 if ($firstDay > 1) {
                     // The hijri to julian calc is off by a day in this case because it is not astronomical, let's go back a day and compute again.
-                    $result = $this->hToG($curDate, $cm, -1);
+                    $resultM = $this->hToG($curDate, $cm, -1);
+                    $calendar[] = $resultM;
                     $calendar[] = $result;
                 } else {
                     $calendar[] = $result;
