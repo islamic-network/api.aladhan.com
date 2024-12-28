@@ -1,5 +1,10 @@
 <?php
 
+namespace Tests\Api;
+
+use GuzzleHttp;
+use Exception;
+
 class SmokeTest extends \PHPUnit\Framework\TestCase
 {
     private $http;
@@ -34,10 +39,13 @@ class SmokeTest extends \PHPUnit\Framework\TestCase
 
     public function testgToHCalendar()
     {
-        $response = $this->http->request('GET', 'gToHCalendar/9/1444');
+        $response = $this->http->request('GET', 'gToHCalendar/9/1444?calendarMethod=MATHEMATICAL');
         $this->assertEquals(200, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json", $contentType);
+
+        $this->expectException(Exception::class);
+        $response = $this->http->request('GET', 'gToHCalendar/9/1444');
     }
 
     public function testhToG()
@@ -50,10 +58,13 @@ class SmokeTest extends \PHPUnit\Framework\TestCase
 
     public function testhToGCalendar()
     {
-        $response = $this->http->request('GET', 'hToGCalendar/12/2021');
+        $response = $this->http->request('GET', 'hToGCalendar/12/2021?calendarMethod=MATHEMATICAL');
         $this->assertEquals(200, $response->getStatusCode());
         $contentType = $response->getHeaders()["Content-Type"][0];
         $this->assertEquals("application/json", $contentType);
+
+        $this->expectException(Exception::class);
+        $response = $this->http->request('GET', 'hToGCalendar/12/2021');
     }
 
     public function testOtherHijris()

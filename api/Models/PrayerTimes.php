@@ -4,6 +4,7 @@ namespace Api\Models;
 
 use Api\Utils\ClassMapper;
 use Api\Utils\Generic;
+use Api\Utils\HijriDate;
 use Api\Utils\PrayerTimesHelper;
 use Api\Utils\Request as ApiRequest;
 use Mamluk\Kipchak\Components\Http\Request;
@@ -40,6 +41,7 @@ class PrayerTimes
     public ?string $state;
     public ?string $country;
     public ?string $methodSettings;
+    public string $calenderMethod = HijriDate::CALENDAR_METHOD_HJCoSA;
     public MemcachedAdapter $mc;
     public array $tune;
 
@@ -57,6 +59,7 @@ class PrayerTimes
         $this->SevenExGeocodeBaseUrl = $c['geocode_baseurl'];
         $this->SevenExTimezoneBaseUrl = $c['timezone_baseurl'];
         $this->request = $request;
+        $this->calenderMethod = HijriDate::calendarMethod(Request::getQueryParam($request, 'calendarMethod'));
         $this->latitude = (float) Request::getQueryParam($request, 'latitude');
         $this->longitude = (float) Request::getQueryParam($request, 'longitude');
         $this->school = ClassMapper::school(ApiRequest::school(Request::getQueryParam($request, 'school')));
@@ -146,7 +149,7 @@ class PrayerTimes
                 $pt = PrayerTimesHelper::getAndPreparePrayerTimesObject($this->request, $d, $this->method, $this->school, $this->tune, $this->adjustment, $this->shafaq);
                 $timings = $pt->getTimes($d, $this->latitude, $this->longitude, null, $this->latitudeAdjustmentMethod, $this->midnightMode, $this->iso8601);
                 $cs = new HijriCalendar();
-                $hd = $cs->gToH($d->format('d-m-Y'), $this->adjustment);
+                $hd = $cs->gToH($d->format('d-m-Y'), $this->calenderMethod, $this->adjustment);
                 $date = [
                     'readable' => $d->format('d M Y'),
                     'timestamp' => $d->format('U'),
@@ -173,21 +176,21 @@ class PrayerTimes
                     if ($annual) {
                         $times = PrayerTimesHelper::calculateHijriYearPrayerTimes($this->latitude, $this->longitude,
                             $year, $this->timezone, $this->latitudeAdjustmentMethod, $pt, $this->midnightMode,
-                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings, $enableMasking);
+                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings, $enableMasking, $this->calenderMethod);
                     } else {
                         $times = PrayerTimesHelper::calculateHijriMonthPrayerTimes($this->latitude, $this->longitude,
                             $month, $year, $this->timezone, $this->latitudeAdjustmentMethod, $pt, $this->midnightMode,
-                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings, $enableMasking);
+                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings, $enableMasking, $this->calenderMethod);
                     }
                 } else {
                     if ($annual) {
                         $times = PrayerTimesHelper::calculateYearPrayerTimes($this->latitude, $this->longitude,
                             $year, $this->timezone, $this->latitudeAdjustmentMethod, $pt, $this->midnightMode,
-                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings, $enableMasking);
+                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings, $enableMasking, $this->calenderMethod);
                     } else {
                         $times = PrayerTimesHelper::calculateMonthPrayerTimes($this->latitude, $this->longitude,
                             $month, $year, $this->timezone, $this->latitudeAdjustmentMethod, $pt, $this->midnightMode,
-                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings, $enableMasking);
+                            $this->adjustment, $this->tune, $this->iso8601, $this->methodSettings, $enableMasking, $this->calenderMethod);
                     }
                 }
 

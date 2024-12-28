@@ -93,12 +93,12 @@ class PrayerTimesHelper
      * @return array
      * @throws \Exception
      */
-    public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null, bool $enableMasking = true): array
+    public static function calculateMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null, bool $enableMasking = true, $calendarMethod = HijriDate::CALENDAR_METHOD_HJCoSA): array
     {
 
         $cs = new HijriCalendar();
 
-        $hm = $cs->getGtoHCalendar($month, $year, $adjustment);
+        $hm = $cs->getGtoHCalendar($month, $year, $calendarMethod, $adjustment);
         $cal_start = strtotime($year . '-' . $month . '-01 09:01:01');
         $days_in_month = cal_days_in_month(\CAL_GREGORIAN, $month, $year);
         $times = [];
@@ -133,11 +133,11 @@ class PrayerTimesHelper
      * @return array
      * @throws \Exception
      */
-    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null, bool $enableMasking = true): array
+    public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null, bool $enableMasking = true, $calendarMethod = HijriDate::CALENDAR_METHOD_HJCoSA): array
     {
         $cs = new HijriCalendar();
 
-        $hm = $cs->getHtoGCalendar($month, $year, $adjustment);
+        $hm = $cs->getHtoGCalendar($month, $year, $calendarMethod, $adjustment);
 
         $times = [];
 
@@ -168,7 +168,7 @@ class PrayerTimesHelper
      * @return array
      * @throws \Exception
      */
-    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null, bool $enableMasking = true): array
+    public static function calculateHijriYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null, bool $enableMasking = true, $calendarMethod = HijriDate::CALENDAR_METHOD_HJCoSA): array
     {
         $cs = new HijriCalendar();
         $times = [];
@@ -176,7 +176,7 @@ class PrayerTimesHelper
             if ($month < 1) {
                 $month = 1;
             }
-            $hm = $cs->getHtoGCalendar($month, $year, $adjustment);
+            $hm = $cs->getHtoGCalendar($month, $year, $calendarMethod, $adjustment);
 
             foreach ($hm as $key => $i) {
                 // Create date time object for this date.
@@ -206,7 +206,7 @@ class PrayerTimesHelper
      * @return array
      * @throws \Exception
      */
-    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null, bool $enableMasking = true): array
+    public static function calculateYearPrayerTimes($latitude, $longitude, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null, bool $enableMasking = true, $calendarMethod = HijriDate::CALENDAR_METHOD_HJCoSA): array
     {
         $cs = new HijriCalendar();
         $times = [];
@@ -214,7 +214,7 @@ class PrayerTimesHelper
             if ($month < 1) {
                 $month = 1;
             }
-            $hm = $cs->getGtoHCalendar($month, $year, $adjustment);
+            $hm = $cs->getGtoHCalendar($month, $year, $calendarMethod, $adjustment);
             $cal_start = strtotime($year . '-' . $month . '-01 09:01:01');
             $days_in_month = cal_days_in_month(\CAL_GREGORIAN, $month, $year);
 

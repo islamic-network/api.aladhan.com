@@ -1,5 +1,9 @@
 <?php
 
+namespace Tests\Api;
+
+use GuzzleHttp;
+
 class MethodsTest extends \PHPUnit\Framework\TestCase
 {
     private $http;
@@ -24,7 +28,7 @@ class MethodsTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals("application/json", $contentType);
 
         $responseBody = json_decode($response->getBody());
-        $this->assertEquals(17, count((array)$responseBody->data));
+        $this->assertEquals(24, count((array)$responseBody->data));
     }
 
 }

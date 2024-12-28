@@ -3,11 +3,13 @@
 namespace Api\Controllers\v1;
 
 use Api\Models\HijriCalendar;
+use IslamicNetwork\Calendar\Helpers\Calendar;
 use Mamluk\Kipchak\Components\Controllers\Slim;
 use Mamluk\Kipchak\Components\Http;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Api\Utils\HijriDate;
 
 class Hijri extends Slim
 {
@@ -20,15 +22,16 @@ class Hijri extends Slim
         $this->h = new HijriCalendar();
     }
 
-    public function greogorianToHijriCalendar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    public function gregorianToHijriCalendar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $y = (int)Http\Request::getAttribute($request, 'year');
         $m = (int)Http\Request::getAttribute($request, 'month');
         $a = Http\Request::getQueryParam($request, 'adjustment');
         $adjustment = $a === null ? 0 : $a;
+        $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
 
         return Http\Response::json($response,
-            $this->h->getGToHCalendar($m, $y, $adjustment),
+            $this->h->getGToHCalendar($m, $y, $cm, $adjustment),
             200,
             true,
             604800,
@@ -42,9 +45,10 @@ class Hijri extends Slim
         $m = (int)Http\Request::getAttribute($request, 'month');
         $a = Http\Request::getQueryParam($request, 'adjustment');
         $adjustment = $a === null ? 0 : $a;
+        $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
 
         return Http\Response::json($response,
-            $this->h->getHtoGCalendar($m, $y, $adjustment),
+            $this->h->getHtoGCalendar($m, $y, $cm, $adjustment),
             200,
             true,
             604800,
@@ -68,7 +72,8 @@ class Hijri extends Slim
 
         $a = Http\Request::getQueryParam($request, 'adjustment');
         $adjustment = $a === null ? 0 : $a;
-        $result = $this->h->gToH($d, $adjustment);
+        $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
+        $result = $this->h->gToH($d, $cm, $adjustment);
 
         if ($result) {
             return Http\Response::json($response,
@@ -90,11 +95,12 @@ class Hijri extends Slim
     public function hijriToGregorianDate(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $d = Http\Request::getAttribute($request, 'date');
+        $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
         if ($d === null) {
             $d = Http\Request::getQueryParam($request, 'date');
             if ($d === null) {
                 $date = date('d-m-Y', time());
-                $fs = $this->h->gToH($date);
+                $fs = $this->h->gToH($date, $cm);
                 $date = $fs['hijri']['date'];
 
                 return Http\Response::redirect($response, '/v1/hToG/' . $date . '?' . http_build_query($request->getQueryParams()), 302);
@@ -105,7 +111,7 @@ class Hijri extends Slim
 
         $a = Http\Request::getQueryParam($request, 'adjustment');
         $adjustment = $a === null ? 0 : $a;
-        $result = $this->h->hToG($d, $adjustment);
+        $result = $this->h->hToG($d, $cm, $adjustment);
 
         if ($result) {
             return Http\Response::json($response,
@@ -127,7 +133,8 @@ class Hijri extends Slim
     {
         $a = Http\Request::getQueryParam($request, 'adjustment');
         $adjustment = $a === null ? 0 : $a;
-        $result = $this->h->nextHijriHoliday(360, $adjustment);
+        $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
+        $result = $this->h->nextHijriHoliday($cm, 360, $adjustment);
 
         if ($result) {
             return Http\Response::json($response,
@@ -154,9 +161,10 @@ class Hijri extends Slim
     {
         $a = Http\Request::getQueryParam($request, 'adjustment');
         $adjustment = $a === null ? 0 : $a;
+        $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
 
         return Http\Response::json($response,
-            $this->h->getCurrentIslamicMonth($adjustment),
+            $this->h->getCurrentIslamicMonth($cm, $adjustment),
             200
         );
     }
@@ -189,7 +197,7 @@ class Hijri extends Slim
                 400
             );
         }
-        $result = $this->h->getHijriHolidays((int)$d, (int)$m);
+        $result = Calendar::getHijriHolidays((int)$d, (int)$m);
         if (!empty($result)) {
             return Http\Response::json($response,
                 $result,
@@ -206,7 +214,7 @@ class Hijri extends Slim
     public function specialDays(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         return Http\Response::json($response,
-            $this->h->specialDays(),
+            Calendar::specialDays(),
             200
         );
     }
@@ -214,7 +222,7 @@ class Hijri extends Slim
     public function islamicMonths(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         return Http\Response::json($response,
-            $this->h->getIslamicMonths(),
+            Calendar::getIslamicMonths(),
             200
         );
     }
@@ -224,7 +232,8 @@ class Hijri extends Slim
         $y = Http\Request::getAttribute($request, 'year');
         $a = Http\Request::getQueryParam($request, 'adjustment');
         $adjustment = $a === null ? 0 : $a;
-        $result = $this->h->getIslamicHolidaysByHijriYear($y, $adjustment);
+        $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
+        $result = $this->h->getIslamicHolidaysByHijriYear($cm, $y, $adjustment);
         if (!empty($result)) {
             return Http\Response::json($response,
                 $result,
@@ -236,7 +245,14 @@ class Hijri extends Slim
             'No holidays found.',
             404
         );
+    }
 
+    public function getMethods(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    {
+        return Http\Response::json($response,
+            HijriDate::getCalendarMethods(),
+            200
+        );
     }
 
 }

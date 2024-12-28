@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\Api;
+
+use GuzzleHttp;
 class CalendarByCityTest extends \PHPUnit\Framework\TestCase
 {
     private $http;
