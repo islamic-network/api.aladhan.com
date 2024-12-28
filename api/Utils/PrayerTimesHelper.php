@@ -143,7 +143,7 @@ class PrayerTimesHelper
 
         foreach ($hm as $key => $i) {
             // Create date time object for this date.
-            $calstart = new DateTime(date('Y-m-d H:i:s', strtotime($i['gregorian']['year'] . '-' . $i['gregorian']['month']['number'] . '-' . $i['gregorian']['day'] . ' 09:01:01')), new DateTimeZone($timezone));
+            $calstart = new DateTime(date('Y-m-d H:i:s', strtotime($i['gregorian']['year'] . '-' . $i['gregorian']['month']->number . '-' . $i['gregorian']['day'] . ' 09:01:01')), new DateTimeZone($timezone));
             $timings = self::calculateTimings($calstart, $pt, $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode, $adjustment, $timeFormat, $methodSettings);
             $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregorian' => $i['gregorian'], 'hijri' => $i['hijri']];
             $times[$key] = ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt, $enableMasking)];
@@ -180,7 +180,7 @@ class PrayerTimesHelper
 
             foreach ($hm as $key => $i) {
                 // Create date time object for this date.
-                $calstart = new DateTime(date('Y-m-d H:i:s', strtotime($i['gregorian']['year'] . '-' . $i['gregorian']['month']['number'] . '-' . $i['gregorian']['day'] . ' 09:01:01')), new DateTimeZone($timezone));
+                $calstart = new DateTime(date('Y-m-d H:i:s', strtotime($i['gregorian']['year'] . '-' . $i['gregorian']['month']->number . '-' . $i['gregorian']['day'] . ' 09:01:01')), new DateTimeZone($timezone));
                 $timings = self::calculateTimings($calstart, $pt, $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode, $adjustment, $timeFormat, $methodSettings);
                 $date = ['readable' => $calstart->format('d M Y'), 'timestamp' => $calstart->format('U'), 'gregorian' => $i['gregorian'], 'hijri' => $i['hijri']];
                 $times[$month][$key] = ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt, $enableMasking)];
@@ -241,7 +241,7 @@ class PrayerTimesHelper
     {
         $hs = new HijriCalendar();
         $hijDate = $hs->gToH($date->format('d') . '-' . $date->format('m') . '-' . $date->format('Y'), $adjustment);
-        if ($hijDate['hijri']['month']['number'] == 9) {
+        if ($hijDate['hijri']['month']->number == 9) {
             return true;
         }
 
