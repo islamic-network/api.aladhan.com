@@ -157,7 +157,7 @@ class PrayerTimesCalendar extends Slim
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
 
         if (Request::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
-            $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByCity', $hijri, 1, $enableMasking);
+            $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByCity', $hijri, 604800, $enableMasking);
 
             return Http\Response::json($response,
                 $r,
