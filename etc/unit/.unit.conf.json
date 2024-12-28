@@ -10,7 +10,7 @@
       "user": "nobody",
       "limits": {
         "timeout": 30,
-        "requests": 10000
+        "requests": 500000
       },
       "processes": {
         "max": 25,
