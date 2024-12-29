@@ -22,7 +22,8 @@ class HijriCalendar
         if (!$date) {
             return false;
         }
-
+        $dateParts = explode('-', $date);
+        $cm = HijriDate::sanitiseGregorianCalendarMethod($dateParts[0], $dateParts[1], $dateParts[2], $cm);
         $calculator = HijriDate::createCalculator($cm);
         if (HijriDate::isCalendarMethodAdjustable($cm)) {
             $d = $calculator->gToH($date, $adjustment);
@@ -48,6 +49,8 @@ class HijriCalendar
             return false;
         }
 
+        $hdstringParts = explode('-', $hdstring);
+        $cm = HijriDate::sanitiseHijriCalendarMethod($hdstringParts[0], $hdstringParts[1], $hdstringParts[2], $cm);
         $calculator = HijriDate::createCalculator($cm);
         if (HijriDate::isCalendarMethodAdjustable($cm)) {
             $gd = $calculator->hToG($hdstring, $adjustment);
@@ -60,8 +63,6 @@ class HijriCalendar
         if (!$calendarMode) {
             // If the date is not adjusted, check if $hdstring contained the first of a month and if you actually get the first with the conversion.
             // If not, force the result with an adjustment.
-            $hdstringParts = explode('-', $hdstring);
-
             if ((int) $hdstringParts[0] !== $hd->day->number && $adjustment === 0 && $hd->day->number > 1) {
                 // Recalculate with a -1
                 $gd = $calculator->hToG($hdstring, -1);

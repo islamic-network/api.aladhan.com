@@ -91,6 +91,49 @@ class HijriDate
         return $method === "MATHEMATICAL";
     }
 
+    public static function sanitiseHijriCalendarMethod(string $d, string $m, string $y, string $method): string
+    {
+        switch ($method) {
+            case self::CALENDAR_METHOD_DIYANET:
+                if ($y < 1318 || $y > 1449) {
+                    return self::CALENDAR_METHOD_MATHEMATICAL;
+                } else {
+                    return $method;
+                }
+            case self::CALENDAR_METHOD_UAQ:
+            case self::CALENDAR_METHOD_HJCoSA:
+                if ($y < 1356 || $y > 1500) {
+                    return self::CALENDAR_METHOD_MATHEMATICAL;
+                } else {
+                    return $method;
+                }
+            default:
+                return self::CALENDAR_METHOD_MATHEMATICAL;
+        }
+    }
+
+    public static function sanitiseGregorianCalendarMethod(string $d, string $m, string $y, string $method): string
+    {
+        switch ($method) {
+            case self::CALENDAR_METHOD_DIYANET:
+                if ($y < 1900 || $y > 2028) {
+                    return self::CALENDAR_METHOD_MATHEMATICAL;
+                } else {
+                    return $method;
+                }
+            case self::CALENDAR_METHOD_UAQ:
+            case self::CALENDAR_METHOD_HJCoSA:
+                if ($y < 1937 || $y > 2077) {
+                    return self::CALENDAR_METHOD_MATHEMATICAL;
+                } else {
+                    return $method;
+                }
+            default:
+                return self::CALENDAR_METHOD_MATHEMATICAL;
+        }
+
+    }
+
     public static function getFormattedResponse(DateTime $gd, Date $hd): array
     {
         return  [

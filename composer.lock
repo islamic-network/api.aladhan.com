@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab1769bf2182ef982dfde77d290f6f1e",
+    "content-hash": "3cf3e88074aa2425f9bc8a98f2fdd66d",
     "packages": [
         {
             "name": "7x/sdk",
@@ -2300,22 +2300,21 @@
         },
         {
             "name": "islamic-network/calendar",
-            "version": "dev-master",
+            "version": "1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/islamic-network/calendar.git",
-                "reference": "dd7dcbca578826d8c6b08b1b633bb2af2b34113d"
+                "reference": "f164ca1aeb70ae63936a4bf5575da21eaeff20a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/islamic-network/calendar/zipball/dd7dcbca578826d8c6b08b1b633bb2af2b34113d",
-                "reference": "dd7dcbca578826d8c6b08b1b633bb2af2b34113d",
+                "url": "https://api.github.com/repos/islamic-network/calendar/zipball/f164ca1aeb70ae63936a4bf5575da21eaeff20a1",
+                "reference": "f164ca1aeb70ae63936a4bf5575da21eaeff20a1",
                 "shasum": ""
             },
             "require-dev": {
                 "phpunit/phpunit": "^9.6.2"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -2329,9 +2328,9 @@
             "description": "A calendar / date conversion library from Gregorian to Hijri and vice versa.",
             "support": {
                 "issues": "https://github.com/islamic-network/calendar/issues",
-                "source": "https://github.com/islamic-network/calendar/tree/master"
+                "source": "https://github.com/islamic-network/calendar/tree/1.1"
             },
-            "time": "2024-12-28T12:49:45+00:00"
+            "time": "2024-12-29T13:19:44+00:00"
         },
         {
             "name": "islamic-network/prayer-times",
@@ -7901,7 +7900,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "islamic-network/calendar": 20,
         "rafaelfragoso/haversini-formula": 20
     },
     "prefer-stable": true,
