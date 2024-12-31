@@ -27,7 +27,9 @@ use Mamluk\Kipchak\Components\Http;
     tags: [
         new OA\Tag(name: 'AsmaAlHusna'),
         new OA\Tag(name: 'Hijri'),
-        new OA\Tag(name: 'Qibla')
+        new OA\Tag(name: 'Qibla'),
+        new OA\Tag(name: 'Timings'),
+        new OA\Tag(name: 'DateAndTime')
     ]
 )]
 #[OA\Components(
@@ -98,13 +100,13 @@ use Mamluk\Kipchak\Components\Http;
                     properties: [
                         new OA\Property(property: 'date', type: 'string', example: '10-01-1443'),
                         new OA\Property(property: 'format', type: 'string', example: 'DD-MM-YYYY'),
-                        new OA\Property(property: 'day', type: 'integer', example: 1),
+                        new OA\Property(property: 'day', type: 'integer', example: 10),
                         new OA\Property(property: 'weekday', properties: [
                             new OA\Property(property: 'en', type: 'string', example: "Al Arba'a"),
                             new OA\Property(property: 'ar', type: 'string', example: "الاربعاء"),
                         ],type: 'object'),
                         new OA\Property(property: 'month', properties: [
-                            new OA\Property(property: 'number', type: 'integer', example: 4),
+                            new OA\Property(property: 'number', type: 'integer', example: 1),
                             new OA\Property(property: 'en', type: 'string', example: "Muḥarram"),
                             new OA\Property(property: 'ar', type: 'string', example: "مُحَرَّم"),
                             new OA\Property(property: 'days', type: 'integer', example: 30)
@@ -136,6 +138,25 @@ use Mamluk\Kipchak\Components\Http;
                             new OA\Property(property: 'expanded', type: 'string', example: 'Anno Domini'),
                         ],type: 'object'),
                     ], type: 'object'),
+            ]
+        ),
+        new OA\Schema(
+            schema: 'PrayerCalMethodsResponse',
+            properties: [
+                new OA\Property(property: 'id', type: 'integer', example: 3),
+                new OA\Property(property: 'name', type: 'string', example: 'Muslim World League'),
+                new OA\Property(property: 'params',
+                    properties: [
+                        new OA\Property(property: 'Fajr', type: 'integer', example: 18),
+                        new OA\Property(property: 'Isha', type: 'integer', example: 17),
+                ], type: 'object'),
+                new OA\Property(property: 'location',
+                    properties: [
+                        new OA\Property(property: 'latitude', type: 'number', example: 51.5194682),
+                        new OA\Property(property: 'longitude', type: 'number', example: -0.1360365),
+                    ],
+                    type: 'object'
+                )
             ]
         )
     ],
@@ -173,14 +194,45 @@ use Mamluk\Kipchak\Components\Http;
                 )
             )
         ),
+        new OA\Response(response: '400DateTimeResponse', description: 'Unable to process request',
+            content: new OA\MediaType(mediaType: 'application/json',
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: 'code', type: 'integer', example: 400),
+                        new OA\Property(property: 'status', type: 'string', example: 'BAD_REQUEST'),
+                        new OA\Property(property: 'data', type: 'integer', example: 'Please specify a valid timezone. Example: Europe/London')
+                    ],
+                )
+            )
+        ),
+        new OA\Response(response: '400TimingsLatLongResponse', description: 'Unable to process request',
+            content: new OA\MediaType(mediaType: 'application/json',
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: 'code', type: 'integer', example: 400),
+                        new OA\Property(property: 'status', type: 'string', example: 'BAD_REQUEST'),
+                        new OA\Property(property: 'data', type: 'integer', example: 'Please specify a valid latitude and longitude.')
+                    ],
+                )
+            )
+        )
     ],
     parameters: [
-        new OA\Parameter(parameter: 'HijriMonth', name: 'month', description: 'Month number as per the Hijri calendar', in: 'path',
+        new OA\PathParameter(parameter: 'HijriMonth', name: 'month', description: 'Month number as per the Hijri calendar', in: 'path',
             required: true, schema: new OA\Schema(type: 'integer'), example: 4),
-        new OA\Parameter(parameter: 'HijriYear', name: 'year', description: 'Year as per the Hijri calendar', in: 'path',
+        new OA\PathParameter(parameter: 'HijriYear', name: 'year', description: 'Year as per the Hijri calendar', in: 'path',
             required: true, schema: new OA\Schema(type: 'integer'), example: 1439),
-        new OA\Parameter(parameter: 'GregorianYear', name: 'year', description: 'Year as per the Gregorian calendar', in: 'path',
+        new OA\PathParameter(parameter: 'GregorianYear', name: 'year', description: 'Year as per the Gregorian calendar', in: 'path',
             required: true, schema: new OA\Schema(type: 'integer'), example: 2018),
+        new OA\PathParameter(parameter: 'GregorianDate', name: 'date', description: 'Specific gregorian date in DD-MM-YYYY format', in: 'path',
+            required: true, schema: new OA\Schema(type: 'string'), example: '18-08-2021'),
+
+        new OA\QueryParameter(parameter: 'TimeZoneQueryParameter', name: 'zone', description: 'TimeZone', in: 'query',
+            required: true, schema: new OA\Schema(type: 'string'), example: '?zone=Asia/Gaza'),
+        new OA\QueryParameter(parameter: 'LatitudeQueryParameter', name: 'latitude', description: "Latitude coordinates of users location",
+            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: '?latitude=51.5194682'),
+        new OA\QueryParameter(parameter: 'LongitudeQueryParameter', name: 'longitude', description: "Longitude coordinates of users location",
+            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: '&longitude=-0.1360365')
     ],
     securitySchemes: [
         new OA\SecurityScheme(securityScheme: 'bearerAuth', type: 'http', description: 'The field only accepts JWT or PAT tokens.', scheme: 'bearer')
