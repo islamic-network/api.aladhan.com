@@ -64,9 +64,6 @@ class Qibla extends Slim
             imagecolortransparent($compassResized, imagecolorallocate($compass, 0, 0, 0));
         }
 
-//        header('Content-type: image/png');
-//        header('Cache-Control: public, max-age=604800');
-//        header('Etag: "'. md5($latitude.$longitude.$size). '"');
         ob_start();
         if ($size !== $width) {
             imagepng($compassResized);
@@ -76,10 +73,12 @@ class Qibla extends Slim
         }
 
         $data = ob_get_contents();
+
         imagedestroy($compass);
         if ($size !== $width) {
             imagedestroy($compassResized);
         }
+        
         imagedestroy($kaaba);
         ob_end_clean();
 
