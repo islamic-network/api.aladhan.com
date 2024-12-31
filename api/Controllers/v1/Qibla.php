@@ -36,7 +36,7 @@ class Qibla extends Slim
         $latitude = floatval($request->getAttribute('latitude'));
         $longitude = floatval($request->getAttribute('longitude'));
         $sizeAttr = Http\Request::getAttribute($request, 'size');
-        $size =  ($sizeAttr === null || (int) $sizeAttr < 1) ? 4000 : (int) $sizeAttr;
+        $size =  ($sizeAttr === null || (int) $sizeAttr < 1 || (int) $sizeAttr > 4000) ? 1000 : (int) $sizeAttr;
         $degrees = Calculation::get($latitude, $longitude);
 
         // TODO: Not great code, but it works.
