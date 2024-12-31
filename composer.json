@@ -15,7 +15,6 @@
         }
     ],
     "require": {
-        "ext-calendar": "*",
         "7x/sdk": "^1.7",
         "islamic-network/alqibla": "^1.2",
         "islamic-network/calendar": "^1.1",
@@ -23,7 +22,7 @@
         "mamluk/kipchak": "^0.35",
         "p3k/emoji-detector": "^0.2.1",
         "rafaelfragoso/haversini-formula": "dev-master",
-        "zircote/swagger-php": "^4.11"
+        "ext-calendar": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"

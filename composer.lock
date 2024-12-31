@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6fb09830733a80d670f45ec455b044b",
+    "content-hash": "3cf3e88074aa2425f9bc8a98f2fdd66d",
     "packages": [
         {
             "name": "7x/sdk",

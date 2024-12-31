@@ -26,7 +26,8 @@ use Mamluk\Kipchak\Components\Http;
     ],
     tags: [
         new OA\Tag(name: 'AsmaAlHusna'),
-        new OA\Tag(name: 'Hijri')
+        new OA\Tag(name: 'Hijri'),
+        new OA\Tag(name: 'Qibla')
     ]
 )]
 #[OA\Components(
@@ -74,7 +75,7 @@ use Mamluk\Kipchak\Components\Http;
                     properties: [
                         new OA\Property(property: 'date', type: 'string', example: '19-12-2017'),
                         new OA\Property(property: 'format', type: 'string', example: 'DD-MM-YYYY'),
-                        new OA\Property(property: 'day', type: 'integer', example: 19),
+                        new OA\Property(property: 'day', type: 'string', example: '19'),
                         new OA\Property(property: 'weekday', properties: [
                             new OA\Property(property: 'en', type: 'string', example: 'Tuesday')
                         ],type: 'object'),
@@ -82,7 +83,54 @@ use Mamluk\Kipchak\Components\Http;
                             new OA\Property(property: 'number', type: 'integer', example: 12),
                             new OA\Property(property: 'en', type: 'string', example: "December"),
                         ], type: 'object'),
-                        new OA\Property(property: 'year', type: 'integer', example: 2017),
+                        new OA\Property(property: 'year', type: 'string', example: '2017'),
+                        new OA\Property(property: 'designation', properties: [
+                            new OA\Property(property: 'abbreviated', type: 'string', example: 'AD'),
+                            new OA\Property(property: 'expanded', type: 'string', example: 'Anno Domini'),
+                        ],type: 'object'),
+                    ], type: 'object'),
+            ]
+        ),
+        new OA\Schema(
+            schema: 'HijriHolidayResponse',
+            properties: [
+                new OA\Property(property: 'hijri',
+                    properties: [
+                        new OA\Property(property: 'date', type: 'string', example: '10-01-1443'),
+                        new OA\Property(property: 'format', type: 'string', example: 'DD-MM-YYYY'),
+                        new OA\Property(property: 'day', type: 'integer', example: 1),
+                        new OA\Property(property: 'weekday', properties: [
+                            new OA\Property(property: 'en', type: 'string', example: "Al Arba'a"),
+                            new OA\Property(property: 'ar', type: 'string', example: "الاربعاء"),
+                        ],type: 'object'),
+                        new OA\Property(property: 'month', properties: [
+                            new OA\Property(property: 'number', type: 'integer', example: 4),
+                            new OA\Property(property: 'en', type: 'string', example: "Muḥarram"),
+                            new OA\Property(property: 'ar', type: 'string', example: "مُحَرَّم"),
+                            new OA\Property(property: 'days', type: 'integer', example: 30)
+                        ], type: 'object'),
+                        new OA\Property(property: 'year', type: 'integer', example: 1443),
+                        new OA\Property(property: 'designation', properties: [
+                            new OA\Property(property: 'abbreviated', type: 'string', example: 'AH'),
+                            new OA\Property(property: 'expanded', type: 'string', example: 'Anno Hegirae'),
+                        ],type: 'object'),
+                        new OA\Property(property: 'holidays', type: 'array', items: new OA\Items(), example: ["Ashura"]),
+                        new OA\Property(property: 'method', type: 'string', example: 'HJCoSA')
+                    ], type: 'object'),
+
+                new OA\Property(property: 'gregorian',
+                    properties: [
+                        new OA\Property(property: 'date', type: 'string', example: '18-08-2021'),
+                        new OA\Property(property: 'format', type: 'string', example: 'DD-MM-YYYY'),
+                        new OA\Property(property: 'day', type: 'string', example: '18'),
+                        new OA\Property(property: 'weekday', properties: [
+                            new OA\Property(property: 'en', type: 'string', example: 'Wednesday')
+                        ],type: 'object'),
+                        new OA\Property(property: 'month', properties: [
+                            new OA\Property(property: 'number', type: 'integer', example: 8),
+                            new OA\Property(property: 'en', type: 'string', example: "August"),
+                        ], type: 'object'),
+                        new OA\Property(property: 'year', type: 'string', example: '2021'),
                         new OA\Property(property: 'designation', properties: [
                             new OA\Property(property: 'abbreviated', type: 'string', example: 'AD'),
                             new OA\Property(property: 'expanded', type: 'string', example: 'Anno Domini'),
@@ -90,6 +138,41 @@ use Mamluk\Kipchak\Components\Http;
                     ], type: 'object'),
             ]
         )
+    ],
+    responses: [
+        new OA\Response(response: '404HijriResponse', description: 'NOT FOUND - Unable to process request',
+            content: new OA\MediaType(mediaType: 'application/json',
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: 'code', type: 'integer', example: 404),
+                        new OA\Property(property: 'status', type: 'string', example: 'NOT FOUND'),
+                        new OA\Property(property: 'data', type: 'string', example: 'Invalid date or unable to convert it.')
+                    ]
+                )
+            )
+        ),
+        new OA\Response(response: '200HijriCurrentYearResponse', description: 'Returns current Islamic year',
+            content: new OA\MediaType(mediaType: 'application/json',
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: 'code', type: 'integer', example: 200),
+                        new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                        new OA\Property(property: 'data', type: 'integer', example: 1446)
+                    ],
+                )
+            )
+        ),
+        new OA\Response(response: '404HijriHolidaysResponse', description: 'NOT FOUND - Unable to process request',
+            content: new OA\MediaType(mediaType: 'application/json',
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: 'code', type: 'integer', example: 404),
+                        new OA\Property(property: 'status', type: 'string', example: 'NOT FOUND'),
+                        new OA\Property(property: 'data', type: 'string', example: 'No holidays found.')
+                    ]
+                )
+            )
+        ),
     ],
     parameters: [
         new OA\Parameter(parameter: 'HijriMonth', name: 'month', description: 'Month number as per the Hijri calendar', in: 'path',
