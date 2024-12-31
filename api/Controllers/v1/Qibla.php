@@ -60,7 +60,8 @@ class Qibla extends Slim
         imagecolortransparent($compass, imagecolorallocate($compass, 0, 0, 0));
         if ($size !== $width) {
             $compassResized = $tmp = imagecreatetruecolor($size, $size);
-            imagecopyresized($compassResized, $compass, 0, 0, 0, 0, $size, $size, $width, $height);
+            // imagecopyresized($compassResized, $compass, 0, 0, 0, 0, $size, $size, $width, $height);
+            imagecopyresampled($compassResized, $compass, 0, 0, 0, 0, $size, $size, $width, $height);
             imagecolortransparent($compassResized, imagecolorallocate($compass, 0, 0, 0));
         }
 
