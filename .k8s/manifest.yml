@@ -182,6 +182,7 @@ config:
   - application/json
   - text/html; charset=UTF-8
   - text/hml
+  - image/png
   cache_control: false
   cache_ttl: 3600
   strategy: memory
