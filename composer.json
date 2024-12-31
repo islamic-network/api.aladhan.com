@@ -22,7 +22,8 @@
         "mamluk/kipchak": "^0.35",
         "p3k/emoji-detector": "^0.2.1",
         "rafaelfragoso/haversini-formula": "dev-master",
-        "ext-calendar": "*"
+        "ext-calendar": "*",
+      "ext-gd": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
