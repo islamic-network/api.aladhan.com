@@ -66,7 +66,7 @@ class Qibla extends Slim
 
         ob_start();
         if ($size !== $width) {
-            imagepng($compassResized);
+            imagepng($compassResized, null, 9);
         }
         else {
             imagepng($compass);
@@ -78,11 +78,11 @@ class Qibla extends Slim
         if ($size !== $width) {
             imagedestroy($compassResized);
         }
-        
+
         imagedestroy($kaaba);
         ob_end_clean();
 
-        return Utils\Response::png($response, $data, 200, [], true, 1,);
+        return Utils\Response::png($response, $data, 200, [], true, 604800);
     }
 
 }

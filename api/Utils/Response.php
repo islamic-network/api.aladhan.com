@@ -26,7 +26,7 @@ class Response
         if ($cache) {
             return $response
                 ->withHeader('Content-Type', 'image/png')
-                ->withAddedHeader('Cache-Control', $cacheHeadersString . 'max-age=' . $cacheTTL)
+                ->withAddedHeader('Cache-Control', $cacheHeadersString . 'public, max-age=' . $cacheTTL)
                 ->withAddedHeader('ETag', md5($data))
                 ->withAddedHeader('X-Powered-By', 'Kipchak by Mamluk')
                 ->withStatus($code);
