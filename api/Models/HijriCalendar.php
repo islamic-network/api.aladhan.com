@@ -62,7 +62,6 @@ class HijriCalendar
             $gd = $calculator->hToG($hdstring, $adjustment);
             $hd = $calculator->gToH($gd->format('d-m-Y'));
         }
-
         if (!$calendarMode) {
             $var = 3;
             // If the date is not adjusted, check if $hdstring contained the first of a month and if you actually get the first with the conversion.
@@ -71,6 +70,12 @@ class HijriCalendar
                 if ((int) $hdstringParts[0] !== $hd->day->number && $adjustment === 0 && $hd->day->number > 1) {
                     // Recalculate with a -1
                     $gd = $calculator->hToG($hdstring, -$i);
+                    $hd = $calculator->gToH($gd->format('d-m-Y'));
+                    if ($hd->day->number === (int) $hdstringParts[0]) {
+                        break;
+                    }
+                    // Recalculate with a +1
+                    $gd = $calculator->hToG($hdstring, $i);
                     $hd = $calculator->gToH($gd->format('d-m-Y'));
                     if ($hd->day->number === (int) $hdstringParts[0]) {
                         break;
@@ -120,6 +125,10 @@ class HijriCalendar
                     for ($i = 1; $i < $var; $i++) {
                         // The hijri to julian calc is off by a day in this case because it is not astronomical, let's go back a day and compute again.
                         $resultM = $this->hToG($curDate, $cm, -$i);
+                        if ($resultM['hijri']['day'] === 1) {
+                            break;
+                        }
+                        $resultM = $this->hToG($curDate, $cm, $i);
                         if ($resultM['hijri']['day'] === 1) {
                             break;
                         }
