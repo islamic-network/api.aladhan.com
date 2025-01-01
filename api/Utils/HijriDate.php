@@ -170,7 +170,7 @@ class HijriDate
     {
         if ($hd->month->number === 7 && $hd->day->number <= 7) {
             if ($gd->format('l') === 'Friday') { // This is the first friday (Thursday night, Friday day), so add Ragha'ib
-                $hd->holidays[] = 'Laylat-ul-Ragha\'ib';
+                $hd->holidays[] = 'Lailat-ul-Ragha\'ib';
             }
 
         }
