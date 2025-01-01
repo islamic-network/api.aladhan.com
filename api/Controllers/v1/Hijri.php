@@ -229,9 +229,9 @@ class Hijri extends Slim
 
     public function islamicHolidaysByHijriYear(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-        $y = Http\Request::getAttribute($request, 'year');
+        $y = (int) Http\Request::getAttribute($request, 'year');
         $a = Http\Request::getQueryParam($request, 'adjustment');
-        $adjustment = $a === null ? 0 : $a;
+        $adjustment = $a === null ? 0 : (int) $a;
         $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
         $result = $this->h->getIslamicHolidaysByHijriYear($cm, $y, $adjustment);
         if (!empty($result)) {
