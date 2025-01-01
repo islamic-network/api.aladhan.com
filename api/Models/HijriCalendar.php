@@ -30,8 +30,11 @@ class HijriCalendar
         } else {
             $d = $calculator->gToH($date);
         }
+        $gd = DateTime::createFromFormat('d-m-Y', $date);
 
-        return HijriDate::getFormattedResponse(DateTime::createFromFormat('d-m-Y', $date), $d);
+        HijriDate::addLailatulRaghaib($d, $gd);
+
+        return HijriDate::getFormattedResponse($gd, $d);
     }
 
     /**
@@ -69,6 +72,8 @@ class HijriCalendar
                 $hd = $calculator->gToH($gd->format('d-m-Y'));
             }
         }
+
+        HijriDate::addLailatulRaghaib($hd, $gd);
 
         return HijriDate::getFormattedResponse($gd, $hd);
     }

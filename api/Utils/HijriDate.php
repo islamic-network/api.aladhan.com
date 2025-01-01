@@ -7,6 +7,7 @@ use IslamicNetwork\Calendar\Helpers\Calendar;
 use IslamicNetwork\Calendar\Models\Astronomical\Diyanet;
 use IslamicNetwork\Calendar\Models\Astronomical\HighJudiciaryCouncilOfSaudiArabia;
 use IslamicNetwork\Calendar\Models\Astronomical\UmmAlQura;
+use IslamicNetwork\Calendar\Models\Date\Hijri;
 use IslamicNetwork\Calendar\Models\Mathematical\Calculator;
 use IslamicNetwork\Calendar\Types\Hijri\Date;
 
@@ -163,6 +164,16 @@ class HijriDate
                 ],
 
         ];
+    }
+
+    public static function addLailatulRaghaib(Date &$hd, DateTime $gd): void
+    {
+        if ($hd->month->number === 7 && $hd->day->number <= 7) {
+            if ($gd->format('l') === 'Friday') { // This is the first friday (Thursday night, Friday day), so add Ragha'ib
+                $hd->holidays[] = 'Laylat-ul-Ragha\'ib';
+            }
+
+        }
     }
 
 }
