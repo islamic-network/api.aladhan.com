@@ -64,12 +64,18 @@ class HijriCalendar
         }
 
         if (!$calendarMode) {
+            $var = 3;
             // If the date is not adjusted, check if $hdstring contained the first of a month and if you actually get the first with the conversion.
             // If not, force the result with an adjustment.
-            if ((int) $hdstringParts[0] !== $hd->day->number && $adjustment === 0 && $hd->day->number > 1) {
-                // Recalculate with a -1
-                $gd = $calculator->hToG($hdstring, -1);
-                $hd = $calculator->gToH($gd->format('d-m-Y'));
+            for ($i = 1; $i < $var; $i++) {
+                if ((int) $hdstringParts[0] !== $hd->day->number && $adjustment === 0 && $hd->day->number > 1) {
+                    // Recalculate with a -1
+                    $gd = $calculator->hToG($hdstring, -$i);
+                    $hd = $calculator->gToH($gd->format('d-m-Y'));
+                    if ($hd->day->number === (int) $hdstringParts[0]) {
+                        break;
+                    }
+                }
             }
         }
 
@@ -110,8 +116,14 @@ class HijriCalendar
                 // Check the returned hijri date. Consider moving this up to the hTG function itself to even correct the single date calculation.
                 $firstDay = ($result['hijri']['day']);
                 if ($firstDay > 1) {
-                    // The hijri to julian calc is off by a day in this case because it is not astronomical, let's go back a day and compute again.
-                    $resultM = $this->hToG($curDate, $cm, -1);
+                    $var = 3;
+                    for ($i = 1; $i < $var; $i++) {
+                        // The hijri to julian calc is off by a day in this case because it is not astronomical, let's go back a day and compute again.
+                        $resultM = $this->hToG($curDate, $cm, -$i);
+                        if ($resultM['hijri']['day'] === 1) {
+                            break;
+                        }
+                    }
                     $calendar[] = $resultM;
                     $calendar[] = $result;
                 } else {
