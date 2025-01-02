@@ -158,6 +158,72 @@ use Mamluk\Kipchak\Components\Http;
                     type: 'object'
                 )
             ]
+        ),
+        new OA\Schema(
+            schema: '200TimingPartialResponse',
+            properties: []
+        ),
+        new OA\Schema(
+            schema: '200TimingsResponse',
+            properties: [
+                new OA\Property(property: 'code', type: 'integer', example: 200),
+                new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                new OA\Property(property: 'data',
+                    properties: [
+                        new OA\Property(property: 'timings',
+                            properties: [
+                                new OA\Property(property: 'Fajr', type: 'string', example: '02:32'),
+                                new OA\Property(property: 'Sunrise', type: 'string', example: '04:51'),
+                                new OA\Property(property: 'Dhuhr', type: 'string', example: '12:04'),
+                                new OA\Property(property: 'Asr', type: 'string', example: '16:01'),
+                                new OA\Property(property: 'Sunset', type: 'string', example: '19:17'),
+                                new OA\Property(property: 'Maghrib', type: 'string', example: '19:17'),
+                                new OA\Property(property: 'Isha', type: 'string', example: '21:25'),
+                                new OA\Property(property: 'Imsak', type: 'string', example: '02:22'),
+                                new OA\Property(property: 'Midnight', type: 'string', example: '00:04'),
+                                new OA\Property(property: 'Firstthird', type: 'string', example: '22:28'),
+                                new OA\Property(property: 'Lastthird', type: 'string', example: '01:40')
+                            ],type: 'object'
+                        ),
+                        new OA\Property(property: 'date',
+                            type: 'object',
+                            allOf: [
+                                new OA\Schema(
+                                    properties: [
+                                        new OA\Property(property: 'readable', type: 'string', example: '18 Aug 2021'),
+                                        new OA\Property(property: 'timestamp', type: 'string', example: '1629270000'),
+                                    ]
+                                ),
+                                new OA\Schema(ref: '#/components/schemas/HijriHolidayResponse')
+                            ]
+                        ),
+                        new OA\Property(property: 'meta',
+                            properties: [
+                                new OA\Property(property: 'latitude', type: 'number', example: 51.5194682),
+                                new OA\Property(property: 'longitude', type: 'number', example: -0.1360365),
+                                new OA\Property(property: 'timezone', type: 'string', example: 'UTC'),
+                                new OA\Property(property: 'method', ref: '#/components/schemas/PrayerCalMethodsResponse', type: 'object'),
+                                new OA\Property(property: 'latitudeAdjustmentMethod', type: 'string', example: 'ANGLE_BASED'),
+                                new OA\Property(property: 'midnightMode', type: 'string', example: 'STANDARD'),
+                                new OA\Property(property: 'school', type: 'string', example: 'STANDARD'),
+                                new OA\Property(property: 'offset',
+                                    properties: [
+                                        new OA\Property(property: 'Imsak', type: 'integer', example: 0),
+                                        new OA\Property(property: 'Fajr', type: 'integer', example: 0),
+                                        new OA\Property(property: 'Sunrise', type: 'integer', example: 0),
+                                        new OA\Property(property: 'Dhuhr', type: 'integer', example: 0),
+                                        new OA\Property(property: 'Asr', type: 'integer', example: 0),
+                                        new OA\Property(property: 'Sunset', type: 'integer', example: 0),
+                                        new OA\Property(property: 'Maghrib', type: 'integer', example: 0),
+                                        new OA\Property(property: 'Isha', type: 'integer', example: 0),
+                                        new OA\Property(property: 'Midnight', type: 'integer', example: 0)
+                                    ], type: 'object'
+                                )
+                            ]
+                        )
+                    ], type: 'object'
+                )
+            ]
         )
     ],
     responses: [
@@ -232,8 +298,11 @@ use Mamluk\Kipchak\Components\Http;
         new OA\QueryParameter(parameter: 'LatitudeQueryParameter', name: 'latitude', description: "Latitude coordinates of users location",
             in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: '?latitude=51.5194682'),
         new OA\QueryParameter(parameter: 'LongitudeQueryParameter', name: 'longitude', description: "Longitude coordinates of users location",
-            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: '&longitude=-0.1360365')
+            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: '&longitude=-0.1360365'),
+        new OA\QueryParameter(parameter: '7xAPIKeyQueryParameter', name: 'x7xapikey', description: '7x API Key', in: 'query',
+            required: true, schema: new OA\Schema(type: 'string'), example: '&x7xapikey=P244d623e2fe2daf56359fxxxxx')
     ],
+    //remove it
     securitySchemes: [
         new OA\SecurityScheme(securityScheme: 'bearerAuth', type: 'http', description: 'The field only accepts JWT or PAT tokens.', scheme: 'bearer')
     ]
@@ -246,6 +315,6 @@ class Docs
 //        header('Content-Type: application/x-yaml');
 
 //        return Http\Response::json($response, $openApi->toYaml(), 200);
-        return Response::raw($response, $openApi->toYaml(), 200, ['Content-Type' => 'application/yaml']);
+        return Response::raw($response, $openApi->toYaml(), 200, ['Content-Type' => 'text/yaml']);
     }
 }

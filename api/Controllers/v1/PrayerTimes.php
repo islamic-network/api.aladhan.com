@@ -32,8 +32,8 @@ class PrayerTimes extends Slim
 
     #[OA\Get(
         path: '/timings/{date}',
-        description: 'Returns all prayer times for a specific date.',
-        summary: 'Prayer times for a date',
+        description: 'Returns all prayer timings for a specific date.',
+        summary: 'Prayer timings for a date',
         tags: ['Timings'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianDate'),
@@ -41,69 +41,9 @@ class PrayerTimes extends Slim
             new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter')
         ],
         responses: [
-            new OA\Response(response: '200', description: 'Returns all prayer times for a specific date.',
+            new OA\Response(response: '200', description: 'Returns all prayer timings for a specific date.',
                 content: new OA\MediaType(mediaType: 'application/json',
-                    schema: new OA\Schema(
-                        properties: [
-                            new OA\Property(property: 'code', type: 'integer', example: 200),
-                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
-                            new OA\Property(property: 'data',
-                                properties: [
-                                    new OA\Property(property: 'timings',
-                                        properties: [
-                                            new OA\Property(property: 'Fajr', type: 'string', example: '02:32'),
-                                            new OA\Property(property: 'Sunrise', type: 'string', example: '04:51'),
-                                            new OA\Property(property: 'Dhuhr', type: 'string', example: '12:04'),
-                                            new OA\Property(property: 'Asr', type: 'string', example: '16:01'),
-                                            new OA\Property(property: 'Sunset', type: 'string', example: '19:17'),
-                                            new OA\Property(property: 'Maghrib', type: 'string', example: '19:17'),
-                                            new OA\Property(property: 'Isha', type: 'string', example: '21:25'),
-                                            new OA\Property(property: 'Imsak', type: 'string', example: '02:22'),
-                                            new OA\Property(property: 'Midnight', type: 'string', example: '00:04'),
-                                            new OA\Property(property: 'Firstthird', type: 'string', example: '22:28'),
-                                            new OA\Property(property: 'Lastthird', type: 'string', example: '01:40')
-                                        ],type: 'object'
-                                    ),
-                                    new OA\Property(property: 'date',
-                                        type: 'object',
-                                        allOf: [
-                                            new OA\Schema(
-                                                properties: [
-                                                    new OA\Property(property: 'readable', type: 'string', example: '18 Aug 2021'),
-                                                    new OA\Property(property: 'timestamp', type: 'string', example: '1629270000'),
-                                                ]
-                                            ),
-                                            new OA\Schema(ref: '#/components/schemas/HijriHolidayResponse')
-                                        ]
-                                    ),
-                                    new OA\Property(property: 'meta',
-                                        properties: [
-                                            new OA\Property(property: 'latitude', type: 'number', example: 51.5194682),
-                                            new OA\Property(property: 'longitude', type: 'number', example: -0.1360365),
-                                            new OA\Property(property: 'timezone', type: 'string', example: 'UTC'),
-                                            new OA\Property(property: 'method', ref: '#/components/schemas/PrayerCalMethodsResponse', type: 'object'),
-                                            new OA\Property(property: 'latitudeAdjustmentMethod', type: 'string', example: 'ANGLE_BASED'),
-                                            new OA\Property(property: 'midnightMode', type: 'string', example: 'STANDARD'),
-                                            new OA\Property(property: 'school', type: 'string', example: 'STANDARD'),
-                                            new OA\Property(property: 'offset',
-                                                properties: [
-                                                    new OA\Property(property: 'Imsak', type: 'integer', example: 0),
-                                                    new OA\Property(property: 'Fajr', type: 'integer', example: 0),
-                                                    new OA\Property(property: 'Sunrise', type: 'integer', example: 0),
-                                                    new OA\Property(property: 'Dhuhr', type: 'integer', example: 0),
-                                                    new OA\Property(property: 'Asr', type: 'integer', example: 0),
-                                                    new OA\Property(property: 'Sunset', type: 'integer', example: 0),
-                                                    new OA\Property(property: 'Maghrib', type: 'integer', example: 0),
-                                                    new OA\Property(property: 'Isha', type: 'integer', example: 0),
-                                                    new OA\Property(property: 'Midnight', type: 'integer', example: 0)
-                                                ], type: 'object'
-                                            )
-                                        ]
-                                    )
-                                ], type: 'object'
-                            )
-                        ]
-                    )
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsResponse')
                 )
             ),
             new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
@@ -145,6 +85,38 @@ class PrayerTimes extends Slim
 
     }
 
+    #[OA\Get(
+        path: '/timingsByAddress/{date}',
+        description: 'Returns all prayer timings for the given address.',
+        summary: 'Prayer timings for an address.',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/GregorianDate'),
+            new OA\QueryParameter(name: 'address', description: 'Address of user location', in: 'query',
+                required: true, schema: new OA\Schema(type: 'string'), example: '?address=A5204, London'),
+            //d: ask is x7xapikey required?
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns all prayer timings for the given address.',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsResponse')
+                )
+            ),
+            new OA\Response(response: '400', description: 'Unable to process request',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 400),
+                            new OA\Property(property: 'status', type: 'string', example: 'BAD_REQUEST'),
+                            new OA\Property(property: 'data', type: 'integer', example: 'Please specify a valid address.')
+                        ],
+                    )
+                )
+            )
+        ]
+    )]
+
     public function timingsByAddress(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         if (Http\Request::getQueryParam($request, 'address') === null) {
@@ -181,6 +153,39 @@ class PrayerTimes extends Slim
         );
     }
 
+    #[OA\Get(
+        path: '/timingsByCity/{date}',
+        description: 'Returns all prayer timings for the given city.',
+        summary: 'Prayer timings for a city.',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/GregorianDate'),
+            new OA\QueryParameter(name: 'city', description: 'Name of the city', in: 'query',
+                required: true, schema: new OA\Schema(type: 'string'), example: '?city=London'),
+            new OA\QueryParameter(name: 'country', description: 'A country name or 2 character alpha ISO 3166 code', in: 'query',
+                required: true, schema: new OA\Schema(type: 'string'), example: '&country=gb'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns all prayer timings for the given city and country.',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsResponse')
+                )
+            ),
+            new OA\Response(response: '400', description: 'Unable to process request',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 400),
+                            new OA\Property(property: 'status', type: 'string', example: 'BAD_REQUEST'),
+                            new OA\Property(property: 'data', type: 'integer', example: 'Please specify a valid city and country.')
+                        ],
+                    )
+                )
+            )
+        ]
+    )]
+
     public function timingsByCity(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         if (Http\Request::getQueryParam($request, 'city') === null || Http\Request::getQueryParam($request, 'country') === null) {
@@ -215,6 +220,39 @@ class PrayerTimes extends Slim
             400,
         );
     }
+
+    #[OA\Get(
+        path: '/nextPrayer/{date}',
+        description: 'Returns next prayer timings for a specific date.',
+        summary: 'Next prayer timings for a date',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/GregorianDate'),
+            new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns next prayer timings for a specific date.',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        allOf: [
+                            new OA\Schema(ref: '#/components/schemas/200TimingsResponse'),
+                            new OA\Schema(
+                                properties: [
+                                    new OA\Property(property: 'timings',
+                                        properties: [
+                                            new OA\Property(property: 'Dhuhr', type: 'string', example: '12:50')
+                                        ], type: 'object'
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
+        ]
+    )]
 
     public function nextPrayer(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {

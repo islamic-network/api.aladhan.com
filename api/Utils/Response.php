@@ -8,7 +8,7 @@ class Response
 {
     public static function raw(ResponseInterface $response, mixed $data, int $code, array $headers = [], bool $cache = false, int $cacheTTL = 3600, array $cacheControlHeaders = []): ResponseInterface
     {
-        $response->getBody()->write(($data));
+        $response->getBody()->write($data);
 
         if (empty($cacheControlHeaders)) {
             $cacheHeadersString = '';
