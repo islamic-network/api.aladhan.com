@@ -64,7 +64,8 @@ class Hijri extends Slim
                                                     new OA\Property(property: 'abbreviated', type: 'string', example: 'AH'),
                                                     new OA\Property(property: 'expanded', type: 'string', example: 'Anno Hegirae'),
                                                 ],type: 'object'),
-                                                new OA\Property(property: 'holidays', type: 'array', items: new OA\Items(), example: []),
+                                                new OA\Property(property: 'holidays', type: 'array', items: new OA\Items(type: 'string'), example: ["holiday"]),
+//                                                new OA\Property(property: 'holidays', type: 'array', items: new OA\Items(), example: []),
                                                 new OA\Property(property: 'method', type: 'string', example: 'HJCoSA')
                                             ], type: 'object'),
 
