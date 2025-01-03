@@ -150,6 +150,7 @@ class HijriDate
                     'year' => $hd->year,
                     'designation' => ['abbreviated' => 'AH', 'expanded' => 'Anno Hegirae'],
                     'holidays' => $hd->holidays,
+                    'adjustedHolidays' => self::getHolydayAdjustmentDueToLunarSighting($hd, $gd),
                     'method' => $hd->method,
                 ],
             'gregorian' =>
@@ -205,6 +206,21 @@ class HijriDate
             }
 
         }
+    }
+
+    public static function getHolydayAdjustmentDueToLunarSighting(Date $hd, DateTime $gd): array
+    {
+        if ($hd->method === self::CALENDAR_METHOD_HJCoSA) {
+            // This is the adjusted date of the UAQ calendar specifically
+            $adjustedHolidays = [];
+            $adjustedHolidays['11']['1']['1443'] = ['Ashura']; // Instead of 1/10/1443 because the calendar has to 1st of Muharrams on it.
+
+            if (isset($adjustedHolidays[$hd->day->number][$hd->month->number][$hd->year])) {
+                return $adjustedHolidays[$hd->day->number][$hd->month->number][$hd->year];
+            }
+        }
+
+        return [];
     }
 
 }

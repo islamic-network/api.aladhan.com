@@ -146,16 +146,16 @@ class HijriCalendar
             // Don't adjust the mathematical method for legacy reasons.
             if ($i === 1 && $cm !== HijriDate::CALENDAR_METHOD_MATHEMATICAL) {
                 // Check the returned hijri date. Consider moving this up to the hTG function itself to even correct the single date calculation.
-                $firstDay = ($result['hijri']['day']);
+                $firstDay = $result['hijri']['day'];
                 if ($firstDay > 1) {
                     $var = 3;
                     for ($i = 1; $i < $var; $i++) {
                         // The hijri to julian calc is off by a day in this case because it is not astronomical, let's go back a day and compute again.
-                        $resultM = $this->hToG($curDate, $cm, -$i);
+                        $resultM = $this->hToG($curDate, $cm, -$i, true);
                         if ($resultM['hijri']['day'] === 1) {
                             break;
                         }
-                        $resultM = $this->hToG($curDate, $cm, $i);
+                        $resultM = $this->hToG($curDate, $cm, $i, true);
                         if ($resultM['hijri']['day'] === 1) {
                             break;
                         }
