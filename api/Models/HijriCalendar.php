@@ -6,6 +6,9 @@ use Api\Utils\HijriDate;
 use DateTime;
 use Exception;
 use IslamicNetwork\Calendar\Helpers\Calendar;
+use DateInterval;
+use DateTimeImmutable;
+use IslamicNetwork\Calendar\Models\Mathematical\Calculator;
 
 class HijriCalendar
 {
@@ -37,6 +40,26 @@ class HijriCalendar
         return HijriDate::getFormattedResponse($gd, $d);
     }
 
+    public function hToGMathematical(Calculator $calculator, $hdstring, $adjustment = 0,): array | false
+    {
+        $gd = $calculator->hToG($hdstring);
+        $originalGD = DateTimeImmutable::createFromFormat('d-m-Y', $gd->format('d-m-Y'));
+        $hd = $calculator->gToH($gd->format('d-m-Y'));
+        if ($adjustment > 0) {
+            $interval = 'P' . $adjustment . 'D';
+            $gd->add(new DateInterval($interval));
+        } else if ($adjustment < 0) {
+            $interval = 'P' . -$adjustment . 'D';
+            $gd->sub(new DateInterval($interval));
+        }
+
+        HijriDate::addLailatulRaghaib($hd, $gd);
+
+        return HijriDate::getFormattedMathematicalResponse($gd, $originalGD, $hd);
+
+
+    }
+
     /**
      * @param string $date Hijri date dd-mm-yyyy
      * @param string $cm Calendar Method
@@ -45,19 +68,16 @@ class HijriCalendar
      */
     public function hToG($date, $cm, $adjustment = 0, $calendarMode = false): array | false
     {
-
         // Not ideal for Hijri date validation because this validates a gregorian date!
         $hdstring = $this->validateHijri($date);
         if (!$hdstring) {
             return false;
         }
-
         $hdstringParts = explode('-', $hdstring);
         $cm = HijriDate::sanitiseHijriCalendarMethod($hdstringParts[0], $hdstringParts[1], $hdstringParts[2], $cm);
         $calculator = HijriDate::createCalculator($cm);
-        if (HijriDate::isCalendarMethodAdjustable($cm)) {
-            $gd = $calculator->hToG($hdstring, $adjustment);
-            $hd = $calculator->gToH($gd->format('d-m-Y'), $adjustment);
+        if ($cm === HijriDate::CALENDAR_METHOD_MATHEMATICAL) {
+            return $this->hToGMathematical($calculator, $hdstring, $adjustment);
         } else {
             if ($calendarMode) {
                 $gd = $calculator->hToG($hdstring, $adjustment);
@@ -68,7 +88,7 @@ class HijriCalendar
         }
 
         // Don't adjust the mathematical method for legacy reasons.
-        if (!$calendarMode && $cm !== HijriDate::CALENDAR_METHOD_MATHEMATICAL) {
+        if (!$calendarMode) {
             $var = 3;
             // If the date is not adjusted, check if $hdstring contained the first of a month and if you actually get the first with the conversion.
             // If not, force the result with an adjustment.

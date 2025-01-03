@@ -9,6 +9,7 @@ use IslamicNetwork\Calendar\Models\Astronomical\HighJudiciaryCouncilOfSaudiArabi
 use IslamicNetwork\Calendar\Models\Astronomical\UmmAlQura;
 use IslamicNetwork\Calendar\Models\Mathematical\Calculator;
 use IslamicNetwork\Calendar\Types\Hijri\Date;
+use DateTimeImmutable;
 
 class HijriDate
 {
@@ -165,7 +166,38 @@ class HijriDate
         ];
     }
 
-    public static function addLailatulRaghaib(Date &$hd, DateTime $gd): void
+    public static function getFormattedMathematicalResponse(DateTime $gd, DateTimeImmutable $ogd, Date $hd): array
+    {
+        return  [
+            'hijri' =>
+                [
+                    'date' => ($hd->day->number < 10 ? '0' . $hd->day->number : $hd->day->number) . '-' .
+                        ($hd->month->number < 10 ? '0' . $hd->month->number : $hd->month->number) . '-' .
+                        $hd->year,
+                    'format' => 'DD-MM-YYYY',
+                    'day' => $hd->day->number,
+                    'weekday' => Calendar::hijriWeekdays($ogd->format('l')),
+                    'month' => $hd->month,
+                    'year' => $hd->year,
+                    'designation' => ['abbreviated' => 'AH', 'expanded' => 'Anno Hegirae'],
+                    'holidays' => $hd->holidays,
+                    'method' => $hd->method,
+                ],
+            'gregorian' =>
+                [
+                    'date' => $gd->format('d-m-Y'),
+                    'format' => 'DD-MM-YYYY',
+                    'day' => $gd->format('d'),
+                    'weekday' => ['en' => $gd->format('l')],
+                    'month' => Calendar::getGregorianMonths()[(int) $gd->format('m')],
+                    'year' => $gd->format('Y'),
+                    'designation' => ['abbreviated' => 'AD', 'expanded' => 'Anno Domini']
+                ],
+
+        ];
+    }
+
+    public static function addLailatulRaghaib(Date &$hd, DateTime | DateTimeImmutable $gd): void
     {
         if ($hd->month->number === 7 && $hd->day->number <= 7) {
             if ($gd->format('l') === 'Friday') { // This is the first friday (Thursday night, Friday day), so add Ragha'ib
