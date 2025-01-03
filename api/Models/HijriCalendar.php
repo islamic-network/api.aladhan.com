@@ -59,7 +59,11 @@ class HijriCalendar
             $gd = $calculator->hToG($hdstring, $adjustment);
             $hd = $calculator->gToH($gd->format('d-m-Y'), $adjustment);
         } else {
-            $gd = $calculator->hToG($hdstring, $adjustment);
+            if ($calendarMode) {
+                $gd = $calculator->hToG($hdstring, $adjustment);
+            } else {
+                $gd = $calculator->hToG($hdstring);
+            }
             $hd = $calculator->gToH($gd->format('d-m-Y'));
         }
         if (!$calendarMode) {
