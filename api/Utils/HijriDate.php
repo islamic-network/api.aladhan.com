@@ -150,7 +150,7 @@ class HijriDate
                     'year' => $hd->year,
                     'designation' => ['abbreviated' => 'AH', 'expanded' => 'Anno Hegirae'],
                     'holidays' => $hd->holidays,
-                    'adjustedHolidays' => self::getHolydayAdjustmentDueToLunarSighting($hd, $gd),
+                    'adjustedHolidays' => self::getHolydayAdjustmentDueToLunarSighting($hd),
                     'method' => $hd->method,
                 ],
             'gregorian' =>
@@ -161,7 +161,8 @@ class HijriDate
                     'weekday' => ['en' => $gd->format('l')],
                     'month' => Calendar::getGregorianMonths()[(int) $gd->format('m')],
                     'year' => $gd->format('Y'),
-                    'designation' => ['abbreviated' => 'AD', 'expanded' => 'Anno Domini']
+                    'designation' => ['abbreviated' => 'AD', 'expanded' => 'Anno Domini'],
+                    'lunarSighting' => self::wasCrescentSighted($hd, $gd)
                 ],
 
         ];
@@ -208,7 +209,7 @@ class HijriDate
         }
     }
 
-    public static function getHolydayAdjustmentDueToLunarSighting(Date $hd, DateTime $gd): array
+    public static function getHolydayAdjustmentDueToLunarSighting(Date $hd): array
     {
         if ($hd->method === self::CALENDAR_METHOD_HJCoSA) {
             // This is the adjusted date of the UAQ calendar specifically
@@ -221,6 +222,17 @@ class HijriDate
         }
 
         return [];
+    }
+
+    public static function wasCrescentSighted(Date $hd, DateTime $gd): bool
+    {
+        if ($hd->method === self::CALENDAR_METHOD_HJCoSA) {
+            $sightings = Calendar::getHJCoSALunarSightings();
+
+            return isset($sightings[$gd->format('d-m-Y')]);
+        }
+
+        return false;
     }
 
 }

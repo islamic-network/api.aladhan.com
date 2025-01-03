@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6c33b027e5ba7e0fded3e5c20069c605",
+    "content-hash": "aad109b3f9a3d8370dc0ee83e06610d7",
     "packages": [
         {
             "name": "7x/sdk",
@@ -2300,16 +2300,16 @@
         },
         {
             "name": "islamic-network/calendar",
-            "version": "1.6",
+            "version": "1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/islamic-network/calendar.git",
-                "reference": "8c040565fd0f1a8fc35084abccd5fd9306564147"
+                "reference": "9c9463c628fe6a597efbd3669b50622515892008"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/islamic-network/calendar/zipball/8c040565fd0f1a8fc35084abccd5fd9306564147",
-                "reference": "8c040565fd0f1a8fc35084abccd5fd9306564147",
+                "url": "https://api.github.com/repos/islamic-network/calendar/zipball/9c9463c628fe6a597efbd3669b50622515892008",
+                "reference": "9c9463c628fe6a597efbd3669b50622515892008",
                 "shasum": ""
             },
             "require-dev": {
@@ -2328,9 +2328,9 @@
             "description": "A calendar / date conversion library from Gregorian to Hijri and vice versa.",
             "support": {
                 "issues": "https://github.com/islamic-network/calendar/issues",
-                "source": "https://github.com/islamic-network/calendar/tree/1.6"
+                "source": "https://github.com/islamic-network/calendar/tree/1.7"
             },
-            "time": "2025-01-03T12:31:18+00:00"
+            "time": "2025-01-03T18:41:35+00:00"
         },
         {
             "name": "islamic-network/prayer-times",
