@@ -66,7 +66,9 @@ class HijriCalendar
             }
             $hd = $calculator->gToH($gd->format('d-m-Y'));
         }
-        if (!$calendarMode) {
+
+        // Don't adjust the mathematical method for legacy reasons.
+        if (!$calendarMode && $cm !== HijriDate::CALENDAR_METHOD_MATHEMATICAL) {
             $var = 3;
             // If the date is not adjusted, check if $hdstring contained the first of a month and if you actually get the first with the conversion.
             // If not, force the result with an adjustment.
@@ -121,7 +123,8 @@ class HijriCalendar
         for ($i = 1; $i <= $days; $i++) {
             $curDate = $i . '-' . $m . '-' . $y;
             $result = $this->hToG($curDate, $cm, $adjustment, true);
-            if ($i === 1) {
+            // Don't adjust the mathematical method for legacy reasons.
+            if ($i === 1 && $cm !== HijriDate::CALENDAR_METHOD_MATHEMATICAL) {
                 // Check the returned hijri date. Consider moving this up to the hTG function itself to even correct the single date calculation.
                 $firstDay = ($result['hijri']['day']);
                 if ($firstDay > 1) {

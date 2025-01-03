@@ -7,7 +7,6 @@ use IslamicNetwork\Calendar\Helpers\Calendar;
 use IslamicNetwork\Calendar\Models\Astronomical\Diyanet;
 use IslamicNetwork\Calendar\Models\Astronomical\HighJudiciaryCouncilOfSaudiArabia;
 use IslamicNetwork\Calendar\Models\Astronomical\UmmAlQura;
-use IslamicNetwork\Calendar\Models\Date\Hijri;
 use IslamicNetwork\Calendar\Models\Mathematical\Calculator;
 use IslamicNetwork\Calendar\Types\Hijri\Date;
 
@@ -36,17 +35,17 @@ class HijriDate
                 'validity' => HighJudiciaryCouncilOfSaudiArabia::VALIDITY_PERIOD,
             ],
             [
-                'id' => self::CALENDAR_METHOD_MATHEMATICAL,
-                'name' => Calculator::NAME,
-                'description' => Calculator::DESCRIPTION,
-                'validity' => Calculator::VALIDITY_PERIOD,
-            ],
-            [
                 'id' => self::CALENDAR_METHOD_DIYANET,
                 'name' => Diyanet::NAME,
                 'description' => Diyanet::DESCRIPTION,
                 'validity' => Diyanet::VALIDITY_PERIOD,
-            ]
+            ],
+            [
+                'id' => self::CALENDAR_METHOD_MATHEMATICAL,
+                'name' => Calculator::NAME,
+                'description' => Calculator::DESCRIPTION . ' This method is considered deprecated and whilst it is still available, is recommended that you use one of the other methods.',
+                'validity' => Calculator::VALIDITY_PERIOD,
+            ],
         ];
 
     }
