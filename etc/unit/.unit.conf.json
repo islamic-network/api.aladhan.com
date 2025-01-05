@@ -8,7 +8,7 @@
     }
   },
   "applications": {
-    "api.aladhan.com": {
+    "api_aladhan_com": {
       "type": "php",
       "user": "nobody",
       "limits": {
@@ -90,7 +90,7 @@
           "uri": "*"
         },
         "action": {
-          "pass": "applications/api.aladhan.com"
+          "pass": "applications/api_aladhan_com"
         }
       }
     ]
