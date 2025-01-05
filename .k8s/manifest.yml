@@ -50,7 +50,7 @@ spec:
               port: 8080
             initialDelaySeconds: 3
             periodSeconds: 7
-            timeoutSeconds: 7
+            timeoutSeconds: 5
             failureThreshold: 7
           startupProbe:
             httpGet:
