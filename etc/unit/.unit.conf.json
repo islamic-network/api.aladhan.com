@@ -2,6 +2,9 @@
   "listeners": {
     "*:8080": {
       "pass": "routes/main"
+    },
+    "*:9090": {
+      "pass": "routes/metrics"
     }
   },
   "applications": {
@@ -27,9 +30,31 @@
       "root": "/var/www/html",
       "index": "phpinfo.php",
       "script": "phpinfo.php"
+    },
+    "metrics": {
+      "type": "php",
+      "root": "/var/www/metrics",
+      "index": "metrics.php",
+      "script": "metrics.php",
+      "user": "root",
+      "environment": {
+        "control_socket": "/var/run/control.unit.sock"
+      }
     }
   },
   "routes": {
+    "metrics": [
+      {
+        "match": {
+          "uri": [
+            "/metrics"
+          ]
+        },
+        "action": {
+          "pass": "applications/metrics"
+        }
+      }
+    ],
     "main": [
       {
         "match": {
