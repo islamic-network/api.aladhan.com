@@ -10,7 +10,7 @@ services:
     env_file:
       - aladhan_api.env
     ports:
-      - "8080:8080"
+      - "80:8080"
     volumes:
       - .:/var/www
     privileged: true

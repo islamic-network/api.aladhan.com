@@ -1,4 +1,4 @@
-FROM bcr.ax/library/php:8.2-unit-dev
+FROM bcr.ax/library/php:8.2-unit
 
 # Copy files
 COPY . /var/www/

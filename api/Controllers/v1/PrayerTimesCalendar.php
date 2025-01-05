@@ -12,6 +12,7 @@ use Api\Utils\Request;
 use Api\Models\PrayerTimes as PrayerTimesModel;
 use Slim\Exception\HttpBadRequestException;
 use Symfony\Component\Cache\Adapter\MemcachedAdapter;
+use OpenApi\Attributes as OA;
 
 
 class PrayerTimesCalendar extends Slim
@@ -24,6 +25,135 @@ class PrayerTimesCalendar extends Slim
         $this->mc = $this->container->get('cache.memcached.cache');
         $this->hc = new HijriCalendar();
     }
+
+    #[OA\Get(
+        path: '/hijriCalendar/{year}',
+        description: 'Returns Prayer timings for an entire requested Hijri year',
+        summary: 'Prayer timings for a Hijri year',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
+            new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an entire requested Hijri year',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data',
+                                properties: [
+                                    new OA\Property(property: '1', type: 'array',
+                                        items: new OA\Items(ref: '#/components/schemas/200TimingsPrayerTimesCalendarHijriResponse')
+                                    )
+                                ], type: 'object'
+                            )
+                        ]
+                    )
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
+        ]
+    )]
+
+    #[OA\Get(
+        path: '/hijriCalendar/{year}/{month}',
+        description: 'Returns Prayer timings for an entire requested Hijri month',
+        summary: 'Prayer timings for a Hijri month',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
+            new OA\PathParameter(ref: '#/components/parameters/TimingsHijriMonth'),
+            new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an entire requested Hijri month',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data', type: 'array',
+                                items: new OA\Items(
+                                    ref: '#/components/schemas/200TimingsPrayerTimesCalendarHijriResponse',
+                                )
+                            ),
+                        ]
+                    ),
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
+        ]
+    )]
+
+    #[OA\Get(
+        path: '/calendar/{year}',
+        description: 'Returns Prayer timings for an entire requested year',
+        summary: 'Prayer timings for a year',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
+            new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an entire requested year',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data',
+                                properties: [
+                                    new OA\Property(property: '1', type: 'array',
+                                        items: new OA\Items(
+                                            ref: '#/components/schemas/200TimingsPrayerTimesCalendarResponse',
+                                        )
+                                    )
+                                ],
+                                type: 'object'
+                            )
+                        ]
+                    )
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
+        ]
+    )]
+
+    #[OA\Get(
+        path: '/calendar/{year}/{month}',
+        description: 'Returns Prayer timings for an entire requested month',
+        summary: 'Prayer timings for a month',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
+            new OA\PathParameter(ref: '#/components/parameters/TimingsGregorianMonth'),
+            new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an entire requested month',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data', type: 'array',
+                                items: new OA\Items(
+                                    ref: '#/components/schemas/200TimingsPrayerTimesCalendarResponse',
+                                )
+                            ),
+                        ]
+                    ),
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
+        ]
+    )]
 
     public function calendar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
@@ -72,8 +202,136 @@ class PrayerTimesCalendar extends Slim
             'Please specify a valid latitude and longitude.',
             400,
         );
-
     }
+
+    #[OA\Get(
+        path: '/hijriCalendarByAddress/{year}',
+        description: 'Returns Prayer timings for an entire requested Hijri year based on the given address',
+        summary: 'Prayer timings for a Hijri year based on address',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an entire requested Hijri year based on the given address',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data',
+                                properties: [
+                                    new OA\Property(property: '1', type: 'array',
+                                        items: new OA\Items(ref: '#/components/schemas/200TimingsPrayerTimesCalendarHijriResponse')
+                                    )
+                                ], type: 'object'
+                            )
+                        ]
+                    )
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+        ]
+    )]
+
+    #[OA\Get(
+        path: '/hijriCalendarByAddress/{year}/{month}',
+        description: 'Returns Prayer timings for an entire requested Hijri month based on the given address',
+        summary: 'Prayer timings for a Hijri month based on address',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
+            new OA\PathParameter(ref: '#/components/parameters/TimingsHijriMonth'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an entire requested Hijri month based on the given address',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data', type: 'array',
+                                items: new OA\Items(
+                                    ref: '#/components/schemas/200TimingsPrayerTimesCalendarHijriResponse',
+                                )
+                            ),
+                        ]
+                    ),
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+        ]
+    )]
+
+    #[OA\Get(
+        path: '/calendarByAddress/{year}',
+        description: 'Returns Prayer timings for an entire requested year based on the given address',
+        summary: 'Prayer timings for a year based on address',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an entire requested year based on the given address',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data',
+                                properties: [
+                                    new OA\Property(property: '1', type: 'array',
+                                        items: new OA\Items(
+                                            ref: '#/components/schemas/200TimingsPrayerTimesCalendarResponse',
+                                        )
+                                    )
+                                ],
+                                type: 'object'
+                            )
+                        ]
+                    )
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+        ]
+    )]
+
+    #[OA\Get(
+        path: '/calendarByAddress/{year}/{month}',
+        description: 'Returns Prayer timings for an entire requested month based on the given address',
+        summary: 'Prayer timings for a month based on address',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
+            new OA\PathParameter(ref: '#/components/parameters/TimingsGregorianMonth'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an entire requested month based on the given address',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data', type: 'array',
+                                items: new OA\Items(
+                                    ref: '#/components/schemas/200TimingsPrayerTimesCalendarResponse',
+                                )
+                            ),
+                        ]
+                    ),
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+        ]
+    )]
 
     public function calendarByAddress(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
@@ -123,6 +381,139 @@ class PrayerTimesCalendar extends Slim
             400,
         );
     }
+
+    #[OA\Get(
+        path: '/hijriCalendarByCity/{year}',
+        description: 'Returns Prayer timings for an entire requested Hijri year based on the given city and country',
+        summary: 'Prayer timings for a Hijri year based on city and country',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an entire requested Hijri year based on the given city and country',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data',
+                                properties: [
+                                    new OA\Property(property: '1', type: 'array',
+                                        items: new OA\Items(ref: '#/components/schemas/200TimingsPrayerTimesCalendarHijriResponse')
+                                    )
+                                ], type: 'object'
+                            )
+                        ]
+                    ),
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+        ]
+    )]
+
+    #[OA\Get(
+        path: '/hijriCalendarByCity/{year}/{month}',
+        description: 'Returns Prayer timings for an entire requested Hijri month based on the given city and country',
+        summary: 'Prayer timings for a Hijri month based on city and country',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
+            new OA\PathParameter(ref: '#/components/parameters/TimingsHijriMonth'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an entire requested Hijri month based on the given city and country',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data', type: 'array',
+                                items: new OA\Items(
+                                    ref: '#/components/schemas/200TimingsPrayerTimesCalendarHijriResponse',
+                                )
+                            ),
+                        ]
+                    ),
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+        ]
+    )]
+
+    #[OA\Get(
+        path: '/calendarByCity/{year}',
+        description: 'Returns Prayer timings for an entire requested year based on the given city and country',
+        summary: 'Prayer timings for a year based on city and country',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an entire requested year based on the given city and country',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data',
+                                properties: [
+                                    new OA\Property(property: '1', type: 'array',
+                                        items: new OA\Items(
+                                            ref: '#/components/schemas/200TimingsPrayerTimesCalendarResponse',
+                                        )
+                                    )
+                                ],
+                                type: 'object'
+                            )
+                        ]
+                    ),
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+        ]
+    )]
+
+    #[OA\Get(
+        path: '/calendarByCity/{year}/{month}',
+        description: 'Returns Prayer timings for an entire requested month based on the given city and country',
+        summary: 'Prayer timings for a month based on city and country',
+        tags: ['Timings'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
+            new OA\PathParameter(ref: '#/components/parameters/TimingsGregorianMonth'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an entire requested month based on the given city and country',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data', type: 'array',
+                                items: new OA\Items(
+                                    ref: '#/components/schemas/200TimingsPrayerTimesCalendarResponse',
+                                )
+                            ),
+                        ]
+                    ),
+                )
+            ),
+            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+        ]
+    )]
 
     public function calendarByCity(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {

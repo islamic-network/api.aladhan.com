@@ -112,8 +112,7 @@ class PrayerTimes extends Slim
         tags: ['Timings'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/AutoAppendGregorianDate'),
-            new OA\QueryParameter(name: 'address', description: 'Address of user location', in: 'query',
-                required: true, schema: new OA\Schema(type: 'string'), example: '?address=A5204, London'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
         ],
         responses: [
@@ -143,8 +142,7 @@ class PrayerTimes extends Slim
         tags: ['Timings'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianDate'),
-            new OA\QueryParameter(name: 'address', description: 'Address of user location', in: 'query',
-                required: true, schema: new OA\Schema(type: 'string'), example: '?address=A5204, London'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
         ],
         responses: [
@@ -210,10 +208,8 @@ class PrayerTimes extends Slim
         tags: ['Timings'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/AutoAppendGregorianDate'),
-            new OA\QueryParameter(name: 'city', description: 'Name of the city', in: 'query',
-                required: true, schema: new OA\Schema(type: 'string'), example: '?city=London'),
-            new OA\QueryParameter(name: 'country', description: 'A country name or 2 character alpha ISO 3166 code', in: 'query',
-                required: true, schema: new OA\Schema(type: 'string'), example: '&country=gb'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
         ],
         responses: [
@@ -244,10 +240,8 @@ class PrayerTimes extends Slim
         tags: ['Timings'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianDate'),
-            new OA\QueryParameter(name: 'city', description: 'Name of the city', in: 'query',
-                required: true, schema: new OA\Schema(type: 'string'), example: '?city=London'),
-            new OA\QueryParameter(name: 'country', description: 'A country name or 2 character alpha ISO 3166 code', in: 'query',
-                required: true, schema: new OA\Schema(type: 'string'), example: '&country=gb'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
         ],
         responses: [
@@ -388,8 +382,7 @@ class PrayerTimes extends Slim
         tags: ['Timings'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/AutoAppendGregorianDate'),
-            new OA\QueryParameter(name: 'address', description: 'Address of user location', in: 'query',
-                required: true, schema: new OA\Schema(type: 'string'), example: '?address=A5204, London'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
         ],
         responses: [
@@ -419,8 +412,7 @@ class PrayerTimes extends Slim
         tags: ['Timings'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianDate'),
-            new OA\QueryParameter(name: 'address', description: 'Address of user location', in: 'query',
-                required: true, schema: new OA\Schema(type: 'string'), example: '?address=A5204, London'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
         ],
         responses: [

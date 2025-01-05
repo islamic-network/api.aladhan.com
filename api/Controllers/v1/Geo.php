@@ -13,6 +13,7 @@ use Api\Models\PrayerTimes as PrayerTimesModel;
 use DateTimeZone;
 use Slim\Exception\HttpBadRequestException;
 use Symfony\Component\Cache\Adapter\MemcachedAdapter;
+use OpenApi\Attributes as OA;
 
 class Geo extends Slim
 {
@@ -23,6 +24,33 @@ class Geo extends Slim
         $this->mc = $this->container->get('cache.memcached.cache');
 
     }
+
+    #[OA\Get(
+        path: '/addressInfo',
+        description: 'Returns address information like latitude, longitude and timezone for the requested address',
+        summary: 'Address information for requested address',
+        tags: ['Geo'],
+        parameters: [
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+        ],
+        responses: [
+            new OA\Response(ref: '#/components/responses/200GeoResponse', response: '200',
+                description: 'Returns Address information for the given address'
+            ),
+            new OA\Response(response: '400', description: 'Unable to process request',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 400),
+                            new OA\Property(property: 'status', type: 'string', example: 'BAD_REQUEST'),
+                            new OA\Property(property: 'data', type: 'integer', example: 'Please specify an address.')
+                        ],
+                    )
+                )
+            )
+        ]
+    )]
 
     public function address(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
@@ -41,6 +69,34 @@ class Geo extends Slim
         );
 
     }
+
+    #[OA\Get(
+        path: '/cityInfo',
+        description: 'Returns city information like latitude, longitude and timezone for the requested city',
+        summary: 'City information for requested city',
+        tags: ['Geo'],
+        parameters: [
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+        ],
+        responses: [
+            new OA\Response(ref: '#/components/responses/200GeoResponse', response: '200',
+                description: 'Returns City information for the given city and country.'
+            ),
+            new OA\Response(response: '400', description: 'Unable to process request',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 400),
+                            new OA\Property(property: 'status', type: 'string', example: 'BAD_REQUEST'),
+                            new OA\Property(property: 'data', type: 'integer', example: 'Please specify a city and country.')
+                        ],
+                    )
+                )
+            )
+        ]
+    )]
 
     public function city(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
