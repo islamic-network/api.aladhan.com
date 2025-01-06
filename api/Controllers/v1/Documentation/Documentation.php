@@ -1,11 +1,11 @@
 <?php
 
-namespace Api\Controllers;
+namespace Api\Controllers\v1\Documentation;
+use Api\Utils\Response;
+use OpenApi as OApi;
 use OpenApi\Attributes as OA;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use OpenApi as OApi;
-use Api\Utils\Response;
 
 #[OA\OpenApi(
     openapi: '3.1.0',
@@ -17,8 +17,8 @@ use Api\Utils\Response;
         title: 'AlAdhan - Prayer Times API'
     ),
     servers: [
-        new OA\Server(url: 'http://api.aladhan.com'),
-        new OA\Server(url: 'https://api.aladhan.com')
+        new OA\Server(url: 'https://api.aladhan.com/v1'),
+        new OA\Server(url: 'http://api.aladhan.com/v1')
     ],
     tags: [
         new OA\Tag(name: 'AsmaAlHusna'),
@@ -31,18 +31,6 @@ use Api\Utils\Response;
 )]
 #[OA\Components(
     schemas: [
-        new OA\Schema(
-            schema: 'AsmaAlHusnaResponse',
-            properties: [
-                new OA\Property(property: 'name', type: 'string', example: "الرَّحْمَنُ"),
-                new OA\Property(property: 'transliteration', type: 'string', example: 'Ar Rahmaan'),
-                new OA\Property(property: 'number', type: 'integer', example: 1),
-                new OA\Property(property: 'en', properties: [
-                    new OA\Property(property: 'meaning', type: 'string', example: 'The Beneficent')
-                ],
-                    type: 'object'),
-            ],
-        ),
         new OA\Schema(
             schema: 'HijriCalendarDateResponse',
             properties: [
@@ -572,32 +560,40 @@ use Api\Utils\Response;
 )]
 class Documentation
 {
+    public string $dir;
+
+    public function __construct()
+    {
+        $this->dir = realpath(__DIR__ . '/../../../');
+    }
+
     public function generate(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $urlPattern = $request->getUri()->getPath();
         $controller = explode('/', $urlPattern);
+        $dir = realpath(__DIR__ . '/../../../');
+
 
         if ($controller[3] === 'prayer-times')
         {
             $openApi = OApi\Generator::scan(
-                ['/var/www/api/Controllers/partials/Timings.php',
-                    '/var/www/api/Controllers/v1/Methods.php',
-                    '/var/www/api/Controllers/v1/PrayerTimes.php',
-                    '/var/www/api/Controllers/v1/PrayerTimesCalendar.php'
+                [
+                    $dir . '/Controllers/Partials/Timings.php',
+                    $dir . '/Controllers/v1/Methods.php',
+                    $dir . '/Controllers/v1/PrayerTimes.php',
+                    $dir . '/Controllers/v1/PrayerTimesCalendar.php'
                 ]
             );
         } elseif ($controller[3] === 'islamic-calendar') {
-            $openApi = OApi\Generator::scan(['/var/www/api/Controllers/partials/Hijri.php', '/var/www/api/Controllers/v1/Hijri.php']);
+            $openApi = OApi\Generator::scan([$dir . '/Controllers/Partials/Hijri.php', $dir . '/Controllers/v1/Hijri.php']);
         } elseif ($controller[3] === 'qibla') {
-            $openApi = OApi\Generator::scan(['/var/www/api/Controllers/partials/Qibla.php', '/var/www/api/Controllers/v1/Qibla.php']);
-        } elseif ($controller[3] === 'asma-al-husna') {
-            $openApi = OApi\Generator::scan(['/var/www/api/Controllers/partials/AsmaAlHusna.php', '/var/www/api/Controllers/v1/AsmaAlHusna.php']);
+            $openApi = OApi\Generator::scan([$dir . '/Controllers/Partials/Qibla.php', $dir . '/Controllers/v1/Qibla.php']);
         } elseif ($controller[3] === 'date-time') {
-            $openApi = OApi\Generator::scan(['/var/www/api/Controllers/partials/DateTime.php', '/var/www/api/Controllers/v1/DateAndTime.php']);
+            $openApi = OApi\Generator::scan([$dir . '/Controllers/Partials/DateTime.php', $dir . '/Controllers/v1/DateAndTime.php']);
         } elseif ($controller[3] === 'geo') {
-            $openApi = OApi\Generator::scan(['/var/www/api/Controllers/partials/Geo.php', '/var/www/api/Controllers/v1/Geo.php']);
+            $openApi = OApi\Generator::scan([$dir . '/Controllers/Partials/Geo.php', $dir . '/Controllers/v1/Geo.php']);
         } else {
-            $openApi = OApi\Generator::scan(['/var/www/api/Controllers/Documentation.php', '/var/www/api/Controllers/v1']);
+            $openApi = OApi\Generator::scan([$dir . '/Controllers/Documentation.php', $dir . '/Controllers/v1']);
         }
 
         return Response::raw($response, $openApi->toYaml(), 200, ['Content-Type' => 'text/yaml']);

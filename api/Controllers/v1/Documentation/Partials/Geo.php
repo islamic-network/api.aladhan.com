@@ -1,6 +1,6 @@
 <?php
 
-namespace Api\Controllers\partials;
+namespace Api\Controllers\v1\Documentation\Partials;
 use OpenApi\Attributes as OA;
 
 #[OA\OpenApi(

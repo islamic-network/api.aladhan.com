@@ -10,23 +10,39 @@ use AlQibla\Calculation;
 use OpenApi\Attributes as OA;
 use Api\Utils;
 
+#[OA\OpenApi(
+    openapi: '3.1.0',
+    info: new OA\Info(
+        version: 'v1',
+        description: "A Qibla direction API to calculaate the Qibla angle on a compass and generate a Qibla compass image",
+        title: 'Qibla Direction API - AlAdhan'
+    ),
+    servers: [
+        new OA\Server(url: 'https://api.aladhan.com/v1'),
+        new OA\Server(url: 'http://api.aladhan.com/v1')
+    ],
+    tags: [
+        new OA\Tag(name: 'Qibla')
+    ]
+
+)]
 class Qibla extends Slim
 {
     #[OA\Get(
         path: '/qibla/{latitude}/{longitude}',
-        description: 'Returns the Qibla direction based on the coordinates',
-        summary: 'Qibla finder',
+        description: 'Returns the Qibla direction based on a pair of co-ordinates',
+        summary: 'Qibla direction API',
         tags: ['Qibla'],
         parameters: [
-            new OA\PathParameter(name: 'latitude', description: "Latitude coordinates of users location",
+            new OA\PathParameter(name: 'latitude', description: "Latitude co-ordinates ",
                 in: 'path', required: true, schema: new OA\Schema(type: 'number', format: 'float'), example: 19.07101757042149
             ),
-            new OA\PathParameter(name: 'longitude', description: "Longitude coordinates of users location",
+            new OA\PathParameter(name: 'longitude', description: "Longitude co-ordinates",
                 in: 'path', required: true, schema: new OA\Schema(type: 'number', format: 'float'), example: 72.83862228676163
             )
         ],
         responses: [
-            new OA\Response(response: '200', description: 'Returns the Qibla direction based on user coordinates',
+            new OA\Response(response: '200', description: 'Returns the Qibla direction based on the co-ordinates',
                 content: new OA\MediaType(mediaType: 'application/json',
                     schema: new OA\Schema(
                         properties: [
@@ -63,6 +79,30 @@ class Qibla extends Slim
         );
     }
 
+    #[OA\Get(
+        path: '/qibla/{latitude}/{longitude}/compass',
+        description: 'Returns a compass image marking the direction of the Qibla',
+        summary: 'Qibla direction compass API',
+        tags: ['Qibla'],
+        parameters: [
+            new OA\PathParameter(name: 'latitude', description: "Latitude co-ordinates ",
+                in: 'path', required: true, schema: new OA\Schema(type: 'number', format: 'float'), example: 19.07101757042149
+            ),
+            new OA\PathParameter(name: 'longitude', description: "Longitude co-ordinates",
+                in: 'path', required: true, schema: new OA\Schema(type: 'number', format: 'float'), example: 72.83862228676163
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Returns a compass image with the Qibla direction based on the co-ordinates',
+                content: new OA\MediaType(
+                    mediaType: 'image/png',
+                    schema: new OA\Schema(type: "string", format: "binary"),
+                )
+            )
+        ]
+    )]
     public function getCompass(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $latitude = floatval($request->getAttribute('latitude'));
