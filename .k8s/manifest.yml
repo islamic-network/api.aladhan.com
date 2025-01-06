@@ -17,6 +17,10 @@ spec:
       app: aladhan-com-api
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9090"
+        prometheus.io/path: "/metrics"
       labels:
         app: aladhan-com-api
     spec:
@@ -50,7 +54,7 @@ spec:
               port: 8080
             initialDelaySeconds: 3
             periodSeconds: 7
-            timeoutSeconds: 7
+            timeoutSeconds: 5
             failureThreshold: 7
           startupProbe:
             httpGet:
@@ -67,6 +71,8 @@ spec:
               memory: 600Mi
           ports:
             - containerPort: 8080
+              protocol: TCP
+            - containerPort: 9090
               protocol: TCP
 ---
 # HPA
@@ -182,6 +188,7 @@ config:
   - application/json
   - text/html; charset=UTF-8
   - text/hml
+  - image/png
   cache_control: false
   cache_ttl: 3600
   strategy: memory
@@ -212,6 +219,7 @@ spec:
         - "cagri.api.aladhan.com"
         - "alparslan.api.aladhan.com"
         - "tugrul.api.aladhan.com"
+        - "beyazid.api.aladhan.com"
       secretName: "aladhan-com-api-tls"
   rules:
     - host: api.aladhan.com
@@ -245,6 +253,16 @@ spec:
                 port:
                   number: 80
     - host: tugrul.api.aladhan.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aladhan-com-api
+                port:
+                  number: 80
+    - host: beyazid.api.aladhan.com
       http:
         paths:
           - path: /

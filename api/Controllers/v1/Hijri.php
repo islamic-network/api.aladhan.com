@@ -153,7 +153,7 @@ class Hijri extends Slim
         $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
 
         return Http\Response::json($response,
-            $this->h->getHtoGCalendar($m, $y, $cm, $adjustment),
+            $this->h->getHtoGCalendar($m, $y, $cm, (int) $adjustment),
             200,
             true,
             604800,
@@ -230,7 +230,7 @@ class Hijri extends Slim
         $a = Http\Request::getQueryParam($request, 'adjustment');
         $adjustment = $a === null ? 0 : $a;
         $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
-        $result = $this->h->gToH($d, $cm, $adjustment);
+        $result = $this->h->gToH($d, $cm, (int) $adjustment);
 
         if ($result) {
             return Http\Response::json($response,
@@ -320,7 +320,7 @@ class Hijri extends Slim
 
         $a = Http\Request::getQueryParam($request, 'adjustment');
         $adjustment = $a === null ? 0 : $a;
-        $result = $this->h->hToG($d, $cm, $adjustment);
+        $result = $this->h->hToG($d, $cm, (int) $adjustment);
 
         if ($result) {
             return Http\Response::json($response,
@@ -434,7 +434,7 @@ class Hijri extends Slim
         $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
 
         return Http\Response::json($response,
-            $this->h->getCurrentIslamicMonth($cm, $adjustment),
+            $this->h->getCurrentIslamicMonth($cm, (int) $adjustment),
             200
         );
     }
@@ -646,11 +646,11 @@ class Hijri extends Slim
 
     public function islamicHolidaysByHijriYear(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-        $y = Http\Request::getAttribute($request, 'year');
+        $y = (int) Http\Request::getAttribute($request, 'year');
         $a = Http\Request::getQueryParam($request, 'adjustment');
         $adjustment = $a === null ? 0 : $a;
         $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
-        $result = $this->h->getIslamicHolidaysByHijriYear($cm, $y, $adjustment);
+        $result = $this->h->getIslamicHolidaysByHijriYear($cm, $y, (int) $adjustment);
         if (!empty($result)) {
             return Http\Response::json($response,
                 $result,

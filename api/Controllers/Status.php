@@ -26,5 +26,4 @@ class Status extends Controllers\Slim
             200
         );
     }
-
 }
