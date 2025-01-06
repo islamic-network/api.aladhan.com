@@ -82,7 +82,7 @@ class AsmaAlHusna extends Slim
                             new OA\Property(property: 'data', type: 'array',
                                 items: new OA\Items(
                                     type: 'object',
-                                    oneOf: [
+                                    anyOf: [
                                         new OA\Schema(
                                             ref: '#/components/schemas/AsmaAlHusnaResponseExample1',
                                         ),

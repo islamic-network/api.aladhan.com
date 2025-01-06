@@ -12,6 +12,130 @@ use Psr\Http\Message\ServerRequestInterface;
 use Api\Utils\HijriDate;
 use OpenApi\Attributes as OA;
 
+#[OA\OpenApi(
+    openapi: '3.1.0',
+    info: new OA\Info(
+        version: 'v1',
+        description: "An Islamic Calendar API that supports various calculation methods to convert Gregorian Dates to Hijri Dates",
+        title: 'Islamic / Hijri Calendar API - AlAdhan'
+    ),
+    servers: [
+        new OA\Server(url: 'https://api.aladhan.com/v1'),
+        new OA\Server(url: 'http://api.aladhan.com/v1')
+    ],
+    tags: [
+        new OA\Tag(name: 'Hijri')
+    ]
+
+)]
+#[OA\Components(
+    schemas: [
+        new OA\Schema(
+            schema: 'HijriCalendarDateResponse',
+            properties: [
+                new OA\Property(property: 'hijri',
+                    properties: [
+                        new OA\Property(property: 'date', type: 'string', example: '10-01-1443'),
+                        new OA\Property(property: 'format', type: 'string', example: 'DD-MM-YYYY'),
+                        new OA\Property(property: 'day', type: 'integer', example: 10),
+                        new OA\Property(property: 'weekday', properties: [
+                            new OA\Property(property: 'en', type: 'string', example: "Al Arba'a"),
+                            new OA\Property(property: 'ar', type: 'string', example: "الاربعاء"),
+                        ],type: 'object'),
+                        new OA\Property(property: 'month', properties: [
+                            new OA\Property(property: 'number', type: 'integer', example: 1),
+                            new OA\Property(property: 'en', type: 'string', example: "Muḥarram"),
+                            new OA\Property(property: 'ar', type: 'string', example: "مُحَرَّم"),
+                            new OA\Property(property: 'days', type: 'integer', example: 30)
+                        ], type: 'object'),
+                        new OA\Property(property: 'year', type: 'integer', example: 1443),
+                        new OA\Property(property: 'designation', properties: [
+                            new OA\Property(property: 'abbreviated', type: 'string', example: 'AH'),
+                            new OA\Property(property: 'expanded', type: 'string', example: 'Anno Hegirae'),
+                        ],type: 'object'),
+                        new OA\Property(property: 'holidays', type: 'array', items: new OA\Items(), example: ["Ashura"]),
+                        new OA\Property(property: 'method', type: 'string', example: 'HJCoSA')
+                    ], type: 'object'),
+
+                new OA\Property(property: 'gregorian',
+                    properties: [
+                        new OA\Property(property: 'date', type: 'string', example: '18-08-2021'),
+                        new OA\Property(property: 'format', type: 'string', example: 'DD-MM-YYYY'),
+                        new OA\Property(property: 'day', type: 'string', example: '18'),
+                        new OA\Property(property: 'weekday', properties: [
+                            new OA\Property(property: 'en', type: 'string', example: 'Wednesday')
+                        ],type: 'object'),
+                        new OA\Property(property: 'month', properties: [
+                            new OA\Property(property: 'number', type: 'integer', example: 8),
+                            new OA\Property(property: 'en', type: 'string', example: "August"),
+                        ], type: 'object'),
+                        new OA\Property(property: 'year', type: 'string', example: '2021'),
+                        new OA\Property(property: 'designation', properties: [
+                            new OA\Property(property: 'abbreviated', type: 'string', example: 'AD'),
+                            new OA\Property(property: 'expanded', type: 'string', example: 'Anno Domini'),
+                        ],type: 'object'),
+                    ], type: 'object'),
+            ]
+        )
+    ],
+    responses: [
+        new OA\Response(response: '404HijriResponse', description: 'NOT FOUND - Unable to process request',
+            content: new OA\MediaType(mediaType: 'application/json',
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: 'code', type: 'integer', example: 404),
+                        new OA\Property(property: 'status', type: 'string', example: 'NOT FOUND'),
+                        new OA\Property(property: 'data', type: 'string', example: 'Invalid date or unable to convert it.')
+                    ]
+                )
+            )
+        ),
+        new OA\Response(response: '200HijriCurrentYearResponse', description: 'Returns current Islamic year',
+            content: new OA\MediaType(mediaType: 'application/json',
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: 'code', type: 'integer', example: 200),
+                        new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                        new OA\Property(property: 'data', type: 'integer', example: 1446)
+                    ],
+                )
+            )
+        ),
+        new OA\Response(response: '404HijriHolidaysResponse', description: 'NOT FOUND - Unable to process request',
+            content: new OA\MediaType(mediaType: 'application/json',
+                schema: new OA\Schema(
+                    properties: [
+                        new OA\Property(property: 'code', type: 'integer', example: 404),
+                        new OA\Property(property: 'status', type: 'string', example: 'NOT FOUND'),
+                        new OA\Property(property: 'data', type: 'string', example: 'No holidays found.')
+                    ]
+                )
+            )
+        )
+    ],
+    parameters: [
+        new OA\PathParameter(parameter: 'HijriMonth', name: 'month', description: 'A Hijri Month - Example: 1 for Muharram', in: 'path',
+            required: true, schema: new OA\Schema(type: 'integer'), example: 4),
+        new OA\PathParameter(parameter: 'GregorianMonth', name: 'month', description: 'A Gregorian month - Example: 1 for January', in: 'path',
+            required: true, schema: new OA\Schema(type: 'integer'), example: 4),
+        new OA\PathParameter(parameter: 'HijriYear', name: 'year', description: 'Year as per the Hijri calendar', in: 'path',
+            required: true, schema: new OA\Schema(type: 'integer'), example: 1439),
+        new OA\PathParameter(parameter: 'GregorianYear', name: 'year', description: 'Year as per the Gregorian calendar', in: 'path',
+            required: true, schema: new OA\Schema(type: 'integer'), example: 2018),
+        new OA\QueryParameter(parameter: 'CalendarMethod', name: 'calendarMethod', description: 'A Calendar Calculation Method. 
+        <br />Defaults to HJCoSA.
+        <br />- HJCoSA - High Judicial Council of Saudi Arabia (this is used on aladhan.com) 
+        <br />- UAQ - Umm al-Qura
+        <br />- DIYANET - Diyanet İşleri Başkanlığı
+        <br />- MATHEMATICAL
+        <br /><br />
+        For more details on the methods, please see https://api.aladhan.com/v1/islamicCalendar/methods.
+        ', in: 'path',
+            required: false, schema: new OA\Schema(type: 'string'), example: 'UAQ'),
+        new OA\QueryParameter(parameter: 'Adjustment', name: 'adjustment', description: 'Only applicable if the calendarMethod is set to MATHEMATICAL. Number of days to adjust the date being converted to. Example: 1 or 2 or -1 or -2', in: 'path',
+            required: true, schema: new OA\Schema(type: 'integer'), example: 1),
+    ]
+)]
 class Hijri extends Slim
 {
     public HijriCalendar $h;
@@ -25,14 +149,14 @@ class Hijri extends Slim
 
     #[OA\Get(
         path: '/gToHCalendar/{month}/{year}',
-        description: 'Gregorian to Hijri calendar conversion',
-        summary: 'Convert gregorian to Hijri',
+        description: 'Get a Hijri calendar for a Gregorian month',
+        summary: 'Get a Hijri calendar for a Gregorian month',
         tags: ['Hijri'],
         parameters: [
-            new OA\PathParameter(name: 'month', description: 'Month number as per the gregorian calendar', in: 'path',
-                required: true, schema: new OA\Schema(type: 'integer'), example: 1
-            ),
-            new OA\PathParameter(ref: '#/components/parameters/GregorianYear')
+            new OA\PathParameter(ref: '#/components/parameters/GregorianMonth'),
+            new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
+            new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
+            new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns the conversion of gregorian to Hijri calendar',
@@ -44,49 +168,7 @@ class Hijri extends Slim
                             new OA\Property(property: 'data', type: 'array',
                                 items: new OA\Items(
                                     properties: [
-                                        new OA\Property(property: 'hijri',
-                                            properties: [
-                                                new OA\Property(property: 'date', type: 'string', example: '14-04-1439'),
-                                                new OA\Property(property: 'format', type: 'string', example: 'DD-MM-YYYY'),
-                                                new OA\Property(property: 'day', type: 'integer', example: 14),
-                                                new OA\Property(property: 'weekday', properties: [
-                                                    new OA\Property(property: 'en', type: 'string', example: 'Al Athnayn'),
-                                                    new OA\Property(property: 'ar', type: 'string', example: "الاثنين"),
-                                                ],type: 'object'),
-                                                new OA\Property(property: 'month', properties: [
-                                                    new OA\Property(property: 'number', type: 'integer', example: 4),
-                                                    new OA\Property(property: 'en', type: 'string', example: "Rabīʿ al-thānī"),
-                                                    new OA\Property(property: 'ar', type: 'string', example: "رَبيع الثاني"),
-                                                    new OA\Property(property: 'days', type: 'integer', example: 30)
-                                                ], type: 'object'),
-                                                new OA\Property(property: 'year', type: 'integer', example: 1439),
-                                                new OA\Property(property: 'designation', properties: [
-                                                    new OA\Property(property: 'abbreviated', type: 'string', example: 'AH'),
-                                                    new OA\Property(property: 'expanded', type: 'string', example: 'Anno Hegirae'),
-                                                ],type: 'object'),
-                                                new OA\Property(property: 'holidays', type: 'array', items: new OA\Items(type: 'string'), example: ["holiday"]),
-//                                                new OA\Property(property: 'holidays', type: 'array', items: new OA\Items(), example: []),
-                                                new OA\Property(property: 'method', type: 'string', example: 'HJCoSA')
-                                            ], type: 'object'),
-
-                                        new OA\Property(property: 'gregorian',
-                                            properties: [
-                                                new OA\Property(property: 'date', type: 'string', example: '01-01-2018'),
-                                                new OA\Property(property: 'format', type: 'string', example: 'DD-MM-YYYY'),
-                                                new OA\Property(property: 'day', type: 'string', example: '01'),
-                                                new OA\Property(property: 'weekday', properties: [
-                                                    new OA\Property(property: 'en', type: 'string', example: 'Monday')
-                                                ],type: 'object'),
-                                                new OA\Property(property: 'month', properties: [
-                                                    new OA\Property(property: 'number', type: 'integer', example: 1),
-                                                    new OA\Property(property: 'en', type: 'string', example: "January"),
-                                                ], type: 'object'),
-                                                new OA\Property(property: 'year', type: 'string', example: '2018'),
-                                                new OA\Property(property: 'designation', properties: [
-                                                    new OA\Property(property: 'abbreviated', type: 'string', example: 'AD'),
-                                                    new OA\Property(property: 'expanded', type: 'string', example: 'Anno Domini'),
-                                                ],type: 'object'),
-                                            ], type: 'object'),
+                                        new OA\Property(property: 'data', ref: '#/components/schemas/HijriCalendarDateResponse', type: 'object'),
                                     ], type: 'object'
 
                                 )
@@ -98,7 +180,6 @@ class Hijri extends Slim
             )
         ]
     )]
-
     public function gregorianToHijriCalendar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $y = (int)Http\Request::getAttribute($request, 'year');
@@ -118,12 +199,14 @@ class Hijri extends Slim
 
     #[OA\Get(
         path: '/hToGCalendar/{month}/{year}',
-        description: 'Hijri to gregorian calendar conversion',
-        summary: 'Convert Hijri to gregorian',
+        description: 'Get a Gregorian a calendar for a Hijri month',
+        summary: 'Get a Gregorian a calendar for a Hijri month',
         tags: ['Hijri'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/HijriMonth'),
             new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
+            new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
+            new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns the conversion of Hijri to gregorian calendar',
@@ -143,7 +226,6 @@ class Hijri extends Slim
             )
         ]
     )]
-
     public function hijriToGregorianCalendar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $y = (int)Http\Request::getAttribute($request, 'year');
@@ -162,40 +244,16 @@ class Hijri extends Slim
     }
 
     #[OA\Get(
-        path: '/gToH',
-        description: 'Gregorian to Hijri date conversion for current date',
-        summary: 'Convert gregorian to Hijri',
-        tags: ['Hijri'],
-        parameters: [
-            new OA\QueryParameter(name: 'date', description: 'Automatically appends the current date to the url',
-                required: false, schema: new OA\Schema(type: 'string'), example: '19-12-2017?'
-            )
-        ],
-        responses: [
-            new OA\Response(response: '200', description: 'Returns the conversion of current gregorian date to Hijri date',
-                content: new OA\MediaType(mediaType: 'application/json',
-                    schema: new OA\Schema(
-                        properties: [
-                            new OA\Property(property: 'code', type: 'integer', example: 200),
-                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
-                            new OA\Property(property: 'data', ref: '#/components/schemas/HijriCalendarDateResponse', type: 'object')
-                        ],
-                    )
-                )
-            ),
-            new OA\Response(ref: '#/components/responses/404HijriResponse', response: '404')
-        ]
-    )]
-
-    #[OA\Get(
         path: '/gToH/{date}',
-        description: 'Gregorian to Hijri date conversion for requested date',
-        summary: 'Convert gregorian to Hijri',
+        description: 'Convert a Gregorian date to a Hijri date',
+        summary: 'Convert a Gregorian date to a Hijri date',
         tags: ['Hijri'],
         parameters: [
-            new OA\PathParameter(name: 'date', description: 'gregorian date in DD-MM-YYYY format',
+            new OA\PathParameter(name: 'date', description: 'Gregorian date formatted as  DD-MM-YYYY',
                 required: true, schema: new OA\Schema(type: 'string'), example: '19-12-2017'
-            )
+            ),
+            new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
+            new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns the conversion of requested gregorian date to Hijri date',
@@ -212,7 +270,6 @@ class Hijri extends Slim
             new OA\Response(ref: '#/components/responses/404HijriResponse', response: '404')
         ]
     )]
-
     public function gregorianToHijriDate(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $d = Http\Request::getAttribute($request, 'date');
@@ -250,40 +307,16 @@ class Hijri extends Slim
     }
 
     #[OA\Get(
-        path: '/hToG',
-        description: 'Hijri to gregorian date conversion for current date',
-        summary: 'Convert Hijri to gregorian',
-        tags: ['Hijri'],
-        parameters: [
-            new OA\QueryParameter(name: 'date', description: 'Automatically appends the current Hijri date to the url',
-                required: false, schema: new OA\Schema(type: 'string'), example: '01-04-1439?'
-            )
-        ],
-        responses: [
-            new OA\Response(response: '200', description: 'Returns the conversion of current Hijri date to gregorian date',
-                content: new OA\MediaType(mediaType: 'application/json',
-                    schema: new OA\Schema(
-                        properties: [
-                            new OA\Property(property: 'code', type: 'integer', example: 200),
-                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
-                            new OA\Property(property: 'data', ref: '#/components/schemas/HijriCalendarDateResponse', type: 'object')
-                        ],
-                    )
-                )
-            ),
-            new OA\Response(ref: '#/components/responses/404HijriResponse', response: '404')
-        ]
-    )]
-
-    #[OA\Get(
         path: '/hToG/{date}',
-        description: 'Hijri to gregorian date conversion for requested date',
-        summary: 'Convert Hijri to gregorian',
+        description: 'Convert a Hijri date to a Gregorian date',
+        summary: 'Convert a Hijri date to a Gregorian date',
         tags: ['Hijri'],
         parameters: [
-            new OA\PathParameter(name: 'date', description: 'Hijri date in DD-MM-YYYY format',
+            new OA\PathParameter(name: 'date', description: 'Hijri date formatted as DD-MM-YYYY',
                 required: true, schema: new OA\Schema(type: 'string'), example: '01-04-1439'
-            )
+            ),
+            new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
+            new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns the conversion of requested Hijri date to gregorian date',
@@ -340,17 +373,21 @@ class Hijri extends Slim
 
     #[OA\Get(
         path: '/nextHijriHoliday',
-        description: 'Returns next holiday as per Hijri calendar',
+        description: 'Get the next upcoming holiday in the Hijri calendar',
         summary: 'Next Hijri holiday',
         tags: ['Hijri'],
+        parameters: [
+            new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
+            new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
+        ],
         responses: [
-            new OA\Response(response: '200', description: 'Returns the next holiday as per the Hijri calendar',
+            new OA\Response(response: '200', description: 'Returns the next holiday in the Hijri calendar',
                 content: new OA\MediaType(mediaType: 'application/json',
                     schema: new OA\Schema(
                         properties: [
                             new OA\Property(property: 'code', type: 'integer', example: 200),
                             new OA\Property(property: 'status', type: 'string', example: 'OK'),
-                            new OA\Property(property: 'data', ref: '#/components/schemas/HijriHolidayResponse', type: 'object')
+                            new OA\Property(property: 'data', ref: '#/components/schemas/HijriCalendarDateResponse', type: 'object')
                         ],
                     )
                 )
@@ -368,7 +405,6 @@ class Hijri extends Slim
             )
         ]
     )]
-
     public function nextHijriHoliday(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $a = Http\Request::getQueryParam($request, 'adjustment');
@@ -398,7 +434,6 @@ class Hijri extends Slim
             new OA\Response(ref: '#/components/responses/200HijriCurrentYearResponse', response: '200')
         ]
     )]
-
     public function currentIslamicYear(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         return Http\Response::json($response,
@@ -409,8 +444,8 @@ class Hijri extends Slim
 
     #[OA\Get(
         path: '/currentIslamicMonth',
-        description: 'Returns current Islamic month',
-        summary: 'Current Islamic month',
+        description: 'Get the current Islamic month',
+        summary: 'Get the current Islamic month',
         tags: ['Hijri'],
         responses: [
             new OA\Response(response: '200', description: 'Returns current Islamic month',
@@ -426,7 +461,6 @@ class Hijri extends Slim
             )
         ]
     )]
-
     public function currentIslamicMonth(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $a = Http\Request::getQueryParam($request, 'adjustment');
@@ -462,7 +496,6 @@ class Hijri extends Slim
             )
         ]
     )]
-
     public function islamicYearFromGregorianForRamadan(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $y = Http\Request::getAttribute($request, 'year');
@@ -517,19 +550,18 @@ class Hijri extends Slim
             new OA\Response(ref: '#/components/responses/404HijriHolidaysResponse', response: '404')
         ]
     )]
-
     public function hijriHolidays(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $d = Http\Request::getAttribute($request, 'day');
         $m = Http\Request::getAttribute($request, 'month');
 
-        if ($d === null && (int)$m === null && (int)$m > 12 && (int)$m < 1 && (int)$d < 1 && (int)$d > 30) {
+        if ($d === null && (int) $m === null && (int) $m > 12 && (int) $m < 1 && (int) $d < 1 && (int) $d > 30) {
             return Http\Response::json($response,
                 'Please specify a valid day and month',
                 400
             );
         }
-        $result = Calendar::getHijriHolidays((int)$d, (int)$m);
+        $result = Calendar::getHijriHolidays((int) $d, (int) $m);
         if (!empty($result)) {
             return Http\Response::json($response,
                 $result,
@@ -542,7 +574,6 @@ class Hijri extends Slim
             404
         );
     }
-
     #[OA\Get(
         path: '/specialDays',
         description: 'Returns a list of special days as per Hijri calendar',
@@ -571,7 +602,6 @@ class Hijri extends Slim
             )
         ]
     )]
-
     public function specialDays(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         return Http\Response::json($response,
@@ -600,7 +630,84 @@ class Hijri extends Slim
                                         new OA\Property(property: 'ar', type: 'string', example: "مُحَرَّم")
                                     ],
                                         type: 'object'
-                                    )
+                                    ),
+                                    new OA\Property(property: '2', properties: [
+                                        new OA\Property(property: 'number', type: 'integer', example: 2),
+                                        new OA\Property(property: 'en', type: 'integer', example: 'Ṣafar'),
+                                        new OA\Property(property: 'ar', type: 'string', example: "صَفَر")
+                                    ],
+                                        type: 'object'
+                                    ),
+                                    new OA\Property(property: '3', properties: [
+                                        new OA\Property(property: 'number', type: 'integer', example: 3),
+                                        new OA\Property(property: 'en', type: 'integer', example: 'Rabīʿ al-awwal'),
+                                        new OA\Property(property: 'ar', type: 'string', example: "رَبيع الأوّل")
+                                    ],
+                                        type: 'object'
+                                    ),
+                                    new OA\Property(property: '4', properties: [
+                                        new OA\Property(property: 'number', type: 'integer', example: 4),
+                                        new OA\Property(property: 'en', type: 'integer', example: 'Rabīʿ al-thānī'),
+                                        new OA\Property(property: 'ar', type: 'string', example: "رَبيع الثاني")
+                                    ],
+                                        type: 'object'
+                                    ),
+                                    new OA\Property(property: '5', properties: [
+                                        new OA\Property(property: 'number', type: 'integer', example: 5),
+                                        new OA\Property(property: 'en', type: 'integer', example: 'Jumādá al-ūlá'),
+                                        new OA\Property(property: 'ar', type: 'string', example: "جُمادى الأولى")
+                                    ],
+                                        type: 'object'
+                                    ),
+                                    new OA\Property(property: '6', properties: [
+                                        new OA\Property(property: 'number', type: 'integer', example: 6),
+                                        new OA\Property(property: 'en', type: 'integer', example: 'Jumādá al-ākhirah'),
+                                        new OA\Property(property: 'ar', type: 'string', example: "جُمادى الآخرة")
+                                    ],
+                                        type: 'object'
+                                    ),
+                                    new OA\Property(property: '7', properties: [
+                                        new OA\Property(property: 'number', type: 'integer', example: 7),
+                                        new OA\Property(property: 'en', type: 'integer', example: 'Rajab'),
+                                        new OA\Property(property: 'ar', type: 'string', example: "رَجَب")
+                                    ],
+                                        type: 'object'
+                                    ),
+                                    new OA\Property(property: '8', properties: [
+                                        new OA\Property(property: 'number', type: 'integer', example: 8),
+                                        new OA\Property(property: 'en', type: 'integer', example: 'Shaʿbān'),
+                                        new OA\Property(property: 'ar', type: 'string', example: "شَعْبان")
+                                    ],
+                                        type: 'object'
+                                    ),
+                                    new OA\Property(property: '9', properties: [
+                                        new OA\Property(property: 'number', type: 'integer', example: 9),
+                                        new OA\Property(property: 'en', type: 'integer', example: 'Ramaḍān'),
+                                        new OA\Property(property: 'ar', type: 'string', example: "رَمَضان")
+                                    ],
+                                        type: 'object'
+                                    ),
+                                    new OA\Property(property: '10', properties: [
+                                        new OA\Property(property: 'number', type: 'integer', example: 10),
+                                        new OA\Property(property: 'en', type: 'integer', example: 'Shawwāl'),
+                                        new OA\Property(property: 'ar', type: 'string', example: "شَوّال")
+                                    ],
+                                        type: 'object'
+                                    ),
+                                    new OA\Property(property: '11', properties: [
+                                        new OA\Property(property: 'number', type: 'integer', example: 11),
+                                        new OA\Property(property: 'en', type: 'integer', example: 'Dhū al-Qaʿdah'),
+                                        new OA\Property(property: 'ar', type: 'string', example: "ذوالقعدة")
+                                    ],
+                                        type: 'object'
+                                    ),
+                                    new OA\Property(property: '12', properties: [
+                                        new OA\Property(property: 'number', type: 'integer', example: 12),
+                                        new OA\Property(property: 'en', type: 'integer', example: 'Dhū al-Ḥijjah'),
+                                        new OA\Property(property: 'ar', type: 'string', example: "ذوالحجة")
+                                    ],
+                                        type: 'object'
+                                    ),
                                 ],
                                 type: 'object',
                             )
@@ -610,7 +717,6 @@ class Hijri extends Slim
             )
         ]
     )]
-
     public function islamicMonths(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         return Http\Response::json($response,
@@ -625,8 +731,10 @@ class Hijri extends Slim
         summary: 'Hijri holidays by year',
         tags: ['Hijri'],
         parameters: [
-            new OA\Parameter(name: 'year', description: 'Year as per the Hijri calendar', in: 'path',
-                required: true, schema: new OA\Schema(type: 'integer'), example: 1443)
+            new OA\Parameter(name: 'year', description: 'A Hijri year', in: 'path',
+                required: true, schema: new OA\Schema(type: 'integer'), example: 1443),
+            new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
+            new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns list of holidays as per the requested Hijri year',
@@ -635,7 +743,7 @@ class Hijri extends Slim
                         properties: [
                             new OA\Property(property: 'code', type: 'integer', example: 200),
                             new OA\Property(property: 'status', type: 'string', example: 'OK'),
-                            new OA\Property(property: 'data', ref: '#/components/schemas/HijriHolidayResponse', type: 'array', items: new OA\Items(type: 'object'))
+                            new OA\Property(property: 'data', ref: '#/components/schemas/HijriCalendarDateResponse', type: 'array', items: new OA\Items(type: 'object'))
                         ],
                     )
                 )
@@ -643,7 +751,6 @@ class Hijri extends Slim
             new OA\Response(ref: '#/components/responses/404HijriHolidaysResponse', response: '404')
         ]
     )]
-
     public function islamicHolidaysByHijriYear(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $y = (int) Http\Request::getAttribute($request, 'year');
@@ -724,7 +831,6 @@ class Hijri extends Slim
             )
         ]
     )]
-
     public function getMethods(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         return Http\Response::json($response,
