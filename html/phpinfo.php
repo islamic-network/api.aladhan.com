@@ -1,3 +1,3 @@
 <?php
-// phpinfo();
-echo "Allahu Akbar";
+phpinfo();
+//echo "Allahu Akbar";

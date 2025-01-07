@@ -31,37 +31,19 @@ class PrayerTimes extends Slim
     }
 
     #[OA\Get(
-        path: '/timings',
-        description: 'Returns all prayer timings for current date.',
-        summary: 'Prayer timings for current date',
-        tags: ['Timings'],
-        parameters: [
-            new OA\PathParameter(ref: '#/components/parameters/AutoAppendGregorianDate'),
-            new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter')
-        ],
-        responses: [
-            new OA\Response(response: '200', description: 'Returns all prayer timings for current date.',
-                content: new OA\MediaType(mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsResponse')
-                )
-            ),
-            new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
-        ]
-    )]
-
-    #[OA\Get(
         path: '/timings/{date}',
-        description: 'Returns all prayer timings for a specific date.',
-        summary: 'Prayer timings for a specific date',
+        description: 'Returns all prayer times for a specific date',
+        summary: 'Prayer times for a specific date',
         tags: ['Timings'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianDate'),
             new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter')
+            new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
+            new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod')
         ],
         responses: [
-            new OA\Response(response: '200', description: 'Returns all prayer timings for a specific date.',
+            new OA\Response(response: '200', description: 'Returns all prayer times for a specific date.',
                 content: new OA\MediaType(mediaType: 'application/json',
                     schema: new OA\Schema(ref: '#/components/schemas/200TimingsResponse')
                 )
@@ -69,7 +51,6 @@ class PrayerTimes extends Slim
             new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
         ]
     )]
-
     public function timings(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         if (Http\Request::getQueryParam($request, 'latitude') === null || Http\Request::getQueryParam($request, 'longitude') === null) {
@@ -106,44 +87,16 @@ class PrayerTimes extends Slim
     }
 
     #[OA\Get(
-        path: '/timingsByAddress',
-        description: 'Returns all prayer timings for the given address on current date.',
-        summary: 'Prayer timings for an address.',
-        tags: ['Timings'],
-        parameters: [
-            new OA\PathParameter(ref: '#/components/parameters/AutoAppendGregorianDate'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
-        ],
-        responses: [
-            new OA\Response(response: '200', description: 'Returns all prayer timings for the given address on current date.',
-                content: new OA\MediaType(mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsResponse')
-                )
-            ),
-            new OA\Response(response: '400', description: 'Unable to process request',
-                content: new OA\MediaType(mediaType: 'application/json',
-                    schema: new OA\Schema(
-                        properties: [
-                            new OA\Property(property: 'code', type: 'integer', example: 400),
-                            new OA\Property(property: 'status', type: 'string', example: 'BAD_REQUEST'),
-                            new OA\Property(property: 'data', type: 'string', example: 'Please specify a valid address.')
-                        ],
-                    )
-                )
-            )
-        ]
-    )]
-
-    #[OA\Get(
         path: '/timingsByAddress/{date}',
-        description: 'Returns all prayer timings for the given address on specified date.',
+        description: 'Returns all prayer timings for am address on a specific date',
         summary: 'Prayer timings for an address.',
         tags: ['Timings'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianDate'),
             new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
+            new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns all prayer timings for the given address on specified date.',
@@ -164,7 +117,6 @@ class PrayerTimes extends Slim
             )
         ]
     )]
-
     public function timingsByAddress(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         if (Http\Request::getQueryParam($request, 'address') === null) {
@@ -202,47 +154,18 @@ class PrayerTimes extends Slim
     }
 
     #[OA\Get(
-        path: '/timingsByCity',
-        description: 'Returns all prayer timings for the given city on current date.',
-        summary: 'Prayer timings for a city.',
-        tags: ['Timings'],
-        parameters: [
-            new OA\PathParameter(ref: '#/components/parameters/AutoAppendGregorianDate'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
-        ],
-        responses: [
-            new OA\Response(response: '200', description: 'Returns all prayer timings for the given city and country on current date.',
-                content: new OA\MediaType(mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsResponse')
-                )
-            ),
-            new OA\Response(response: '400', description: 'Unable to process request',
-                content: new OA\MediaType(mediaType: 'application/json',
-                    schema: new OA\Schema(
-                        properties: [
-                            new OA\Property(property: 'code', type: 'integer', example: 400),
-                            new OA\Property(property: 'status', type: 'string', example: 'BAD_REQUEST'),
-                            new OA\Property(property: 'data', type: 'string', example: 'Please specify a valid city and country.')
-                        ],
-                    )
-                )
-            )
-        ]
-    )]
-
-
-    #[OA\Get(
         path: '/timingsByCity/{date}',
-        description: 'Returns all prayer timings for the given city on specified date.',
-        summary: 'Prayer timings for a city.',
+        description: 'Returns all prayer times for a city on a specific date',
+        summary: 'Prayer timings for a city on a specific date',
         tags: ['Timings'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianDate'),
             new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimingsStateQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
+            new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns all prayer timings for the given city and country on specified date.',
@@ -263,7 +186,6 @@ class PrayerTimes extends Slim
             )
         ]
     )]
-
     public function timingsByCity(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         if (Http\Request::getQueryParam($request, 'city') === null || Http\Request::getQueryParam($request, 'country') === null) {
@@ -300,29 +222,9 @@ class PrayerTimes extends Slim
     }
 
     #[OA\Get(
-        path: '/nextPrayer',
-        description: 'Returns next prayer timings for current date.',
-        summary: 'Next prayer timings for current date',
-        tags: ['Timings'],
-        parameters: [
-            new OA\PathParameter(ref: '#/components/parameters/AutoAppendGregorianDate'),
-            new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter')
-        ],
-        responses: [
-            new OA\Response(response: '200', description: 'Returns next prayer timings for current date.',
-                content: new OA\MediaType(mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsNextPrayerResponse')
-                )
-            ),
-            new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
-        ]
-    )]
-
-    #[OA\Get(
         path: '/nextPrayer/{date}',
-        description: 'Returns next prayer timings for a specific date.',
-        summary: 'Next prayer timings for a date',
+        description: 'Returns next prayer time for a specific date.',
+        summary: 'Next prayer time for a date',
         tags: ['Timings'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianDate'),
@@ -338,7 +240,6 @@ class PrayerTimes extends Slim
             new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
         ]
     )]
-
     public function nextPrayer(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         if (Http\Request::getQueryParam($request, 'latitude') === null || Http\Request::getQueryParam($request, 'longitude') === null) {
@@ -376,36 +277,6 @@ class PrayerTimes extends Slim
     }
 
     #[OA\Get(
-        path: '/nextPrayerByAddress',
-        description: 'Returns next prayer timings for the given address on current date.',
-        summary: 'Next prayer timings for an address.',
-        tags: ['Timings'],
-        parameters: [
-            new OA\PathParameter(ref: '#/components/parameters/AutoAppendGregorianDate'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter')
-        ],
-        responses: [
-            new OA\Response(response: '200', description: 'Returns next prayer timings for an address on current date.',
-                content: new OA\MediaType(mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsNextPrayerResponse')
-                )
-            ),
-            new OA\Response(response: '400', description: 'Unable to process request',
-                content: new OA\MediaType(mediaType: 'application/json',
-                    schema: new OA\Schema(
-                        properties: [
-                            new OA\Property(property: 'code', type: 'integer', example: 400),
-                            new OA\Property(property: 'status', type: 'string', example: 'BAD_REQUEST'),
-                            new OA\Property(property: 'data', type: 'string', example: 'Please specify a valid address.')
-                        ],
-                    )
-                )
-            )
-        ]
-    )]
-
-    #[OA\Get(
         path: '/nextPrayerByAddress/{date}',
         description: 'Returns next prayer timings for the given address.',
         summary: 'Next prayer timings for an address.',
@@ -434,7 +305,6 @@ class PrayerTimes extends Slim
             )
         ]
     )]
-
     public function nextPrayerByAddress(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         if (Http\Request::getQueryParam($request, 'address') === null) {

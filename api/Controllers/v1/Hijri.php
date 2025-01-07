@@ -124,14 +124,13 @@ use OpenApi\Attributes as OA;
             required: true, schema: new OA\Schema(type: 'integer'), example: 2018),
         new OA\QueryParameter(parameter: 'CalendarMethod', name: 'calendarMethod', description: 'A Calendar Calculation Method. 
         <br />Defaults to HJCoSA.
-        <br />- HJCoSA - High Judicial Council of Saudi Arabia (this is used on aladhan.com) 
-        <br />- UAQ - Umm al-Qura
-        <br />- DIYANET - Diyanet İşleri Başkanlığı
-        <br />- MATHEMATICAL
+        <br />- <b>HJCoSA</b> - High Judicial Council of Saudi Arabia (this is used on aladhan.com) 
+        <br />- <b>UAQ</b> - Umm al-Qura
+        <br />- <b>DIYANET</b> - Diyanet İşleri Başkanlığı
+        <br />- <b>MATHEMATICAL</b>
         <br /><br />
-        For more details on the methods, please see https://api.aladhan.com/v1/islamicCalendar/methods.
-        ', in: 'path',
-            required: false, schema: new OA\Schema(type: 'string'), example: 'UAQ'),
+        For more details on the methods, please see <a href="https://api.aladhan.com/v1/islamicCalendar/methods" target="_blank">https://api.aladhan.com/v1/islamicCalendar/methods</a>.
+        ', in: 'query', required: false, schema: new OA\Schema(type: 'string'), example: 'UAQ'),
         new OA\QueryParameter(parameter: 'Adjustment', name: 'adjustment', description: 'Only applicable if the calendarMethod is set to MATHEMATICAL. Number of days to adjust the date being converted to. Example: 1 or 2 or -1 or -2', in: 'path',
             required: true, schema: new OA\Schema(type: 'integer'), example: 1),
     ]
