@@ -61,7 +61,7 @@ use OpenApi\Attributes as OA;
                                     properties: [
                                         new OA\Property(property: 'date', type: 'string', example: '10-01-1443'),
                                         new OA\Property(property: 'format', type: 'string', example: 'DD-MM-YYYY'),
-                                        new OA\Property(property: 'day', type: 'integer', example: 10),
+                                        new OA\Property(property: 'day', type: 'string', example: '10'),
                                         new OA\Property(property: 'weekday', properties: [
                                             new OA\Property(property: 'en', type: 'string', example: "Al Arba'a"),
                                             new OA\Property(property: 'ar', type: 'string', example: "الاربعاء"),
@@ -72,7 +72,7 @@ use OpenApi\Attributes as OA;
                                             new OA\Property(property: 'ar', type: 'string', example: "مُحَرَّم"),
                                             new OA\Property(property: 'days', type: 'integer', example: 30)
                                         ], type: 'object'),
-                                        new OA\Property(property: 'year', type: 'integer', example: 1443),
+                                        new OA\Property(property: 'year', type: 'string', example: '1443'),
                                         new OA\Property(property: 'designation', properties: [
                                             new OA\Property(property: 'abbreviated', type: 'string', example: 'AH'),
                                             new OA\Property(property: 'expanded', type: 'string', example: 'Anno Hegirae'),
