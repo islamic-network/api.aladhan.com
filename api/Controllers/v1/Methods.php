@@ -16,21 +16,11 @@ class Methods extends Slim
         path: '/methods',
         description: 'Returns all the prayer times calculation methods & details supported by Islamic Network API.',
         summary: 'Prayer Times Methods',
-        tags: ['Timings'],
+        tags: ['Prayer Time Methods'],
         responses: [
             new OA\Response(response: '200', description: 'Returns all the prayer times calculation methods & details',
                 content: new OA\MediaType(mediaType: 'application/json',
-                    schema: new OA\Schema(
-                        properties: [
-                            new OA\Property(property: 'code', type: 'integer', example: 200),
-                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
-                            new OA\Property(property: 'data',
-                                properties: [
-                                    new OA\Property(property: 'MWL', ref: '#/components/schemas/PrayerCalMethodsResponse', type: 'object')
-                                ], type: 'object'
-                            ),
-                        ]
-                    )
+                    schema: new OA\Schema(ref: '#/components/schemas/200PrayerCalMethodsResponse')
                 )
             )
         ]

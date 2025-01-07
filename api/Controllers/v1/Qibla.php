@@ -14,7 +14,7 @@ use Api\Utils;
     openapi: '3.1.0',
     info: new OA\Info(
         version: 'v1',
-        description: "A Qibla direction API to calculaate the Qibla angle on a compass and generate a Qibla compass image",
+        description: "A Qibla direction API to calculate the Qibla angle on a compass and generate a Qibla compass image",
         title: 'Qibla Direction API - AlAdhan'
     ),
     servers: [

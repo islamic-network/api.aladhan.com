@@ -119,7 +119,7 @@ class AsmaAlHusna extends Slim
     #[OA\Get(
         path: '/asmaAlHusna/{number}',
         description: 'Includes the Arabic text with transliteration and meaning',
-        summary: 'Get one ore more Asma Al Husna',
+        summary: 'Get one or more Asma Al Husna',
         tags: ['AsmaAlHusna'],
         parameters: [
             new OA\PathParameter(name: 'number', description: 'A valid Asma Al Husna number or list of comma separated numbers between 1 and 99', in: 'path',

@@ -35,45 +35,47 @@ use OpenApi\Attributes as OA;
             properties: [
                 new OA\Property(property: 'hijri',
                     properties: [
-                        new OA\Property(property: 'date', type: 'string', example: '10-01-1443'),
+                        new OA\Property(property: 'date', type: 'string', example: '01-07-1446'),
                         new OA\Property(property: 'format', type: 'string', example: 'DD-MM-YYYY'),
-                        new OA\Property(property: 'day', type: 'integer', example: 10),
+                        new OA\Property(property: 'day', type: 'string', example: '1'),
                         new OA\Property(property: 'weekday', properties: [
                             new OA\Property(property: 'en', type: 'string', example: "Al Arba'a"),
                             new OA\Property(property: 'ar', type: 'string', example: "الاربعاء"),
                         ],type: 'object'),
                         new OA\Property(property: 'month', properties: [
-                            new OA\Property(property: 'number', type: 'integer', example: 1),
-                            new OA\Property(property: 'en', type: 'string', example: "Muḥarram"),
-                            new OA\Property(property: 'ar', type: 'string', example: "مُحَرَّم"),
+                            new OA\Property(property: 'number', type: 'integer', example: 7),
+                            new OA\Property(property: 'en', type: 'string', example: "Rajab"),
+                            new OA\Property(property: 'ar', type: 'string', example: "رَجَب"),
                             new OA\Property(property: 'days', type: 'integer', example: 30)
                         ], type: 'object'),
-                        new OA\Property(property: 'year', type: 'integer', example: 1443),
+                        new OA\Property(property: 'year', type: 'string', example: '1446'),
                         new OA\Property(property: 'designation', properties: [
                             new OA\Property(property: 'abbreviated', type: 'string', example: 'AH'),
                             new OA\Property(property: 'expanded', type: 'string', example: 'Anno Hegirae'),
                         ],type: 'object'),
-                        new OA\Property(property: 'holidays', type: 'array', items: new OA\Items(), example: ["Ashura"]),
+                        new OA\Property(property: 'holidays', type: 'array', items: new OA\Items(), example: ["Beginning of the holy months"]),
+                        new OA\Property(property: 'adjustedHolidays', type: 'array', items: new OA\Items(type: 'string', example: []), example: []),
                         new OA\Property(property: 'method', type: 'string', example: 'HJCoSA')
                     ], type: 'object'),
 
                 new OA\Property(property: 'gregorian',
                     properties: [
-                        new OA\Property(property: 'date', type: 'string', example: '18-08-2021'),
+                        new OA\Property(property: 'date', type: 'string', example: '01-01-2025'),
                         new OA\Property(property: 'format', type: 'string', example: 'DD-MM-YYYY'),
-                        new OA\Property(property: 'day', type: 'string', example: '18'),
+                        new OA\Property(property: 'day', type: 'string', example: '01'),
                         new OA\Property(property: 'weekday', properties: [
                             new OA\Property(property: 'en', type: 'string', example: 'Wednesday')
                         ],type: 'object'),
                         new OA\Property(property: 'month', properties: [
-                            new OA\Property(property: 'number', type: 'integer', example: 8),
-                            new OA\Property(property: 'en', type: 'string', example: "August"),
+                            new OA\Property(property: 'number', type: 'integer', example: 1),
+                            new OA\Property(property: 'en', type: 'string', example: "January"),
                         ], type: 'object'),
-                        new OA\Property(property: 'year', type: 'string', example: '2021'),
+                        new OA\Property(property: 'year', type: 'string', example: '2025'),
                         new OA\Property(property: 'designation', properties: [
                             new OA\Property(property: 'abbreviated', type: 'string', example: 'AD'),
                             new OA\Property(property: 'expanded', type: 'string', example: 'Anno Domini'),
                         ],type: 'object'),
+                        new OA\Property(property: 'lunarSighting', type: 'boolean', example: false),
                     ], type: 'object'),
             ]
         )
@@ -115,13 +117,13 @@ use OpenApi\Attributes as OA;
     ],
     parameters: [
         new OA\PathParameter(parameter: 'HijriMonth', name: 'month', description: 'A Hijri Month - Example: 1 for Muharram', in: 'path',
-            required: true, schema: new OA\Schema(type: 'integer'), example: 4),
+            required: true, schema: new OA\Schema(type: 'integer'), example: 7),
         new OA\PathParameter(parameter: 'GregorianMonth', name: 'month', description: 'A Gregorian month - Example: 1 for January', in: 'path',
-            required: true, schema: new OA\Schema(type: 'integer'), example: 4),
+            required: true, schema: new OA\Schema(type: 'integer'), example: 1),
         new OA\PathParameter(parameter: 'HijriYear', name: 'year', description: 'Year as per the Hijri calendar', in: 'path',
-            required: true, schema: new OA\Schema(type: 'integer'), example: 1439),
+            required: true, schema: new OA\Schema(type: 'integer'), example: 1446),
         new OA\PathParameter(parameter: 'GregorianYear', name: 'year', description: 'Year as per the Gregorian calendar', in: 'path',
-            required: true, schema: new OA\Schema(type: 'integer'), example: 2018),
+            required: true, schema: new OA\Schema(type: 'integer'), example: 2025),
         new OA\QueryParameter(parameter: 'CalendarMethod', name: 'calendarMethod', description: 'A Calendar Calculation Method. 
         <br />Defaults to HJCoSA.
         <br />- <b>HJCoSA</b> - High Judicial Council of Saudi Arabia (this is used on aladhan.com) 
@@ -130,9 +132,9 @@ use OpenApi\Attributes as OA;
         <br />- <b>MATHEMATICAL</b>
         <br /><br />
         For more details on the methods, please see <a href="https://api.aladhan.com/v1/islamicCalendar/methods" target="_blank">https://api.aladhan.com/v1/islamicCalendar/methods</a>.
-        ', in: 'query', required: false, schema: new OA\Schema(type: 'string'), example: 'UAQ'),
+        ', in: 'query', required: false, schema: new OA\Schema(type: 'string', default: 'HJCoSA'), example: 'UAQ'),
         new OA\QueryParameter(parameter: 'Adjustment', name: 'adjustment', description: 'Only applicable if the calendarMethod is set to MATHEMATICAL. Number of days to adjust the date being converted to. Example: 1 or 2 or -1 or -2', in: 'path',
-            required: true, schema: new OA\Schema(type: 'integer'), example: 1),
+            required: false, schema: new OA\Schema(type: 'integer'), example: 0),
     ]
 )]
 class Hijri extends Slim
@@ -166,10 +168,8 @@ class Hijri extends Slim
                             new OA\Property(property: 'status', type: 'string', example: 'OK'),
                             new OA\Property(property: 'data', type: 'array',
                                 items: new OA\Items(
-                                    properties: [
-                                        new OA\Property(property: 'data', ref: '#/components/schemas/HijriCalendarDateResponse', type: 'object'),
-                                    ], type: 'object'
-
+                                    ref: '#/components/schemas/HijriCalendarDateResponse',
+                                    type: 'object'
                                 )
                             ),
                         ],
@@ -249,7 +249,7 @@ class Hijri extends Slim
         tags: ['Hijri'],
         parameters: [
             new OA\PathParameter(name: 'date', description: 'Gregorian date formatted as  DD-MM-YYYY',
-                required: true, schema: new OA\Schema(type: 'string'), example: '19-12-2017'
+                required: true, schema: new OA\Schema(type: 'string'), example: '01-01-2025'
             ),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
@@ -312,7 +312,7 @@ class Hijri extends Slim
         tags: ['Hijri'],
         parameters: [
             new OA\PathParameter(name: 'date', description: 'Hijri date formatted as DD-MM-YYYY',
-                required: true, schema: new OA\Schema(type: 'string'), example: '01-04-1439'
+                required: true, schema: new OA\Schema(type: 'string'), example: '01-07-1446'
             ),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
@@ -453,7 +453,7 @@ class Hijri extends Slim
                         properties: [
                             new OA\Property(property: 'code', type: 'integer', example: 200),
                             new OA\Property(property: 'status', type: 'string', example: 'OK'),
-                            new OA\Property(property: 'data', type: 'integer', example: 6)
+                            new OA\Property(property: 'data', type: 'integer', example: 7)
                         ],
                     )
                 )
@@ -519,7 +519,7 @@ class Hijri extends Slim
         tags: ['Hijri'],
         parameters: [
             new OA\PathParameter(name: 'day', description: 'Day in a Hijri month', in: 'path',
-                required: true, schema: new OA\Schema(type: 'integer'), example: 10
+                required: true, schema: new OA\Schema(type: 'integer'), example: 1
             ),
             new OA\PathParameter(ref: '#/components/parameters/HijriMonth')
         ],
@@ -530,7 +530,7 @@ class Hijri extends Slim
                         properties: [
                             new OA\Property(property: 'code', type: 'integer', example: 200),
                             new OA\Property(property: 'status', type: 'string', example: 'OK'),
-                            new OA\Property(property: 'data', type: 'array', items: new OA\Items(type: 'string'), example: ['Ashura'])
+                            new OA\Property(property: 'data', type: 'array', items: new OA\Items(type: 'string'), example: ['Beginning of the holy months'])
                         ]
                     )
                 )
@@ -730,10 +730,10 @@ class Hijri extends Slim
         summary: 'Hijri holidays by year',
         tags: ['Hijri'],
         parameters: [
-            new OA\Parameter(name: 'year', description: 'A Hijri year', in: 'path',
-                required: true, schema: new OA\Schema(type: 'integer'), example: 1443),
+            new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod')
+
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns list of holidays as per the requested Hijri year',
@@ -742,7 +742,7 @@ class Hijri extends Slim
                         properties: [
                             new OA\Property(property: 'code', type: 'integer', example: 200),
                             new OA\Property(property: 'status', type: 'string', example: 'OK'),
-                            new OA\Property(property: 'data', ref: '#/components/schemas/HijriCalendarDateResponse', type: 'array', items: new OA\Items(type: 'object'))
+                            new OA\Property(property: 'data', type: 'array', items: new OA\Items(ref: '#/components/schemas/HijriCalendarDateResponse', type: 'object'))
                         ],
                     )
                 )
