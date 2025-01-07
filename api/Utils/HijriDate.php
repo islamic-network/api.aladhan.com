@@ -144,10 +144,10 @@ class HijriDate
                         ($hd->month->number < 10 ? '0' . $hd->month->number : $hd->month->number) . '-' .
                         $hd->year,
                     'format' => 'DD-MM-YYYY',
-                    'day' => $hd->day->number,
+                    'day' => (string) $hd->day->number,
                     'weekday' => Calendar::hijriWeekdays($gd->format('l')),
                     'month' => $hd->month,
-                    'year' => $hd->year,
+                    'year' => (string) $hd->year,
                     'designation' => ['abbreviated' => 'AH', 'expanded' => 'Anno Hegirae'],
                     'holidays' => $hd->holidays,
                     'adjustedHolidays' => self::getHolydayAdjustmentDueToLunarSighting($hd),
@@ -177,10 +177,10 @@ class HijriDate
                         ($hd->month->number < 10 ? '0' . $hd->month->number : $hd->month->number) . '-' .
                         $hd->year,
                     'format' => 'DD-MM-YYYY',
-                    'day' => $hd->day->number,
+                    'day' => (string) $hd->day->number,
                     'weekday' => Calendar::hijriWeekdays($ogd->format('l')),
                     'month' => $hd->month,
-                    'year' => $hd->year,
+                    'year' => (string) $hd->year,
                     'designation' => ['abbreviated' => 'AH', 'expanded' => 'Anno Hegirae'],
                     'holidays' => $hd->holidays,
                     'method' => $hd->method,
@@ -192,7 +192,7 @@ class HijriDate
                     'day' => $gd->format('d'),
                     'weekday' => ['en' => $gd->format('l')],
                     'month' => Calendar::getGregorianMonths()[(int) $gd->format('m')],
-                    'year' => $gd->format('Y'),
+                    'year' => (string) $gd->format('Y'),
                     'designation' => ['abbreviated' => 'AD', 'expanded' => 'Anno Domini']
                 ],
 
