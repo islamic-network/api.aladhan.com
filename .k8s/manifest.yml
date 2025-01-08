@@ -65,7 +65,7 @@ spec:
           resources:
             requests:
               cpu: "400m"
-              memory: 550Mi
+              memory: 350Mi
             limits:
               cpu: "750m"
               memory: 750Mi
@@ -88,7 +88,7 @@ spec:
     name: aladhan-com-api
   minReplicas: 2
   maxReplicas: 30
-  targetCPUUtilizationPercentage: 85
+  targetCPUUtilizationPercentage: 90
 ---
 # Memcached
 apiVersion: apps/v1
