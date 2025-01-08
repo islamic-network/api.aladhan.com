@@ -90,49 +90,6 @@ spec:
   maxReplicas: 30
   targetCPUUtilizationPercentage: 90
 ---
-# Memcached
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: aladhan-com-api-memcached
-  namespace: aladhan-com
-spec:
-  replicas: 1  
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-  selector:
-    matchLabels:
-      app: aladhan-com-api-memcached
-  template:
-    metadata:
-      labels:
-        app: aladhan-com-api-memcached
-    spec:
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-      containers:
-        - name: aladhan-com-api-memcached
-          image: memcached:1.6.25
-          args:
-            - "memcached"
-            - "-m"
-            - "900"
-            - "-I"
-            - "16M"
-          resources:
-            requests:
-              memory: 1000Mi
-            limits:
-              memory: 1000Mi
-          ports:
-            - containerPort: 11211
-              protocol: TCP
----
 #  Service
 apiVersion: v1
 kind: Service
@@ -147,18 +104,6 @@ spec:
       targetPort: 8080
   selector:
     app: aladhan-com-api
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: aladhan-com-api-memcached
-  namespace: aladhan-com
-spec:
-  ports:
-    - port: 11211
-      targetPort: 11211
-  selector:
-    app: aladhan-com-api-memcached
 ---
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
