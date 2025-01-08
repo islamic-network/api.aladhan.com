@@ -43,7 +43,7 @@ use OpenApi\Attributes as OA;
     ],
     parameters: [
         new OA\QueryParameter(parameter: 'TimeZoneQueryParameter', name: 'zone', description: 'TimeZone', in: 'query',
-            required: true, schema: new OA\Schema(type: 'string'), example: '?zone=Asia/Gaza')
+            required: true, schema: new OA\Schema(type: 'string'), example: 'Asia/Gaza')
     ]
 )]
 class DateAndTime extends Slim

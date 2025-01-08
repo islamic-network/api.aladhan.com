@@ -23,8 +23,8 @@ use OpenApi\Attributes as OA;
         title: 'Geocoding APIs - AlAdhan'
     ),
     servers: [
-        new OA\Server(url: 'http://api.aladhan.com'),
-        new OA\Server(url: 'https://api.aladhan.com')
+        new OA\Server(url: 'https://api.aladhan.com/v1'),
+        new OA\Server(url: 'http://api.aladhan.com/v1')
     ],
     tags: [
         new OA\Tag(name: 'Geo')
@@ -53,13 +53,14 @@ use OpenApi\Attributes as OA;
     ],
     parameters: [
         new OA\QueryParameter(parameter: 'TimingsAddressQueryParameter', name: 'address', description: 'Address of user location',
-            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: '?address=A5204, London'),
+            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: 'A5204, London'),
         new OA\QueryParameter(parameter: 'TimingsCityQueryParameter', name: 'city', description: 'Name of the city',
-            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: '?city=London'),
+            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: 'London'),
         new OA\QueryParameter(parameter: 'TimingsCountryQueryParameter',name: 'country', description: 'A country name or 2 character alpha ISO 3166 code',
-            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: '&country=GB'),
-        new OA\QueryParameter(parameter: '7xAPIKeyQueryParameter', name: 'x7xapikey', description: '7x API Key', in: 'query',
-            required: false, schema: new OA\Schema(type: 'string'), example: '&x7xapikey=P244d623e2fe2daf56359fxxxxx')
+            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: 'GB'),
+        new OA\QueryParameter(parameter: '7xAPIKeyQueryParameter', name: 'x7xapikey', description: '7x API Key - An API key from <a href="https://7x.ax" target="_blank">https://7x.ax</a> to geocode the address, city and country. 
+        If you do not provide one the response will mask the geocoded co-ordinates.
+        ', in: 'query', required: false, schema: new OA\Schema(type: 'string'), example: 'P244d623e2fe2daf56359fxxxxx')
     ]
 )]
 class Geo extends Slim
