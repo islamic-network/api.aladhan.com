@@ -11,17 +11,18 @@ use Psr\Http\Message\ServerRequestInterface;
 use Api\Utils\Request;
 use Api\Models\PrayerTimes as PrayerTimesModel;
 use Slim\Exception\HttpBadRequestException;
-use Symfony\Component\Cache\Adapter\MemcachedAdapter;
+use Symfony\Component\Cache\Adapter\ApcuAdapter;
 
 
 class PrayerTimesCalendar extends Slim
 {
-    public MemcachedAdapter $mc;
+    public ApcuAdapter $mc;
     public HijriCalendar $hc;
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
-        $this->mc = $this->container->get('cache.memcached.cache');
+        // $this->mc = $this->container->get('cache.memcached.cache');
+        $this->mc = $this->container->get('cache.apcu.cache');
         $this->hc = new HijriCalendar();
     }
 
@@ -57,7 +58,7 @@ class PrayerTimesCalendar extends Slim
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
 
         if (Request::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
-            $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendar', $hijri, 604800, false);
+            $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendar', $hijri, 7200, false);
 
             return Http\Response::json($response,
                 $r,
@@ -107,7 +108,7 @@ class PrayerTimesCalendar extends Slim
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
 
         if (Request::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
-            $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByAddress', $hijri, 604800, $enableMasking);
+            $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByAddress', $hijri, 7200, $enableMasking);
 
             return Http\Response::json($response,
                 $r,
@@ -157,7 +158,7 @@ class PrayerTimesCalendar extends Slim
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
 
         if (Request::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
-            $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByCity', $hijri, 604800, $enableMasking);
+            $r = $ptm->respondWithCalendar((int) $month, (int) $year, $annual, 'calendarByCity', $hijri, 7200, $enableMasking);
 
             return Http\Response::json($response,
                 $r,

@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Api\Utils\Timezone;
 use SevenEx\SDK\Geocode;
 use Slim\Exception\HttpBadRequestException;
-use Symfony\Component\Cache\Adapter\MemcachedAdapter;
+use Symfony\Component\Cache\Adapter\ApcuAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
 use DateTimeZone;
 use DateTime;
@@ -42,10 +42,10 @@ class PrayerTimes
     public ?string $country;
     public ?string $methodSettings;
     public string $calenderMethod = HijriDate::CALENDAR_METHOD_HJCoSA;
-    public MemcachedAdapter $mc;
+    public ApcuAdapter $mc;
     public array $tune;
 
-    public function __construct(ContainerInterface $container, ServerRequestInterface $request, MemcachedAdapter $mc)
+    public function __construct(ContainerInterface $container, ServerRequestInterface $request, ApcuAdapter $mc)
     {
         $c = $container->get('config')['kipchak.7x'];
         $this->mc = $mc;
@@ -77,7 +77,7 @@ class PrayerTimes
         $this->method = ClassMapper::method(ApiRequest::method(Request::getQueryParam($request, 'method'), $this->latitude, $this->longitude));
         $this->methodSettings = Request::getQueryParam($request, 'methodSettings');
         $this->timezone = $this->mc->get(md5('tz.' . $this->latitude . '.' . $this->longitude), function (ItemInterface $item) use ($request) {
-            $item->expiresAfter(604800);
+            $item->expiresAfter(7200);
             return Timezone::computeTimezone($this->latitude, $this->longitude,
                 Request::getQueryParam($request, 'timezonestring'), $this->SevenExApiKey, $this->SevenExTimezoneBaseUrl);
         });
@@ -118,7 +118,7 @@ class PrayerTimes
         if ($this->address !== null && ApiRequest::isValidAddress($this->address)) {
             // /timingsByAddress call. Geocode.
             $coordinates = $this->mc->get(md5('addr.' . strtolower($this->address) . $this->SevenExApiKey), function (ItemInterface $item)  {
-                $item->expiresAfter(604800);
+                $item->expiresAfter(7200);
                 $gc = new Geocode($this->SevenExApiKey, $this->SevenExGeocodeBaseUrl);
                 $gcode = $gc->geocode($this->address);
                 if(!empty($gcode->objects)) {
@@ -138,7 +138,7 @@ class PrayerTimes
         }
     }
 
-    public function respond(string $datestring, string $endpoint, int $expires = 604800): array
+    public function respond(string $datestring, string $endpoint, int $expires = 7200): array
     {
         $r = $this->mc->get(md5($endpoint . $datestring . json_encode(get_object_vars($this))),
             function (ItemInterface $item) use ($datestring, $expires) {
@@ -164,7 +164,7 @@ class PrayerTimes
 
     }
 
-    public function respondWithCalendar(int $month, int $year, bool $annual, string $endpoint, bool $hijri = false, int $expires = 604800, bool $enableMasking = true): array
+    public function respondWithCalendar(int $month, int $year, bool $annual, string $endpoint, bool $hijri = false, int $expires = 7200, bool $enableMasking = true): array
     {
         $r = $this->mc->get(md5($endpoint . $month . $year . $annual . $hijri . json_encode(get_object_vars($this))),
             function (ItemInterface $item) use ($month, $year, $annual, $hijri, $expires, $enableMasking) {

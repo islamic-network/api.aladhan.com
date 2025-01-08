@@ -65,10 +65,10 @@ spec:
           resources:
             requests:
               cpu: "400m"
-              memory: 250Mi
+              memory: 550Mi
             limits:
               cpu: "750m"
-              memory: 600Mi
+              memory: 750Mi
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -121,14 +121,14 @@ spec:
           args:
             - "memcached"
             - "-m"
-            - "900"
+            - "100"
             - "-I"
             - "16M"
           resources:
             requests:
-              memory: 1000Mi
+              memory: 200Mi
             limits:
-              memory: 1000Mi
+              memory: 200Mi
           ports:
             - containerPort: 11211
               protocol: TCP

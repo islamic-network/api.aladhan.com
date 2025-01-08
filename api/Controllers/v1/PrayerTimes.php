@@ -13,11 +13,11 @@ use Api\Utils\PrayerTimesHelper;
 use Api\Models\PrayerTimes as PrayerTimesModel;
 use DateTimeZone;
 use Slim\Exception\HttpBadRequestException;
-use Symfony\Component\Cache\Adapter\MemcachedAdapter;
+use Symfony\Component\Cache\Adapter\ApcuAdapter;
 
 class PrayerTimes extends Slim
 {
-    public MemcachedAdapter $mc;
+    public ApcuAdapter $mc;
 
     public HijriCalendar $hc;
 
@@ -25,7 +25,8 @@ class PrayerTimes extends Slim
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
-        $this->mc = $this->container->get('cache.memcached.cache');
+        // $this->mc = $this->container->get('cache.memcached.cache');
+        $this->mc = $this->container->get('cache.apcu.cache');
         $this->hc = new HijriCalendar();
     }
 

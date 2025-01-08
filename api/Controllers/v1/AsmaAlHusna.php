@@ -20,7 +20,7 @@ class AsmaAlHusna extends Slim
             $aah->get([]),
             200,
             true,
-            604800,
+            7200,
             ['public']
         );
     }
@@ -38,7 +38,7 @@ class AsmaAlHusna extends Slim
                 'Please specify a valid number or list of comma separated numbers between 1 and 99',
                 404,
                 true,
-                604800,
+                7200,
                 ['public']
             );
         }
@@ -47,7 +47,7 @@ class AsmaAlHusna extends Slim
             $r,
             200,
             true,
-            604800,
+            7200,
             ['public']
         );
     }

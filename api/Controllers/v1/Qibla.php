@@ -26,7 +26,7 @@ class Qibla extends Slim
             $calculation,
             200,
             true,
-            604800,
+            7200,
             ['public']
         );
     }
@@ -83,7 +83,7 @@ class Qibla extends Slim
         imagedestroy($kaaba);
         ob_end_clean();
 
-        return Utils\Response::png($response, $data, 200, [], true, 604800);
+        return Utils\Response::png($response, $data, 200, [], true, 7200);
     }
 
 }
