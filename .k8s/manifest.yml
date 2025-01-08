@@ -111,7 +111,7 @@ metadata:
   name: rate-limiting-aladhan-api
   namespace: aladhan-com
 config:
-  second: 24
+  second: 12
   policy: local
   limit_by: ip
 plugin: rate-limiting
