@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Api\Utils\Timezone;
 use SevenEx\SDK\Geocode;
 use Slim\Exception\HttpBadRequestException;
-use Symfony\Component\Cache\Adapter\ApcuAdapter;
+use Symfony\Component\Cache\Adapter\MemcachedAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
 use DateTimeZone;
 use DateTime;
@@ -42,10 +42,10 @@ class PrayerTimes
     public ?string $country;
     public ?string $methodSettings;
     public string $calenderMethod = HijriDate::CALENDAR_METHOD_HJCoSA;
-    public ApcuAdapter $mc;
+    public MemcachedAdapter $mc;
     public array $tune;
 
-    public function __construct(ContainerInterface $container, ServerRequestInterface $request, ApcuAdapter $mc)
+    public function __construct(ContainerInterface $container, ServerRequestInterface $request, MemcachedAdapter $mc)
     {
         $c = $container->get('config')['kipchak.7x'];
         $this->mc = $mc;
