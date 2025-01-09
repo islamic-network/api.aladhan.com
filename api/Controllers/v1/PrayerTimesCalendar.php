@@ -35,26 +35,25 @@ class PrayerTimesCalendar extends Slim
             new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
             new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsAnnualParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsCalMethodParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsShafaqParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTuneParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsSchoolParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsMidNightModeParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTimeZoneStringParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsIso8601Parameter')
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns Prayer times for a Hijri year',
                 content: new OA\MediaType(
                     mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsPrayerTimesCalendarYearResponse')
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarYearResponse')
                 )
             ),
-            new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
+            new OA\Response(ref: '#/components/responses/400TimesLatLongResponse', response: '400')
         ]
     )]
 
@@ -65,29 +64,28 @@ class PrayerTimesCalendar extends Slim
         tags: ['Monthly Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
-            new OA\PathParameter(ref: '#/components/parameters/TimingsHijriMonth'),
+            new OA\PathParameter(ref: '#/components/parameters/TimesHijriMonth'),
             new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsAnnualParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsCalMethodParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsShafaqParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTuneParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsSchoolParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsMidNightModeParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTimeZoneStringParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsIso8601Parameter')
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns Prayer times for a Hijri month',
                 content: new OA\MediaType(
                     mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsPrayerTimesCalendarMonthResponse')
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarMonthResponse')
                 )
             ),
-            new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
+            new OA\Response(ref: '#/components/responses/400TimesLatLongResponse', response: '400')
         ]
     )]
 
@@ -100,26 +98,25 @@ class PrayerTimesCalendar extends Slim
             new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
             new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsAnnualParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsCalMethodParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsShafaqParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTuneParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsSchoolParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsMidNightModeParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTimeZoneStringParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsIso8601Parameter')
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns Prayer times for a Gregorian year',
                 content: new OA\MediaType(
                     mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsPrayerTimesCalendarYearResponse')
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarYearResponse')
                 )
             ),
-            new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
+            new OA\Response(ref: '#/components/responses/400TimesLatLongResponse', response: '400')
         ]
     )]
     #[OA\Get(
@@ -129,29 +126,28 @@ class PrayerTimesCalendar extends Slim
         tags: ['Monthly Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
-            new OA\PathParameter(ref: '#/components/parameters/TimingsGregorianMonth'),
+            new OA\PathParameter(ref: '#/components/parameters/TimesGregorianMonth'),
             new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsAnnualParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsCalMethodParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsShafaqParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTuneParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsSchoolParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsMidNightModeParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTimeZoneStringParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsIso8601Parameter')
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns Prayer times for a Gregorian month',
                 content: new OA\MediaType(
                     mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsPrayerTimesCalendarMonthResponse')
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarMonthResponse')
                 )
             ),
-            new OA\Response(ref: '#/components/responses/400TimingsLatLongResponse', response: '400')
+            new OA\Response(ref: '#/components/responses/400TimesLatLongResponse', response: '400')
         ]
     )]
     public function calendar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
@@ -210,28 +206,27 @@ class PrayerTimesCalendar extends Slim
         tags: ['Annual Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesAddressQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsAnnualParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsCalMethodParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsShafaqParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTuneParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsSchoolParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsMidNightModeParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTimeZoneStringParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsIso8601Parameter')
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns Prayer times for a Hijri year for an address',
                 content: new OA\MediaType(
                     mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsPrayerTimesCalendarYearResponse')
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarYearResponse')
                 )
             ),
-            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+            new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
 
@@ -242,29 +237,28 @@ class PrayerTimesCalendar extends Slim
         tags: ['Monthly Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
-            new OA\PathParameter(ref: '#/components/parameters/TimingsHijriMonth'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
+            new OA\PathParameter(ref: '#/components/parameters/TimesHijriMonth'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesAddressQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsAnnualParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsCalMethodParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsShafaqParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTuneParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsSchoolParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsMidNightModeParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTimeZoneStringParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsIso8601Parameter')
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns Prayer times for a Hijri month for an address',
                 content: new OA\MediaType(
                     mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsPrayerTimesCalendarMonthResponse')
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarMonthResponse')
                 )
             ),
-            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+            new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
 
@@ -275,28 +269,27 @@ class PrayerTimesCalendar extends Slim
         tags: ['Annual Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesAddressQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsAnnualParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsCalMethodParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsShafaqParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTuneParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsSchoolParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsMidNightModeParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTimeZoneStringParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsIso8601Parameter')
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns Prayer times for a Gregorian year for an address',
                 content: new OA\MediaType(
                     mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsPrayerTimesCalendarYearResponse')
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarYearResponse')
                 )
             ),
-            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+            new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
 
@@ -307,29 +300,28 @@ class PrayerTimesCalendar extends Slim
         tags: ['Monthly Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
-            new OA\PathParameter(ref: '#/components/parameters/TimingsGregorianMonth'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsAddressQueryParameter'),
+            new OA\PathParameter(ref: '#/components/parameters/TimesGregorianMonth'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesAddressQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsAnnualParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsCalMethodParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsShafaqParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTuneParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsSchoolParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsMidNightModeParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTimeZoneStringParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsIso8601Parameter')
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns Prayer times for a Gregorian month for an address',
                 content: new OA\MediaType(
                     mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsPrayerTimesCalendarMonthResponse')
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarMonthResponse')
                 )
             ),
-            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+            new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
     public function calendarByAddress(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
@@ -388,30 +380,29 @@ class PrayerTimesCalendar extends Slim
         tags: ['Annual Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsStateQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesCountryQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesStateQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsAnnualParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsCalMethodParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsShafaqParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTuneParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsSchoolParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsMidNightModeParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTimeZoneStringParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsIso8601Parameter')
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns Prayer times a Hijri year for a city and country',
                 content: new OA\MediaType(
                     mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsPrayerTimesCalendarYearResponse')
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarYearResponse')
                 )
             ),
-            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+            new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
 
@@ -422,31 +413,30 @@ class PrayerTimesCalendar extends Slim
         tags: ['Monthly Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/HijriYear'),
-            new OA\PathParameter(ref: '#/components/parameters/TimingsHijriMonth'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsStateQueryParameter'),
+            new OA\PathParameter(ref: '#/components/parameters/TimesHijriMonth'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesCountryQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesStateQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsAnnualParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsCalMethodParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsShafaqParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTuneParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsSchoolParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsMidNightModeParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTimeZoneStringParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsIso8601Parameter')
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns Prayer times a Hijri month for a city and country',
                 content: new OA\MediaType(
                     mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsPrayerTimesCalendarMonthResponse')
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarMonthResponse')
                 )
             ),
-            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+            new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
 
@@ -457,30 +447,29 @@ class PrayerTimesCalendar extends Slim
         tags: ['Annual Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsStateQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesCountryQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesStateQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsAnnualParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsCalMethodParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsShafaqParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTuneParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsSchoolParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsMidNightModeParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTimeZoneStringParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsIso8601Parameter')
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns Prayer times a Gregorian year for a city and country',
                 content: new OA\MediaType(
                     mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsPrayerTimesCalendarYearResponse')
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarYearResponse')
                 )
             ),
-            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+            new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
 
@@ -491,31 +480,30 @@ class PrayerTimesCalendar extends Slim
         tags: ['Monthly Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/GregorianYear'),
-            new OA\PathParameter(ref: '#/components/parameters/TimingsGregorianMonth'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsCityQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsCountryQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/TimingsStateQueryParameter'),
+            new OA\PathParameter(ref: '#/components/parameters/TimesGregorianMonth'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesCountryQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesStateQueryParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsAnnualParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsCalMethodParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsShafaqParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTuneParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsSchoolParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsMidNightModeParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsTimeZoneStringParameter'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
             new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
             new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
-            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimingsIso8601Parameter')
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
         ],
         responses: [
             new OA\Response(response: '200', description: 'Returns Prayer times a Gregorian year for a city and country',
                 content: new OA\MediaType(
                     mediaType: 'application/json',
-                    schema: new OA\Schema(ref: '#/components/schemas/200TimingsPrayerTimesCalendarMonthResponse')
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarMonthResponse')
                 )
             ),
-            new OA\Response(ref: '#/components/responses/400TimingsCityCountryMonthResponse', response: '400')
+            new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
 
