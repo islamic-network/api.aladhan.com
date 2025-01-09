@@ -480,7 +480,6 @@ use OpenApi\Attributes as OA;
         <br /><br />
         For more details on the methods, please see <a href="https://api.aladhan.com/v1/islamicCalendar/methods" target="_blank">https://api.aladhan.com/v1/islamicCalendar/methods</a>.
         ', in: 'query', required: false, schema: new OA\Schema(type: 'string', default: 'HJCoSA'), example: 'UAQ'),
-
         new OA\QueryParameter(parameter: 'Adjustment', name: 'adjustment', description: 'Only applicable if the calendar Method is set to MATHEMATICAL. Number of days to adjust the date being converted to. Example: 1 or 2 or -1 or -2', in: 'path',
             required: false, schema: new OA\Schema(type: 'integer'), example: 0),
         new OA\QueryParameter(parameter: 'PrayerTimingsCalMethodParameter', name: 'method', description: 'A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. 
@@ -513,7 +512,7 @@ use OpenApi\Attributes as OA;
         <li />23 - Ministry of Awqaf, Islamic Affairs and Holy Places, Jordan
         <li />99 - Custom. See <a href="https://aladhan.com/calculation-methods" target="_blank">https://aladhan.com/calculation-methods</a>
         </ul>
-        ', in: 'query', required: false, schema: new OA\Schema(type: 'integer', default: 0, enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 99]), example: 3),
+        ', in: 'query', required: false, schema: new OA\Schema(type: 'integer', enum: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 99]), example: 3),
         new OA\QueryParameter(parameter: 'PrayerTimingsShafaqParameter', name: 'shafaq', description: "Which Shafaq to use if the 'method' query parameter is 'Moonsighting Commitee Worldwide'. Acceptable options are 'general', 'ahmer' and 'abyad'",
             in: 'query', required: false, schema: new OA\Schema(type: 'string', default: 'general', enum: ["general", "ahmer", "abyad"]), example: "general"),
         new OA\QueryParameter(parameter: 'PrayerTimingsTuneParameter', name: 'tune', description: "Comma Separated String of integers to offset timings returned by the API in minutes. The order is Imsak,Fajr,Sunrise,Dhuhr,Asr,Maghrib,Sunset,Isha,Midnight. 
