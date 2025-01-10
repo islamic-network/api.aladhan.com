@@ -4,7 +4,8 @@ use function Mamluk\Kipchak\env;
 
 return [
     'name' => 'aladhan-api', // Hyphen or underscore separated string
-    'debug' => false, // (bool) env('DEBUG', true),
+    'debug' => env('DEBUG', false) === "true",
+    'logExceptionDetails' => false,
     // If debug is enabled, loglevel is debug. Otherwise, it is info. Overwrite it by specifying it below.
     // 'loglevel' => \Monolog\Level::Debug
 ];
