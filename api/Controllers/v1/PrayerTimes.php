@@ -27,6 +27,7 @@ class PrayerTimes extends Slim
     {
         parent::__construct($container);
         $this->mc = $this->container->get('cache.memcached.cache');
+        // $this->mc = $this->container->get('cache.apcu.cache');
         $this->hc = new HijriCalendar();
     }
 

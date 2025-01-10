@@ -7,10 +7,7 @@ use Mamluk\Kipchak\Components\Http;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Api\Utils\Request as ApiRequest;
-use Api\Utils\PrayerTimesHelper;
 use Api\Models\PrayerTimes as PrayerTimesModel;
-use DateTimeZone;
 use Slim\Exception\HttpBadRequestException;
 use Symfony\Component\Cache\Adapter\MemcachedAdapter;
 use OpenApi\Attributes as OA;
@@ -69,7 +66,8 @@ class Geo extends Slim
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
-        $this->mc = $this->container->get('cache.memcached.cache');
+         $this->mc = $this->container->get('cache.memcached.cache');
+        // $this->mc = $this->container->get('cache.apcu.cache');
 
     }
 
@@ -112,7 +110,7 @@ class Geo extends Slim
             ['latitude' => $ptm->latitude, 'longitude' => $ptm->longitude, 'timezone' => $ptm->timezone],
             200,
             true,
-            604800,
+            7200,
             ['public']
         );
 
@@ -158,7 +156,7 @@ class Geo extends Slim
             ['latitude' => $ptm->latitude, 'longitude' => $ptm->longitude, 'timezone' => $ptm->timezone],
             200,
             true,
-            604800,
+            7200,
             ['public']
         );
     }

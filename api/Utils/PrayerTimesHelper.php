@@ -136,6 +136,9 @@ class PrayerTimesHelper
     public static function calculateHijriMonthPrayerTimes($latitude, $longitude, $month, $year, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null, bool $enableMasking = true, $calendarMethod = HijriDate::CALENDAR_METHOD_HJCoSA): array
     {
         $cs = new HijriCalendar();
+        if ($calendarMethod !== HijriDate::CALENDAR_METHOD_MATHEMATICAL) {
+            $adjustment = 0;
+        }
 
         $hm = $cs->getHtoGCalendar($month, $year, $calendarMethod, $adjustment);
 
@@ -175,6 +178,9 @@ class PrayerTimesHelper
         for ($month = 0; $month <= 12; $month++) {
             if ($month < 1) {
                 $month = 1;
+            }
+            if ($calendarMethod !== HijriDate::CALENDAR_METHOD_MATHEMATICAL) {
+                $adjustment = 0;
             }
             $hm = $cs->getHtoGCalendar($month, $year, $calendarMethod, $adjustment);
 

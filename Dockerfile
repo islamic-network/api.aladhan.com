@@ -12,6 +12,9 @@ RUN export COMPOSER_ALLOW_SUPERUSER=1 && cd /var/www && composer install --no-de
 RUN rm -rf /var/www/.git
 RUN rm -rf /var/www/.gitignore
 
+## Copy APCu settings
+COPY etc/php/php-apcu.ini /usr/local/etc/php/conf.d/php-apcu.ini
+
 # Set the correct permissions
 #RUN chown -R www-data:www-data /var/www/
 

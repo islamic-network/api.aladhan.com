@@ -40,7 +40,7 @@ spec:
 #            - name: X7X_TIMEZONE_BASEURL
 #              value: "http://timezone.7x"
             - name:  MEMCACHED_HOST
-              value: "aladhan-com-api-memcached"
+              value: "memcached"
             - name:  MEMCACHED_PORT
               value: "11211"
             - name:  X7X_API_KEY
@@ -65,10 +65,10 @@ spec:
           resources:
             requests:
               cpu: "400m"
-              memory: 250Mi
+              memory: 350Mi
             limits:
               cpu: "750m"
-              memory: 600Mi
+              memory: 750Mi
           ports:
             - containerPort: 8080
               protocol: TCP
@@ -88,50 +88,7 @@ spec:
     name: aladhan-com-api
   minReplicas: 2
   maxReplicas: 30
-  targetCPUUtilizationPercentage: 75
----
-# Memcached
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: aladhan-com-api-memcached
-  namespace: aladhan-com
-spec:
-  replicas: 1  
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
-  selector:
-    matchLabels:
-      app: aladhan-com-api-memcached
-  template:
-    metadata:
-      labels:
-        app: aladhan-com-api-memcached
-    spec:
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: ScheduleAnyway
-      containers:
-        - name: aladhan-com-api-memcached
-          image: memcached:1.6.25
-          args:
-            - "memcached"
-            - "-m"
-            - "900"
-            - "-I"
-            - "16M"
-          resources:
-            requests:
-              memory: 1000Mi
-            limits:
-              memory: 1000Mi
-          ports:
-            - containerPort: 11211
-              protocol: TCP
+  targetCPUUtilizationPercentage: 90
 ---
 #  Service
 apiVersion: v1
@@ -148,25 +105,13 @@ spec:
   selector:
     app: aladhan-com-api
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: aladhan-com-api-memcached
-  namespace: aladhan-com
-spec:
-  ports:
-    - port: 11211
-      targetPort: 11211
-  selector:
-    app: aladhan-com-api-memcached
----
 apiVersion: configuration.konghq.com/v1
 kind: KongPlugin
 metadata:
   name: rate-limiting-aladhan-api
   namespace: aladhan-com
 config:
-  second: 24
+  second: 12
   policy: local
   limit_by: ip
 plugin: rate-limiting
