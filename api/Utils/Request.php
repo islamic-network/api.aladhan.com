@@ -95,7 +95,7 @@ class Request
     {
         $result = [];
         $method = explode(',', $data);
-        // PrayerTimes::tune() takes a total of 9 params
+        // Timings::tune() takes a total of 9 params
         for ($i = 0; $i <= 8; $i++) {
             if (isset($method[$i]) && $method[$i] != 0 && $method[$i] != null) {
                 $result[] = (string) $method[$i];

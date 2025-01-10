@@ -7,11 +7,59 @@ use Mamluk\Kipchak\Components\Http;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use AlQibla\Calculation;
+use OpenApi\Attributes as OA;
 use Api\Utils;
 
+#[OA\OpenApi(
+    openapi: '3.1.0',
+    info: new OA\Info(
+        version: 'v1',
+        description: "A Qibla direction API to calculate the Qibla angle on a compass and generate a Qibla compass image",
+        title: 'Qibla Direction API - AlAdhan'
+    ),
+    servers: [
+        new OA\Server(url: 'https://api.aladhan.com/v1'),
+        new OA\Server(url: 'http://api.aladhan.com/v1')
+    ],
+    tags: [
+        new OA\Tag(name: 'Qibla')
+    ]
+
+)]
 class Qibla extends Slim
 {
-
+    #[OA\Get(
+        path: '/qibla/{latitude}/{longitude}',
+        description: 'Returns the Qibla direction based on a pair of co-ordinates',
+        summary: 'Qibla direction API',
+        tags: ['Qibla'],
+        parameters: [
+            new OA\PathParameter(name: 'latitude', description: "Latitude co-ordinates ",
+                in: 'path', required: true, schema: new OA\Schema(type: 'number', format: 'float'), example: 19.07101757042149
+            ),
+            new OA\PathParameter(name: 'longitude', description: "Longitude co-ordinates",
+                in: 'path', required: true, schema: new OA\Schema(type: 'number', format: 'float'), example: 72.83862228676163
+            )
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns the Qibla direction based on the co-ordinates',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 200),
+                            new OA\Property(property: 'status', type: 'string', example: 'OK'),
+                            new OA\Property(property: 'data',
+                                properties: [
+                                    new OA\Property(property: 'latitude', type: 'number', example: 19.07101757042149),
+                                    new OA\Property(property: 'longitude', type: 'number', example: 72.83862228676163),
+                                    new OA\Property(property: 'direction', type: 'number', example: 280.07746236651514)
+                                ], type: 'object')
+                        ]
+                    )
+                )
+            )
+        ]
+    )]
     public function get(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $latitude = floatval($request->getAttribute('latitude'));
@@ -31,6 +79,30 @@ class Qibla extends Slim
         );
     }
 
+    #[OA\Get(
+        path: '/qibla/{latitude}/{longitude}/compass',
+        description: 'Returns a compass image marking the direction of the Qibla',
+        summary: 'Qibla direction compass API',
+        tags: ['Qibla'],
+        parameters: [
+            new OA\PathParameter(name: 'latitude', description: "Latitude co-ordinates ",
+                in: 'path', required: true, schema: new OA\Schema(type: 'number', format: 'float'), example: 19.07101757042149
+            ),
+            new OA\PathParameter(name: 'longitude', description: "Longitude co-ordinates",
+                in: 'path', required: true, schema: new OA\Schema(type: 'number', format: 'float'), example: 72.83862228676163
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Returns a compass image with the Qibla direction based on the co-ordinates',
+                content: new OA\MediaType(
+                    mediaType: 'image/png',
+                    schema: new OA\Schema(type: "string", format: "binary"),
+                )
+            )
+        ]
+    )]
     public function getCompass(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $latitude = floatval($request->getAttribute('latitude'));
