@@ -16,7 +16,7 @@ use OpenApi\Attributes as OA;
     openapi: '3.1.0',
     info: new OA\Info(
         version: 'v1',
-        description: "An Islamic Calendar API that supports various calculation methods to convert Gregorian Dates to Hijri Dates",
+        description: "An Islamic Calendar API that supports various calculation methods to convert Gregorian Dates to Hijri Dates.",
         title: 'Islamic / Hijri Calendar API - AlAdhan'
     ),
     servers: [

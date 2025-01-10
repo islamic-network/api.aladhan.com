@@ -14,7 +14,7 @@ class Methods extends Slim
 
     #[OA\Get(
         path: '/methods',
-        description: 'Returns all the prayer times calculation methods & details supported by Islamic Network API',
+        description: 'Returns all the prayer times calculation methods supported by the AlAdhan API.',
         summary: 'Prayer Times Methods',
         tags: ['Prayer Time Methods'],
         responses: [

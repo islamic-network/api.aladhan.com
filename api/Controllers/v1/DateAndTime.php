@@ -15,7 +15,7 @@ use OpenApi\Attributes as OA;
     openapi: '3.1.0',
     info: new OA\Info(
         version: 'v1',
-        description: "Date and Time APIs",
+        description: "Date and Time APIs.",
         title: 'Date and Time APIs - Aladhan'
     ),
     servers: [

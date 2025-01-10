@@ -16,7 +16,7 @@ use OpenApi\Attributes as OA;
     openapi: '3.1.0',
     info: new OA\Info(
         version: 'v1',
-        description: "Geocoding APIs",
+        description: "Geocoding APIs.",
         title: 'Geocoding APIs - AlAdhan'
     ),
     servers: [
