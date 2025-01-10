@@ -14,7 +14,8 @@ use OpenApi\Attributes as OA;
         version: 'v1',
         description: "A RESTful API to get islamic prayer times for a given day, month or year.
     The API has several endpoints to assist developers. All the endpoints return JSON and are available over `http` and `https`.
-    Please note that prayer timings might not always match your local mosque or government authority. Their timings are likely tuned or adjusted. Please see `https://aladhan.com/calculation-methods` for more details.",
+    Please note that prayer timings might not always match your local mosque or government authority. 
+    Their timings are likely tuned or adjusted. Please see `https://aladhan.com/calculation-methods` for more details.",
         title: 'Prayer Times API - AlAdhan'
     ),
     servers: [

@@ -21,7 +21,7 @@ use OpenApi\Attributes as OA;
         new OA\Server(url: 'http://api.aladhan.com/v1')
     ],
     tags: [
-        new OA\Tag(name: 'AsmaAlHusna'),
+        new OA\Tag(name: 'Asma Al Husna'),
     ]
 )]
 #[OA\Components(
