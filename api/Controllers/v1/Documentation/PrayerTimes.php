@@ -7,6 +7,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use OpenApi as OApi;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Cache\Adapter\MemcachedAdapter;
+use Symfony\Contracts\Cache\ItemInterface;
 
 #[OA\OpenApi(
     openapi: '3.1.0',
@@ -903,16 +905,21 @@ use OpenApi\Attributes as OA;
 )]
 class PrayerTimes extends Documentation
 {
+    public MemcachedAdapter $mc;
     public function generate(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
-        $openApi = OApi\Generator::scan(
-            [
-                $this->dir . '/Controllers/v1/Documentation/PrayerTimes.php',
-                $this->dir . '/Controllers/v1/PrayerTimes.php',
-                $this->dir . '/Controllers/v1/PrayerTimesCalendar.php',
-                $this->dir . '/Controllers/v1/Methods.php'
-            ]
-        );
+        $this->mc = $this->container->get('cache.memcached.cache');
+        $openApi = $this->mc->get('oa_pt', function (ItemInterface $item) {
+            $item->expiresAfter(300);
+            return OApi\Generator::scan(
+                [
+                    $this->dir . '/Controllers/v1/Documentation/PrayerTimes.php',
+                    $this->dir . '/Controllers/v1/PrayerTimes.php',
+                    $this->dir . '/Controllers/v1/PrayerTimesCalendar.php',
+                    $this->dir . '/Controllers/v1/Methods.php'
+                ]
+            );
+        });
 
         return Response::raw($response, $openApi->toYaml(), 200, ['Content-Type' => 'text/yaml']);
     }
