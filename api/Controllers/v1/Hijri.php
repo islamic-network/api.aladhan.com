@@ -11,6 +11,8 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Api\Utils\HijriDate;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Cache\Adapter\MemcachedAdapter;
+use Symfony\Contracts\Cache\ItemInterface;
 
 #[OA\OpenApi(
     openapi: '3.1.0',
@@ -141,10 +143,13 @@ class Hijri extends Slim
 {
     public HijriCalendar $h;
 
+    public MemcachedAdapter $mc;
+
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
 
+        $this->mc = $this->container->get('cache.memcached.cache');
         $this->h = new HijriCalendar();
     }
 
@@ -181,14 +186,23 @@ class Hijri extends Slim
     )]
     public function gregorianToHijriCalendar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-        $y = (int)Http\Request::getAttribute($request, 'year');
-        $m = (int)Http\Request::getAttribute($request, 'month');
-        $a = Http\Request::getQueryParam($request, 'adjustment');
-        $adjustment = $a === null ? 0 : $a;
-        $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
+
+        $id = md5('gToHCalendar_' . md5(json_encode($request->getAttributes()) . json_encode($request->getQueryParams())));
+
+        $r = $this->mc->get($id, function (ItemInterface $item) use ($request) {
+            $item->expiresAfter(300);
+            $y = (int)Http\Request::getAttribute($request, 'year');
+            $m = (int)Http\Request::getAttribute($request, 'month');
+            $a = Http\Request::getQueryParam($request, 'adjustment');
+            $adjustment = $a === null ? 0 : $a;
+            $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
+
+            return $this->h->getGToHCalendar($m, $y, $cm, $adjustment);
+        });
+
 
         return Http\Response::json($response,
-            $this->h->getGToHCalendar($m, $y, $cm, $adjustment),
+            $r,
             200,
             true,
             7200,
@@ -227,14 +241,23 @@ class Hijri extends Slim
     )]
     public function hijriToGregorianCalendar(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-        $y = (int)Http\Request::getAttribute($request, 'year');
-        $m = (int)Http\Request::getAttribute($request, 'month');
-        $a = Http\Request::getQueryParam($request, 'adjustment');
-        $adjustment = $a === null ? 0 : $a;
-        $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
+        $id = md5('gToHCalendar_' . md5(json_encode($request->getAttributes()) . json_encode($request->getQueryParams())));
+
+        $r = $this->mc->get($id, function (ItemInterface $item) use ($request) {
+            $item->expiresAfter(300);
+
+            $y = (int)Http\Request::getAttribute($request, 'year');
+            $m = (int)Http\Request::getAttribute($request, 'month');
+            $a = Http\Request::getQueryParam($request, 'adjustment');
+            $adjustment = $a === null ? 0 : $a;
+            $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
+
+            return $this->h->getHtoGCalendar($m, $y, $cm, (int) $adjustment);
+        });
+
 
         return Http\Response::json($response,
-            $this->h->getHtoGCalendar($m, $y, $cm, (int) $adjustment),
+            $r,
             200,
             true,
             7200,
@@ -283,14 +306,21 @@ class Hijri extends Slim
             return Http\Response::redirect($response, '/v1/gToH/' . $d . '?' . http_build_query($request->getQueryParams()), 301);
         }
 
-        $a = Http\Request::getQueryParam($request, 'adjustment');
-        $adjustment = $a === null ? 0 : $a;
-        $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
-        $result = $this->h->gToH($d, $cm, (int) $adjustment);
+        $id = md5('gToHCalendar_' . md5(json_encode($request->getAttributes()) . json_encode($request->getQueryParams())));
 
-        if ($result) {
+        $r = $this->mc->get($id, function (ItemInterface $item) use ($request, $d) {
+            $item->expiresAfter(300);
+            $a = Http\Request::getQueryParam($request, 'adjustment');
+            $adjustment = $a === null ? 0 : $a;
+            $cm = HijriDate::calendarMethod(Http\Request::getQueryParam($request, 'calendarMethod'));
+
+            return $this->h->gToH($d, $cm, (int)$adjustment);
+
+        });
+
+        if ($r) {
             return Http\Response::json($response,
-                $result,
+                $r,
                 200,
                 true,
                 7200,
@@ -350,13 +380,20 @@ class Hijri extends Slim
             return Http\Response::redirect($response, '/v1/hToG/' . $d . '?' . http_build_query($request->getQueryParams()), 301);
         }
 
-        $a = Http\Request::getQueryParam($request, 'adjustment');
-        $adjustment = $a === null ? 0 : $a;
-        $result = $this->h->hToG($d, $cm, (int) $adjustment);
+        $id = md5('gToHCalendar_' . md5(json_encode($request->getAttributes()) . json_encode($request->getQueryParams())));
 
-        if ($result) {
+        $r = $this->mc->get($id, function (ItemInterface $item) use ($request, $d, $cm) {
+            $item->expiresAfter(300);
+
+            $a = Http\Request::getQueryParam($request, 'adjustment');
+            $adjustment = $a === null ? 0 : $a;
+            return $this->h->hToG($d, $cm, (int)$adjustment);
+
+        });
+
+        if ($r) {
             return Http\Response::json($response,
-                $result,
+                $r,
                 200,
                 true,
                 7200,
