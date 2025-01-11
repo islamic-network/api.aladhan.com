@@ -15,7 +15,7 @@ class Geo extends Documentation
     public function generate(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $this->mc = $this->container->get('cache.memcached.cache');
-        $openApi = $this->mc->get('oa_pt', function (ItemInterface $item) {
+        $openApi = $this->mc->get('oa_geo', function (ItemInterface $item) {
             $item->expiresAfter(300);
             return OApi\Generator::scan(
                 [
