@@ -12,6 +12,7 @@ services:
     ports:
       - "80:8080"
       - "9090:9090"
+      - "9091:9091"
     volumes:
       - .:/var/www
     privileged: true

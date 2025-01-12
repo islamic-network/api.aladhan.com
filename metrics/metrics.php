@@ -24,4 +24,3 @@ foreach($json->applications as $application => $data) {
 
 header("Content-Type: text/plain");
 echo join("\n", $metrics)."\n";
-?>

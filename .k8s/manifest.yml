@@ -17,10 +17,10 @@ spec:
       app: aladhan-com-api
   template:
     metadata:
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "9090"
-        prometheus.io/path: "/metrics"
+#      annotations:
+#        prometheus.io/scrape: "true"
+#        prometheus.io/port: "9090"
+#        prometheus.io/path: "/metrics"
       labels:
         app: aladhan-com-api
     spec:
@@ -71,8 +71,13 @@ spec:
               memory: 750Mi
           ports:
             - containerPort: 8080
+              name: api
               protocol: TCP
             - containerPort: 9090
+              name: prometheus-metrics
+              protocol: TCP
+            - containerPort: 9091
+              name: status
               protocol: TCP
 ---
 # HPA
@@ -101,7 +106,11 @@ metadata:
 spec:
   ports:
     - port: 80
+      name: api
       targetPort: 8080
+    - port: 9091
+      name: status
+      targetPort: 9091
   selector:
     app: aladhan-com-api
 ---
