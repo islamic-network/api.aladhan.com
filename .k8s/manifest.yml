@@ -108,9 +108,6 @@ spec:
     - port: 80
       name: api
       targetPort: 8080
-    - port: 9091
-      name: status
-      targetPort: 9091
   selector:
     app: aladhan-com-api
 ---
