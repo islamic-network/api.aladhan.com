@@ -809,11 +809,11 @@ class Hijri extends Slim
 
     #[OA\Get(
         path: '/islamicCalendar/methods',
-        description: 'Returns a list of methods that are used for different types of Hijri / Islamic Calendar calculations',
-        summary: 'Hirji / Islamic Calendar Calculations',
+        description: 'Returns a list of supported methods for Hijri / Islamic Calendar calculations',
+        summary: 'Hirji / Islamic Calendar Methods',
         tags: ['Hijri'],
         responses: [
-            new OA\Response(response: '200', description: 'Returns a list of methods used for Hijri / Islamic Calendar calculations',
+            new OA\Response(response: '200', description: 'Returns a list of supported methods for Hijri / Islamic Calendar calculations',
                 content: new OA\MediaType(mediaType: 'application/json',
                     schema: new OA\Schema(
                         properties: [
