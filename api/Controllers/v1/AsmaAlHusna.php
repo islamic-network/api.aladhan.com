@@ -69,7 +69,7 @@ class AsmaAlHusna extends Slim
 {
     #[OA\Get(
         path: '/asmaAlHusna',
-        description: 'Includes the Arabic text with transliteration and meaning of each name',
+        description: 'Returns the Arabic text with transliteration and meaning of each name',
         summary: 'Get all the Asma Al Husna',
         tags: ['AsmaAlHusna'],
         responses: [
@@ -118,12 +118,12 @@ class AsmaAlHusna extends Slim
 
     #[OA\Get(
         path: '/asmaAlHusna/{number}',
-        description: 'Includes the Arabic text with transliteration and meaning',
+        description: 'Returns the Arabic text with transliteration and meaning',
         summary: 'Get one or more Asma Al Husna',
         tags: ['AsmaAlHusna'],
         parameters: [
-            new OA\PathParameter(name: 'number', description: 'A valid Asma Al Husna number or list of comma separated numbers between 1 and 99', in: 'path',
-                required: true, schema: new OA\Schema(type: 'string'), example: '1 or 1,2,3'
+            new OA\PathParameter(name: 'number', description: 'A valid Asma Al Husna number or list of comma separated numbers between 1 and 99. So "7" or "7,8,9".', in: 'path',
+                required: true, schema: new OA\Schema(type: 'string'), example: '77'
             )
         ],
         responses: [
