@@ -21,7 +21,7 @@
         "islamic-network/alqibla": "^1.2",
         "islamic-network/calendar": "^1.8",
         "islamic-network/prayer-times": "^1.0.29",
-        "mamluk/kipchak": "^0.44",
+        "mamluk/kipchak": "^0.45",
         "p3k/emoji-detector": "^0.2.1",
         "rafaelfragoso/haversini-formula": "dev-master",
         "zircote/swagger-php": "^5.0"
