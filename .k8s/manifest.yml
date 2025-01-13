@@ -117,9 +117,12 @@ metadata:
   name: rate-limiting-aladhan-api
   namespace: aladhan-com
 config:
-  second: 12
-  policy: local
+  second: 24
   limit_by: ip
+  fault_tolerant: true
+  redis:
+    host: valkey-ratelimiting-primary
+    port: 6379
 plugin: rate-limiting
 ---
 apiVersion: configuration.konghq.com/v1
