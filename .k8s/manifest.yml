@@ -120,6 +120,7 @@ config:
   second: 24
   limit_by: ip
   fault_tolerant: true
+  policy: redis
   redis:
     host: valkey-ratelimiting-primary
     port: 6379
