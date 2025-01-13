@@ -123,8 +123,6 @@ config:
   redis:
     host: valkey-ratelimiting-primary
     port: 6379
-redis_host: valkey-ratelimiting-primary
-redis_port: 6379
 plugin: rate-limiting
 ---
 apiVersion: configuration.konghq.com/v1
