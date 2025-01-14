@@ -327,7 +327,9 @@ class PrayerTimesHelper
 
         $tune = $tune ?? [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-        $methodSettings = $methodSettings ?? [null, null, null];
+        $methodSettings = ($methodSettings === null || (!isset($methodSettings[0]) && !isset($methodSettings[1]) && !isset($methodSettings[2])))
+            ? [null, null, null]
+            : $methodSettings;
 
         switch ($method) {
             case Method::METHOD_CUSTOM:
