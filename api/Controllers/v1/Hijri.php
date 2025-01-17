@@ -134,7 +134,7 @@ use Symfony\Contracts\Cache\ItemInterface;
         <br />- <b>MATHEMATICAL</b>
         <br /><br />
         For more details on the methods, please see <a href="https://api.aladhan.com/v1/islamicCalendar/methods" target="_blank">https://api.aladhan.com/v1/islamicCalendar/methods</a>.
-        ', in: 'query', required: false, schema: new OA\Schema(type: 'string', default: 'HJCoSA'), example: 'UAQ'),
+        ', in: 'query', required: false, schema: new OA\Schema(type: 'string', default: 'HJCoSA', enum: ['HJCoSA', 'UAQ', 'DIYANET', 'MATHEMATICAL']), example: 'UAQ'),
         new OA\QueryParameter(parameter: 'Adjustment', name: 'adjustment', description: 'Only applicable if the calendarMethod is set to MATHEMATICAL. Number of days to adjust the date being converted to. Example: 1 or 2 or -1 or -2', in: 'path',
             required: false, schema: new OA\Schema(type: 'integer'), example: 0),
     ]

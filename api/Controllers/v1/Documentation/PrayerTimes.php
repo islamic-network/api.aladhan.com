@@ -809,7 +809,7 @@ use Symfony\Contracts\Cache\ItemInterface;
         new OA\QueryParameter(parameter: 'LongitudeQueryParameter', name: 'longitude', description: "Longitude coordinates of users location",
             in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: '-0.1360365'),
         new OA\QueryParameter(parameter: 'TimesAddressQueryParameter', name: 'address', description: 'Address of user location',
-            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: 'A5204, London'),
+            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: 'Trafalfar Square, London, UK'),
         new OA\QueryParameter(parameter: 'TimesCityQueryParameter', name: 'city', description: 'Name of the city',
             in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: 'London'),
         new OA\QueryParameter(parameter: 'TimesStateQueryParameter', name: 'state', description: 'Name of the state',
@@ -827,7 +827,7 @@ use Symfony\Contracts\Cache\ItemInterface;
         <br />- <b>MATHEMATICAL</b>
         <br /><br />
         For more details on the methods, please see <a href="https://api.aladhan.com/v1/islamicCalendar/methods" target="_blank">https://api.aladhan.com/v1/islamicCalendar/methods</a>.
-        ', in: 'query', required: false, schema: new OA\Schema(type: 'string', default: 'HJCoSA'), example: 'UAQ'),
+        ', in: 'query', required: false, schema: new OA\Schema(type: 'string', default: 'HJCoSA', enum: ['HJCoSA', 'UAQ', 'DIYANET', 'MATHEMATICAL']), example: 'UAQ'),
         new OA\QueryParameter(parameter: 'Adjustment', name: 'adjustment', description: 'Only applicable if the calendar Method is set to MATHEMATICAL. Number of days to adjust the date being converted to. Example: 1 or 2 or -1 or -2', in: 'path',
             required: false, schema: new OA\Schema(type: 'integer'), example: 0),
         new OA\QueryParameter(parameter: 'PrayerTimesCalMethodParameter', name: 'method', description: 'A prayer times calculation method. Methods identify various schools of thought about how to compute the timings. 
