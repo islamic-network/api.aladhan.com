@@ -809,7 +809,7 @@ use Symfony\Contracts\Cache\ItemInterface;
         new OA\QueryParameter(parameter: 'LongitudeQueryParameter', name: 'longitude', description: "Longitude coordinates of users location",
             in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: '-0.1360365'),
         new OA\QueryParameter(parameter: 'TimesAddressQueryParameter', name: 'address', description: 'Address of user location',
-            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: 'Trafalfar Square, London, UK'),
+            in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: 'Trafalgar Square, London, UK'),
         new OA\QueryParameter(parameter: 'TimesCityQueryParameter', name: 'city', description: 'Name of the city',
             in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: 'London'),
         new OA\QueryParameter(parameter: 'TimesStateQueryParameter', name: 'state', description: 'Name of the state',
