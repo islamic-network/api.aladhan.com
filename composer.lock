@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "111bfd3121b87568aeb62968ec8da98e",
+    "content-hash": "308f6a038364177dc83b1571d484c26b",
     "packages": [
         {
             "name": "7x/sdk",
@@ -524,16 +524,16 @@
         },
         {
             "name": "doctrine/dbal",
-            "version": "3.9.3",
+            "version": "3.9.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/dbal.git",
-                "reference": "61446f07fcb522414d6cfd8b1c3e5f9e18c579ba"
+                "reference": "ec16c82f20be1a7224e65ac67144a29199f87959"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/dbal/zipball/61446f07fcb522414d6cfd8b1c3e5f9e18c579ba",
-                "reference": "61446f07fcb522414d6cfd8b1c3e5f9e18c579ba",
+                "url": "https://api.github.com/repos/doctrine/dbal/zipball/ec16c82f20be1a7224e65ac67144a29199f87959",
+                "reference": "ec16c82f20be1a7224e65ac67144a29199f87959",
                 "shasum": ""
             },
             "require": {
@@ -549,15 +549,13 @@
                 "doctrine/coding-standard": "12.0.0",
                 "fig/log-test": "^1",
                 "jetbrains/phpstorm-stubs": "2023.1",
-                "phpstan/phpstan": "1.12.6",
-                "phpstan/phpstan-strict-rules": "^1.6",
-                "phpunit/phpunit": "9.6.20",
-                "psalm/plugin-phpunit": "0.18.4",
+                "phpstan/phpstan": "2.1.1",
+                "phpstan/phpstan-strict-rules": "^2",
+                "phpunit/phpunit": "9.6.22",
                 "slevomat/coding-standard": "8.13.1",
                 "squizlabs/php_codesniffer": "3.10.2",
                 "symfony/cache": "^5.4|^6.0|^7.0",
-                "symfony/console": "^4.4|^5.4|^6.0|^7.0",
-                "vimeo/psalm": "4.30.0"
+                "symfony/console": "^4.4|^5.4|^6.0|^7.0"
             },
             "suggest": {
                 "symfony/console": "For helpful console commands such as SQL execution and import of files."
@@ -617,7 +615,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/dbal/issues",
-                "source": "https://github.com/doctrine/dbal/tree/3.9.3"
+                "source": "https://github.com/doctrine/dbal/tree/3.9.4"
             },
             "funding": [
                 {
@@ -633,7 +631,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-10T17:56:43+00:00"
+            "time": "2025-01-16T08:28:55+00:00"
         },
         {
             "name": "doctrine/deprecations",
@@ -2571,16 +2569,16 @@
         },
         {
             "name": "mamluk/kipchak",
-            "version": "0.45",
+            "version": "0.46",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mam-luk/kipchak.git",
-                "reference": "1a86f981ac666d310b1ffb32919056dcef5419ec"
+                "reference": "7a5d26c1d2ff2447c8ab72104b10df2206a0776e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mam-luk/kipchak/zipball/1a86f981ac666d310b1ffb32919056dcef5419ec",
-                "reference": "1a86f981ac666d310b1ffb32919056dcef5419ec",
+                "url": "https://api.github.com/repos/mam-luk/kipchak/zipball/7a5d26c1d2ff2447c8ab72104b10df2206a0776e",
+                "reference": "7a5d26c1d2ff2447c8ab72104b10df2206a0776e",
                 "shasum": ""
             },
             "require": {
@@ -2619,9 +2617,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mam-luk/kipchak/issues",
-                "source": "https://github.com/mam-luk/kipchak/tree/0.45"
+                "source": "https://github.com/mam-luk/kipchak/tree/0.46"
             },
-            "time": "2025-01-12T03:06:48+00:00"
+            "time": "2025-01-17T11:00:28+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2988,16 +2986,16 @@
         },
         {
             "name": "php-di/invoker",
-            "version": "2.3.4",
+            "version": "2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHP-DI/Invoker.git",
-                "reference": "33234b32dafa8eb69202f950a1fc92055ed76a86"
+                "reference": "93d381d0ec42074f43530506849fdc2d3a86a809"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHP-DI/Invoker/zipball/33234b32dafa8eb69202f950a1fc92055ed76a86",
-                "reference": "33234b32dafa8eb69202f950a1fc92055ed76a86",
+                "url": "https://api.github.com/repos/PHP-DI/Invoker/zipball/93d381d0ec42074f43530506849fdc2d3a86a809",
+                "reference": "93d381d0ec42074f43530506849fdc2d3a86a809",
                 "shasum": ""
             },
             "require": {
@@ -3031,7 +3029,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PHP-DI/Invoker/issues",
-                "source": "https://github.com/PHP-DI/Invoker/tree/2.3.4"
+                "source": "https://github.com/PHP-DI/Invoker/tree/2.3.5"
             },
             "funding": [
                 {
@@ -3039,7 +3037,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-08T09:24:21+00:00"
+            "time": "2025-01-17T10:02:37+00:00"
         },
         {
             "name": "php-di/php-di",
@@ -6201,16 +6199,16 @@
         },
         {
             "name": "zircote/swagger-php",
-            "version": "5.0.2",
+            "version": "5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zircote/swagger-php.git",
-                "reference": "c6956de52edb270da4df2630b938c9ac3e26e42f"
+                "reference": "7708510b17502a416214148edaa8c9958b23b6cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/c6956de52edb270da4df2630b938c9ac3e26e42f",
-                "reference": "c6956de52edb270da4df2630b938c9ac3e26e42f",
+                "url": "https://api.github.com/repos/zircote/swagger-php/zipball/7708510b17502a416214148edaa8c9958b23b6cd",
+                "reference": "7708510b17502a416214148edaa8c9958b23b6cd",
                 "shasum": ""
             },
             "require": {
@@ -6281,9 +6279,9 @@
             ],
             "support": {
                 "issues": "https://github.com/zircote/swagger-php/issues",
-                "source": "https://github.com/zircote/swagger-php/tree/5.0.2"
+                "source": "https://github.com/zircote/swagger-php/tree/5.0.3"
             },
-            "time": "2025-01-09T19:42:31+00:00"
+            "time": "2025-01-15T21:02:43+00:00"
         }
     ],
     "packages-dev": [
