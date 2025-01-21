@@ -79,7 +79,7 @@ class PrayerTimes
         $this->timezone = $this->mc->get(md5('tz.' . $this->latitude . '.' . $this->longitude), function (ItemInterface $item) use ($request) {
             $item->expiresAfter(7200);
             return Timezone::computeTimezone($this->latitude, $this->longitude,
-                Request::getQueryParam($request, 'timezonestring'), $this->SevenExApiKey, $this->SevenExTimezoneBaseUrl);
+                Request::getQueryParam($request, 'timezonestring'), $this->SevenExApiKey, $this->SevenExTimezoneBaseUrl, $this->request);
         });
 
     }

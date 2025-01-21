@@ -2,8 +2,11 @@
 
 namespace Api\Utils;
 
+use Psr\Http\Message\ServerRequestInterface;
 use SevenEx\SDK\Timezone as SevenExTimeZone;
 use Api\Utils\Request as ApiRequest;
+use Slim\Exception\HttpBadRequestException;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class Timezone
 {
@@ -72,7 +75,7 @@ class Timezone
      * @param  [type] $locations Locations Model Objext
      * @return String           [description]
      */
-    public static function computeTimezone(float $latitude, float $longitude, ?string $timezone, string $apikey, string $timezoneBaseUrl): null|string
+    public static function computeTimezone(float $latitude, float $longitude, ?string $timezone, string $apikey, string $timezoneBaseUrl, ServerRequestInterface $request): null|string
     {
         //Compute only if timezone is empty or null
         if ($timezone == '' || $timezone  === null) {
@@ -84,6 +87,8 @@ class Timezone
 
                 if (isset($tzx->timezones) && is_array($tzx->timezones)) {
                     return $tzx->timezones[0];
+                } else {
+                    throw new HttpBadRequestException($request, 'Invalid Co-ordinates. Could not compute timezone.');
                 }
             }
 
