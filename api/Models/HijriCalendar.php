@@ -152,11 +152,11 @@ class HijriCalendar
                     for ($i = 1; $i < $var; $i++) {
                         // The hijri to julian calc is off by a day in this case because it is not astronomical, let's go back a day and compute again.
                         $resultM = $this->hToG($curDate, $cm, -$i, true);
-                        if ($resultM['hijri']['day'] === 1) {
+                        if ($resultM['hijri']['day'] == 1) {
                             break;
                         }
                         $resultM = $this->hToG($curDate, $cm, $i, true);
-                        if ($resultM['hijri']['day'] === 1) {
+                        if ($resultM['hijri']['day'] == 1) {
                             break;
                         }
                     }
