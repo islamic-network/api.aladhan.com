@@ -818,7 +818,7 @@ use Symfony\Contracts\Cache\ItemInterface;
             in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: 'GB'),
         new OA\QueryParameter(parameter: '7xAPIKeyQueryParameter', name: 'x7xapikey', description: '7x API Key - An API key from <a href="https://7x.ax" target="_blank">https://7x.ax</a> to geocode the address, city and country. 
         If you do not provide one the response will mask the geocoded co-ordinates.
-        ', in: 'query', required: false, schema: new OA\Schema(type: 'string'), example: 'P244d623e2fe2daf56359fGyK3s'),
+        ', in: 'query', required: false, schema: new OA\Schema(type: 'string')),
         new OA\QueryParameter(parameter: 'CalendarMethod', name: 'calendarMethod', description: 'A Calendar Calculation Method. 
         <br />Defaults to HJCoSA.
         <br />- <b>HJCoSA</b> - High Judicial Council of Saudi Arabia (this is used on aladhan.com) 
