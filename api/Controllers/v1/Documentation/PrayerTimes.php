@@ -845,7 +845,7 @@ use Symfony\Contracts\Cache\ItemInterface;
         <li />8 - Gulf Region
         <li />9 - Kuwait
         <li />10 - Qatar
-        <li />12 - Majlis Ugama Islam Singapura, Singapore
+        <li />11 - Majlis Ugama Islam Singapura, Singapore
         <li />12 - Union Organization islamic de France
         <li />13 - Diyanet İşleri Başkanlığı, Turkey
         <li />14 - Spiritual Administration of Muslims of Russia
