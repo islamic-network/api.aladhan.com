@@ -19,7 +19,7 @@
         "ext-gd": "*",
         "7x/sdk": "^1.7",
         "islamic-network/alqibla": "^1.2",
-        "islamic-network/calendar": "^1.8",
+        "islamic-network/calendar": "^1.9",
         "islamic-network/prayer-times": "^1.0.29",
         "mamluk/kipchak": "^0.46",
         "p3k/emoji-detector": "^0.2.1",
