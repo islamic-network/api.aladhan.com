@@ -53,16 +53,26 @@ class Request
         return (int) $data;
     }
 
-    public static function method($data, $latitude = null, $longitude= null): int
+
+    public static function method($data, $latitude = null, $longitude= null, ?string $timezone = null): int
     {
+        // Compute the closest method if one is not specified.
         if ($data == 'null' || $data == '') {
-            // Calculate Method user Haversine
+            // Let's check if we can just get a method from the timezone. Currently, this is only for KSA, but
+            // if we get more of these, best to move this into a separate method.
+            if ($timezone === 'Asia/Riyadh') {
+                return 4; // Umm al Qura, because Haversini for some KSA locaions returns Qatar.
+            }
+
+            // Calculate Method using Haversine
             if ($latitude !== null && $longitude !== null) {
                 return self::calculateClosestMethod($latitude, $longitude);
             }
 
             return 2; // ISNA
         }
+
+        // If one is specified, do this.
         if (!in_array($data,
             [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 99]
         )) {
