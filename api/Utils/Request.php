@@ -57,7 +57,7 @@ class Request
     public static function method($data, $latitude = null, $longitude= null, ?string $timezone = null): int
     {
         // Compute the closest method if one is not specified.
-        if ($data == 'null' || $data == '') {
+        if (empty($data)) {
             // Let's check if we can just get a method from the timezone. Currently, this is only for KSA, but
             // if we get more of these, best to move this into a separate method.
             if ($timezone === 'Asia/Riyadh') {
