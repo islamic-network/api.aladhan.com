@@ -255,7 +255,6 @@ class Hijri extends Slim
             return $this->h->getHtoGCalendar($m, $y, $cm, (int) $adjustment);
         });
 
-
         return Http\Response::json($response,
             $r,
             200,
