@@ -149,19 +149,26 @@ class HijriCalendar
                 $firstDay = $result['hijri']['day'];
                 if ($firstDay > 1) {
                     $var = 3;
-                    for ($i = 1; $i < $var; $i++) {
+                    for ($j = 1; $j < $var; $j++) {
                         // The hijri to julian calc is off by a day in this case because it is not astronomical, let's go back a day and compute again.
-                        $resultM = $this->hToG($curDate, $cm, -$i, true);
-                        if ($resultM['hijri']['day'] == 1) {
-                            break;
-                        }
-                        $resultM = $this->hToG($curDate, $cm, $i, true);
-                        if ($resultM['hijri']['day'] == 1) {
+                        $resultM = $this->hToG($curDate, $cm, -$j, true);
+                        if ((int) $resultM['hijri']['day'] === 1) {
+                            $adjustment = -$j;
                             break;
                         }
                     }
                     $calendar[] = $resultM;
-                    $calendar[] = $result;
+                } else if  ($firstDay <= 30) {
+                    $var = 3;
+                    for ($j = 1; $j < $var; $j++) {
+                        // The hijri to julian calc is off by a day in this case because it is not astronomical, let's go back a day and compute again.
+                        $resultM = $this->hToG($curDate, $cm, $j, true);
+                        if ((int)$resultM['hijri']['day'] === 1) {
+                            $adjustment = $j;
+                            break;
+                        }
+                    }
+                    $calendar[] = $resultM;
                 } else {
                     $calendar[] = $result;
                 }
