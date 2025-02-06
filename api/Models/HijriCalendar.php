@@ -146,7 +146,7 @@ class HijriCalendar
             // Don't adjust the mathematical method for legacy reasons.
             if ($i === 1 && $cm !== HijriDate::CALENDAR_METHOD_MATHEMATICAL) {
                 // Check the returned hijri date. Consider moving this up to the hTG function itself to even correct the single date calculation.
-                $firstDay = $result['hijri']['day'];
+                $firstDay = (int) $result['hijri']['day'];
                 if ($firstDay > 1) {
                     $var = 3;
                     for ($j = 1; $j < $var; $j++) {
@@ -158,7 +158,7 @@ class HijriCalendar
                         }
                     }
                     $calendar[] = $resultM;
-                } else if  ($firstDay <= 30) {
+                } else if ($firstDay <= 30 && $firstDay > 1) {
                     $var = 3;
                     for ($j = 1; $j < $var; $j++) {
                         // The hijri to julian calc is off by a day in this case because it is not astronomical, let's go back a day and compute again.
