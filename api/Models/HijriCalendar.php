@@ -166,7 +166,9 @@ class HijriCalendar
                     $calendar[] = $result;
                 }
             } else {
-                $calendar[] = $result;
+                if ($result['hijri']['month']->number === $m) {
+                    $calendar[] = $result;
+                }
             }
         }
 
