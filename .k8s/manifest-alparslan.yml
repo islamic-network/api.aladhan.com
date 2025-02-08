@@ -17,10 +17,6 @@ spec:
       app: aladhan-com-api
   template:
     metadata:
-#      annotations:
-#        prometheus.io/scrape: "true"
-#        prometheus.io/port: "9090"
-#        prometheus.io/path: "/metrics"
       labels:
         app: aladhan-com-api
     spec:
@@ -31,6 +27,11 @@ spec:
           labelSelector:
             matchLabels:
               app: aladhan-com-api
+      hostAliases:
+        - ip: 37.27.91.134
+          hostnames:
+            - api.7x.ax
+            - couch.db.bahriya.net
       containers:
         - name: aladhan-com-api
           image: ghcr.io/islamic-network/api.aladhan.com:$COMMIT_TAG

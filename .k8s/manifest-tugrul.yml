@@ -1,0 +1,250 @@
+# Deployment
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aladhan-com-api
+  namespace: aladhan-com
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 2
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: aladhan-com-api
+  template:
+    metadata:
+      labels:
+        app: aladhan-com-api
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: aladhan-com-api
+      hostAliases:
+        - ip: 128.140.85.170
+          hostnames:
+            - api.7x.ax
+            - couch.db.bahriya.net
+      containers:
+        - name: aladhan-com-api
+          image: ghcr.io/islamic-network/api.aladhan.com:$COMMIT_TAG
+          env:
+#            - name: X7X_GEOCODE_BASEURL
+#              value: "http://geocode.7x"
+#            - name: X7X_TIMEZONE_BASEURL
+#              value: "http://timezone.7x"
+            - name:  MEMCACHED_HOST
+              value: "memcached"
+            - name:  MEMCACHED_PORT
+              value: "11211"
+            - name:  X7X_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aladhan-com-api-7x-creds
+                  key: apikey
+          livenessProbe:
+            httpGet:
+              path: /status
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 7
+            timeoutSeconds: 5
+            failureThreshold: 7
+          startupProbe:
+            httpGet:
+              path: /status
+              port: 8080
+            periodSeconds: 3
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "400m"
+              memory: 350Mi
+            limits:
+              cpu: "750m"
+              memory: 750Mi
+          ports:
+            - containerPort: 8080
+              name: api
+              protocol: TCP
+            - containerPort: 9090
+              name: metrics
+              protocol: TCP
+            - containerPort: 9091
+              name: status
+              protocol: TCP
+---
+# HPA
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: aladhan-com-api
+  namespace: aladhan-com
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: aladhan-com-api
+  minReplicas: 4
+  maxReplicas: 30
+  targetCPUUtilizationPercentage: 77
+---
+#  Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: aladhan-com-api
+  namespace: aladhan-com
+  annotations:
+    konghq.com/plugins: rate-limiting-aladhan-api, proxy-cache-aladhan-api
+spec:
+  ports:
+    - port: 80
+      name: api
+      targetPort: 8080
+  selector:
+    app: aladhan-com-api
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: rate-limiting-aladhan-api
+  namespace: aladhan-com
+config:
+  second: 24
+  limit_by: ip
+  fault_tolerant: true
+  policy: redis
+  redis:
+    host: valkey-ratelimiting-primary
+    port: 6379
+plugin: rate-limiting
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: proxy-cache-aladhan-api
+  namespace: aladhan-com
+config:
+  response_code:
+  - 200
+  - 400
+  - 301
+  request_method:
+  - GET
+  - HEAD
+  content_type:
+  - application/json
+  - text/html; charset=UTF-8
+  - text/hml
+  - image/png
+  cache_control: false
+  cache_ttl: 3600
+  strategy: memory
+  memory:
+    dictionary_name: mamluk_proxy_cache
+plugin: proxy-cache
+---
+apiVersion: configuration.konghq.com/v1
+kind: KongPlugin
+metadata:
+  name: bot-detection-aladhan-api
+  namespace: aladhan-com
+plugin: bot-detection
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aladhan-com-api-ingress
+  namespace: aladhan-com
+  annotations:
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: kong
+spec:
+  tls:
+    - hosts:
+        - "api.aladhan.com"
+        - "cagri.api.aladhan.com"
+        - "alparslan.api.aladhan.com"
+        - "tugrul.api.aladhan.com"
+        - "beyazid.api.aladhan.com"
+      secretName: "aladhan-com-api-tls"
+  rules:
+    - host: api.aladhan.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aladhan-com-api
+                port:
+                  number: 80
+    - host: cagri.api.aladhan.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aladhan-com-api
+                port:
+                  number: 80
+    - host: alparslan.api.aladhan.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aladhan-com-api
+                port:
+                  number: 80
+    - host: tugrul.api.aladhan.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aladhan-com-api
+                port:
+                  number: 80
+    - host: beyazid.api.aladhan.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aladhan-com-api
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: aladhan-com-geo-ingress
+  namespace: aladhan-com
+  annotations:
+    kubernetes.io/ingress.class: kong
+spec:
+  rules:
+    - host: geo.aladhan.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: aladhan-com-api
+                port:
+                  number: 80
