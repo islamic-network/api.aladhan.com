@@ -31,7 +31,6 @@ spec:
         - ip: 37.27.91.134
           hostnames:
             - api.7x.ax
-            - couch.db.bahriya.net
       containers:
         - name: aladhan-com-api
           image: ghcr.io/islamic-network/api.aladhan.com:$COMMIT_TAG
