@@ -27,10 +27,6 @@ spec:
           labelSelector:
             matchLabels:
               app: aladhan-com-api
-      hostAliases:
-        - ip: 5.161.200.100
-          hostnames:
-            - api.7x.ax
       containers:
         - name: aladhan-com-api
           image: ghcr.io/islamic-network/api.aladhan.com:$COMMIT_TAG
