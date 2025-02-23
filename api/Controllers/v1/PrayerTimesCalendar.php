@@ -13,6 +13,7 @@ use Api\Models\PrayerTimes as PrayerTimesModel;
 use Slim\Exception\HttpBadRequestException;
 use Symfony\Component\Cache\Adapter\MemcachedAdapter;
 use OpenApi\Attributes as OA;
+use DateTime;
 
 
 class PrayerTimesCalendar extends Slim
@@ -200,6 +201,37 @@ class PrayerTimesCalendar extends Slim
         );
     }
 
+    public function calendarByRange(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    {
+        $startDate = Http\Request::getAttribute($request, 'start');
+        $endDate = Http\Request::getAttribute($request, 'end');
+
+        if (Http\Request::getQueryParam($request, 'latitude') === null ||
+            Http\Request::getQueryParam($request, 'longitude') === null ||
+            !Request::areStartAndEndDateValid($startDate, $endDate)) {
+            throw new HttpBadRequestException($request, 'Please specify a latitude, longitude, start date and end date and ensure that the end date is after the start date.');
+        }
+
+        $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
+
+        if (Request::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+            $r = $ptm->respondWithCalendarByRange(DateTime::createFromFormat('j-n-Y', $startDate), DateTime::createFromFormat('j-n-Y', $endDate), 'calendarByRange', 7200, false);
+
+            return Http\Response::json($response,
+                $r,
+                200,
+                true,
+                3600,
+                ['public']
+            );
+        }
+
+        return Http\Response::json($response,
+            'Please specify a valid latitude and longitude.',
+            400,
+        );
+    }
+
     #[OA\Get(
         path: '/hijriCalendarByAddress/{year}',
         description: 'Returns Prayer times for a Hijri year for an address',
@@ -369,7 +401,39 @@ class PrayerTimesCalendar extends Slim
         }
 
         return Http\Response::json($response,
-            'Please specify a city, country, month and year.',
+            'Please specify an address, month and year.',
+            400,
+        );
+    }
+
+    public function calendarByAddressByRange(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    {
+        $enableMasking = Http\Request::getQueryParam($request, 'x7xapikey') === null;
+        $startDate = Http\Request::getAttribute($request, 'start');
+        $endDate = Http\Request::getAttribute($request, 'end');
+
+        if (Http\Request::getQueryParam($request, 'latitude') === null ||
+            Http\Request::getQueryParam($request, 'longitude') === null ||
+            !Request::areStartAndEndDateValid($startDate, $endDate)) {
+            throw new HttpBadRequestException($request, 'Please specify a latitude, longitude, start date and end date and ensure that the end date is after the start date.');
+        }
+
+        $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
+
+        if (Request::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+            $r = $ptm->respondWithCalendarByRange(DateTime::createFromFormat('j-n-Y', $startDate), DateTime::createFromFormat('j-n-Y', $endDate), 'calendarByRange', 7200, $enableMasking);
+
+            return Http\Response::json($response,
+                $r,
+                200,
+                true,
+                3600,
+                ['public']
+            );
+        }
+
+        return Http\Response::json($response,
+            'Please specify an address, start date and end date and ensure that the end date is after the start date.',
             400,
         );
     }
@@ -554,6 +618,38 @@ class PrayerTimesCalendar extends Slim
 
         return Http\Response::json($response,
             'Please specify a city, country, month and year.',
+            400,
+        );
+    }
+
+    public function calendarByCityByRange(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
+    {
+        $enableMasking = Http\Request::getQueryParam($request, 'x7xapikey') === null;
+        $startDate = Http\Request::getAttribute($request, 'start');
+        $endDate = Http\Request::getAttribute($request, 'end');
+
+        if (Http\Request::getQueryParam($request, 'latitude') === null ||
+            Http\Request::getQueryParam($request, 'longitude') === null ||
+            !Request::areStartAndEndDateValid($startDate, $endDate)) {
+            throw new HttpBadRequestException($request, 'Please specify a latitude, longitude, start date and end date and ensure that the end date is after the start date.');
+        }
+
+        $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
+
+        if (Request::isCalendarRequestValid($ptm->latitude, $ptm->longitude, $ptm->timezone)) {
+            $r = $ptm->respondWithCalendarByRange(DateTime::createFromFormat('j-n-Y', $startDate), DateTime::createFromFormat('j-n-Y', $endDate), 'calendarByRange', 7200, $enableMasking);
+
+            return Http\Response::json($response,
+                $r,
+                200,
+                true,
+                3600,
+                ['public']
+            );
+        }
+
+        return Http\Response::json($response,
+            'Please specify a city, country, start date and end date and ensure that the end date is after the start date.',
             400,
         );
     }

@@ -2,8 +2,9 @@
 
 namespace Api\Utils;
 
-use AlAdhanApi\Model\HijriCalendarService;
+use DateInterval;
 use Api\Models\HijriCalendar;
+use DateTime;
 use Haversini\Haversini;
 use IslamicNetwork\MoonSighting\Isha;
 use IslamicNetwork\PrayerTimes\Method;
@@ -206,21 +207,6 @@ class Request
     }
 
     /**
-     * [hijriMonth description]
-     * @param  [type] $data [description]
-     * @return [type]       [description]
-     */
-    public static function hijriMonth($data)
-    {
-        if ($data == '' || $data == null || !is_numeric($data) || $data > 12 || $data < 1) {
-            $cs = new HijriCalendarService();
-            return $cs->getCurrentIslamicMonth();
-        }
-
-        return $data;
-    }
-
-    /**
      * [year description]
      * @param  [type] $data [description]
      * @return [type]       [description]
@@ -235,41 +221,7 @@ class Request
         return $data;
     }
 
-    /**
-     * [hijriYear description]
-     * @param  [type] $data [description]
-     * @return [type]       [description]
-     */
-    public static function hijriYear($data)
-    {
-        if ($data == '' || $data == null || !is_numeric($data)) {
-            $cs = new HijriCalendarService();
-            return $cs->getCurrentIslamicYear();
-        }
-
-        return $data;
-    }
-
-    /**
-     * [annual description]
-     * @param  [type] $data [description]
-     * @return [type]       [description]
-     */
-    public static function annual($data)
-    {
-        if ($data == 'true') {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * [isLatitudeValid description]
-     * @param  [type]  $data [description]
-     * @return boolean       [description]
-     */
-    public static function isLatitudeValid($data)
+    public static function isLatitudeValid($data): bool
     {
         if ($data == '' || $data == null || !is_numeric($data)) {
             return false;
@@ -278,12 +230,7 @@ class Request
         return true;
     }
 
-    /**
-     * [isLongitudeValid description]
-     * @param  [type]  $data [description]
-     * @return boolean       [description]
-     */
-    public static function isLongitudeValid($data)
+    public static function isLongitudeValid($data): bool
     {
         if ($data == '' || $data == null || !is_numeric($data)) {
             return false;
@@ -292,36 +239,17 @@ class Request
         return true;
     }
 
-    /**
-     * [isTimeZoneValid description]
-     * @param  [type]  $data [description]
-     * @return boolean       [description]
-     */
-    public static function isTimeZoneValid($data)
+    public static function isTimeZoneValid($data): bool
     {
         return $data !== null && Timezone::isTimeZoneValid($data);
     }
 
-    /**
-     * [isTimingsRequestValid description]
-     * @param  [type]  $lat      [description]
-     * @param  [type]  $lng      [description]
-     * @param  [type]  $timezone [description]
-     * @return boolean           [description]
-     */
-    public static function isTimingsRequestValid($lat, $lng, $timezone)
+    public static function isTimingsRequestValid($lat, $lng, $timezone): bool
     {
         return self::isLatitudeValid($lat) && self::isLongitudeValid($lng) && self::isTimeZoneValid($timezone);
     }
 
-    /**
-     * [isCalendarRequestValid description]
-     * @param  [type]  $lat      [description]
-     * @param  [type]  $lng      [description]
-     * @param  [type]  $timezone [description]
-     * @return boolean           [description]
-     */
-    public static function isCalendarRequestValid($lat, $lng, $timezone)
+    public static function isCalendarRequestValid($lat, $lng, $timezone): bool
     {
         return self::isLatitudeValid($lat) && self::isLongitudeValid($lng) && self::isTimeZoneValid($timezone);
     }
@@ -398,15 +326,6 @@ class Request
 
         return count($emoji) > 0;
     }
-
-    public static function isValidLocationPair(?string $city = null, ?string $country = null): bool
-    {
-        if ($city === null || $country === null) {
-            return false;
-        }
-        return self::isValidAddress($city) && self::isValidAddress($country);
-    }
-
 
     public static function calculateClosestMethod(float $latitude, float $longitude): string|int|false
     {
@@ -489,5 +408,26 @@ class Request
         }
 
         return true;
+    }
+
+    public static function isDateValid($data): bool
+    {
+        if (!empty($data)) {
+            return DateTime::createFromFormat('j-n-Y', $data) !== false;
+        }
+
+        return false;
+    }
+
+    public static function areStartAndEndDateValid($start, $end): bool
+    {
+
+        $s = DateTime::createFromFormat('j-n-Y', $start);
+        $e = DateTime::createFromFormat('j-n-Y', $end);
+        $maxDate = DateTime::createFromFormat('j-n-Y', $start);;
+        $maxDate->add(new DateInterval('P11M'));
+
+        return $s && $e && $s < $e && $e <= $maxDate;
+
     }
 }
