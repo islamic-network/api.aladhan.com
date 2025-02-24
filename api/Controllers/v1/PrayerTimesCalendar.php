@@ -201,6 +201,48 @@ class PrayerTimesCalendar extends Slim
         );
     }
 
+    #[OA\Get(
+        path: '/calendar/from/{start}/to/{end}',
+        description: 'Returns Prayer timings for the given date range between start date and end date with maximum date range difference of 11 months',
+        summary: 'Prayer timings for a date range',
+        tags: ['Date Range Prayer Times Calendar'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/start'),
+            new OA\PathParameter(ref: '#/components/parameters/end'),
+            new OA\QueryParameter(ref: '#/components/parameters/LatitudeQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/LongitudeQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
+            new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for the given date range between the start date and end date',
+                content: new OA\MediaType(
+                    mediaType: 'application/json',
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarMonthResponse')
+                )
+            ),
+            new OA\Response(response: '400', description: 'Unable to process request',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 400),
+                            new OA\Property(property: 'status', type: 'string', example: 'BAD_REQUEST'),
+                            new OA\Property(property: 'data', type: 'string', example: 'Please specify a latitude, longitude, start date and end date and ensure that the end date is after the start date.')
+                        ], type: 'object'
+                    )
+                )
+            )
+        ]
+    )]
+
     public function calendarByRange(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $startDate = Http\Request::getAttribute($request, 'start');
@@ -406,6 +448,47 @@ class PrayerTimesCalendar extends Slim
         );
     }
 
+    #[OA\Get(
+        path: '/calendarByAddress/from/{start}/to/{end}',
+        description: 'Returns Prayer timings for an address as per the given date range between start date and end date with maximum date range difference of 11 months',
+        summary: 'Prayer timings for an address as per the given date range',
+        tags: ['Date Range Prayer Times Calendar'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/start'),
+            new OA\PathParameter(ref: '#/components/parameters/end'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesAddressQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
+            new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for an address as per the given date range between start date and end date',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarMonthResponse')
+                )
+            ),
+            new OA\Response(response: '400', description: 'Unable to process request',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 400),
+                            new OA\Property(property: 'status', type: 'string', example: 'BAD_REQUEST'),
+                            new OA\Property(property: 'data', type: 'string', example: 'Please specify an address, start date and end date and ensure that the end date is after the start date.')
+                        ], type: 'object'
+                    )
+                )
+            )
+        ]
+    )]
+
     public function calendarByAddressByRange(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $enableMasking = Http\Request::getQueryParam($request, 'x7xapikey') === null;
@@ -414,7 +497,7 @@ class PrayerTimesCalendar extends Slim
 
         if (Http\Request::getQueryParam($request, 'address') === null ||
             !Request::areStartAndEndDateValid($startDate, $endDate)) {
-            throw new HttpBadRequestException($request, 'Please specify a latitude, longitude, start date and end date and ensure that the end date is after the start date.');
+            throw new HttpBadRequestException($request, 'Please specify an address, start date and end date and ensure that the end date is after the start date.');
         }
 
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);
@@ -621,6 +704,49 @@ class PrayerTimesCalendar extends Slim
         );
     }
 
+    #[OA\Get(
+        path: '/calendarByCity/from/{start}/to/{end}',
+        description: 'Returns Prayer timings for a city as per the given date range between start date and end date with maximum date range difference of 11 months',
+        summary: 'Prayer timings for a city as per the date range',
+        tags: ['Date Range Prayer Times Calendar'],
+        parameters: [
+            new OA\PathParameter(ref: '#/components/parameters/start'),
+            new OA\PathParameter(ref: '#/components/parameters/end'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesCityQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesCountryQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/TimesStateQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/7xAPIKeyQueryParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesCalMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesShafaqParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTuneParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesSchoolParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesMidNightModeParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesTimeZoneStringParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesLatitudeAdjustmentMethodParameter'),
+            new OA\QueryParameter(ref: '#/components/parameters/CalendarMethod'),
+            new OA\QueryParameter(ref: '#/components/parameters/Adjustment'),
+            new OA\QueryParameter(ref: '#/components/parameters/PrayerTimesIso8601Parameter')
+        ],
+        responses: [
+            new OA\Response(response: '200', description: 'Returns Prayer timings for a city as per the given date range between start date and end date',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(ref: '#/components/schemas/200TimesPrayerTimesCalendarMonthResponse')
+                )
+            ),
+            new OA\Response(response: '400', description: 'Unable to process request',
+                content: new OA\MediaType(mediaType: 'application/json',
+                    schema: new OA\Schema(
+                        properties: [
+                            new OA\Property(property: 'code', type: 'integer', example: 400),
+                            new OA\Property(property: 'status', type: 'string', example: 'BAD_REQUEST'),
+                            new OA\Property(property: 'data', type: 'string', example: 'Please specify a city, country, start date and end date and ensure that the end date is after the start date.')
+                        ], type: 'object'
+                    )
+                )
+            )
+        ]
+    )]
+
     public function calendarByCityByRange(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $enableMasking = Http\Request::getQueryParam($request, 'x7xapikey') === null;
@@ -630,7 +756,7 @@ class PrayerTimesCalendar extends Slim
         if (Http\Request::getQueryParam($request, 'city') === null ||
             Http\Request::getQueryParam($request, 'country') === null ||
             !Request::areStartAndEndDateValid($startDate, $endDate)) {
-            throw new HttpBadRequestException($request, 'Please specify a latitude, longitude, start date and end date and ensure that the end date is after the start date.');
+            throw new HttpBadRequestException($request, 'Please specify a city, country, start date and end date and ensure that the end date is after the start date.');
         }
 
         $ptm = new PrayerTimesModel($this->container, $request, $this->mc);

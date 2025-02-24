@@ -28,6 +28,7 @@ use Symfony\Contracts\Cache\ItemInterface;
         new OA\Tag(name: 'Daily Prayer Times'),
         new OA\Tag(name: 'Monthly Prayer Times Calendar'),
         new OA\Tag(name: 'Annual Prayer Times Calendar'),
+        new OA\Tag(name: 'Date Range Prayer Times Calendar'),
         new OA\Tag(name: 'Prayer Time Methods')
     ]
 )]
@@ -804,6 +805,10 @@ use Symfony\Contracts\Cache\ItemInterface;
             required: true, schema: new OA\Schema(type: 'integer'), example: 1),
         new OA\PathParameter(parameter: 'GregorianYear', name: 'year', description: 'Year as per the Gregorian calendar', in: 'path',
             required: true, schema: new OA\Schema(type: 'integer'), example: 2025),
+        new OA\PathParameter(parameter: 'start', name: 'start', description: 'Specific gregorian date in DD-MM-YYYY format to start the date range', in: 'path',
+            required: true, schema: new OA\Schema(type: 'string'), example: '01-01-2025'),
+        new OA\PathParameter(parameter: 'end', name: 'end', description: 'Specific gregorian date in DD-MM-YYYY format to end the date range', in: 'path',
+            required: true, schema: new OA\Schema(type: 'string'), example: '01-02-2025'),
         new OA\QueryParameter(parameter: 'LatitudeQueryParameter', name: 'latitude', description: "Latitude coordinates of users location",
             in: 'query', required: true, schema: new OA\Schema(type: 'string'), example: '51.5194682'),
         new OA\QueryParameter(parameter: 'LongitudeQueryParameter', name: 'longitude', description: "Longitude coordinates of users location",
