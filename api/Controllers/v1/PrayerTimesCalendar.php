@@ -412,8 +412,7 @@ class PrayerTimesCalendar extends Slim
         $startDate = Http\Request::getAttribute($request, 'start');
         $endDate = Http\Request::getAttribute($request, 'end');
 
-        if (Http\Request::getQueryParam($request, 'latitude') === null ||
-            Http\Request::getQueryParam($request, 'longitude') === null ||
+        if (Http\Request::getQueryParam($request, 'address') === null ||
             !Request::areStartAndEndDateValid($startDate, $endDate)) {
             throw new HttpBadRequestException($request, 'Please specify a latitude, longitude, start date and end date and ensure that the end date is after the start date.');
         }
@@ -628,8 +627,8 @@ class PrayerTimesCalendar extends Slim
         $startDate = Http\Request::getAttribute($request, 'start');
         $endDate = Http\Request::getAttribute($request, 'end');
 
-        if (Http\Request::getQueryParam($request, 'latitude') === null ||
-            Http\Request::getQueryParam($request, 'longitude') === null ||
+        if (Http\Request::getQueryParam($request, 'city') === null ||
+            Http\Request::getQueryParam($request, 'country') === null ||
             !Request::areStartAndEndDateValid($startDate, $endDate)) {
             throw new HttpBadRequestException($request, 'Please specify a latitude, longitude, start date and end date and ensure that the end date is after the start date.');
         }

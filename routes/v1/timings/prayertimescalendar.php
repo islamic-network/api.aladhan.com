@@ -17,7 +17,7 @@ $app->group('/v1', function(RouteCollectorProxy $group) {
     $group->map(['GET', 'OPTIONS'],'/calendarByAddress/{year}/{month}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByAddress']);
     $group->map(['GET', 'OPTIONS'],'/calendarByAddress/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByAddress']);
     $group->map(['GET', 'OPTIONS'],'/calendarByCity', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByCity']);
-    $group->map(['GET', 'OPTIONS'],'/calendarByCity/from/{start}/to/{end}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByCity']);
+    $group->map(['GET', 'OPTIONS'],'/calendarByCity/from/{start}/to/{end}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByCityByRange']);
     $group->map(['GET', 'OPTIONS'],'/calendarByCity/{year}/{month}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByCity']);
     $group->map(['GET', 'OPTIONS'],'/calendarByCity/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByCity']);
     $group->map(['GET', 'OPTIONS'],'/hijriCalendar', [Controllers\v1\PrayerTimesCalendar::class, 'calendar']);
