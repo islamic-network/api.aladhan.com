@@ -1,6 +1,7 @@
 <?php
 namespace Api\Utils;
 use Api\Models\HijriCalendar;
+use DateInterval;
 use IslamicNetwork\PrayerTimes\Method;
 use IslamicNetwork\PrayerTimes\PrayerTimes;
 use Api\Utils\Request as ApiRequest;
@@ -111,6 +112,23 @@ class PrayerTimesHelper
             $times[$i] = ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt, $enableMasking)];
             // Add 24 hours to start date
             $cal_start = $cal_start + (1 * 60 * 60 * 24);
+        }
+
+        return $times;
+    }
+
+    public static function calculateRangePrayerTimes($latitude, $longitude, DateTime $start, DateTime $end, $timezone, $latitudeAdjustmentMethod, PrayerTimes $pt, $midnightMode = 'STANDARD', $adjustment = 0, $tune = null, $timeFormat = PrayerTimes::TIME_FORMAT_24H, string $methodSettings = null, bool $enableMasking = true, $calendarMethod = HijriDate::CALENDAR_METHOD_HJCoSA): array
+    {
+        $cs = new HijriCalendar();
+        $times = [];
+        $i = 0;
+        while($start <= $end) {
+            $timings = self::calculateTimings($start, $pt, $tune, $latitude, $longitude, $latitudeAdjustmentMethod, $midnightMode, $adjustment, $timeFormat, $methodSettings);
+            $hm = $cs->gToH($start->format('d-m-Y'), $calendarMethod, $adjustment);
+            $date = ['readable' => $start->format('d M Y'), 'timestamp' => $start->format('U'), 'gregorian' => $hm['gregorian'], 'hijri' => $hm['hijri']];
+            $times[$i] = ['timings' => $timings, 'date' => $date, 'meta' => self::getMetaArray($pt, $enableMasking)];
+            $start = $start->add(new DateInterval('P1D'));
+            $i++;
         }
 
         return $times;
