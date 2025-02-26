@@ -58,7 +58,6 @@ class PrayerTimesCalendar extends Slim
             new OA\Response(ref: '#/components/responses/400TimesLatLongResponse', response: '400')
         ]
     )]
-
     #[OA\Get(
         path: '/hijriCalendar/{year}/{month}',
         description: 'Returns Prayer times for a requested Hijri month',
@@ -90,7 +89,6 @@ class PrayerTimesCalendar extends Slim
             new OA\Response(ref: '#/components/responses/400TimesLatLongResponse', response: '400')
         ]
     )]
-
     #[OA\Get(
         path: '/calendar/{year}',
         description: 'Returns Prayer times for a Gregorian year',
@@ -242,7 +240,6 @@ class PrayerTimesCalendar extends Slim
             )
         ]
     )]
-
     public function calendarByRange(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $startDate = Http\Request::getAttribute($request, 'start');
@@ -304,7 +301,6 @@ class PrayerTimesCalendar extends Slim
             new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
-
     #[OA\Get(
         path: '/hijriCalendarByAddress/{year}/{month}',
         description: 'Returns Prayer times for a Hijri month for an address',
@@ -336,7 +332,6 @@ class PrayerTimesCalendar extends Slim
             new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
-
     #[OA\Get(
         path: '/calendarByAddress/{year}',
         description: 'Returns Prayer times for a Gregorian year for an address',
@@ -367,7 +362,6 @@ class PrayerTimesCalendar extends Slim
             new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
-
     #[OA\Get(
         path: '/calendarByAddress/{year}/{month}',
         description: 'Returns Prayer times for a Gregorian month for an address',
@@ -488,7 +482,6 @@ class PrayerTimesCalendar extends Slim
             )
         ]
     )]
-
     public function calendarByAddressByRange(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $enableMasking = Http\Request::getQueryParam($request, 'x7xapikey') === null;
@@ -552,7 +545,6 @@ class PrayerTimesCalendar extends Slim
             new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
-
     #[OA\Get(
         path: '/hijriCalendarByCity/{year}/{month}',
         description: 'Returns Prayer times a Hijri month for a city and country',
@@ -586,7 +578,6 @@ class PrayerTimesCalendar extends Slim
             new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
-
     #[OA\Get(
         path: '/calendarByCity/{year}',
         description: 'Returns Prayer times a Gregorian year for a city and country',
@@ -619,7 +610,6 @@ class PrayerTimesCalendar extends Slim
             new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
-
     #[OA\Get(
         path: '/calendarByCity/{year}/{month}',
         description: 'Returns Prayer times a Gregorian month for a city and country',
@@ -653,7 +643,6 @@ class PrayerTimesCalendar extends Slim
             new OA\Response(ref: '#/components/responses/400TimesCityCountryMonthResponse', response: '400')
         ]
     )]
-
     public function calendarByCity(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $hijri = str_contains($request->getUri(), 'hijri');
@@ -746,7 +735,6 @@ class PrayerTimesCalendar extends Slim
             )
         ]
     )]
-
     public function calendarByCityByRange(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
         $enableMasking = Http\Request::getQueryParam($request, 'x7xapikey') === null;

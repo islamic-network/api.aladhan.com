@@ -199,7 +199,7 @@ class PrayerTimes
         return $r;
     }
 
-    public function respondWithCalendarByRange(DateTime $start, DateTime $end, string $endpoint, int $expires = 1, bool $enableMasking = true): array
+    public function respondWithCalendarByRange(DateTime $start, DateTime $end, string $endpoint, int $expires = 7200, bool $enableMasking = true): array
     {
         $r = $this->mc->get(md5($endpoint . $start->format('r') . $end->format('r') . json_encode(get_object_vars($this))),
             function (ItemInterface $item) use ($start, $end, $expires, $enableMasking) {
