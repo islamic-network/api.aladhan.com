@@ -9,6 +9,7 @@ use Slim\App;
  */
 
 $app->group('/v1', function(RouteCollectorProxy $group) {
+    $group->map(['GET', 'OPTIONS'],'/calendar', [Controllers\v1\PrayerTimesCalendar::class, 'calendar']);
     $group->map(['GET', 'OPTIONS'],'/calendar/from/{start}/to/{end}', [Controllers\v1\PrayerTimesCalendar::class, 'calendarByRange']);
     $group->map(['GET', 'OPTIONS'],'/calendar/{year}/{month}', [Controllers\v1\PrayerTimesCalendar::class, 'calendar']);
     $group->map(['GET', 'OPTIONS'],'/calendar/{year}', [Controllers\v1\PrayerTimesCalendar::class, 'calendar']);
