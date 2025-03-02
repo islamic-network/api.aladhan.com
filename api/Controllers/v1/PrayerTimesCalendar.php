@@ -201,8 +201,8 @@ class PrayerTimesCalendar extends Slim
 
     #[OA\Get(
         path: '/calendar/from/{start}/to/{end}',
-        description: 'Returns Prayer timings for the given date range between start date and end date with maximum date range difference of 11 months',
-        summary: 'Prayer timings for a date range',
+        description: 'Returns a prayer times calendar for a date range between a start date and end date with a maximum date range difference of 11 months',
+        summary: 'Prayer times calendar between 2 dates',
         tags: ['Date Range Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/start'),
@@ -444,8 +444,8 @@ class PrayerTimesCalendar extends Slim
 
     #[OA\Get(
         path: '/calendarByAddress/from/{start}/to/{end}',
-        description: 'Returns Prayer timings for an address as per the given date range between start date and end date with maximum date range difference of 11 months',
-        summary: 'Prayer timings for an address as per the given date range',
+        description: 'Returns a prayer times calendar for an address for a given date range between start date and end date with a maximum date range difference of 11 months',
+        summary: 'Prayer times calendar for an address between 2 dates',
         tags: ['Date Range Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/start'),
@@ -695,8 +695,8 @@ class PrayerTimesCalendar extends Slim
 
     #[OA\Get(
         path: '/calendarByCity/from/{start}/to/{end}',
-        description: 'Returns Prayer timings for a city as per the given date range between start date and end date with maximum date range difference of 11 months',
-        summary: 'Prayer timings for a city as per the date range',
+        description: 'Returns a prayer times calendar for a city as for a given date range between start date and end date with a maximum date range difference of 11 months',
+        summary: 'Prayer times calendar for a city for between 2 dates',
         tags: ['Date Range Prayer Times Calendar'],
         parameters: [
             new OA\PathParameter(ref: '#/components/parameters/start'),
