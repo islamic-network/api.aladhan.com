@@ -74,10 +74,11 @@ class PrayerTimes
         $this->country = Request::getQueryParam($request, 'country');
         $this->state = Request::getQueryParam($request, 'state');
         $this->validate();
-        $this->timezone = $this->mc->get(md5('tz.' . $this->latitude . '.' . $this->longitude), function (ItemInterface $item) use ($request) {
+        $timezoneString = Request::getQueryParam($request, 'timezonestring');
+        $this->timezone = $this->mc->get(md5('tz.' . $this->latitude . '.' . $this->longitude . '.' . $timezoneString), function (ItemInterface $item) use ($request, $timezoneString) {
             $item->expiresAfter(7200);
             return Timezone::computeTimezone($this->latitude, $this->longitude,
-                Request::getQueryParam($request, 'timezonestring'), $this->SevenExApiKey, $this->SevenExTimezoneBaseUrl, $this->request);
+                $timezoneString, $this->SevenExApiKey, $this->SevenExTimezoneBaseUrl, $this->request);
         });
         $this->method = ClassMapper::method(ApiRequest::method(Request::getQueryParam($request, 'method'), $this->latitude, $this->longitude, $this->timezone));
         $this->methodSettings = Request::getQueryParam($request, 'methodSettings');
