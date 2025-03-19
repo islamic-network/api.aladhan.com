@@ -6,6 +6,8 @@
 [![](https://img.shields.io/github/license/islamic-network/api.aladhan.com.svg)](https://github.com/islamic-network/api.aladhan.com/blob/master/LICENSE)
 ![GitHub All Releases](https://img.shields.io/github/downloads/islamic-network/api.aladhan.com/total)
 
+# This repository is no longer active. Please see https://community.islamic.network/d/140-removing-repositories-from-github.
+
 # AlAdhan API - api.aladhan.com
 
 This repository powers the AlAdhan.com API on http://api.aladhan.com.
